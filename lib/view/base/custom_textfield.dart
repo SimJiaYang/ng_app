@@ -36,6 +36,7 @@ class CustomTextField extends StatefulWidget {
   final int? maxLength;
   final String? validateMessage;
   final Function(dynamic)? validation;
+  final bool? isPasswordValidator;
 
   CustomTextField({
     this.hintText = 'Write something...',
@@ -70,6 +71,7 @@ class CustomTextField extends StatefulWidget {
     this.validateMessage,
     this.validation,
     this.label,
+    this.isPasswordValidator = false,
   });
 
   @override
@@ -191,6 +193,21 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 return widget.validateMessage == null
                     ? 'Please enter a value'
                     : widget.validateMessage;
+              } else {
+                if (widget.inputType == TextInputType.emailAddress) {
+                  if (checkEmail(value)) {
+                    if (widget.validateMessage == null) {
+                      return 'Please enter valid email';
+                    } else {
+                      return widget.validateMessage;
+                    }
+                  }
+                }
+                if (widget.isPasswordValidator!) {
+                  if (value.length < 8) {
+                    return 'Password should be more than 7 words';
+                  }
+                }
               }
               return null;
             }
@@ -202,5 +219,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
     setState(() {
       _obscureText = !_obscureText;
     });
+  }
+
+  bool checkEmail(String email) {
+    return !RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(email);
   }
 }

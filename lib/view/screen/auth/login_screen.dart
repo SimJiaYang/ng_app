@@ -31,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
     _formKeyLogin = GlobalKey<FormState>();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
-    _checkToken();
+    // _checkToken();
   }
 
   void _checkToken() {
@@ -112,8 +112,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   SizedBox(
                                       height: Dimensions.PADDING_SIZE_SMALL),
                                   CustomTextField(
-                                    label: 'email',
-                                    hintText: 'demo_gmail',
+                                    label: 'Email',
+                                    hintText: 'examle@mail.com',
                                     isShowBorder: true,
                                     isShowPrefixIcon: true,
                                     prefixIconUrl: Icon(
@@ -124,12 +124,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                     nextFocus: _passwordFocus,
                                     controller: _emailController,
                                     inputType: TextInputType.emailAddress,
+                                    isApplyValidator: true,
                                   ),
                                   SizedBox(
                                       height: Dimensions.PADDING_SIZE_SMALL),
                                   CustomTextField(
-                                    label: 'password',
-                                    hintText: 'password_hint',
+                                    label: 'Password',
+                                    hintText: '*******',
                                     isShowBorder: true,
                                     isPassword: true,
                                     isShowPrefixIcon: true,
@@ -141,6 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     focusNode: _passwordFocus,
                                     controller: _passwordController,
                                     inputAction: TextInputAction.done,
+                                    isPasswordValidator: true,
                                   ),
                                   SizedBox(height: 22),
 
@@ -148,25 +150,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                   SizedBox(height: 10),
                                   !authProvider.isLoading
                                       ? CustomButton(
-                                          btnTxt: 'login',
+                                          btnTxt: 'Login',
                                           onTap: () async {
                                             String _email =
                                                 _emailController.text.trim();
                                             String _password =
                                                 _passwordController.text.trim();
-                                            if (_email.isEmpty) {
-                                              showCustomSnackBar(
-                                                  "email is_required", context);
-                                            } else if (_password.isEmpty) {
-                                              showCustomSnackBar(
-                                                  'enter_password', context);
-                                            } else if (_password.length < 6) {
-                                              showCustomSnackBar(
-                                                  'password_should_be',
-                                                  context);
-                                            } else {
-                                              FocusScope.of(context).unfocus();
-
+                                            FocusScope.of(context).unfocus();
+                                            bool isValidated = _formKeyLogin!
+                                                .currentState!
+                                                .validate();
+                                            if (isValidated) {
                                               bool wait =
                                                   await authProvider.login(
                                                       _email,
@@ -193,35 +187,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                                   // for social login
                                   SizedBox(height: 10),
-                                  Container(
-                                    height: 20,
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          flex: 5,
-                                          child: Divider(
-                                            color: ColorResources.COLOR_GRAY,
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            'or',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              color: ColorResources.COLOR_GRAY,
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 5,
-                                          child: Divider(
-                                            color: ColorResources.COLOR_GRAY,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
                                 ],
                               ),
                             ),

@@ -42,6 +42,9 @@ class _MyAppState extends State<MyApp> {
           title: AppConstants.APP_NAME,
           debugShowCheckedModeBanner: false,
           navigatorKey: MyApp.navigatorKey,
+          theme: ThemeData().copyWith(
+              primaryColor: Color.fromARGB(255, 30, 133, 104),
+              useMaterial3: true),
         );
       },
     );
