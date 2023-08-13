@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/providers/auth_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/dimensions.dart';
+import 'package:nurserygardenapp/util/images.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/custom_button.dart';
 import 'package:nurserygardenapp/view/base/custom_snackbar.dart';
+import 'package:nurserygardenapp/view/base/custom_space.dart';
 import 'package:nurserygardenapp/view/base/custom_textfield.dart';
 import 'package:provider/provider.dart';
 
@@ -98,22 +100,29 @@ class _LoginScreenState extends State<LoginScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Center(
-                                    child: Text('Login',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .displaySmall!
-                                            .copyWith(
-                                              fontSize: 24,
-                                              color: ColorResources
-                                                  .COLOR_GREY_CHATEAU,
-                                            )),
+                                      child: Container(
+                                    height: 150,
+                                    width: 200,
+                                    child: Image.asset(
+                                      height: 150,
+                                      width: 150,
+                                      fit: BoxFit.contain,
+                                      Images.app_icon,
+                                    ),
+                                  )),
+                                  VerticalSpacing(
+                                    height: 25,
                                   ),
-                                  SizedBox(height: 25),
-                                  SizedBox(
-                                      height: Dimensions.PADDING_SIZE_SMALL),
+                                  VerticalSpacing(),
+                                  Text(
+                                    "Email",
+                                    style: TextStyle(
+                                        color:
+                                            ColorResources.COLOR_GREY_CHATEAU),
+                                  ),
+                                  VerticalSpacing(),
                                   CustomTextField(
-                                    label: 'Email',
-                                    hintText: 'examle@mail.com',
+                                    hintText: 'Please enter your email',
                                     isShowBorder: true,
                                     isShowPrefixIcon: true,
                                     prefixIconUrl: Icon(
@@ -126,11 +135,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                     inputType: TextInputType.emailAddress,
                                     isApplyValidator: true,
                                   ),
-                                  SizedBox(
-                                      height: Dimensions.PADDING_SIZE_SMALL),
+                                  VerticalSpacing(),
+                                  Text(
+                                    "Password",
+                                    style: TextStyle(
+                                        color:
+                                            ColorResources.COLOR_GREY_CHATEAU),
+                                  ),
+                                  VerticalSpacing(),
                                   CustomTextField(
-                                    label: 'Password',
-                                    hintText: '*******',
+                                    hintText: 'Please enter your password',
                                     isShowBorder: true,
                                     isPassword: true,
                                     isShowPrefixIcon: true,
@@ -144,10 +158,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                     inputAction: TextInputAction.done,
                                     isPasswordValidator: true,
                                   ),
-                                  SizedBox(height: 22),
-
-                                  // for login button
-                                  SizedBox(height: 10),
+                                  VerticalSpacing(
+                                    height: 15,
+                                  ),
                                   !authProvider.isLoading
                                       ? CustomButton(
                                           btnTxt: 'Login',
@@ -210,22 +223,22 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'create_an_account',
+                          'Don\'t have account?',
                           style: Theme.of(context)
                               .textTheme
                               .displayMedium!
                               .copyWith(
-                                  fontSize: Dimensions.FONT_SIZE_SMALL,
+                                  fontSize: Dimensions.FONT_SIZE_DEFAULT,
                                   color: ColorResources.COLOR_GREY),
                         ),
                         SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
                         Text(
-                          'signup',
+                          'Register Now',
                           style: Theme.of(context)
                               .textTheme
                               .displaySmall!
                               .copyWith(
-                                  fontSize: Dimensions.FONT_SIZE_SMALL,
+                                  fontSize: Dimensions.FONT_SIZE_DEFAULT,
                                   color: Theme.of(context).primaryColor),
                         ),
                       ],

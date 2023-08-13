@@ -12,5 +12,6 @@ class Dimensions {
   static const double PADDING_SIZE_LARGE = 20.0;
   static const double PADDING_SIZE_EXTRA_LARGE = 25.0;
 
+  static const double SPACING_SMALL = 10.0;
   static const int MESSAGE_INPUT_LENGTH = 250;
 }

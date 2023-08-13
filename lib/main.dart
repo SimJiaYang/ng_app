@@ -43,6 +43,8 @@ class _MyAppState extends State<MyApp> {
           debugShowCheckedModeBanner: false,
           navigatorKey: MyApp.navigatorKey,
           theme: ThemeData().copyWith(
+              colorScheme:
+                  ColorScheme.light().copyWith(background: Colors.white),
               primaryColor: Color.fromARGB(255, 30, 133, 104),
               useMaterial3: true),
         );
