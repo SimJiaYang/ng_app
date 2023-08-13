@@ -1,6 +1,7 @@
 class Routes {
   /** ROUTE NAME **/
   static const String COMING_SOON = '/coming-soon';
+  static const String SPLASH_SCREEN = '/splash';
 
   // Auth
   static const String LOGIN_SCREEN = '/login';
@@ -17,6 +18,7 @@ class Routes {
 
   /** ROUTE **/
   static String getComingSoonRoute() => COMING_SOON;
+  static String getSplashRoute() => SPLASH_SCREEN;
 
   // Auth
   static String getLoginRoute() => LOGIN_SCREEN;
