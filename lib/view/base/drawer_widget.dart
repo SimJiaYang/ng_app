@@ -212,9 +212,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         builder: (context) {
                           return CustomDialog(
                             dialogType: AppConstants.DIALOG_CONFIRMATION,
-                            btnText: "Log out",
-                            title: "Log out",
-                            content: "Are you sure you want to log out?",
+                            btnText: "Logout",
+                            title: "Logout",
+                            content: "Are you sure you want to logout?",
                             onPressed: () {
                               if (authProvider.isLoading) return;
                               authProvider.logout(context).then((value) {
