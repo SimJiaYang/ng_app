@@ -9,8 +9,17 @@ class Routes {
 
   // Dashboard
   static const String DASHBOARD = '/';
-  static const String DASHBOARD_SCREEN = '/main';
+  // static const String DASHBOARD_SCREEN = '/main';
   static const String HOME_SCREEN = '/home';
+
+  // Plant
+  static const String PLANT_SCREEN = '/plant';
+
+  // Product
+  static const String PRODUCT_SCREEN = '/product';
+
+  // Bidding
+  static const String BIDDING_SCREEN = '/bidding';
 
   // Account
   static const String ACCOUNT_SCREEN = '/account';
@@ -27,6 +36,15 @@ class Routes {
   // Dashboard
   static String getHomeRoute() => HOME_SCREEN;
   static String getMainRoute() => DASHBOARD;
+
+  // Plant
+  static String getPlantRoute() => PLANT_SCREEN;
+
+  // Product
+  static String getProductRoute() => PRODUCT_SCREEN;
+
+  // Bidding
+  static String getBiddingRoute() => BIDDING_SCREEN;
 
   // Account
   static String getAcocuntRoute() => ACCOUNT_SCREEN;

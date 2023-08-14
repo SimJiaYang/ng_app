@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
+import 'package:nurserygardenapp/view/screen/account/account_screen.dart';
+import 'package:nurserygardenapp/view/screen/bidding/bidding_screen.dart';
 import 'package:nurserygardenapp/view/screen/home/home_screen.dart';
+import 'package:nurserygardenapp/view/screen/plant/plant_screen.dart';
+import 'package:nurserygardenapp/view/screen/product/product_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   final int pageIndex;
@@ -24,9 +28,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
     _pageController = PageController(initialPage: widget.pageIndex);
 
     _screen = [
-      HomeScreen(),
-      HomeScreen(),
-      HomeScreen(),
+      PlantScreen(),
+      ProductScreen(),
+      BiddingScreen(),
+      AccountScreen(),
     ];
   }
 
@@ -52,12 +57,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
           currentIndex: _pageIndex,
           type: BottomNavigationBarType.fixed,
           items: [
-            _barItem(this._pageIndex == 0 ? Icons.home : Icons.home_outlined,
-                'dash_home', 0),
-            _barItem(this._pageIndex == 0 ? Icons.home : Icons.home_outlined,
-                'dash_home', 0),
-            _barItem(this._pageIndex == 0 ? Icons.home : Icons.home_outlined,
-                'dash_home', 0),
+            _barItem(
+                this._pageIndex == 0
+                    ? Icons.local_florist
+                    : Icons.local_florist_outlined,
+                'Plant',
+                0),
+            _barItem(
+                this._pageIndex == 1 ? Icons.widgets : Icons.widgets_outlined,
+                'Product',
+                1),
+            _barItem(
+                this._pageIndex == 2
+                    ? Icons.local_atm
+                    : Icons.local_atm_outlined,
+                'Bidding',
+                2),
+            _barItem(
+                this._pageIndex == 3
+                    ? Icons.manage_accounts
+                    : Icons.manage_accounts_outlined,
+                'Account',
+                3),
           ],
           onTap: (int index) {
             if (!mounted) return;
