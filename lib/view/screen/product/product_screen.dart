@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nurserygardenapp/view/base/drawer_widget.dart';
 
 class ProductScreen extends StatefulWidget {
   const ProductScreen({super.key});
@@ -18,6 +19,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -28,6 +30,7 @@ class _ProductScreenState extends State<ProductScreen> {
           ),
         ),
       ),
+      drawer: DrawerWidget(size: size),
       body: Center(
         child: Text('Product Screen'),
       ),

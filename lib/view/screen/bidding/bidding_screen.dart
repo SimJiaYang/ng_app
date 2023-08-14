@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nurserygardenapp/view/base/drawer_widget.dart';
 
 class BiddingScreen extends StatefulWidget {
   const BiddingScreen({super.key});
@@ -18,6 +19,7 @@ class _BiddingScreenState extends State<BiddingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -28,6 +30,7 @@ class _BiddingScreenState extends State<BiddingScreen> {
           ),
         ),
       ),
+      drawer: DrawerWidget(size: size),
       body: Center(
         child: Text('Bidding Screen'),
       ),

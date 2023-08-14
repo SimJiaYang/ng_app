@@ -9,8 +9,8 @@ class Routes {
 
   // Dashboard
   static const String DASHBOARD = '/';
-  // static const String DASHBOARD_SCREEN = '/main';
   static const String HOME_SCREEN = '/home';
+  static const String DASHBOARD_SCREEN = '/dashboard';
 
   // Plant
   static const String PLANT_SCREEN = '/plant';
@@ -36,6 +36,8 @@ class Routes {
   // Dashboard
   static String getHomeRoute() => HOME_SCREEN;
   static String getMainRoute() => DASHBOARD;
+  static String getDashboardRoute(String page) =>
+      '$DASHBOARD_SCREEN?page=$page';
 
   // Plant
   static String getPlantRoute() => PLANT_SCREEN;

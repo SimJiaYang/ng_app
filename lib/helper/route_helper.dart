@@ -26,16 +26,23 @@ class RouterHelper {
           RegisterScreen());
 
   static Handler _dashboardHandler = Handler(
-      handlerFunc: (context, Map<String, dynamic> params) => DashboardScreen(
-          pageIndex: params[0] == 'Plant'
-              ? 0
-              : params[1] == 'Product'
-                  ? 1
-                  : params[2] == 'Bidding'
-                      ? 2
-                      : params[3] == 'Account'
-                          ? 3
-                          : 0));
+      handlerFunc: (context, Map<String, dynamic> params) =>
+          DashboardScreen(pageIndex: 0));
+
+  // Selected  Certain Dashboard Screen
+  static Handler _dashScreenBoardHandler =
+      Handler(handlerFunc: (context, Map<String, dynamic> params) {
+    return DashboardScreen(
+        pageIndex: params['page'][0] == 'Plant'
+            ? 0
+            : params['page'][0] == 'Product'
+                ? 1
+                : params['page'][0] == 'Bidding'
+                    ? 2
+                    : params['page'][0] == 'Account'
+                        ? 3
+                        : 0);
+  });
 
   static Handler _homeHandler = Handler(
     handlerFunc: (context, Map<String, dynamic> parameters) => HomeScreen(),
@@ -79,9 +86,9 @@ class RouterHelper {
         handler: _biddingHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.ACCOUNT_SCREEN,
         handler: _accountHandler, transitionType: TransitionType.fadeIn);
-    //   router.define(Routes.DASHBOARD_SCREEN,
-    //       handler: _dashScreenBoardHandler,
-    //       transitionType: TransitionType.fadeIn);
-    // }
+    // Selected Dashboard Screen
+    router.define(Routes.DASHBOARD_SCREEN,
+        handler: _dashScreenBoardHandler,
+        transitionType: TransitionType.fadeIn);
   }
 }

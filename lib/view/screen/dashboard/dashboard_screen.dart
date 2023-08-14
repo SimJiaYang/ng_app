@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/view/screen/account/account_screen.dart';
 import 'package:nurserygardenapp/view/screen/bidding/bidding_screen.dart';
-import 'package:nurserygardenapp/view/screen/home/home_screen.dart';
 import 'package:nurserygardenapp/view/screen/plant/plant_screen.dart';
 import 'package:nurserygardenapp/view/screen/product/product_screen.dart';
 

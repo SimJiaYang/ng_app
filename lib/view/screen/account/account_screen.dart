@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nurserygardenapp/view/base/drawer_widget.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
@@ -18,6 +19,7 @@ class _AccountScreenState extends State<AccountScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -28,6 +30,7 @@ class _AccountScreenState extends State<AccountScreen> {
           ),
         ),
       ),
+      drawer: DrawerWidget(size: size),
       body: Center(
         child: Text('Account Screen'),
       ),
