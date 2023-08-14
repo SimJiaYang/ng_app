@@ -5,7 +5,6 @@ import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/util/images.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/custom_button.dart';
-import 'package:nurserygardenapp/view/base/custom_snackbar.dart';
 import 'package:nurserygardenapp/view/base/custom_space.dart';
 import 'package:nurserygardenapp/view/base/custom_textfield.dart';
 import 'package:provider/provider.dart';
@@ -33,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
     _formKeyLogin = GlobalKey<FormState>();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
-    // _checkToken();
+    _checkToken();
   }
 
   void _checkToken() {
@@ -101,17 +100,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                 children: [
                                   Center(
                                       child: Container(
-                                    height: 150,
+                                    height: 135,
                                     width: 200,
                                     child: Image.asset(
-                                      height: 150,
+                                      height: 130,
                                       width: 150,
                                       fit: BoxFit.contain,
                                       Images.app_icon,
                                     ),
                                   )),
                                   VerticalSpacing(
-                                    height: 25,
+                                    height: 18,
                                   ),
                                   VerticalSpacing(),
                                   Text(
@@ -215,7 +214,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 flex: 1,
                 child: InkWell(
                   onTap: () {
-                    // Navigator.pushNamed(context, Routes.getSignUpRoute());
+                    Navigator.pushNamed(context, Routes.getRegisterRoute());
                   },
                   child: Padding(
                     padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),

@@ -5,7 +5,7 @@ class Routes {
 
   // Auth
   static const String LOGIN_SCREEN = '/login';
-  static const String SIGNUP_SCREEN = '/sign-up';
+  static const String REGISTER_SCREEN = '/register';
 
   // Dashboard
   static const String DASHBOARD = '/';
@@ -22,7 +22,7 @@ class Routes {
 
   // Auth
   static String getLoginRoute() => LOGIN_SCREEN;
-  static String getSignUpRoute() => SIGNUP_SCREEN;
+  static String getRegisterRoute() => REGISTER_SCREEN;
 
   // Dashboard
   static String getHomeRoute() => HOME_SCREEN;

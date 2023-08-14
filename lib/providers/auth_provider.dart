@@ -81,7 +81,6 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
     ApiResponse apiResponse = await authRepo.registration(userModel);
     String errMsg = '';
-    print(apiResponse);
     if (apiResponse.response != null &&
         apiResponse.response!.statusCode == 200) {
       if (apiResponse.response!.data['success']) {
