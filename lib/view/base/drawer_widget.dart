@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:nurserygardenapp/providers/auth_provider.dart';
+import 'package:nurserygardenapp/util/app_constants.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/util/routes.dart';
+import 'package:nurserygardenapp/view/base/custom_dialog.dart';
+import 'package:provider/provider.dart';
 
 class DrawerWidget extends StatefulWidget {
   const DrawerWidget({
@@ -157,6 +161,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   ),
                 ),
               ),
+
               GestureDetector(
                 onTap: () {
                   _handleRoute(Routes.getDashboardRoute("Account"));
@@ -198,29 +203,55 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               // Expanded(
               //   child: Container(),
               // ),
-              GestureDetector(
-                onTap: () {},
-                child: Container(
-                  child: ListTile(
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: 16,
-                    ),
-                    leading: Icon(
-                      Icons.logout,
-                      color: ColorResources.APPBAR_HEADER_COLOR,
-                      size: 20,
-                    ),
-                    title: Text(
-                      "Logout",
-                      style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: ColorResources.APPBAR_HEADER_COLOR,
-                          ),
+
+              Consumer<AuthProvider>(builder: (context, authProvider, child) {
+                return GestureDetector(
+                  onTap: () async {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return CustomDialog(
+                            dialogType: AppConstants.DIALOG_CONFIRMATION,
+                            btnText: "Log out",
+                            title: "Log out",
+                            content: "Are you sure you want to log out?",
+                            onPressed: () {
+                              if (authProvider.isLoading) return;
+                              authProvider.logout(context).then((value) {
+                                if (value) {
+                                  Navigator.pushNamedAndRemoveUntil(context,
+                                      Routes.getLoginRoute(), (route) => false);
+                                } else {
+                                  Navigator.pop(context);
+                                }
+                              });
+                            },
+                          );
+                        });
+                  },
+                  child: Container(
+                    child: ListTile(
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 16,
+                      ),
+                      leading: Icon(
+                        Icons.logout,
+                        color: ColorResources.APPBAR_HEADER_COLOR,
+                        size: 20,
+                      ),
+                      title: Text(
+                        "Logout",
+                        style:
+                            Theme.of(context).textTheme.displayLarge!.copyWith(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: ColorResources.APPBAR_HEADER_COLOR,
+                                ),
+                      ),
                     ),
                   ),
-                ),
-              ),
+                );
+              }),
             ],
           ),
         ),
