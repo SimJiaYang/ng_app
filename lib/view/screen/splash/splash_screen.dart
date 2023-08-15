@@ -2,11 +2,14 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:nurserygardenapp/providers/auth_provider.dart';
 import 'package:nurserygardenapp/providers/splash_provider.dart';
 import 'package:nurserygardenapp/util/app_constants.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
+import 'package:nurserygardenapp/util/font_styles.dart';
 import 'package:nurserygardenapp/util/images.dart';
 import 'package:nurserygardenapp/util/routes.dart';
+import 'package:nurserygardenapp/view/base/custom_snackbar.dart';
 import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -19,33 +22,31 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   GlobalKey<ScaffoldMessengerState> _globalKey = GlobalKey();
   late StreamSubscription<ConnectivityResult> _onConnectivityChanged;
+  bool NoConnection = false;
 
   @override
   void initState() {
     super.initState();
     bool _firstTime = true;
+    checkConnection();
     _onConnectivityChanged = Connectivity()
         .onConnectivityChanged
         .listen((ConnectivityResult result) {
       if (!_firstTime) {
+        checkConnection();
         bool isNotConnected = result != ConnectivityResult.wifi &&
             result != ConnectivityResult.mobile;
-        isNotConnected
-            ? SizedBox()
-            : _globalKey.currentState!.hideCurrentSnackBar();
-        _globalKey.currentState!.showSnackBar(SnackBar(
-          backgroundColor: isNotConnected ? Colors.red : Colors.green,
-          duration: Duration(seconds: isNotConnected ? 6000 : 3),
-          content: Text(
-            isNotConnected ? 'no_connection' : 'connected',
-            textAlign: TextAlign.center,
-          ),
-        ));
         if (!isNotConnected) {
           _route();
+        } else {
+          showCustomSnackBar(
+            'No Internet Connection Found,Please check your connection.',
+            context,
+            displayDuration: 10,
+          );
         }
+        _firstTime = false;
       }
-      _firstTime = false;
     });
     _route();
   }
@@ -61,10 +62,42 @@ class _SplashScreenState extends State<SplashScreen> {
         .initConfig(_globalKey)
         .then((bool success) {
       if (success) {
-        return Navigator.pushNamedAndRemoveUntil(
-            context, Routes.getLoginRoute(), (route) => false);
+        debugPrint('start routing, check for user login');
+        _checkToken();
       }
     });
+  }
+
+  void _checkToken() {
+    Provider.of<AuthProvider>(context, listen: false)
+        .checkUserLogin()
+        .then((value) => {
+              if (value)
+                {
+                  debugPrint('Logged in'),
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, Routes.getMainRoute(), (route) => false)
+                }
+              else
+                {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, Routes.getLoginRoute(), (route) => false)
+                }
+            });
+  }
+
+  void checkConnection() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    this.NoConnection = connectivityResult == ConnectivityResult.none;
+    print(NoConnection);
+    if (NoConnection) {
+      showCustomSnackBar(
+        'No Internet Connection Found,Please check your connection.',
+        context,
+        displayDuration: 10,
+      );
+    }
+    setState(() {});
   }
 
   @override
@@ -88,9 +121,43 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
           Positioned.fill(
             child: Align(
-              child: Text(
-                AppConstants.APP_NAME,
-              ),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      AppConstants.APP_NAME,
+                      style: RubikMedium.copyWith(
+                        fontSize: 30,
+                        color: Colors.white,
+                      ),
+                    ),
+                    NoConnection
+                        ? Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 16),
+                            decoration: BoxDecoration(
+                                color: Colors.amber.shade700,
+                                borderRadius: BorderRadius.circular(5)),
+                            child: Column(
+                              children: [
+                                Text(
+                                  'No Internet Connection Found',
+                                  style: RubikMedium.copyWith(
+                                      color: ColorResources.COLOR_WHITE,
+                                      fontSize: 18),
+                                ),
+                                Text(
+                                  'Please check your connection.',
+                                  textAlign: TextAlign.center,
+                                  style: RubikMedium.copyWith(
+                                      color: ColorResources.COLOR_WHITE,
+                                      fontSize: 14),
+                                ),
+                              ],
+                            ),
+                          )
+                        : SizedBox.shrink(),
+                  ]),
             ),
           ),
         ],

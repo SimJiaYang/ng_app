@@ -21,15 +21,14 @@ class DrawerWidget extends StatefulWidget {
 
 class _DrawerWidgetState extends State<DrawerWidget> {
   void _handleRoute(String routeName) {
-    if (ModalRoute.of(context)?.settings.name == routeName) {
-      Navigator.pop(context);
-    } else {
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        routeName,
-        (route) => false,
-      );
-    }
+    // if (ModalRoute.of(context)?.settings.name == routeName) {
+    //   Navigator.pop(context);
+    // } else {
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      routeName,
+      (route) => false,
+    );
   }
 
   @override
