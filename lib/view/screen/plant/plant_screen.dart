@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:nurserygardenapp/providers/plant_provider.dart';
 import 'package:nurserygardenapp/view/base/drawer_widget.dart';
+import 'package:provider/provider.dart';
 
 class PlantScreen extends StatefulWidget {
   const PlantScreen({super.key});
@@ -9,12 +11,19 @@ class PlantScreen extends StatefulWidget {
 }
 
 class _PlantScreenState extends State<PlantScreen> {
-  late String modeText;
-  late Map<String, Icon> settingsWidget;
+  late var plant_prov = Provider.of<PlantProvider>(context, listen: false);
 
   @override
   void initState() {
     super.initState();
+    getPlantList();
+  }
+
+  Future<void> getPlantList() async {
+    bool success = await plant_prov.getPlantList();
+    if (success) {
+      // print('Plant List: ${plant_prov.plantList.length}');
+    }
   }
 
   @override

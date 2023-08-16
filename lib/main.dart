@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:nurserygardenapp/helper/route_helper.dart';
 import 'package:nurserygardenapp/providers/auth_provider.dart';
+import 'package:nurserygardenapp/providers/plant_provider.dart';
 import 'package:nurserygardenapp/providers/splash_provider.dart';
 import 'package:nurserygardenapp/util/app_constants.dart';
 import 'package:nurserygardenapp/util/routes.dart';
@@ -14,6 +15,7 @@ Future<void> main() async {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => di.sl<AuthProvider>()),
     ChangeNotifierProvider(create: (context) => di.sl<SplashProvider>()),
+    ChangeNotifierProvider(create: (context) => di.sl<PlantProvider>()),
   ], child: MyApp()));
 }
 

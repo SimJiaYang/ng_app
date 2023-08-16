@@ -34,6 +34,9 @@ class AppConstants {
   static const String LOGIN_URI = '/login';
   static const String LOGOUT_URI = '/logout';
 
+  // Plant
+  static const String PLANT_URI = '/plant';
+
   // Shared Key
   static const String THEME = 'theme';
   static const String TOKEN = 'token';
