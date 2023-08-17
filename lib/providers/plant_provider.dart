@@ -20,7 +20,7 @@ class PlantProvider extends ChangeNotifier {
     _isLoading = true;
     ApiResponse apiResponse = await plantRepo.getPlantList();
     _plantModel = PlantModel.fromJson(apiResponse.response!.data);
-    // print(apiResponse.response!.data);
+    print(apiResponse.response!.data);
     notifyListeners();
 
     if (_plantModel.success!) {

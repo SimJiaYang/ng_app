@@ -66,6 +66,7 @@ class Plant {
   final String? status;
   final String? image;
   final int? catId;
+  final String? category_name;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
@@ -82,6 +83,7 @@ class Plant {
     this.status,
     this.image,
     this.catId,
+    this.category_name,
     this.createdAt,
     this.updatedAt,
   });
@@ -99,6 +101,7 @@ class Plant {
         status: json["status"],
         image: json["image"],
         catId: json["cat_id"],
+        category_name: json["category_name"],
         createdAt: json["created_at"] == null
             ? null
             : DateTime.parse(json["created_at"]),
@@ -120,6 +123,7 @@ class Plant {
         "status": status,
         "image": image,
         "cat_id": catId,
+        "category_name": category_name,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
       };
