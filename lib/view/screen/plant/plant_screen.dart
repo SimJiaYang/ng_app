@@ -20,7 +20,9 @@ class _PlantScreenState extends State<PlantScreen> {
   void initState() {
     super.initState();
     WidgetsFlutterBinding.ensureInitialized();
-    getPlantList();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      getPlantList();
+    });
   }
 
   Future<void> getPlantList() async {
@@ -48,23 +50,24 @@ class _PlantScreenState extends State<PlantScreen> {
         body: Consumer<PlantProvider>(builder: (context, plantProvider, child) {
           return plantProvider.isLoading
               ? Center(child: CircularProgressIndicator())
-              : GridView(
-                  cacheExtent: 999999,
+              : GridView.builder(
+                  physics: BouncingScrollPhysics(),
+                  itemCount: plantList.length,
                   padding: const EdgeInsets.all(10),
+                  primary: false,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    childAspectRatio: 3 / 2,
-                    crossAxisSpacing: 40,
-                    mainAxisSpacing: 20,
+                    childAspectRatio: 2 / 2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
                   ),
-                  children: [
-                    for (final plant in plantList)
-                      PlantGridItem(
-                        key: ValueKey(plant),
-                        plant: plant,
-                        onTap: () {},
-                      ),
-                  ],
+                  itemBuilder: (BuildContext context, int index) {
+                    return PlantGridItem(
+                      key: ValueKey(plantList[index].id),
+                      plant: plantList[index],
+                      onTap: () {},
+                    );
+                  },
                 );
         }));
   }
