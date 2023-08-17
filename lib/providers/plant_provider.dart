@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/widgets.dart';
 import 'package:nurserygardenapp/data/model/plant_model.dart';
 import 'package:nurserygardenapp/data/model/response/api_response.dart';
 import 'package:nurserygardenapp/data/repositories/plant_repo.dart';
+import 'package:nurserygardenapp/util/app_constants.dart';
 
 class PlantProvider extends ChangeNotifier {
   final PlantRepo plantRepo;
@@ -20,11 +23,12 @@ class PlantProvider extends ChangeNotifier {
     _isLoading = true;
     ApiResponse apiResponse = await plantRepo.getPlantList();
     _plantModel = PlantModel.fromJson(apiResponse.response!.data);
-    print(apiResponse.response!.data);
+
     notifyListeners();
 
     if (_plantModel.success!) {
       _plantList = _plantModel.data!.plant!;
+      // print("${AppConstants.url}/${_plantList[1].image!}");
     }
 
     _isLoading = false;

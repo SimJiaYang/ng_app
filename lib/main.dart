@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:nurserygardenapp/helper/route_helper.dart';
@@ -54,3 +56,10 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+
+// class MyHttpOverrides extends HttpOverrides {
+//   @override
+//   HttpClient createHttpClient(SecurityContext? context) {
+//     return super.createHttpClient(context)..maxConnectionsPerHost = 5;
+//   }
+// }

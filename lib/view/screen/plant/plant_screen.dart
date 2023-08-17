@@ -19,6 +19,7 @@ class _PlantScreenState extends State<PlantScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsFlutterBinding.ensureInitialized();
     getPlantList();
   }
 
@@ -48,11 +49,12 @@ class _PlantScreenState extends State<PlantScreen> {
           return plantProvider.isLoading
               ? Center(child: CircularProgressIndicator())
               : GridView(
-                  padding: const EdgeInsets.all(24),
+                  cacheExtent: 999999,
+                  padding: const EdgeInsets.all(10),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     childAspectRatio: 3 / 2,
-                    crossAxisSpacing: 20,
+                    crossAxisSpacing: 40,
                     mainAxisSpacing: 20,
                   ),
                   children: [
