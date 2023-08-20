@@ -1,3 +1,5 @@
+import 'package:nurserygardenapp/data/model/plant_model.dart';
+
 class Routes {
   /** ROUTE NAME **/
   static const String COMING_SOON = '/coming-soon';
@@ -14,6 +16,7 @@ class Routes {
 
   // Plant
   static const String PLANT_SCREEN = '/plant';
+  static const String PLANT_DETAIL_SCREEN = '/plant-detail';
 
   // Product
   static const String PRODUCT_SCREEN = '/product';
@@ -41,6 +44,8 @@ class Routes {
 
   // Plant
   static String getPlantRoute() => PLANT_SCREEN;
+  static String getPlantDetailRoute(String plantID) =>
+      '$PLANT_DETAIL_SCREEN?plantID=$plantID';
 
   // Product
   static String getProductRoute() => PRODUCT_SCREEN;

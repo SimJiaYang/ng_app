@@ -51,7 +51,10 @@ class _PlantGridItemState extends State<PlantGridItem> {
                     memCacheHeight: 400, //this line
                     placeholder: (context, url) => Padding(
                       padding: const EdgeInsets.all(1.0),
-                      child: Image.asset("assets/image/app_icon.png"),
+                      child: Center(
+                          child: CircularProgressIndicator(
+                        color: ColorResources.COLOR_GRAY,
+                      )),
                     ),
                     errorWidget: (context, url, error) => Icon(Icons.error),
                   ),

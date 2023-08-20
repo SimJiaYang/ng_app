@@ -8,6 +8,7 @@ import 'package:nurserygardenapp/view/screen/auth/register_screen.dart';
 import 'package:nurserygardenapp/view/screen/bidding/bidding_screen.dart';
 import 'package:nurserygardenapp/view/screen/dashboard/dashboard_screen.dart';
 import 'package:nurserygardenapp/view/screen/home/home_screen.dart';
+import 'package:nurserygardenapp/view/screen/plant/plant_detail_screen.dart';
 import 'package:nurserygardenapp/view/screen/plant/plant_screen.dart';
 import 'package:nurserygardenapp/view/screen/product/product_screen.dart';
 import 'package:nurserygardenapp/view/screen/splash/splash_screen.dart';
@@ -52,6 +53,11 @@ class RouterHelper {
     handlerFunc: (context, Map<String, dynamic> parameters) => PlantScreen(),
   );
 
+  static Handler _plantDetailHandler = Handler(
+    handlerFunc: (context, Map<String, dynamic> params) =>
+        PlantDetailScreen(plantID: params['plantID'][0]),
+  );
+
   static Handler _productHandler = Handler(
     handlerFunc: (context, Map<String, dynamic> parameters) => ProductScreen(),
   );
@@ -80,6 +86,8 @@ class RouterHelper {
         handler: _homeHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.PLANT_SCREEN,
         handler: _plantHandler, transitionType: TransitionType.fadeIn);
+    router.define(Routes.PLANT_DETAIL_SCREEN,
+        handler: _plantDetailHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.PRODUCT_SCREEN,
         handler: _productHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.BIDDING_SCREEN,

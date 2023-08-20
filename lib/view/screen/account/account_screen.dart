@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/providers/auth_provider.dart';
 import 'package:nurserygardenapp/util/app_constants.dart';
@@ -121,29 +122,34 @@ class _AccountScreenState extends State<AccountScreen> {
                 builder: (context, authProvider, child) {
                   return GestureDetector(
                     onTap: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return CustomDialog(
-                              dialogType: AppConstants.DIALOG_CONFIRMATION,
-                              btnText: "Logout",
-                              title: "Logout",
-                              content: "Are you sure you want to logout?",
-                              onPressed: () {
-                                if (authProvider.isLoading) return;
-                                authProvider.logout(context).then((value) {
-                                  if (value) {
-                                    Navigator.pushNamedAndRemoveUntil(
-                                        context,
-                                        Routes.getLoginRoute(),
-                                        (route) => false);
-                                  } else {
-                                    Navigator.pop(context);
-                                  }
-                                });
-                              },
-                            );
-                          });
+                      authProvider.isLoading
+                          ? null
+                          : showDialog(
+                              context: context,
+                              builder: (context) {
+                                return CustomDialog(
+                                  dialogType: AppConstants.DIALOG_CONFIRMATION,
+                                  btnText: "Logout",
+                                  title: "Logout",
+                                  content: "Are you sure you want to logout?",
+                                  onPressed: () {
+                                    if (authProvider.isLoading) {
+                                      return;
+                                    }
+
+                                    authProvider.logout(context).then((value) {
+                                      if (!value) {
+                                        Navigator.pop(context);
+                                      } else {
+                                        Navigator.pushNamedAndRemoveUntil(
+                                            context,
+                                            Routes.getLoginRoute(),
+                                            (route) => false);
+                                      }
+                                    });
+                                  },
+                                );
+                              });
                     },
                     child: ListTile(
                       leading: Icon(

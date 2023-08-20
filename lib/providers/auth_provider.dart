@@ -64,10 +64,16 @@ class AuthProvider with ChangeNotifier {
         _resResult = true;
         authRepo.clearSharedData();
       } else {
+        _isLoading = false;
+        notifyListeners();
         showCustomSnackBar(apiResponse.response!.data!['error'], context);
+        return false;
       }
     } else {
+      _isLoading = false;
+      notifyListeners();
       ApiChecker.checkApi(context, apiResponse);
+      return false;
     }
     notifyListeners();
     _isLoading = false;
@@ -91,6 +97,9 @@ class AuthProvider with ChangeNotifier {
         _resResult = true;
       } else {
         showCustomSnackBar(apiResponse.response!.data!['error'], context);
+        _isLoading = false;
+        notifyListeners();
+        return false;
       }
     } else {
       ApiChecker.checkApi(context, apiResponse);

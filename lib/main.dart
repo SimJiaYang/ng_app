@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -12,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'di_container.dart' as di;
 
 Future<void> main() async {
+  HttpOverrides.global = new MyHttpOverrides();
   await dotenv.load(fileName: '.env');
   await di.init();
   runApp(MultiProvider(providers: [
@@ -51,15 +53,23 @@ class _MyAppState extends State<MyApp> {
                   ColorScheme.light().copyWith(background: Colors.white),
               primaryColor: Color.fromARGB(255, 30, 133, 104),
               useMaterial3: true),
+          scrollBehavior: MaterialScrollBehavior().copyWith(dragDevices: {
+            PointerDeviceKind.mouse,
+            PointerDeviceKind.touch,
+            PointerDeviceKind.stylus,
+            PointerDeviceKind.unknown,
+          }),
         );
       },
     );
   }
 }
 
-// class MyHttpOverrides extends HttpOverrides {
-//   @override
-//   HttpClient createHttpClient(SecurityContext? context) {
-//     return super.createHttpClient(context)..maxConnectionsPerHost = 5;
-//   }
-// }
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
+}
