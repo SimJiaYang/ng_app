@@ -42,22 +42,23 @@ class _PlantGridItemState extends State<PlantGridItem> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
+                    flex: 1,
                     child: Container(
-                  width: double.infinity,
-                  child: CachedNetworkImage(
-                    fit: BoxFit.cover,
-                    imageUrl: "${widget.plant.image!}",
-                    memCacheHeight: 400, //this line
-                    placeholder: (context, url) => Padding(
-                      padding: const EdgeInsets.all(1.0),
-                      child: Center(
-                          child: CircularProgressIndicator(
-                        color: ColorResources.COLOR_GRAY,
-                      )),
-                    ),
-                    errorWidget: (context, url, error) => Icon(Icons.error),
-                  ),
-                )),
+                      width: double.infinity,
+                      child: CachedNetworkImage(
+                        fit: BoxFit.fitHeight,
+                        imageUrl: "${widget.plant.image!}",
+                        memCacheHeight: 400, //this line
+                        placeholder: (context, url) => Padding(
+                          padding: const EdgeInsets.all(1.0),
+                          child: Center(
+                              child: CircularProgressIndicator(
+                            color: ColorResources.COLOR_GRAY,
+                          )),
+                        ),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
+                      ),
+                    )),
                 VerticalSpacing(),
                 Text(
                   widget.plant.name!,

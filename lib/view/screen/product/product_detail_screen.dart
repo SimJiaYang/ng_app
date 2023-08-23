@@ -1,8 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:nurserygardenapp/data/model/plant_model.dart';
 import 'package:nurserygardenapp/data/model/product_model.dart';
-import 'package:nurserygardenapp/providers/plant_provider.dart';
 import 'package:nurserygardenapp/providers/product_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/view/base/custom_space.dart';
@@ -63,7 +61,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             color: ColorResources.COLOR_WHITE,
                             width: double.infinity,
                             child: CachedNetworkImage(
-                              fit: BoxFit.cover,
+                              height: 280,
+                              fit: BoxFit.fitHeight,
                               imageUrl: "${product.image!}",
                               memCacheHeight: 400, //this line
                               placeholder: (context, url) => Padding(

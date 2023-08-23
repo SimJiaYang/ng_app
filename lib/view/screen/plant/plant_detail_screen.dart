@@ -61,7 +61,8 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                             color: ColorResources.COLOR_WHITE,
                             width: double.infinity,
                             child: CachedNetworkImage(
-                              fit: BoxFit.cover,
+                              height: 280,
+                              fit: BoxFit.fitHeight,
                               imageUrl: "${plant.image!}",
                               memCacheHeight: 400, //this line
                               placeholder: (context, url) => Padding(

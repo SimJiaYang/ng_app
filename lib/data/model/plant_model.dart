@@ -4,8 +4,6 @@
 
 import 'dart:convert';
 
-import 'package:nurserygardenapp/util/app_constants.dart';
-
 PlantModel plantModelFromJson(String str) =>
     PlantModel.fromJson(json.decode(str));
 
