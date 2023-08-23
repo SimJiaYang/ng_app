@@ -56,7 +56,7 @@ class Data {
 class Plant {
   final int? id;
   final String? name;
-  final int? price;
+  final double? price;
   final String? description;
   final int? quantity;
   final String? sunglightNeed;
@@ -66,9 +66,9 @@ class Plant {
   final String? status;
   final String? image;
   final int? catId;
-  final String? category_name;
   final DateTime? createdAt;
   final DateTime? updatedAt;
+  final String? categoryName;
 
   Plant({
     this.id,
@@ -83,15 +83,15 @@ class Plant {
     this.status,
     this.image,
     this.catId,
-    this.category_name,
     this.createdAt,
     this.updatedAt,
+    this.categoryName,
   });
 
   factory Plant.fromJson(Map<String, dynamic> json) => Plant(
         id: json["id"],
         name: json["name"],
-        price: json["price"],
+        price: json["price"]?.toDouble(),
         description: json["description"],
         quantity: json["quantity"],
         sunglightNeed: json["sunglight_need"],
@@ -101,13 +101,13 @@ class Plant {
         status: json["status"],
         image: json["image"],
         catId: json["cat_id"],
-        category_name: json["category_name"],
         createdAt: json["created_at"] == null
             ? null
             : DateTime.parse(json["created_at"]),
         updatedAt: json["updated_at"] == null
             ? null
             : DateTime.parse(json["updated_at"]),
+        categoryName: json["category_name"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -123,8 +123,8 @@ class Plant {
         "status": status,
         "image": image,
         "cat_id": catId,
-        "category_name": category_name,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
+        "category_name": categoryName,
       };
 }

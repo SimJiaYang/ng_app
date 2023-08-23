@@ -57,7 +57,7 @@ class Data {
 class Product {
   final int? id;
   final String? name;
-  final int? price;
+  final double? price;
   final String? description;
   final int? quantity;
   final String? status;
@@ -84,7 +84,7 @@ class Product {
   factory Product.fromJson(Map<String, dynamic> json) => Product(
         id: json["id"],
         name: json["name"],
-        price: json["price"],
+        price: json["price"].toDouble(),
         description: json["description"],
         quantity: json["quantity"],
         status: json["status"],

@@ -132,7 +132,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                                     HorizontalSpacing(
                                       width: 5,
                                     ),
-                                    Text("${plant.category_name}",
+                                    Text("${plant.categoryName}",
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleLarge!
