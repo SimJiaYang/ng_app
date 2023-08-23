@@ -18,6 +18,7 @@ class Routes {
 
   // Product
   static const String PRODUCT_SCREEN = '/product';
+  static const String PRODUCT_DETAIL_SCREEN = '/product-detail';
 
   // Bidding
   static const String BIDDING_SCREEN = '/bidding';
@@ -47,6 +48,8 @@ class Routes {
 
   // Product
   static String getProductRoute() => PRODUCT_SCREEN;
+  static String getProductDetailRoute(String productID) =>
+      '$PRODUCT_DETAIL_SCREEN?productID=$productID';
 
   // Bidding
   static String getBiddingRoute() => BIDDING_SCREEN;

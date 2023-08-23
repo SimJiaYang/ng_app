@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/data/model/product_model.dart';
 import 'package:nurserygardenapp/providers/product_provider.dart';
+import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/drawer_widget.dart';
 import 'package:nurserygardenapp/view/screen/product/widget/product_grid_item.dart';
 import 'package:provider/provider.dart';
@@ -77,7 +78,12 @@ class _ProductScreenState extends State<ProductScreen> {
                             return ProductGridItem(
                               key: ValueKey(productList[index].id),
                               product: productList[index],
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context,
+                                    Routes.getProductDetailRoute(
+                                        productList[index].id!.toString()));
+                              },
                             );
                           },
                         ),

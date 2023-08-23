@@ -10,6 +10,7 @@ import 'package:nurserygardenapp/view/screen/dashboard/dashboard_screen.dart';
 import 'package:nurserygardenapp/view/screen/home/home_screen.dart';
 import 'package:nurserygardenapp/view/screen/plant/plant_detail_screen.dart';
 import 'package:nurserygardenapp/view/screen/plant/plant_screen.dart';
+import 'package:nurserygardenapp/view/screen/product/product_detail_screen.dart';
 import 'package:nurserygardenapp/view/screen/product/product_screen.dart';
 import 'package:nurserygardenapp/view/screen/splash/splash_screen.dart';
 
@@ -62,6 +63,11 @@ class RouterHelper {
     handlerFunc: (context, Map<String, dynamic> parameters) => ProductScreen(),
   );
 
+  static Handler _productDetailHandler = Handler(
+    handlerFunc: (context, Map<String, dynamic> params) =>
+        ProductDetailScreen(productID: params['productID'][0]),
+  );
+
   static Handler _biddingHandler = Handler(
     handlerFunc: (context, Map<String, dynamic> parameters) => BiddingScreen(),
   );
@@ -90,6 +96,8 @@ class RouterHelper {
         handler: _plantDetailHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.PRODUCT_SCREEN,
         handler: _productHandler, transitionType: TransitionType.fadeIn);
+    router.define(Routes.PRODUCT_DETAIL_SCREEN,
+        transitionType: TransitionType.fadeIn, handler: _productDetailHandler);
     router.define(Routes.BIDDING_SCREEN,
         handler: _biddingHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.ACCOUNT_SCREEN,
