@@ -1,5 +1,3 @@
-import 'package:nurserygardenapp/data/model/plant_model.dart';
-
 class Routes {
   /** ROUTE NAME **/
   static const String COMING_SOON = '/coming-soon';

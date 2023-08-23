@@ -1,9 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:nurserygardenapp/data/dio/login_interceptor.dart';
 import 'package:nurserygardenapp/data/repositories/plant_repo.dart';
+import 'package:nurserygardenapp/data/repositories/product_repo.dart';
 import 'package:nurserygardenapp/data/repositories/splash_repo.dart';
 import 'package:nurserygardenapp/providers/auth_provider.dart';
 import 'package:nurserygardenapp/providers/plant_provider.dart';
+import 'package:nurserygardenapp/providers/product_provider.dart';
 import 'package:nurserygardenapp/providers/splash_provider.dart';
 import 'package:nurserygardenapp/util/app_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -24,11 +26,14 @@ Future<void> init() async {
   sl.registerLazySingleton(() => SplashRepo(sharedPreferences: sl()));
   sl.registerLazySingleton(
       () => PlantRepo(dioClient: sl(), sharedPreferences: sl()));
+  sl.registerLazySingleton(
+      () => ProductRepo(dioClient: sl(), sharedPreferences: sl()));
 
   // Provider
   sl.registerFactory(() => AuthProvider(authRepo: sl()));
   sl.registerFactory(() => SplashProvider(splashRepo: sl()));
   sl.registerFactory(() => PlantProvider(plantRepo: sl()));
+  sl.registerFactory(() => ProductProvider(productRepo: sl()));
 
   // External
   final sharedPreferences = await SharedPreferences.getInstance();

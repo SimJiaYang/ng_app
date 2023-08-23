@@ -1,34 +1,34 @@
 import 'package:flutter/widgets.dart';
-import 'package:nurserygardenapp/data/model/plant_model.dart';
+import 'package:nurserygardenapp/data/model/product_model.dart';
 import 'package:nurserygardenapp/data/model/response/api_response.dart';
-import 'package:nurserygardenapp/data/repositories/plant_repo.dart';
+import 'package:nurserygardenapp/data/repositories/product_repo.dart';
 import 'package:nurserygardenapp/helper/api_checker.dart';
 import 'package:nurserygardenapp/view/base/custom_snackbar.dart';
 
-class PlantProvider extends ChangeNotifier {
-  final PlantRepo plantRepo;
-  PlantProvider({required this.plantRepo});
+class ProductProvider extends ChangeNotifier {
+  final ProductRepo productRepo;
+  ProductProvider({required this.productRepo});
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  PlantModel _plantModel = PlantModel();
-  PlantModel get plantModel => _plantModel;
+  ProductModel _productModel = ProductModel();
+  ProductModel get productModel => _productModel;
 
-  List<Plant> _plantList = [];
-  List<Plant> get plantList => _plantList;
+  List<Product> _productList = [];
+  List<Product> get productList => _productList;
 
-  Future<bool> getPlantList(BuildContext context) async {
+  Future<bool> getProductList(BuildContext context) async {
     _isLoading = true;
     notifyListeners();
 
-    ApiResponse apiResponse = await plantRepo.getPlantList();
+    ApiResponse apiResponse = await productRepo.getProductList();
 
     if (apiResponse.response != null &&
         apiResponse.response!.statusCode == 200) {
       if (apiResponse.response!.data['success']) {
-        _plantModel = PlantModel.fromJson(apiResponse.response!.data);
-        _plantList = _plantModel.data!.plant!;
+        _productModel = ProductModel.fromJson(apiResponse.response!.data);
+        _productList = _productModel.data!.product!;
       } else {
         showCustomSnackBar(apiResponse.response!.data!['error'], context);
         _isLoading = false;
@@ -38,7 +38,6 @@ class PlantProvider extends ChangeNotifier {
     } else {
       ApiChecker.checkApi(context, apiResponse);
     }
-
     _isLoading = false;
     notifyListeners();
     return true;

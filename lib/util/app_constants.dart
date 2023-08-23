@@ -37,6 +37,9 @@ class AppConstants {
   // Plant
   static const String PLANT_URI = '/plant';
 
+  // Product
+  static const String PRODUCT_URI = '/product';
+
   // Shared Key
   static const String THEME = 'theme';
   static const String TOKEN = 'token';
