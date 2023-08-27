@@ -77,8 +77,8 @@ class _PlantScreenState extends State<PlantScreen> {
                             return PlantGridItem(
                               key: ValueKey(plantList[index].id),
                               plant: plantList[index],
-                              onTap: () {
-                                Navigator.pushNamed(
+                              onTap: () async {
+                                await Navigator.pushNamed(
                                     context,
                                     Routes.getPlantDetailRoute(
                                         plantList[index].id!.toString()));

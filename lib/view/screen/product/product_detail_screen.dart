@@ -64,7 +64,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               height: 280,
                               fit: BoxFit.fitHeight,
                               imageUrl: "${product.image!}",
-                              memCacheHeight: 400, //this line
+                              filterQuality: FilterQuality.high,
+                              memCacheHeight: 400,
+                              memCacheWidth: 400,
                               placeholder: (context, url) => Padding(
                                 padding: const EdgeInsets.all(1.0),
                                 child: Center(

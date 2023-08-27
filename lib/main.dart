@@ -15,6 +15,7 @@ import 'di_container.dart' as di;
 
 Future<void> main() async {
   HttpOverrides.global = new MyHttpOverrides();
+  WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env');
   await di.init();
   runApp(MultiProvider(providers: [

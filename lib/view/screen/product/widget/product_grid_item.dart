@@ -43,21 +43,28 @@ class _ProductGridItemState extends State<ProductGridItem> {
               children: [
                 Expanded(
                     flex: 1,
-                    child: Container(
-                      width: double.infinity,
-                      child: CachedNetworkImage(
-                        fit: BoxFit.fitHeight,
-                        imageUrl: "${widget.product.image!}",
-                        memCacheHeight: 400, //this line
-                        placeholder: (context, url) => Padding(
-                          padding: const EdgeInsets.all(1.0),
-                          child: Center(
-                              child: CircularProgressIndicator(
-                            color: ColorResources.COLOR_GRAY,
-                          )),
+                    child: CachedNetworkImage(
+                      filterQuality: FilterQuality.medium,
+                      fit: BoxFit.fitHeight,
+                      imageUrl: "${widget.product.image!}",
+                      memCacheHeight: 400,
+                      memCacheWidth: 400,
+                      imageBuilder: (context, imageProvider) => Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.fitHeight,
+                          ),
                         ),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
                       ),
+                      placeholder: (context, url) => Padding(
+                        padding: const EdgeInsets.all(1.0),
+                        child: Center(
+                            child: CircularProgressIndicator(
+                          color: ColorResources.COLOR_GRAY,
+                        )),
+                      ),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
                     )),
                 VerticalSpacing(),
                 Text(
