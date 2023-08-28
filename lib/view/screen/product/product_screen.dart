@@ -14,12 +14,13 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
-  late var product_prov = Provider.of<ProductProvider>(context, listen: false);
+  late var product_prov;
   List<Product> productList = [];
 
   @override
   void initState() {
     super.initState();
+    product_prov = Provider.of<ProductProvider>(context, listen: false);
     WidgetsFlutterBinding.ensureInitialized();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       getProductList();

@@ -3,6 +3,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/screen/account/account_screen.dart';
+import 'package:nurserygardenapp/view/screen/account/sub_screen/profile_screen.dart';
 import 'package:nurserygardenapp/view/screen/auth/login_screen.dart';
 import 'package:nurserygardenapp/view/screen/auth/register_screen.dart';
 import 'package:nurserygardenapp/view/screen/bidding/bidding_screen.dart';
@@ -76,6 +77,11 @@ class RouterHelper {
     handlerFunc: (context, Map<String, dynamic> parameters) => AccountScreen(),
   );
 
+  static Handler _profileHandler = Handler(
+    handlerFunc: (context, Map<String, dynamic> parameters) =>
+        UserProfileScreen(),
+  );
+
 //*******Route Define*********
   static void setupRoute() {
     // router.define(Routes.DASHBOARD,
@@ -102,6 +108,8 @@ class RouterHelper {
         handler: _biddingHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.ACCOUNT_SCREEN,
         handler: _accountHandler, transitionType: TransitionType.fadeIn);
+    router.define(Routes.PROFILE_SCREEN,
+        handler: _profileHandler, transitionType: TransitionType.fadeIn);
     // Selected Dashboard Screen
     router.define(Routes.DASHBOARD_SCREEN,
         handler: _dashScreenBoardHandler,

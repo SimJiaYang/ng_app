@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nurserygardenapp/data/model/user_model.dart';
+import 'package:nurserygardenapp/data/model/auth_model.dart';
 import 'package:nurserygardenapp/providers/auth_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/dimensions.dart';
@@ -210,8 +210,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                       "Password does not match",
                                                       context);
                                                 } else {
-                                                  UserModel userModel =
-                                                      UserModel(
+                                                  AuthModel userModel =
+                                                      AuthModel(
                                                           email: _email,
                                                           name: _name,
                                                           password: _password);

@@ -14,12 +14,13 @@ class PlantScreen extends StatefulWidget {
 }
 
 class _PlantScreenState extends State<PlantScreen> {
-  late var plant_prov = Provider.of<PlantProvider>(context, listen: false);
+  late var plant_prov;
   List<Plant> plantList = [];
 
   @override
   void initState() {
     super.initState();
+    plant_prov = Provider.of<PlantProvider>(context, listen: false);
     WidgetsFlutterBinding.ensureInitialized();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       getPlantList();

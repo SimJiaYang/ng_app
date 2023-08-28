@@ -34,6 +34,9 @@ class AppConstants {
   static const String LOGIN_URI = '/login';
   static const String LOGOUT_URI = '/logout';
 
+  // User
+  static const String PROFILE_URI = '/profile';
+
   // Plant
   static const String PLANT_URI = '/plant';
 

@@ -33,12 +33,14 @@ class _AccountScreenState extends State<AccountScreen> {
         child: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          padding: EdgeInsets.symmetric(horizontal: 5),
+          padding: EdgeInsets.all(5),
           color: ColorResources.COLOR_WHITE,
           child: Column(
             children: [
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(context, Routes.getProfileRoute());
+                },
                 child: ListTile(
                   leading: Icon(
                     Icons.badge_outlined,

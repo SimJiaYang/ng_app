@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:nurserygardenapp/data/dio/dio_client.dart';
 import 'package:nurserygardenapp/data/exception/api_error_handler.dart';
 import 'package:nurserygardenapp/data/model/response/api_response.dart';
-import 'package:nurserygardenapp/data/model/user_model.dart';
+import 'package:nurserygardenapp/data/model/auth_model.dart';
 import 'package:nurserygardenapp/util/app_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,7 +13,7 @@ class AuthRepo {
 
   AuthRepo({required this.dioClient, required this.sharedPreferences});
 
-  Future<ApiResponse> registration(UserModel userModel) async {
+  Future<ApiResponse> registration(AuthModel userModel) async {
     try {
       Response response = await dioClient.post(
         AppConstants.REGISTER_URI,
@@ -34,7 +34,6 @@ class AuthRepo {
       );
       return ApiResponse.withSuccess(response);
     } catch (e) {
-      //print(e.toString());
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
     }
   }

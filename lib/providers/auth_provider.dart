@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:nurserygardenapp/data/model/response/api_response.dart';
-import 'package:nurserygardenapp/data/model/user_model.dart';
+import 'package:nurserygardenapp/data/model/auth_model.dart';
 import 'package:nurserygardenapp/data/repositories/auth_repo.dart';
 import 'package:nurserygardenapp/helper/api_checker.dart';
 import '../view/base/custom_snackbar.dart';
@@ -80,7 +80,7 @@ class AuthProvider with ChangeNotifier {
     return _resResult;
   }
 
-  Future<bool> registration(UserModel userModel, BuildContext context) async {
+  Future<bool> registration(AuthModel userModel, BuildContext context) async {
     bool _resResult = false;
     _isLoading = true;
     _registrationErrorMessage = '';
