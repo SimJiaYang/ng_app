@@ -100,6 +100,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      textAlignVertical: TextAlignVertical.center,
       maxLength: widget.maxLength == null ? null : widget.maxLength,
       maxLines: widget.maxLines,
       controller: widget.controller,
