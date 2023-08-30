@@ -34,8 +34,8 @@ class _SplashScreenState extends State<SplashScreen> {
         .listen((ConnectivityResult result) {
       if (!_firstTime) {
         checkConnection();
-        bool isNotConnected = result != ConnectivityResult.wifi &&
-            result != ConnectivityResult.mobile;
+        bool isNotConnected = (result != ConnectivityResult.wifi &&
+            result != ConnectivityResult.mobile);
         if (!isNotConnected) {
           _route();
         } else {
@@ -47,8 +47,8 @@ class _SplashScreenState extends State<SplashScreen> {
         }
         _firstTime = false;
       }
+      _route();
     });
-    _route();
   }
 
   @override
