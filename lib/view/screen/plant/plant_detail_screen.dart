@@ -37,6 +37,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
       isLoading = false;
     });
     print(plant.name);
+    print(plant.imageURL);
   }
 
   @override
@@ -62,12 +63,14 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                               color: ColorResources.COLOR_WHITE,
                               width: double.infinity,
                               child: CachedNetworkImage(
-                                filterQuality: FilterQuality.high,
+                                filterQuality: FilterQuality.medium,
                                 height: 280,
                                 fit: BoxFit.fitHeight,
-                                imageUrl: "${plant.image!}",
-                                memCacheHeight: 400,
-                                memCacheWidth: 400,
+                                imageUrl: "${plant.imageURL!}",
+                                // imageUrl:
+                                //     "https://as2.ftcdn.net/v2/jpg/01/67/88/63/1000_F_167886366_gbLWGtw3JPMcCsButoZQ6cOpOLhUL9Ks.jpg",
+                                memCacheHeight: 200,
+                                memCacheWidth: 200,
                                 placeholder: (context, url) => Padding(
                                   padding: const EdgeInsets.all(1.0),
                                   child: Center(

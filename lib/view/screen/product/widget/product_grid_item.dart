@@ -44,11 +44,11 @@ class _ProductGridItemState extends State<ProductGridItem> {
                 Expanded(
                     flex: 1,
                     child: CachedNetworkImage(
-                      filterQuality: FilterQuality.medium,
+                      filterQuality: FilterQuality.low,
                       fit: BoxFit.fitHeight,
-                      imageUrl: "${widget.product.image!}",
-                      memCacheHeight: 400,
-                      memCacheWidth: 400,
+                      imageUrl: "${widget.product.imageURL!}",
+                      memCacheHeight: 200,
+                      memCacheWidth: 200,
                       imageBuilder: (context, imageProvider) => Container(
                         decoration: BoxDecoration(
                           image: DecorationImage(

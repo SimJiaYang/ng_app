@@ -10,6 +10,7 @@ import 'package:nurserygardenapp/providers/product_provider.dart';
 import 'package:nurserygardenapp/providers/splash_provider.dart';
 import 'package:nurserygardenapp/providers/user_provider.dart';
 import 'package:nurserygardenapp/util/app_constants.dart';
+import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:provider/provider.dart';
 import 'di_container.dart' as di;
@@ -48,16 +49,13 @@ class _MyAppState extends State<MyApp> {
     return Consumer<SplashProvider>(
       builder: (context, splashProvider, child) {
         return MaterialApp(
+          themeMode: ThemeMode.light,
           initialRoute: Routes.getSplashRoute(),
           onGenerateRoute: RouterHelper.router.generator,
           title: AppConstants.APP_NAME,
           debugShowCheckedModeBanner: false,
           navigatorKey: MyApp.navigatorKey,
-          theme: ThemeData().copyWith(
-              colorScheme:
-                  ColorScheme.light().copyWith(background: Colors.white),
-              primaryColor: Color.fromARGB(255, 30, 133, 104),
-              useMaterial3: true),
+          theme: light,
           scrollBehavior: MaterialScrollBehavior().copyWith(dragDevices: {
             PointerDeviceKind.mouse,
             PointerDeviceKind.touch,
@@ -78,3 +76,56 @@ class MyHttpOverrides extends HttpOverrides {
           (X509Certificate cert, String host, int port) => true;
   }
 }
+
+ThemeData light = ThemeData(
+  dialogTheme: DialogTheme(surfaceTintColor: Colors.white),
+  appBarTheme: AppBarTheme(
+      surfaceTintColor: Colors.white, backgroundColor: Colors.white),
+  drawerTheme: DrawerThemeData(
+      surfaceTintColor: Colors.white, backgroundColor: Colors.white),
+  useMaterial3: true,
+  primaryColor: const Color.fromARGB(255, 30, 133, 104),
+  primaryColorLight: const Color.fromARGB(255, 30, 133, 104).withOpacity(.5),
+  brightness: Brightness.light,
+  canvasColor: Colors.white,
+  cardColor: Colors.white,
+  focusColor: const Color(0xFFADC4C8),
+  hintColor: const Color(0xFF52575C),
+  scaffoldBackgroundColor: const Color(0xFFF9FAFD),
+  textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+    foregroundColor: Colors.black,
+    textStyle: const TextStyle(color: Colors.black),
+  )),
+  pageTransitionsTheme: const PageTransitionsTheme(builders: {
+    TargetPlatform.android: ZoomPageTransitionsBuilder(),
+    TargetPlatform.iOS: ZoomPageTransitionsBuilder(),
+    TargetPlatform.fuchsia: ZoomPageTransitionsBuilder(),
+  }),
+  textTheme: const TextTheme(
+    labelLarge: TextStyle(color: Colors.white),
+    displayLarge: TextStyle(
+        fontWeight: FontWeight.w300, fontSize: Dimensions.FONT_SIZE_DEFAULT),
+    displayMedium: TextStyle(
+        fontWeight: FontWeight.w400, fontSize: Dimensions.FONT_SIZE_DEFAULT),
+    displaySmall: TextStyle(
+        fontWeight: FontWeight.w500, fontSize: Dimensions.FONT_SIZE_DEFAULT),
+    headlineMedium: TextStyle(
+        fontWeight: FontWeight.w600, fontSize: Dimensions.FONT_SIZE_DEFAULT),
+    headlineSmall: TextStyle(
+        fontWeight: FontWeight.w700, fontSize: Dimensions.FONT_SIZE_DEFAULT),
+    titleLarge: TextStyle(
+        fontWeight: FontWeight.w800, fontSize: Dimensions.FONT_SIZE_DEFAULT),
+    bodySmall: TextStyle(
+        fontWeight: FontWeight.w900, fontSize: Dimensions.FONT_SIZE_DEFAULT),
+    titleMedium: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w500),
+    bodyMedium: TextStyle(fontSize: 12.0),
+    bodyLarge: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w600),
+  ),
+  textSelectionTheme: const TextSelectionThemeData(
+    cursorColor: Color.fromARGB(255, 30, 133, 104),
+    selectionHandleColor: Color.fromARGB(255, 30, 133, 104),
+    selectionColor: Color.fromARGB(255, 30, 133, 104),
+  ),
+  bottomAppBarTheme: BottomAppBarTheme(color: Colors.white),
+);

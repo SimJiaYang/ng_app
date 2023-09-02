@@ -66,6 +66,7 @@ class Product {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final String? categoryName;
+  final String? imageURL;
 
   Product({
     this.id,
@@ -79,6 +80,7 @@ class Product {
     this.createdAt,
     this.updatedAt,
     this.categoryName,
+    this.imageURL,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
@@ -97,6 +99,7 @@ class Product {
             ? null
             : DateTime.parse(json["updated_at"]),
         categoryName: json["category_name"],
+        imageURL: json["image_url"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -111,5 +114,6 @@ class Product {
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
         "category_name": categoryName,
+        "image_url": imageURL,
       };
 }

@@ -64,10 +64,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               child: CachedNetworkImage(
                                 height: 280,
                                 fit: BoxFit.fitHeight,
-                                imageUrl: "${product.image!}",
-                                filterQuality: FilterQuality.high,
-                                memCacheHeight: 400,
-                                memCacheWidth: 400,
+                                imageUrl: "${product.imageURL!}",
+                                filterQuality: FilterQuality.medium,
+                                memCacheHeight: 200,
+                                memCacheWidth: 200,
                                 placeholder: (context, url) => Padding(
                                   padding: const EdgeInsets.all(1.0),
                                   child: Center(

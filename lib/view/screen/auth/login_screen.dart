@@ -212,38 +212,45 @@ class _LoginScreenState extends State<LoginScreen> {
               // for create an account
               Expanded(
                 flex: 1,
-                child: InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(context, Routes.getRegisterRoute());
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Don\'t have account?',
-                          style: Theme.of(context)
-                              .textTheme
-                              .displayMedium!
-                              .copyWith(
-                                  fontSize: Dimensions.FONT_SIZE_DEFAULT,
-                                  color: ColorResources.COLOR_GREY),
-                        ),
-                        SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
-                        Text(
-                          'Register Now',
-                          style: Theme.of(context)
-                              .textTheme
-                              .displaySmall!
-                              .copyWith(
-                                  fontSize: Dimensions.FONT_SIZE_DEFAULT,
-                                  color: Theme.of(context).primaryColor),
-                        ),
-                      ],
+                child: Consumer<AuthProvider>(
+                    builder: (context, authProvider, child) {
+                  return InkWell(
+                    onTap: () {
+                      if (authProvider.isLoading) {
+                        return;
+                      } else {
+                        Navigator.pushNamed(context, Routes.getRegisterRoute());
+                      }
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Don\'t have account?',
+                            style: Theme.of(context)
+                                .textTheme
+                                .displayMedium!
+                                .copyWith(
+                                    fontSize: Dimensions.FONT_SIZE_DEFAULT,
+                                    color: ColorResources.COLOR_GREY),
+                          ),
+                          SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
+                          Text(
+                            'Register Now',
+                            style: Theme.of(context)
+                                .textTheme
+                                .displaySmall!
+                                .copyWith(
+                                    fontSize: Dimensions.FONT_SIZE_DEFAULT,
+                                    color: Theme.of(context).primaryColor),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ),
+                  );
+                }),
               ),
               // if (ResponsiveHelper.isDesktop(context)) FooterView(),
             ],

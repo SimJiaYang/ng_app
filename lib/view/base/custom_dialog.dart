@@ -11,6 +11,7 @@ class CustomDialog extends StatelessWidget {
   final String btnText;
   final String? btnTextCancel;
   final VoidCallback onPressed;
+  final Color? dialogColor;
   const CustomDialog(
       {Key? key,
       required this.dialogType,
@@ -19,6 +20,7 @@ class CustomDialog extends StatelessWidget {
       required this.content,
       required this.btnText,
       this.btnTextCancel,
+      this.dialogColor,
       required this.onPressed})
       : super(key: key);
 
@@ -28,49 +30,49 @@ class CustomDialog extends StatelessWidget {
         return Builder(
             builder: (context) => Icon(
                   Icons.check_circle_outline,
-                  color: Theme.of(context).primaryColor,
+                  color: dialogColor ?? Theme.of(context).primaryColor,
                   size: 60,
                 ));
       case AppConstants.DIALOG_FAILED:
         return Builder(
             builder: (context) => Icon(
                   Icons.highlight_off_outlined,
-                  color: Theme.of(context).primaryColor,
+                  color: dialogColor ?? Theme.of(context).primaryColor,
                   size: 60,
                 ));
       case AppConstants.DIALOG_ERROR:
         return Builder(
             builder: (context) => Icon(
                   Icons.error_outline,
-                  color: ColorResources.APPBAR_HEADER_COLOR,
+                  color: dialogColor ?? ColorResources.APPBAR_HEADER_COLOR,
                   size: 60,
                 ));
       case AppConstants.DIALOG_INFORMATION:
         return Builder(
             builder: (context) => Icon(
                   Icons.help_outline,
-                  color: Theme.of(context).primaryColor,
+                  color: dialogColor ?? Theme.of(context).primaryColor,
                   size: 60,
                 ));
       case AppConstants.DIALOG_ALERT:
         return Builder(
             builder: (context) => Icon(
                   Icons.report_outlined,
-                  color: Theme.of(context).primaryColor,
+                  color: dialogColor ?? Theme.of(context).primaryColor,
                   size: 60,
                 ));
       case AppConstants.DIALOG_CONFIRMATION:
         return Builder(
             builder: (context) => Icon(
                   Icons.error_outline,
-                  color: Theme.of(context).primaryColor,
+                  color: dialogColor ?? Theme.of(context).primaryColor,
                   size: 60,
                 ));
       case AppConstants.DIALOG_WARNING:
         return Builder(
             builder: (context) => Icon(
                   Icons.warning_amber_outlined,
-                  color: Theme.of(context).primaryColor,
+                  color: dialogColor ?? Theme.of(context).primaryColor,
                   size: 60,
                 ));
       case AppConstants.DIALOG_CUSTOM:
@@ -92,7 +94,7 @@ class CustomDialog extends StatelessWidget {
         return Builder(
           builder: (context) => Icon(
             Icons.check_circle_outline,
-            color: Theme.of(context).primaryColor,
+            color: dialogColor ?? Theme.of(context).primaryColor,
             size: 60,
           ),
         );

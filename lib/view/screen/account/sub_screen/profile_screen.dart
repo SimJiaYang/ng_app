@@ -17,7 +17,7 @@ class UserProfileScreen extends StatefulWidget {
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
   late var user_prov;
-  String profileHeader = "User Profile";
+  String profileHeader = "";
   GlobalKey<FormState>? _formKey = GlobalKey<FormState>();
   String _countryDialCode = "+60";
 
@@ -65,7 +65,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     if (isSuccessful) {
       setState(() {
         profileHeader =
-            user_prov.userModel.data!.name + "\'s Profile" ?? "User Profile";
+            user_prov.userModel.data!.name + "\'s Profile" ?? "User's Profile";
         _nameController.text = user_prov.userModel.data!.name ?? "";
         _emailController.text = user_prov.userModel.data!.email ?? "";
         _phoneController.text = user_prov.userModel.data!.contactNumber ?? "";
@@ -136,6 +136,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 ),
                                 VerticalSpacing(),
                                 CustomTextField(
+                                  isReadOnly: true,
                                   hintText: "Please enter your email",
                                   isShowBorder: true,
                                   isShowPrefixIcon: true,
