@@ -263,38 +263,45 @@ class _RegisterScreenState extends State<RegisterScreen> {
             // for create an account
             Expanded(
               flex: 1,
-              child: InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, Routes.getLoginRoute());
-                },
-                child: Padding(
-                  padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Already have account?',
-                        style: Theme.of(context)
-                            .textTheme
-                            .displayMedium!
-                            .copyWith(
-                                fontSize: Dimensions.FONT_SIZE_SMALL,
-                                color: ColorResources.COLOR_GREY_CHATEAU),
-                      ),
-                      SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
-                      Text(
-                        'Login',
-                        style: Theme.of(context)
-                            .textTheme
-                            .displaySmall!
-                            .copyWith(
-                                fontSize: Dimensions.FONT_SIZE_SMALL,
-                                color: Theme.of(context).primaryColor),
-                      ),
-                    ],
+              child: Consumer<AuthProvider>(
+                  builder: (context, authProvider, child) {
+                return InkWell(
+                  onTap: () {
+                    if (authProvider.isLoading) {
+                      return;
+                    } else {
+                      Navigator.pushNamed(context, Routes.getLoginRoute());
+                    }
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Already have account?',
+                          style: Theme.of(context)
+                              .textTheme
+                              .displayMedium!
+                              .copyWith(
+                                  fontSize: Dimensions.FONT_SIZE_SMALL,
+                                  color: ColorResources.COLOR_GREY_CHATEAU),
+                        ),
+                        SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
+                        Text(
+                          'Login',
+                          style: Theme.of(context)
+                              .textTheme
+                              .displaySmall!
+                              .copyWith(
+                                  fontSize: Dimensions.FONT_SIZE_SMALL,
+                                  color: Theme.of(context).primaryColor),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ),
+                );
+              }),
             ),
           ],
         ),
