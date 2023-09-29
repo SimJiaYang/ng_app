@@ -93,7 +93,7 @@ class Plant {
   factory Plant.fromJson(Map<String, dynamic> json) => Plant(
         id: json["id"],
         name: json["name"],
-        price: json["price"]?.toDouble(),
+        price: json["price"].toDouble(),
         description: json["description"],
         quantity: json["quantity"],
         sunglightNeed: json["sunglight_need"],

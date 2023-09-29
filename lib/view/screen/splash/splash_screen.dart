@@ -97,7 +97,6 @@ class _SplashScreenState extends State<SplashScreen> {
         displayDuration: 10,
       );
     }
-    setState(() {});
   }
 
   @override

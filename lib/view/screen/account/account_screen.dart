@@ -28,7 +28,7 @@ class _AccountScreenState extends State<AccountScreen> {
           ),
         ),
       ),
-      drawer: DrawerWidget(size: size),
+      // drawer: DrawerWidget(size: size),
       body: SafeArea(
         child: Container(
           width: MediaQuery.of(context).size.width,

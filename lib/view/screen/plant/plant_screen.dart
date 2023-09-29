@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/data/model/plant_model.dart';
 import 'package:nurserygardenapp/providers/plant_provider.dart';
 import 'package:nurserygardenapp/util/routes.dart';
-import 'package:nurserygardenapp/view/drawer/drawer_widget.dart';
 import 'package:nurserygardenapp/view/screen/plant/widget/plant_grid_item.dart';
 import 'package:provider/provider.dart';
 
@@ -14,13 +13,15 @@ class PlantScreen extends StatefulWidget {
 }
 
 class _PlantScreenState extends State<PlantScreen> {
-  late var plant_prov;
+  late PlantProvider plant_prov =
+      Provider.of<PlantProvider>(context, listen: false);
+
   List<Plant> plantList = [];
+  bool hasPlant = true;
 
   @override
   void initState() {
     super.initState();
-    plant_prov = Provider.of<PlantProvider>(context, listen: false);
     WidgetsFlutterBinding.ensureInitialized();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       getPlantList();
@@ -30,10 +31,15 @@ class _PlantScreenState extends State<PlantScreen> {
   Future<void> getPlantList() async {
     bool success = await plant_prov.getPlantList(context);
     if (success) {
-      plantList = await plant_prov.plantList;
-      print(plantList);
+      plantList = plant_prov.plantList;
+      debugPrint("Plant List Length: " + plantList.length.toString());
+      setState(() {
+        hasPlant = true;
+      });
     } else {
-      plantList = [];
+      setState(() {
+        hasPlant = false;
+      });
     }
   }
 
@@ -50,14 +56,11 @@ class _PlantScreenState extends State<PlantScreen> {
             ),
           ),
         ),
-        drawer: DrawerWidget(size: size),
         body: Consumer<PlantProvider>(builder: (context, plantProvider, child) {
           return plantProvider.isLoading
               ? Center(child: CircularProgressIndicator())
-              : plantList.isEmpty
-                  ? Center(
-                      child: Text(
-                          "Some error happened,\n Please try again later."))
+              : !hasPlant
+                  ? Center(child: Text("No Plant Found"))
                   : SafeArea(
                       child: GridView.builder(
                         physics: BouncingScrollPhysics(),
@@ -67,7 +70,7 @@ class _PlantScreenState extends State<PlantScreen> {
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
-                          childAspectRatio: 2 / 2,
+                          childAspectRatio: 3 / 4,
                           crossAxisSpacing: 10,
                           mainAxisSpacing: 10,
                         ),

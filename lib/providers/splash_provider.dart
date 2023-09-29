@@ -5,6 +5,7 @@ class SplashProvider extends ChangeNotifier {
   final SplashRepo splashRepo;
 
   SplashProvider({required this.splashRepo});
+
   Future<bool> initConfig(GlobalKey<ScaffoldMessengerState> globalKey) async {
     return true;
   }

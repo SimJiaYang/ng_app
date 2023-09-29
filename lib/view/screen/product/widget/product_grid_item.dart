@@ -45,7 +45,6 @@ class _ProductGridItemState extends State<ProductGridItem> {
                     flex: 1,
                     child: CachedNetworkImage(
                       filterQuality: FilterQuality.low,
-                      fit: BoxFit.fitHeight,
                       imageUrl: "${widget.product.imageURL!}",
                       memCacheHeight: 200,
                       memCacheWidth: 200,
@@ -53,7 +52,7 @@ class _ProductGridItemState extends State<ProductGridItem> {
                         decoration: BoxDecoration(
                           image: DecorationImage(
                             image: imageProvider,
-                            fit: BoxFit.fitHeight,
+                            fit: BoxFit.fitWidth,
                           ),
                         ),
                       ),
@@ -77,7 +76,7 @@ class _ProductGridItemState extends State<ProductGridItem> {
                 ),
                 VerticalSpacing(),
                 Text(
-                  "RM " + widget.product.price!.toString(),
+                  "RM " + widget.product.price!.toStringAsFixed(2),
                   style: Theme.of(context).textTheme.titleLarge!.copyWith(
                         color: ColorResources.COLOR_PRIMARY,
                         fontWeight: FontWeight.w400,

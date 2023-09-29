@@ -46,17 +46,14 @@ class _PlantGridItemState extends State<PlantGridItem> {
                     flex: 1,
                     child: CachedNetworkImage(
                       filterQuality: FilterQuality.low,
-                      fit: BoxFit.fitHeight,
                       imageUrl: "${widget.plant.imageURL!}",
-                      // imageUrl:
-                      //     "https://as2.ftcdn.net/v2/jpg/01/67/88/63/1000_F_167886366_gbLWGtw3JPMcCsButoZQ6cOpOLhUL9Ks.jpg",
                       memCacheHeight: 200,
                       memCacheWidth: 200,
                       imageBuilder: (context, imageProvider) => Container(
                         decoration: BoxDecoration(
                           image: DecorationImage(
                             image: imageProvider,
-                            fit: BoxFit.fitHeight,
+                            fit: BoxFit.fitWidth,
                           ),
                         ),
                       ),
@@ -80,7 +77,7 @@ class _PlantGridItemState extends State<PlantGridItem> {
                 ),
                 VerticalSpacing(),
                 Text(
-                  "RM " + widget.plant.price!.toString(),
+                  "RM " + widget.plant.price!.toStringAsFixed(2),
                   style: Theme.of(context).textTheme.titleLarge!.copyWith(
                         color: ColorResources.COLOR_PRIMARY,
                         fontWeight: FontWeight.w400,

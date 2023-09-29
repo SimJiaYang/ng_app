@@ -14,13 +14,15 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
-  late var product_prov;
+  late ProductProvider product_prov =
+      Provider.of<ProductProvider>(context, listen: false);
+
   List<Product> productList = [];
+  bool hasProduct = true;
 
   @override
   void initState() {
     super.initState();
-    product_prov = Provider.of<ProductProvider>(context, listen: false);
     WidgetsFlutterBinding.ensureInitialized();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       getProductList();
@@ -31,9 +33,14 @@ class _ProductScreenState extends State<ProductScreen> {
     bool success = await product_prov.getProductList(context);
     if (success) {
       productList = await product_prov.productList;
-      print(productList);
+      debugPrint("Product List Length: " + productList.length.toString());
+      setState(() {
+        hasProduct = true;
+      });
     } else {
-      productList = [];
+      setState(() {
+        hasProduct = false;
+      });
     }
   }
 
@@ -50,15 +57,12 @@ class _ProductScreenState extends State<ProductScreen> {
             ),
           ),
         ),
-        drawer: DrawerWidget(size: size),
         body: Consumer<ProductProvider>(
             builder: (context, productProvider, child) {
           return productProvider.isLoading
               ? Center(child: CircularProgressIndicator())
-              : productList.isEmpty
-                  ? Center(
-                      child: Text(
-                          "Some error happened,\n Please try again later."))
+              : !hasProduct
+                  ? Center(child: Text("No Product Found"))
                   : SafeArea(
                       child: Container(
                         width: MediaQuery.of(context).size.width,
@@ -71,7 +75,7 @@ class _ProductScreenState extends State<ProductScreen> {
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
-                            childAspectRatio: 2 / 2,
+                            childAspectRatio: 3 / 4,
                             crossAxisSpacing: 10,
                             mainAxisSpacing: 10,
                           ),

@@ -30,7 +30,6 @@ class _BiddingScreenState extends State<BiddingScreen> {
           ),
         ),
       ),
-      drawer: DrawerWidget(size: size),
       body: Center(
         child: Text('Bidding Screen'),
       ),
