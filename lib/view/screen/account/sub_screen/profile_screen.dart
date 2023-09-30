@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/providers/user_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
@@ -38,6 +39,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   String _selectedDate = "";
   DateTime dateTime = DateTime.now();
   var dateFormat = DateFormat('yyyy-MM-dd');
+
+  List<String> _gender = [
+    'Male',
+    'Female',
+  ];
+
+  late var _selectedGender = _gender[0];
 
   void _presentDatePicker(BuildContext context) async {
     final now = DateTime.now();
@@ -95,6 +103,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       print(_phoneController.text);
       print(_profileImage);
       print(_selectedDate);
+      print(_selectedGender);
     }
   }
 
@@ -138,7 +147,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       scrollDirection: Axis.vertical,
                       child: Container(
                         width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height,
                         child: Form(
                           key: _formKey,
                           child: Column(
@@ -227,6 +235,62 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                   nextFocus: _emailFocus,
                                   controller: _nameController,
                                   inputType: TextInputType.text,
+                                ),
+                                VerticalSpacing(
+                                  height: 16,
+                                ),
+                                Text(
+                                  "Gender",
+                                  style: TextStyle(
+                                      color: ColorResources.COLOR_GREY_CHATEAU),
+                                ),
+                                VerticalSpacing(),
+                                Container(
+                                  width: double.infinity,
+                                  child:
+                                      CupertinoSlidingSegmentedControl<String>(
+                                    thumbColor: Theme.of(context).primaryColor,
+                                    groupValue: _selectedGender,
+                                    onValueChanged: (value) {
+                                      if (value != null) {
+                                        setState(() {
+                                          _selectedGender = value;
+                                        });
+                                      }
+                                    },
+                                    children: {
+                                      _gender[0]: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 10, horizontal: 10),
+                                        child: Text(
+                                          _gender[0],
+                                          style: TextStyle(
+                                            color:
+                                                (_selectedGender == _gender[0])
+                                                    ? ColorResources.COLOR_WHITE
+                                                    : ColorResources.COLOR_GREY,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                      _gender[1]: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 10, horizontal: 10),
+                                        child: Text(
+                                          _gender[1],
+                                          style: TextStyle(
+                                            color:
+                                                (_selectedGender == _gender[1])
+                                                    ? ColorResources.COLOR_WHITE
+                                                    : ColorResources.COLOR_GREY,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                    },
+                                  ),
                                 ),
                                 VerticalSpacing(
                                   height: 16,
