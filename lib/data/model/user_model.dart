@@ -74,7 +74,8 @@ class UserData {
         "image": image,
         "contact_number": contactNumber,
         "image_url": image_url,
-        "birth_date":
-            "${birthDate!.year.toString().padLeft(4, '0')}-${birthDate!.month.toString().padLeft(2, '0')}-${birthDate!.day.toString().padLeft(2, '0')}",
+        "birth_date": birthDate == null
+            ? null
+            : "${birthDate!.year.toString().padLeft(4, '0')}-${birthDate!.month.toString().padLeft(2, '0')}-${birthDate!.day.toString().padLeft(2, '0')}",
       };
 }

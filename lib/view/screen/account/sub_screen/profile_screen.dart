@@ -53,7 +53,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     final firstDate = DateTime(1923, 1, 1);
     final pickedDate = await showDatePicker(
       context: context,
-      initialDate: firstDate,
+      initialDate: DateTime(1973, 1, 1),
       firstDate: firstDate,
       lastDate: now,
     );
@@ -108,7 +108,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       uInfo.gender = _selectedGender;
       uInfo.contactNumber = _phoneController.text;
       uInfo.image_url = _profileImage;
-      uInfo.birthDate = dateTime;
+      uInfo.birthDate =
+          user_prov.userModel.data!.birthDate != null ? dateTime : null;
 
       print(dateTime);
 
@@ -359,6 +360,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                   ),
                                   Expanded(
                                       child: CustomTextField(
+                                    isApplyValidator: false,
                                     hintText: "Please enter your phone number",
                                     isShowBorder: true,
                                     isShowPrefixIcon: true,
@@ -370,7 +372,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                     focusNode: _phoneFocus,
                                     inputType: TextInputType.phone,
                                     nextFocus: _addressFocus,
-                                    isCountryPicker: true,
                                   )),
                                 ]),
                                 VerticalSpacing(
@@ -446,6 +447,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 ),
                                 VerticalSpacing(),
                                 CustomTextField(
+                                  isApplyValidator: false,
                                   hintText: "Please enter your address",
                                   isShowBorder: true,
                                   isShowPrefixIcon: true,
