@@ -25,7 +25,6 @@ class UserProvider extends ChangeNotifier {
         apiResponse.response!.statusCode == 200) {
       if (apiResponse.response!.data['success']) {
         _userModel = UserModel.fromJson(apiResponse.response!.data);
-        print(apiResponse.response!.data);
       } else {
         showCustomSnackBar(apiResponse.response!.data!['error'], context);
         _isLoading = false;

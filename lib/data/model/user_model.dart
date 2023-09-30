@@ -38,7 +38,7 @@ class Data {
   final String? address;
   final String? gender;
   final String? contactNumber;
-  final String? image;
+  final String? image_url;
   final DateTime? birthDate;
 
   Data({
@@ -47,7 +47,7 @@ class Data {
     this.address,
     this.gender,
     this.contactNumber,
-    this.image,
+    this.image_url,
     this.birthDate,
   });
 
@@ -57,7 +57,7 @@ class Data {
         address: json["address"],
         gender: json["gender"],
         contactNumber: json["contact_number"],
-        image: json["image"],
+        image_url: json["image_url"],
         birthDate: json["birth_date"] == null
             ? null
             : DateTime.parse(json["birth_date"]),
@@ -69,7 +69,7 @@ class Data {
         "address": address,
         "gender": gender,
         "contact_number": contactNumber,
-        "image": image,
+        "image_url": image_url,
         "birth_date":
             "${birthDate!.year.toString().padLeft(4, '0')}-${birthDate!.month.toString().padLeft(2, '0')}-${birthDate!.day.toString().padLeft(2, '0')}",
       };

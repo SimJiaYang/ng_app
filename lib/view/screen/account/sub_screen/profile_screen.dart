@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/providers/user_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
+import 'package:nurserygardenapp/util/images.dart';
 import 'package:nurserygardenapp/view/base/custom_button.dart';
 import 'package:nurserygardenapp/view/base/custom_space.dart';
 import 'package:nurserygardenapp/view/base/custom_textfield.dart';
@@ -16,10 +18,12 @@ class UserProfileScreen extends StatefulWidget {
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
-  late var user_prov;
+  late UserProvider user_prov =
+      Provider.of<UserProvider>(context, listen: false);
   String profileHeader = "";
   GlobalKey<FormState>? _formKey = GlobalKey<FormState>();
   String _countryDialCode = "+60";
+  String _profileImage = "null";
 
   TextEditingController _nameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
@@ -52,26 +56,32 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   @override
   void initState() {
-    user_prov = Provider.of<UserProvider>(context, listen: false);
     super.initState();
     WidgetsFlutterBinding.ensureInitialized();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      getUserInformation();
+      _getUserInformation();
     });
   }
 
-  Future<void> getUserInformation() async {
+  Future<void> _getUserInformation() async {
     bool isSuccessful = await user_prov.showUserInformation(context);
     if (isSuccessful) {
+      debugPrint("User Name: " + user_prov.userModel.data!.name!);
       setState(() {
         profileHeader =
-            user_prov.userModel.data!.name + "\'s Profile" ?? "User's Profile";
+            user_prov.userModel.data!.name! + "\'s Profile" ?? "User's Profile";
         _nameController.text = user_prov.userModel.data!.name ?? "";
         _emailController.text = user_prov.userModel.data!.email ?? "";
         _phoneController.text = user_prov.userModel.data!.contactNumber ?? "";
         _addressController.text = user_prov.userModel.data!.address ?? "";
+        _profileImage =
+            user_prov.userModel.data!.image_url ?? Images.profile_header;
       });
     }
+  }
+
+  Future<void> _handleSubmission() async {
+    if (_formKey!.currentState!.validate()) {}
   }
 
   @override
@@ -107,6 +117,71 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                Container(
+                                  width: double.infinity,
+                                  height: 200,
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                        height: 160,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                              image:
+                                                  AssetImage(Images.profile_bg),
+                                              fit: BoxFit.cover),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10)),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        left: 10,
+                                        top: 100,
+                                        child: ClipOval(
+                                          child: SizedBox.fromSize(
+                                              size: Size.fromRadius(
+                                                  50), // Image radius
+                                              child: _profileImage ==
+                                                          Images
+                                                              .profile_header ||
+                                                      _profileImage == "null"
+                                                  ? Image.asset(
+                                                      Images.profile_header,
+                                                      fit: BoxFit.cover)
+                                                  : CachedNetworkImage(
+                                                      filterQuality:
+                                                          FilterQuality.low,
+                                                      imageUrl: _profileImage,
+                                                      memCacheHeight: 200,
+                                                      memCacheWidth: 200,
+                                                      placeholder:
+                                                          (context, url) =>
+                                                              Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(1.0),
+                                                        child: Center(
+                                                            child:
+                                                                CircularProgressIndicator(
+                                                          color: ColorResources
+                                                              .COLOR_GRAY,
+                                                        )),
+                                                      ),
+                                                      errorWidget: (context,
+                                                              url, error) =>
+                                                          Image.asset(
+                                                              Images
+                                                                  .profile_header,
+                                                              fit:
+                                                                  BoxFit.cover),
+                                                    )),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                VerticalSpacing(
+                                  height: 10,
+                                ),
                                 Text(
                                   "Name",
                                   style: TextStyle(
@@ -223,7 +298,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 ),
                                 CustomButton(
                                   btnTxt: 'Save',
-                                  onTap: () async {},
+                                  onTap: () async {
+                                    await _handleSubmission();
+                                  },
                                 )
                               ]),
                         ),

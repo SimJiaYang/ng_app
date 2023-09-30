@@ -3,7 +3,6 @@ import 'package:nurserygardenapp/providers/auth_provider.dart';
 import 'package:nurserygardenapp/util/app_constants.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/routes.dart';
-import 'package:nurserygardenapp/view/drawer/drawer_widget.dart';
 import 'package:provider/provider.dart';
 import '../../base/custom_dialog.dart';
 
