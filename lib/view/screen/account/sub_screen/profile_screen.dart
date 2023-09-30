@@ -3,6 +3,7 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/providers/user_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
+import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/util/images.dart';
 import 'package:nurserygardenapp/view/base/custom_button.dart';
 import 'package:nurserygardenapp/view/base/custom_space.dart';
@@ -34,16 +35,16 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   FocusNode _addressFocus = FocusNode();
   FocusNode _phoneFocus = FocusNode();
 
-  late String _selectedDate;
+  String _selectedDate = "";
   DateTime dateTime = DateTime.now();
   var dateFormat = DateFormat('yyyy-MM-dd');
 
-  void _presentDatePicker() async {
+  void _presentDatePicker(BuildContext context) async {
     final now = DateTime.now();
-    final firstDate = DateTime(now.year - 1, now.month, now.day);
+    final firstDate = DateTime(1923, 1, 1);
     final pickedDate = await showDatePicker(
       context: context,
-      initialDate: now,
+      initialDate: firstDate,
       firstDate: firstDate,
       lastDate: now,
     );
@@ -65,23 +66,49 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   Future<void> _getUserInformation() async {
     bool isSuccessful = await user_prov.showUserInformation(context);
+    if (!mounted) return;
     if (isSuccessful) {
       debugPrint("User Name: " + user_prov.userModel.data!.name!);
       setState(() {
-        profileHeader =
-            user_prov.userModel.data!.name! + "\'s Profile" ?? "User's Profile";
+        profileHeader = user_prov.userModel.data!.name ?? "User";
+        profileHeader = profileHeader + "\'s Profile";
         _nameController.text = user_prov.userModel.data!.name ?? "";
         _emailController.text = user_prov.userModel.data!.email ?? "";
         _phoneController.text = user_prov.userModel.data!.contactNumber ?? "";
         _addressController.text = user_prov.userModel.data!.address ?? "";
         _profileImage =
             user_prov.userModel.data!.image_url ?? Images.profile_header;
+        _selectedDate = user_prov.userModel.data!.birthDate == null
+            ? "Please enter your birth date"
+            : DateFormat('yyyy-MM-dd')
+                .format(user_prov.userModel.data!.birthDate!)
+                .toString();
       });
     }
   }
 
   Future<void> _handleSubmission() async {
-    if (_formKey!.currentState!.validate()) {}
+    if (_formKey!.currentState!.validate()) {
+      print(_nameController.text);
+      print(_emailController.text);
+      print(_addressController.text);
+      print(_phoneController.text);
+      print(_profileImage);
+      print(_selectedDate);
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _nameController.dispose();
+    _emailController.dispose();
+    _addressController.dispose();
+    _phoneController.dispose();
+    _nameFocus.dispose();
+    _emailFocus.dispose();
+    _addressFocus.dispose();
+    _phoneFocus.dispose();
   }
 
   @override
@@ -270,6 +297,69 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                     isCountryPicker: true,
                                   )),
                                 ]),
+                                VerticalSpacing(
+                                  height: 16,
+                                ),
+                                Text(
+                                  "Birth Date",
+                                  style: TextStyle(
+                                      color: ColorResources.COLOR_GREY_CHATEAU),
+                                ),
+                                VerticalSpacing(),
+                                InkWell(
+                                    onTap: () {
+                                      _presentDatePicker(context);
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 16, horizontal: 18),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                        color: Colors.white,
+                                        border: Border.all(
+                                            width: 1,
+                                            color: ColorResources
+                                                .COLOR_GREY_CHATEAU,
+                                            style: BorderStyle.solid),
+                                      ),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Icon(
+                                            Icons.calendar_month,
+                                            color: Colors.grey,
+                                            size: 15,
+                                          ),
+                                          HorizontalSpacing(
+                                            width: 13,
+                                          ),
+                                          Text(
+                                            _selectedDate,
+                                            style: _selectedDate ==
+                                                    "Please enter your birth date"
+                                                ? TextStyle(
+                                                    fontSize: Dimensions
+                                                        .FONT_SIZE_DEFAULT,
+                                                    color: ColorResources
+                                                        .COLOR_GREY_CHATEAU)
+                                                : Theme.of(context)
+                                                    .textTheme
+                                                    .displayMedium
+                                                    ?.copyWith(
+                                                        color: Theme.of(context)
+                                                            .textTheme
+                                                            .bodyLarge
+                                                            ?.color,
+                                                        fontSize: Dimensions
+                                                            .FONT_SIZE_LARGE),
+                                          )
+                                        ],
+                                      ),
+                                    )),
                                 VerticalSpacing(
                                   height: 16,
                                 ),
