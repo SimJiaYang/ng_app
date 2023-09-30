@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:nurserygardenapp/data/model/user_model.dart';
 import 'package:nurserygardenapp/providers/user_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/dimensions.dart';
@@ -78,9 +79,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     if (isSuccessful) {
       debugPrint("User Name: " + user_prov.userModel.data!.name!);
       setState(() {
+        dateTime = user_prov.userModel.data!.birthDate ?? DateTime.now();
         profileHeader = user_prov.userModel.data!.name ?? "User";
         profileHeader = profileHeader + "\'s Profile";
         _nameController.text = user_prov.userModel.data!.name ?? "";
+        _selectedGender = user_prov.userModel.data!.gender ?? "Male";
         _emailController.text = user_prov.userModel.data!.email ?? "";
         _phoneController.text = user_prov.userModel.data!.contactNumber ?? "";
         _addressController.text = user_prov.userModel.data!.address ?? "";
@@ -95,15 +98,24 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     }
   }
 
-  Future<void> _handleSubmission() async {
+  _handleSubmission() async {
     if (_formKey!.currentState!.validate()) {
-      print(_nameController.text);
-      print(_emailController.text);
-      print(_addressController.text);
-      print(_phoneController.text);
-      print(_profileImage);
-      print(_selectedDate);
-      print(_selectedGender);
+      UserData uInfo = UserData();
+      uInfo.name = _nameController.text;
+      uInfo.email = _emailController.text;
+      uInfo.contactNumber = _phoneController.text;
+      uInfo.address = _addressController.text;
+      uInfo.gender = _selectedGender;
+      uInfo.contactNumber = _phoneController.text;
+      uInfo.image_url = _profileImage;
+      uInfo.birthDate = dateTime;
+
+      print(dateTime);
+
+      bool isSuccessful = await user_prov.updateUserProfile(context, uInfo);
+      if (isSuccessful) {
+        Navigator.pop(context);
+      }
     }
   }
 
@@ -450,12 +462,16 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 VerticalSpacing(
                                   height: 16,
                                 ),
-                                CustomButton(
-                                  btnTxt: 'Save',
-                                  onTap: () async {
-                                    await _handleSubmission();
-                                  },
-                                )
+                                Consumer<UserProvider>(
+                                    builder: (context, userProvider, child) {
+                                  return CustomButton(
+                                    btnTxt: 'Save',
+                                    onTap: () {
+                                      if (userProvider.isSubmitting) return;
+                                      _handleSubmission();
+                                    },
+                                  );
+                                })
                               ]),
                         ),
                       ),

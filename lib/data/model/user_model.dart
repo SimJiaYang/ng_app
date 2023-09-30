@@ -10,7 +10,7 @@ String userModelToJson(UserModel data) => json.encode(data.toJson());
 
 class UserModel {
   final bool? success;
-  final Data? data;
+  final UserData? data;
   final String? error;
 
   UserModel({
@@ -21,7 +21,7 @@ class UserModel {
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         success: json["success"],
-        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+        data: json["data"] == null ? null : UserData.fromJson(json["data"]),
         error: json["error"],
       );
 
@@ -32,30 +32,33 @@ class UserModel {
       };
 }
 
-class Data {
-  final String? name;
-  final String? email;
-  final String? address;
-  final String? gender;
-  final String? contactNumber;
-  final String? image_url;
-  final DateTime? birthDate;
+class UserData {
+  String? name;
+  String? address;
+  String? email;
+  String? gender;
+  String? image;
+  String? contactNumber;
+  String? image_url;
+  DateTime? birthDate;
 
-  Data({
+  UserData({
     this.name,
     this.email,
     this.address,
     this.gender,
+    this.image,
     this.contactNumber,
     this.image_url,
     this.birthDate,
   });
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
+  factory UserData.fromJson(Map<String, dynamic> json) => UserData(
         name: json["name"],
         email: json["email"],
         address: json["address"],
         gender: json["gender"],
+        image: json["image"],
         contactNumber: json["contact_number"],
         image_url: json["image_url"],
         birthDate: json["birth_date"] == null
@@ -68,6 +71,7 @@ class Data {
         "email": email,
         "address": address,
         "gender": gender,
+        "image": image,
         "contact_number": contactNumber,
         "image_url": image_url,
         "birth_date":
