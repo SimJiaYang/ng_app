@@ -3,6 +3,7 @@
 //     final userModel = userModelFromJson(jsonString);
 
 import 'dart:convert';
+import 'dart:io';
 
 UserModel userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
 
@@ -71,7 +72,7 @@ class UserData {
         "email": email,
         "address": address,
         "gender": gender,
-        "image": image,
+        "image_name": image,
         "contact_number": contactNumber,
         "image_url": image_url,
         "birth_date": birthDate == null

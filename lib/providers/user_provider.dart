@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 import 'package:nurserygardenapp/data/model/response/api_response.dart';
 import 'package:nurserygardenapp/data/model/user_model.dart';
 import 'package:nurserygardenapp/data/repositories/user_repo.dart';
-import 'package:nurserygardenapp/helper/api_checker.dart';
 import 'package:nurserygardenapp/helper/response_helper.dart';
 import 'package:nurserygardenapp/util/app_constants.dart';
 import 'package:nurserygardenapp/view/base/custom_snackbar.dart';
@@ -49,28 +48,20 @@ class UserProvider extends ChangeNotifier {
       BuildContext context, UserData userinfo) async {
     _isSubmitting = true;
     notifyListeners();
+    bool result = false;
     ApiResponse apiResponse = await userRepo.updateUserInformation(userinfo);
 
-    if (apiResponse.response == null ||
-        apiResponse.response!.statusCode != 200) {
-      ApiChecker.checkApi(context, apiResponse);
-      _isSubmitting = false;
-      notifyListeners();
-      return false;
-    } else {
-      if (!apiResponse.response!.data['success']) {
-        showCustomSnackBar(apiResponse.response!.data!['error'], context);
-        _isSubmitting = false;
-        notifyListeners();
-        return false;
-      } else {
+    if (context.mounted) {
+      result = ResponseHelper.responseHelper(context, apiResponse);
+      if (result) {
         showCustomSnackBar('Success', context,
             type: AppConstants.SNACKBAR_SUCCESS);
-        _isSubmitting = false;
-        notifyListeners();
-        return true;
       }
     }
+
+    _isSubmitting = false;
+    notifyListeners();
+    return result;
   }
 
   // ---------------------------User Profile Image Handling------------------------//
@@ -82,7 +73,8 @@ class UserProvider extends ChangeNotifier {
     if (context.mounted) {
       result = ResponseHelper.responseHelper(context, apiResponse);
       if (result) {
-        _imageUrl = apiResponse.response!.data['image_link'];
+        _imageUrl = apiResponse.response!.data['data']['image_link'];
+        _imageName = apiResponse.response!.data['data']['image_name'];
       }
     }
     _isUploading = false;
@@ -93,9 +85,13 @@ class UserProvider extends ChangeNotifier {
   String _imageUrl = '';
   String get imageUrl => _imageUrl;
 
+  String _imageName = '';
+  String get imageName => _imageName;
+
   resetImageUrl() {
     if (_imageUrl != '') {
       _imageUrl = '';
+      _imageName = '';
     }
   }
   // ------------------------------------------------------------------------------//

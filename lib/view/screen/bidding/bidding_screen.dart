@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nurserygardenapp/view/drawer/drawer_widget.dart';
 
 class BiddingScreen extends StatefulWidget {
   const BiddingScreen({super.key});

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,6 +12,7 @@ import 'package:nurserygardenapp/util/images.dart';
 import 'package:nurserygardenapp/view/base/custom_button.dart';
 import 'package:nurserygardenapp/view/base/custom_space.dart';
 import 'package:nurserygardenapp/view/base/custom_textfield.dart';
+import 'package:nurserygardenapp/view/base/upload_image_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
@@ -27,6 +30,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   GlobalKey<FormState>? _formKey = GlobalKey<FormState>();
   String _countryDialCode = "+60";
   String _profileImage = "null";
+  String _imageName = "";
 
   TextEditingController _nameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
@@ -108,6 +112,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       uInfo.gender = _selectedGender;
       uInfo.contactNumber = _phoneController.text;
       uInfo.image_url = _profileImage;
+      uInfo.image = _imageName;
       uInfo.birthDate =
           user_prov.userModel.data!.birthDate != null ? dateTime : null;
       bool isSuccessful = await user_prov.updateUserProfile(context, uInfo);
@@ -115,6 +120,15 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         Navigator.pop(context);
       }
     }
+  }
+
+  _handleImage(String name, String result, String imageName) {
+    setState(() {
+      if (name == 'avatar') {
+        _profileImage = result;
+        _imageName = imageName;
+      }
+    });
   }
 
   @override
@@ -461,6 +475,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 VerticalSpacing(
                                   height: 16,
                                 ),
+                                UploadImageWidget(
+                                    name: "avatar",
+                                    imageUrl: _profileImage,
+                                    resultUrl: (String name, String url,
+                                        String imageName) {
+                                      _handleImage(name, url, imageName);
+                                    }),
                                 Consumer<UserProvider>(
                                     builder: (context, userProvider, child) {
                                   return CustomButton(

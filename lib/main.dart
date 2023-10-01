@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:nurserygardenapp/helper/route_helper.dart';
 import 'package:nurserygardenapp/providers/auth_provider.dart';
 import 'package:nurserygardenapp/providers/plant_provider.dart';
@@ -54,6 +55,7 @@ class _MyAppState extends State<MyApp> {
           onGenerateRoute: RouterHelper.router.generator,
           title: AppConstants.APP_NAME,
           debugShowCheckedModeBanner: false,
+          builder: EasyLoading.init(),
           navigatorKey: MyApp.navigatorKey,
           theme: light,
           scrollBehavior: MaterialScrollBehavior().copyWith(dragDevices: {

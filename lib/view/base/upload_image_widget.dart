@@ -17,7 +17,7 @@ class UploadImageWidget extends StatefulWidget {
   final bool isAllowUploadFile;
   final bool isDisabled;
   final String name;
-  final Function(String, String) resultUrl;
+  final Function(String, String, String) resultUrl;
   const UploadImageWidget({
     super.key,
     required this.name,
@@ -117,8 +117,8 @@ class _UploadImageWidgetState extends State<UploadImageWidget> {
 
   _handleUploadImage(File file, BuildContext context) async {
     _userProv.resetImageUrl();
-    await _userProv.upload(file, 'file', context);
-    widget.resultUrl(widget.name, _userProv.imageUrl);
+    await _userProv.upload(file, 'image', context);
+    widget.resultUrl(widget.name, _userProv.imageUrl, _userProv.imageName);
     EasyLoading.dismiss();
   }
 

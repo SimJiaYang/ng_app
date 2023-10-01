@@ -3,6 +3,7 @@ import 'package:nurserygardenapp/data/model/response/api_response.dart';
 import 'package:nurserygardenapp/data/model/auth_model.dart';
 import 'package:nurserygardenapp/data/repositories/auth_repo.dart';
 import 'package:nurserygardenapp/helper/api_checker.dart';
+import 'package:nurserygardenapp/helper/response_helper.dart';
 import '../view/base/custom_snackbar.dart';
 
 class AuthProvider with ChangeNotifier {
@@ -30,26 +31,26 @@ class AuthProvider with ChangeNotifier {
       String email, String password, BuildContext context) async {
     _isLoading = true;
     notifyListeners();
+
+    bool result = false;
     ApiResponse apiResponse =
         await authRepo.login(email: email, password: password);
-    if (apiResponse.response != null &&
-        apiResponse.response!.statusCode == 200) {
-      if (apiResponse.response!.data['success']) {
+
+    if (context.mounted) {
+      result = ResponseHelper.responseHelper(context, apiResponse);
+      if (result) {
         print("Login -->" + apiResponse.response!.data['data']['token']);
         Map map = apiResponse.response!.data;
         String token = map['data']['token'];
         print(token);
         authRepo.saveUserToken(token);
-      } else {
-        showCustomSnackBar(apiResponse.response!.data!['error'], context);
       }
-    } else {
-      ApiChecker.checkApi(context, apiResponse);
     }
-    notifyListeners();
-    _isLoading = false;
 
-    return apiResponse.response!.data['success'];
+    _isLoading = false;
+    notifyListeners();
+
+    return result;
   }
 
   Future<bool> logout(BuildContext context) async {
@@ -86,7 +87,6 @@ class AuthProvider with ChangeNotifier {
     _registrationErrorMessage = '';
     notifyListeners();
     ApiResponse apiResponse = await authRepo.registration(userModel);
-    String errMsg = '';
     if (apiResponse.response != null &&
         apiResponse.response!.statusCode == 200) {
       if (apiResponse.response!.data['success']) {
