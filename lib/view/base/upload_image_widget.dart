@@ -5,7 +5,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/providers/user_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
-import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/util/images.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
@@ -123,11 +122,11 @@ class _UploadImageWidgetState extends State<UploadImageWidget> {
     EasyLoading.dismiss();
   }
 
-  bool _isImage(String filePath) {
-    final validImageExtensions = ['jpg', 'jpeg', 'png', 'gif'];
-    final extension = filePath.toLowerCase().split('.').last;
-    return validImageExtensions.contains(extension);
-  }
+  // bool _isImage(String filePath) {
+  //   final validImageExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+  //   final extension = filePath.toLowerCase().split('.').last;
+  //   return validImageExtensions.contains(extension);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -160,64 +159,5 @@ class _UploadImageWidgetState extends State<UploadImageWidget> {
         ),
       );
     });
-
-    // return Column(
-    //   crossAxisAlignment: CrossAxisAlignment.start,
-    //   children: [
-    //     Consumer<UserProvider>(builder: (context, userProvider, child) {
-    //       return GestureDetector(
-    //         child:
-
-    //         Container(
-    //           width: MediaQuery.of(context).size.width,
-    //           height: 130,
-    //           decoration: BoxDecoration(
-    //             color: Theme.of(context).cardColor,
-    //             border: Border.all(
-    //                 color: ColorResources.COLOR_LIGHT_GREY, width: 1),
-    //             borderRadius: BorderRadius.circular(10),
-    //             image: (widget.imageUrl.isNotEmpty && _isImage(widget.imageUrl))
-    //                 ? DecorationImage(
-    //                     image: NetworkImage(imageUrl),
-    //                     onError: (exception, stackTrace) {
-    //                       setState(() {
-    //                         imageUrl = _loadFailedImageUrl;
-    //                       });
-    //                     },
-    //                   )
-    //                 : null,
-    //           ),
-    //           child: (!userProvider.isUploading && widget.imageUrl.isEmpty)
-    //               ? Center(
-    //                   child: Column(
-    //                     mainAxisAlignment: MainAxisAlignment.center,
-    //                     children: [
-    //                       Icon(Icons.edit_document,
-    //                           size: 34, color: ColorResources.COLOR_LIGHT_GREY),
-    //                       const SizedBox(
-    //                         height: 10,
-    //                       ),
-    //                       Text(
-    //                         "Choose File",
-    //                         style: const TextStyle(
-    //                             fontWeight: FontWeight.w500,
-    //                             fontSize: Dimensions.FONT_SIZE_DEFAULT,
-    //                             color: ColorResources.COLOR_LIGHT_GREY),
-    //                       )
-    //                     ],
-    //                   ),
-    //                 )
-    //               : Center(
-    //                   child: _isImage(widget.imageUrl)
-    //                       ? null
-    //                       : Text(
-    //                           '${widget.name} 1',
-    //                         ),
-    //                 ),
-    //         ),
-    //       );
-    //     }),
-    //   ],
-    // );
   }
 }

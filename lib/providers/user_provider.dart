@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/widgets.dart';
@@ -7,10 +8,13 @@ import 'package:nurserygardenapp/data/repositories/user_repo.dart';
 import 'package:nurserygardenapp/helper/response_helper.dart';
 import 'package:nurserygardenapp/util/app_constants.dart';
 import 'package:nurserygardenapp/view/base/custom_snackbar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserProvider extends ChangeNotifier {
   final UserRepo userRepo;
-  UserProvider({required this.userRepo});
+  final SharedPreferences sharedPreferences;
+
+  UserProvider({required this.userRepo, required this.sharedPreferences});
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -24,6 +28,9 @@ class UserProvider extends ChangeNotifier {
   UserModel _userModel = UserModel();
   UserModel get userModel => _userModel;
 
+  UserData _userData = UserData();
+  UserData get userData => _userData;
+
   // Get User Information
   Future<bool> showUserInformation(BuildContext context) async {
     _isLoading = true;
@@ -36,6 +43,8 @@ class UserProvider extends ChangeNotifier {
       result = ResponseHelper.responseHelper(context, apiResponse);
       if (result) {
         _userModel = UserModel.fromJson(apiResponse.response!.data);
+        setUserInfo(apiResponse.response!.data!['data']);
+        notifyListeners();
       }
     }
     _isLoading = false;
@@ -95,4 +104,24 @@ class UserProvider extends ChangeNotifier {
     }
   }
   // ------------------------------------------------------------------------------//
+
+  // Save user info
+  Future<void> setUserInfo(userMap) async {
+    try {
+      await sharedPreferences.setString(
+          AppConstants.USER_INFO, json.encode(userMap));
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  UserData getUserInfo() {
+    String uData = sharedPreferences.getString(AppConstants.USER_INFO) ?? '';
+    if (uData.isNotEmpty) {
+      _userData = UserData.fromJson(json.decode(uData));
+    } else {
+      _userData = new UserData();
+    }
+    return _userData;
+  }
 }

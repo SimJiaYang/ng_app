@@ -38,7 +38,8 @@ Future<void> init() async {
   sl.registerFactory(() => SplashProvider(splashRepo: sl()));
   sl.registerFactory(() => PlantProvider(plantRepo: sl()));
   sl.registerFactory(() => ProductProvider(productRepo: sl()));
-  sl.registerFactory(() => UserProvider(userRepo: sl()));
+  sl.registerFactory(
+      () => UserProvider(userRepo: sl(), sharedPreferences: sl()));
 
   // External
   final sharedPreferences = await SharedPreferences.getInstance();

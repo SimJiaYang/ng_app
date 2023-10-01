@@ -74,6 +74,7 @@ class AuthRepo {
 
   Future<bool> clearSharedData() async {
     await sharedPreferences.remove(AppConstants.TOKEN);
+    await sharedPreferences.remove(AppConstants.USER_INFO);
     return true;
   }
 }

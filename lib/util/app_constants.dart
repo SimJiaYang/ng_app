@@ -38,6 +38,7 @@ class AppConstants {
   static const String PROFILE_URI = '/profile';
   static const String PROFILE_UPDATE_URI = '/profile/update';
   static const String PROFILE_IMAGE_UPLOAD_URI = '/profile/avatar/update';
+  static const String USER_INFO = '/user/info';
 
   // Plant
   static const String PLANT_URI = '/plant';
