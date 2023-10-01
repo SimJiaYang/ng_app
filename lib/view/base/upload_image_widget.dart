@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/providers/user_provider.dart';
@@ -130,73 +131,93 @@ class _UploadImageWidgetState extends State<UploadImageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (widget.title != null)
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 10),
-            child: Text(
-              widget.title!,
-              style: Theme.of(context).textTheme.displayMedium,
-            ),
-          ),
-        Consumer<UserProvider>(builder: (context, userProvider, child) {
-          return GestureDetector(
-            onTap: () {
-              if (widget.isDisabled || userProvider.isUploading) return;
-              _showFilePicker(context);
-            },
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: 130,
-              decoration: BoxDecoration(
-                color: Theme.of(context).cardColor,
-                border: Border.all(
-                    color: ColorResources.COLOR_LIGHT_GREY, width: 1),
-                borderRadius: BorderRadius.circular(10),
-                image: (widget.imageUrl.isNotEmpty && _isImage(widget.imageUrl))
-                    ? DecorationImage(
-                        image: NetworkImage(imageUrl),
-                        onError: (exception, stackTrace) {
-                          setState(() {
-                            imageUrl = _loadFailedImageUrl;
-                          });
-                        },
-                      )
-                    : null,
-              ),
-              child: (!userProvider.isUploading && widget.imageUrl.isEmpty)
-                  ? Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.edit_document,
-                              size: 34, color: ColorResources.COLOR_LIGHT_GREY),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            "Choose File",
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: Dimensions.FONT_SIZE_DEFAULT,
-                                color: ColorResources.COLOR_LIGHT_GREY),
-                          )
-                        ],
+    return Consumer<UserProvider>(builder: (context, userProvider, child) {
+      return GestureDetector(
+        onTap: () {
+          if (widget.isDisabled || userProvider.isUploading) return;
+          _showFilePicker(context);
+        },
+        child: ClipOval(
+          child: SizedBox.fromSize(
+              size: Size.fromRadius(50), // Image radius
+              child: imageUrl == Images.profile_header || imageUrl == "null"
+                  ? Image.asset(Images.profile_header, fit: BoxFit.cover)
+                  : CachedNetworkImage(
+                      filterQuality: FilterQuality.low,
+                      imageUrl: imageUrl,
+                      memCacheHeight: 200,
+                      memCacheWidth: 200,
+                      placeholder: (context, url) => Padding(
+                        padding: const EdgeInsets.all(1.0),
+                        child: Center(
+                            child: CircularProgressIndicator(
+                          color: ColorResources.COLOR_GRAY,
+                        )),
                       ),
-                    )
-                  : Center(
-                      child: _isImage(widget.imageUrl)
-                          ? null
-                          : Text(
-                              '${widget.name} 1',
-                            ),
-                    ),
-            ),
-          );
-        }),
-      ],
-    );
+                      errorWidget: (context, url, error) =>
+                          Image.asset(Images.profile_header, fit: BoxFit.cover),
+                    )),
+        ),
+      );
+    });
+
+    // return Column(
+    //   crossAxisAlignment: CrossAxisAlignment.start,
+    //   children: [
+    //     Consumer<UserProvider>(builder: (context, userProvider, child) {
+    //       return GestureDetector(
+    //         child:
+
+    //         Container(
+    //           width: MediaQuery.of(context).size.width,
+    //           height: 130,
+    //           decoration: BoxDecoration(
+    //             color: Theme.of(context).cardColor,
+    //             border: Border.all(
+    //                 color: ColorResources.COLOR_LIGHT_GREY, width: 1),
+    //             borderRadius: BorderRadius.circular(10),
+    //             image: (widget.imageUrl.isNotEmpty && _isImage(widget.imageUrl))
+    //                 ? DecorationImage(
+    //                     image: NetworkImage(imageUrl),
+    //                     onError: (exception, stackTrace) {
+    //                       setState(() {
+    //                         imageUrl = _loadFailedImageUrl;
+    //                       });
+    //                     },
+    //                   )
+    //                 : null,
+    //           ),
+    //           child: (!userProvider.isUploading && widget.imageUrl.isEmpty)
+    //               ? Center(
+    //                   child: Column(
+    //                     mainAxisAlignment: MainAxisAlignment.center,
+    //                     children: [
+    //                       Icon(Icons.edit_document,
+    //                           size: 34, color: ColorResources.COLOR_LIGHT_GREY),
+    //                       const SizedBox(
+    //                         height: 10,
+    //                       ),
+    //                       Text(
+    //                         "Choose File",
+    //                         style: const TextStyle(
+    //                             fontWeight: FontWeight.w500,
+    //                             fontSize: Dimensions.FONT_SIZE_DEFAULT,
+    //                             color: ColorResources.COLOR_LIGHT_GREY),
+    //                       )
+    //                     ],
+    //                   ),
+    //                 )
+    //               : Center(
+    //                   child: _isImage(widget.imageUrl)
+    //                       ? null
+    //                       : Text(
+    //                           '${widget.name} 1',
+    //                         ),
+    //                 ),
+    //         ),
+    //       );
+    //     }),
+    //   ],
+    // );
   }
 }

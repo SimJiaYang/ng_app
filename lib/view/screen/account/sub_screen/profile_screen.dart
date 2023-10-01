@@ -195,45 +195,14 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                       Positioned(
                                         left: 10,
                                         top: 100,
-                                        child: ClipOval(
-                                          child: SizedBox.fromSize(
-                                              size: Size.fromRadius(
-                                                  50), // Image radius
-                                              child: _profileImage ==
-                                                          Images
-                                                              .profile_header ||
-                                                      _profileImage == "null"
-                                                  ? Image.asset(
-                                                      Images.profile_header,
-                                                      fit: BoxFit.cover)
-                                                  : CachedNetworkImage(
-                                                      filterQuality:
-                                                          FilterQuality.low,
-                                                      imageUrl: _profileImage,
-                                                      memCacheHeight: 200,
-                                                      memCacheWidth: 200,
-                                                      placeholder:
-                                                          (context, url) =>
-                                                              Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(1.0),
-                                                        child: Center(
-                                                            child:
-                                                                CircularProgressIndicator(
-                                                          color: ColorResources
-                                                              .COLOR_GRAY,
-                                                        )),
-                                                      ),
-                                                      errorWidget: (context,
-                                                              url, error) =>
-                                                          Image.asset(
-                                                              Images
-                                                                  .profile_header,
-                                                              fit:
-                                                                  BoxFit.cover),
-                                                    )),
-                                        ),
+                                        child: UploadImageWidget(
+                                            name: "avatar",
+                                            imageUrl: _profileImage,
+                                            resultUrl: (String name, String url,
+                                                String imageName) {
+                                              _handleImage(
+                                                  name, url, imageName);
+                                            }),
                                       ),
                                     ],
                                   ),
@@ -475,13 +444,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 VerticalSpacing(
                                   height: 16,
                                 ),
-                                UploadImageWidget(
-                                    name: "avatar",
-                                    imageUrl: _profileImage,
-                                    resultUrl: (String name, String url,
-                                        String imageName) {
-                                      _handleImage(name, url, imageName);
-                                    }),
                                 Consumer<UserProvider>(
                                     builder: (context, userProvider, child) {
                                   return CustomButton(
