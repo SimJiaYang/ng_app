@@ -123,7 +123,10 @@ class _AccountScreenState extends State<AccountScreen> {
                   )),
               GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, Routes.getProfileRoute());
+                  Navigator.pushNamed(context, Routes.getProfileRoute())
+                      .then((value) => {
+                            if (value == "true") {_getUserInformation()}
+                          });
                 },
                 child: ListTile(
                   leading: Icon(
