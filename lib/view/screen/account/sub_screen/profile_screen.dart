@@ -110,9 +110,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       uInfo.image_url = _profileImage;
       uInfo.birthDate =
           user_prov.userModel.data!.birthDate != null ? dateTime : null;
-
-      print(dateTime);
-
       bool isSuccessful = await user_prov.updateUserProfile(context, uInfo);
       if (isSuccessful) {
         Navigator.pop(context);

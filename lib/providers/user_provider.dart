@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/widgets.dart';
 import 'package:nurserygardenapp/data/model/response/api_response.dart';
 import 'package:nurserygardenapp/data/model/user_model.dart';
 import 'package:nurserygardenapp/data/repositories/user_repo.dart';
 import 'package:nurserygardenapp/helper/api_checker.dart';
+import 'package:nurserygardenapp/helper/response_helper.dart';
 import 'package:nurserygardenapp/util/app_constants.dart';
 import 'package:nurserygardenapp/view/base/custom_snackbar.dart';
 
@@ -16,6 +19,9 @@ class UserProvider extends ChangeNotifier {
   bool _isSubmitting = false;
   bool get isSubmitting => _isSubmitting;
 
+  bool _isUploading = false;
+  bool get isUploading => _isUploading;
+
   UserModel _userModel = UserModel();
   UserModel get userModel => _userModel;
 
@@ -24,27 +30,21 @@ class UserProvider extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
+    bool result = false;
     ApiResponse apiResponse = await userRepo.showUserInformation();
 
-    if (apiResponse.response != null &&
-        apiResponse.response!.statusCode == 200) {
-      if (apiResponse.response!.data['success']) {
+    if (context.mounted) {
+      result = ResponseHelper.responseHelper(context, apiResponse);
+      if (result) {
         _userModel = UserModel.fromJson(apiResponse.response!.data);
-      } else {
-        showCustomSnackBar(apiResponse.response!.data!['error'], context);
-        _isLoading = false;
-        notifyListeners();
-        return false;
       }
-    } else {
-      ApiChecker.checkApi(context, apiResponse);
     }
     _isLoading = false;
     notifyListeners();
-    return true;
+    return result;
   }
 
-  // Edit User Information
+  // Update User Information
   Future<bool> updateUserProfile(
       BuildContext context, UserData userinfo) async {
     _isSubmitting = true;
@@ -72,4 +72,31 @@ class UserProvider extends ChangeNotifier {
       }
     }
   }
+
+  // ---------------------------User Profile Image Handling------------------------//
+  Future<bool> upload(File file, String key, BuildContext context) async {
+    bool result = false;
+    _isUploading = true;
+    notifyListeners();
+    ApiResponse apiResponse = await userRepo.uploadUserAvatar(file, key);
+    if (context.mounted) {
+      result = ResponseHelper.responseHelper(context, apiResponse);
+      if (result) {
+        _imageUrl = apiResponse.response!.data['image_link'];
+      }
+    }
+    _isUploading = false;
+    notifyListeners();
+    return result;
+  }
+
+  String _imageUrl = '';
+  String get imageUrl => _imageUrl;
+
+  resetImageUrl() {
+    if (_imageUrl != '') {
+      _imageUrl = '';
+    }
+  }
+  // ------------------------------------------------------------------------------//
 }

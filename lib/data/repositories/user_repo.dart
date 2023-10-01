@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:nurserygardenapp/data/dio/dio_client.dart';
 import 'package:nurserygardenapp/data/exception/api_error_handler.dart';
@@ -28,6 +29,19 @@ class UserRepo {
     try {
       Response response = await dioClient.post(AppConstants.PROFILE_UPDATE_URI,
           data: userData.toJson());
+      return ApiResponse.withSuccess(response);
+    } catch (e) {
+      return ApiResponse.withError(ApiErrorHandler.getMessage(e));
+    }
+  }
+
+  Future<ApiResponse> uploadUserAvatar(File file, String key) async {
+    try {
+      Response response = await dioClient.uploadImage(
+        file,
+        key,
+        AppConstants.PROFILE_IMAGE_UPLOAD_URI,
+      );
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
