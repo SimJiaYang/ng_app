@@ -17,45 +17,32 @@ class AccountScreen extends StatefulWidget {
 }
 
 class _AccountScreenState extends State<AccountScreen> {
-  late UserProvider user_prov =
-      Provider.of<UserProvider>(context, listen: false);
-  String imageUrl = "";
-  String name = "";
+  late UserProvider user_prov;
 
   @override
   void initState() {
     super.initState();
+    user_prov = Provider.of<UserProvider>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       user_prov.getUserInfo();
-      if (user_prov.userData.name == null) {
+      if (user_prov.userData.email == null) {
         _getUserInformation();
-      } else {
-        setState(() {
-          imageUrl = user_prov.userData.image_url ?? Images.profile_header;
-          name = user_prov.userData.name ?? "";
-        });
       }
+      setState(() {});
     });
   }
 
   Future<void> _getUserInformation() async {
-    bool isSuccess = await user_prov.showUserInformation(context);
-    if (isSuccess) {
-      setState(() {
-        imageUrl = user_prov.userData.image_url ?? Images.profile_header;
-        name = user_prov.userData.name ?? "";
-      });
-    }
+    if (!mounted) return;
+    await user_prov.showUserInformation(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: SafeArea(
         child: Container(
           width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
           padding: EdgeInsets.all(5),
           color: ColorResources.COLOR_WHITE,
           child: Column(
@@ -83,32 +70,41 @@ class _AccountScreenState extends State<AccountScreen> {
                                       child: SizedBox.fromSize(
                                           size: Size.fromRadius(
                                               30), // Image radius
-                                          child: CachedNetworkImage(
-                                            filterQuality: FilterQuality.low,
-                                            imageUrl: imageUrl,
-                                            memCacheHeight: 200,
-                                            memCacheWidth: 200,
-                                            placeholder: (context, url) =>
-                                                Padding(
-                                              padding:
-                                                  const EdgeInsets.all(1.0),
-                                              child: Center(
-                                                  child:
-                                                      CircularProgressIndicator()),
-                                            ),
-                                            errorWidget:
-                                                (context, url, error) =>
-                                                    Image.asset(
-                                                        Images.profile_header,
-                                                        fit: BoxFit.cover),
-                                          )),
+                                          child: userProvider
+                                                      .userData.image_url ==
+                                                  null
+                                              ? Image.asset(
+                                                  Images.profile_header,
+                                                  fit: BoxFit.cover)
+                                              : CachedNetworkImage(
+                                                  filterQuality:
+                                                      FilterQuality.low,
+                                                  imageUrl: userProvider
+                                                      .userData.image_url!,
+                                                  memCacheHeight: 200,
+                                                  memCacheWidth: 200,
+                                                  placeholder: (context, url) =>
+                                                      Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            1.0),
+                                                    child: Center(
+                                                        child:
+                                                            CircularProgressIndicator()),
+                                                  ),
+                                                  errorWidget: (context, url,
+                                                          error) =>
+                                                      Image.asset(
+                                                          Images.profile_header,
+                                                          fit: BoxFit.cover),
+                                                )),
                                     ),
                                     SizedBox(
                                       width: 15,
                                     ),
                                     Center(
                                       child: Text(
-                                        name,
+                                        userProvider.userData.name ?? '',
                                         style: const TextStyle(
                                             color: Colors.black,
                                             fontSize: 16,

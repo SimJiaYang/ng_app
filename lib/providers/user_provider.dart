@@ -43,7 +43,8 @@ class UserProvider extends ChangeNotifier {
       result = ResponseHelper.responseHelper(context, apiResponse);
       if (result) {
         _userModel = UserModel.fromJson(apiResponse.response!.data);
-        setUserInfo(apiResponse.response!.data!['data']);
+        _userData = _userModel.data!;
+        setUserInfo(_userData);
         notifyListeners();
       }
     }
@@ -106,10 +107,11 @@ class UserProvider extends ChangeNotifier {
   // ------------------------------------------------------------------------------//
 
   // Save user info
-  Future<void> setUserInfo(userMap) async {
+  Future<void> setUserInfo(var userMap) async {
     try {
       await sharedPreferences.setString(
           AppConstants.USER_INFO, json.encode(userMap));
+      notifyListeners();
     } catch (e) {
       rethrow;
     }
@@ -117,8 +119,9 @@ class UserProvider extends ChangeNotifier {
 
   UserData getUserInfo() {
     String uData = sharedPreferences.getString(AppConstants.USER_INFO) ?? '';
-    if (uData.isNotEmpty) {
+    if (!uData.isEmpty) {
       _userData = UserData.fromJson(json.decode(uData));
+      notifyListeners();
     } else {
       _userData = new UserData();
     }
