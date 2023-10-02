@@ -53,7 +53,7 @@ class AuthRepo {
     dioClient.token = token;
     dioClient.dio.options.headers = {
       'Accept': 'application/json',
-      'Content-Type': 'application/json; charset=UTF-8',
+      'Content-Type': 'application/json',
       'Authorization': 'Bearer $token'
     };
 

@@ -30,17 +30,18 @@ class _PlantScreenState extends State<PlantScreen> {
 
   Future<void> getPlantList() async {
     bool success = await plant_prov.getPlantList(context);
-    if (!mounted) return;
-    if (success) {
-      plantList = plant_prov.plantList;
-      debugPrint("Plant List Length: " + plantList.length.toString());
-      setState(() {
-        hasPlant = true;
-      });
-    } else {
-      setState(() {
-        hasPlant = false;
-      });
+    if (context.mounted) {
+      if (success) {
+        plantList = plant_prov.plantList;
+        debugPrint("Plant List Length: " + plantList.length.toString());
+        setState(() {
+          hasPlant = true;
+        });
+      } else {
+        setState(() {
+          hasPlant = false;
+        });
+      }
     }
   }
 

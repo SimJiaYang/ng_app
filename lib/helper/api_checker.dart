@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/data/model/response/api_response.dart';
+import 'package:nurserygardenapp/providers/splash_provider.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/custom_snackbar.dart';
+import 'package:provider/provider.dart';
 
 class ApiChecker {
   static void checkApi(BuildContext context, ApiResponse apiResponse) {
-    if (apiResponse.error is! String &&
-        apiResponse.error == 'Unauthenticated.') {
+    if (apiResponse.error == "Unauthenticated") {
+      showCustomSnackBar(apiResponse.error, context);
+      Provider.of<SplashProvider>(context, listen: false).removeSharedData();
       Navigator.pushNamedAndRemoveUntil(
           context, Routes.getLoginRoute(), (route) => false);
     } else {
@@ -16,7 +19,6 @@ class ApiChecker {
       } else {
         _errorMessage = apiResponse.error;
       }
-      print(_errorMessage);
       showCustomSnackBar(_errorMessage, context);
     }
   }

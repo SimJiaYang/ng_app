@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/data/model/product_model.dart';
 import 'package:nurserygardenapp/providers/product_provider.dart';
 import 'package:nurserygardenapp/util/routes.dart';
-import 'package:nurserygardenapp/view/drawer/drawer_widget.dart';
 import 'package:nurserygardenapp/view/screen/product/widget/product_grid_item.dart';
 import 'package:provider/provider.dart';
 

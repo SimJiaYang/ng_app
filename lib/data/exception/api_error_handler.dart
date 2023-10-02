@@ -30,6 +30,8 @@ class ApiErrorHandler {
               break;
             case DioExceptionType.badResponse:
               switch (error.response?.statusCode) {
+                case 401:
+                  errorDescription = "Unauthenticated";
                 case 404:
                 case 500:
                 case 503:
