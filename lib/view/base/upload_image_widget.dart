@@ -39,7 +39,6 @@ class _UploadImageWidgetState extends State<UploadImageWidget> {
 
   // Data Type
   final picker = ImagePicker();
-  final String _loadFailedImageUrl = Images.load_image_failed;
   String imageUrl = '';
 
   @override

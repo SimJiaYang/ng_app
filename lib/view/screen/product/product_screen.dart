@@ -30,23 +30,23 @@ class _ProductScreenState extends State<ProductScreen> {
 
   Future<void> getProductList() async {
     bool success = await product_prov.getProductList(context);
-    if (!mounted) return;
-    if (success) {
-      productList = await product_prov.productList;
-      debugPrint("Product List Length: " + productList.length.toString());
-      setState(() {
-        hasProduct = true;
-      });
-    } else {
-      setState(() {
-        hasProduct = false;
-      });
+    if (context.mounted) {
+      if (success) {
+        productList = await product_prov.productList;
+        debugPrint("Product List Length: " + productList.length.toString());
+        setState(() {
+          hasProduct = true;
+        });
+      } else {
+        setState(() {
+          hasProduct = false;
+        });
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
           title: Text(

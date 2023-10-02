@@ -3,7 +3,6 @@
 //     final userModel = userModelFromJson(jsonString);
 
 import 'dart:convert';
-import 'dart:io';
 
 UserModel userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
 

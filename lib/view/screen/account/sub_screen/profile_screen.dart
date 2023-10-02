@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -79,26 +76,27 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   Future<void> _getUserInformation() async {
     bool isSuccessful = await user_prov.showUserInformation(context);
-    if (!mounted) return;
-    if (isSuccessful) {
-      debugPrint("User Name: " + user_prov.userModel.data!.name!);
-      setState(() {
-        dateTime = user_prov.userModel.data!.birthDate ?? DateTime.now();
-        profileHeader = user_prov.userModel.data!.name ?? "User";
-        profileHeader = profileHeader + "\'s Profile";
-        _nameController.text = user_prov.userModel.data!.name ?? "";
-        _selectedGender = user_prov.userModel.data!.gender ?? "Male";
-        _emailController.text = user_prov.userModel.data!.email ?? "";
-        _phoneController.text = user_prov.userModel.data!.contactNumber ?? "";
-        _addressController.text = user_prov.userModel.data!.address ?? "";
-        _profileImage =
-            user_prov.userModel.data!.image_url ?? Images.profile_header;
-        _selectedDate = user_prov.userModel.data!.birthDate == null
-            ? "Please enter your birth date"
-            : DateFormat('yyyy-MM-dd')
-                .format(user_prov.userModel.data!.birthDate!)
-                .toString();
-      });
+    if (context.mounted) {
+      if (isSuccessful) {
+        debugPrint("User Name: " + user_prov.userModel.data!.name!);
+        setState(() {
+          dateTime = user_prov.userModel.data!.birthDate ?? DateTime.now();
+          profileHeader = user_prov.userModel.data!.name ?? "User";
+          profileHeader = profileHeader + "\'s Profile";
+          _nameController.text = user_prov.userModel.data!.name ?? "";
+          _selectedGender = user_prov.userModel.data!.gender ?? "Male";
+          _emailController.text = user_prov.userModel.data!.email ?? "";
+          _phoneController.text = user_prov.userModel.data!.contactNumber ?? "";
+          _addressController.text = user_prov.userModel.data!.address ?? "";
+          _profileImage =
+              user_prov.userModel.data!.image_url ?? Images.profile_header;
+          _selectedDate = user_prov.userModel.data!.birthDate == null
+              ? "Please enter your birth date"
+              : DateFormat('yyyy-MM-dd')
+                  .format(user_prov.userModel.data!.birthDate!)
+                  .toString();
+        });
+      }
     }
   }
 

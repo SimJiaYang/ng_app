@@ -33,8 +33,9 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 
   Future<void> _getUserInformation() async {
-    if (!mounted) return;
-    await user_prov.showUserInformation(context);
+    if (context.mounted) {
+      await user_prov.showUserInformation(context);
+    }
   }
 
   @override
