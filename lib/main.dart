@@ -133,4 +133,5 @@ ThemeData light = ThemeData(
     datePickerTheme: DatePickerThemeData(
       backgroundColor: Colors.white,
       surfaceTintColor: Colors.white,
-    ));
+    ),
+    listTileTheme: ListTileThemeData(tileColor: Colors.white));

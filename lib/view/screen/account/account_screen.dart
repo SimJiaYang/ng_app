@@ -56,7 +56,12 @@ class _AccountScreenState extends State<AccountScreen> {
                           : GestureDetector(
                               onTap: () {
                                 Navigator.pushNamed(
-                                    context, Routes.getProfileRoute());
+                                        context, Routes.getProfileRoute())
+                                    .then((value) => {
+                                          if (value == true)
+                                            {_getUserInformation()}
+                                        });
+                                ;
                               },
                               child: Container(
                                 color: Colors.white,
@@ -121,31 +126,6 @@ class _AccountScreenState extends State<AccountScreen> {
                             );
                     },
                   )),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, Routes.getProfileRoute())
-                      .then((value) => {
-                            if (value == "true") {_getUserInformation()}
-                          });
-                },
-                child: ListTile(
-                  leading: Icon(
-                    Icons.badge_outlined,
-                    color: ColorResources.COLOR_BLACK,
-                  ),
-                  title: Text(
-                    "Profile",
-                    style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16,
-                          color: ColorResources.COLOR_BLACK,
-                        ),
-                  ),
-                  trailing: Icon(
-                    Icons.chevron_right_outlined,
-                  ),
-                ),
-              ),
               GestureDetector(
                 onTap: () {},
                 child: ListTile(

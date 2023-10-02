@@ -117,7 +117,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           user_prov.userModel.data!.birthDate != null ? dateTime : null;
       bool isSuccessful = await user_prov.updateUserProfile(context, uInfo);
       if (isSuccessful) {
-        Navigator.pop(context, "true");
+        Navigator.pop(context, true);
       }
     }
   }

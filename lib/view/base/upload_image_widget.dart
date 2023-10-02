@@ -137,26 +137,41 @@ class _UploadImageWidgetState extends State<UploadImageWidget> {
           _showFilePicker(context);
         },
         child: ClipOval(
-          child: SizedBox.fromSize(
-              size: Size.fromRadius(50), // Image radius
-              child: imageUrl == Images.profile_header || imageUrl == "null"
-                  ? Image.asset(Images.profile_header, fit: BoxFit.cover)
-                  : CachedNetworkImage(
-                      filterQuality: FilterQuality.low,
-                      imageUrl: imageUrl,
-                      memCacheHeight: 200,
-                      memCacheWidth: 200,
-                      placeholder: (context, url) => Padding(
-                        padding: const EdgeInsets.all(1.0),
-                        child: Center(
-                            child: CircularProgressIndicator(
-                          color: ColorResources.COLOR_GRAY,
-                        )),
-                      ),
-                      errorWidget: (context, url, error) =>
-                          Image.asset(Images.profile_header, fit: BoxFit.cover),
-                    )),
-        ),
+            child: Stack(children: [
+          SizedBox.fromSize(
+            size: Size.fromRadius(50), // Image radius
+            child: imageUrl == Images.profile_header || imageUrl == "null"
+                ? Image.asset(Images.profile_header, fit: BoxFit.cover)
+                : CachedNetworkImage(
+                    filterQuality: FilterQuality.low,
+                    imageUrl: imageUrl,
+                    memCacheHeight: 200,
+                    memCacheWidth: 200,
+                    placeholder: (context, url) => Padding(
+                      padding: const EdgeInsets.all(1.0),
+                      child: Center(
+                          child: CircularProgressIndicator(
+                        color: ColorResources.COLOR_GRAY,
+                      )),
+                    ),
+                    errorWidget: (context, url, error) =>
+                        Image.asset(Images.profile_header, fit: BoxFit.cover),
+                  ),
+          ),
+          Positioned(
+              top: 73,
+              child: Container(
+                  color: Colors.black.withOpacity(0.35),
+                  padding: EdgeInsets.all(2),
+                  child: SizedBox(
+                      width: 100,
+                      child: Center(
+                        child: Text(
+                          "Edit",
+                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        ),
+                      )))),
+        ])),
       );
     });
   }
