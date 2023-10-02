@@ -163,298 +163,318 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               ? Center(
                   child: CircularProgressIndicator.adaptive(),
                 )
-              : SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: SingleChildScrollView(
-                      physics: BouncingScrollPhysics(),
-                      scrollDirection: Axis.vertical,
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        child: Form(
-                          key: _formKey,
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: double.infinity,
-                                  height: 200,
-                                  child: Stack(
-                                    children: [
-                                      Container(
-                                        height: 160,
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                              image:
-                                                  AssetImage(Images.profile_bg),
-                                              fit: BoxFit.cover),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                        ),
-                                      ),
-                                      Positioned(
-                                        left: 10,
-                                        top: 100,
-                                        child: UploadImageWidget(
-                                            name: "avatar",
-                                            imageUrl: _profileImage,
-                                            resultUrl: (String name, String url,
-                                                String imageName) {
-                                              _handleImage(
-                                                  name, url, imageName);
-                                            }),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                VerticalSpacing(
-                                  height: 10,
-                                ),
-                                Text(
-                                  "Name",
-                                  style: TextStyle(
-                                      color: ColorResources.COLOR_GREY_CHATEAU),
-                                ),
-                                VerticalSpacing(),
-                                CustomTextField(
-                                  hintText: "Please enter your name",
-                                  isShowBorder: true,
-                                  isShowPrefixIcon: true,
-                                  prefixIconUrl: Icon(
-                                    Icons.perm_identity_rounded,
-                                    color: Colors.grey,
-                                  ),
-                                  focusNode: _nameFocus,
-                                  nextFocus: _emailFocus,
-                                  controller: _nameController,
-                                  inputType: TextInputType.text,
-                                ),
-                                VerticalSpacing(
-                                  height: 16,
-                                ),
-                                Text(
-                                  "Gender",
-                                  style: TextStyle(
-                                      color: ColorResources.COLOR_GREY_CHATEAU),
-                                ),
-                                VerticalSpacing(),
-                                Container(
-                                  width: double.infinity,
-                                  child:
-                                      CupertinoSlidingSegmentedControl<String>(
-                                    thumbColor: Theme.of(context).primaryColor,
-                                    groupValue: _selectedGender,
-                                    onValueChanged: (value) {
-                                      if (value != null) {
-                                        setState(() {
-                                          _selectedGender = value;
-                                        });
-                                      }
-                                    },
-                                    children: {
-                                      _gender[0]: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 10, horizontal: 10),
-                                        child: Text(
-                                          _gender[0],
-                                          style: TextStyle(
-                                            color:
-                                                (_selectedGender == _gender[0])
-                                                    ? ColorResources.COLOR_WHITE
-                                                    : ColorResources.COLOR_GREY,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w600,
+              : WillPopScope(
+                  onWillPop: () async {
+                    return userProvider.isLoading ||
+                            userProvider.isSubmitting ||
+                            userProvider.isUploading
+                        ? false
+                        : true;
+                  },
+                  child: SafeArea(
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: SingleChildScrollView(
+                        physics: BouncingScrollPhysics(),
+                        scrollDirection: Axis.vertical,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: Form(
+                            key: _formKey,
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    width: double.infinity,
+                                    height: 200,
+                                    child: Stack(
+                                      children: [
+                                        Container(
+                                          height: 160,
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                                image: AssetImage(
+                                                    Images.profile_bg),
+                                                fit: BoxFit.cover),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10)),
                                           ),
                                         ),
-                                      ),
-                                      _gender[1]: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 10, horizontal: 10),
-                                        child: Text(
-                                          _gender[1],
-                                          style: TextStyle(
-                                            color:
-                                                (_selectedGender == _gender[1])
-                                                    ? ColorResources.COLOR_WHITE
-                                                    : ColorResources.COLOR_GREY,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w600,
-                                          ),
+                                        Positioned(
+                                          left: 10,
+                                          top: 100,
+                                          child: UploadImageWidget(
+                                              name: "avatar",
+                                              imageUrl: _profileImage,
+                                              resultUrl: (String name,
+                                                  String url,
+                                                  String imageName) {
+                                                _handleImage(
+                                                    name, url, imageName);
+                                              }),
                                         ),
-                                      ),
-                                    },
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                VerticalSpacing(
-                                  height: 16,
-                                ),
-                                Text(
-                                  "Email",
-                                  style: TextStyle(
-                                      color: ColorResources.COLOR_GREY_CHATEAU),
-                                ),
-                                VerticalSpacing(),
-                                CustomTextField(
-                                  isReadOnly: true,
-                                  hintText: "Please enter your email",
-                                  isShowBorder: true,
-                                  isShowPrefixIcon: true,
-                                  prefixIconUrl: Icon(
-                                    Icons.email_outlined,
-                                    color: Colors.grey,
+                                  VerticalSpacing(
+                                    height: 10,
                                   ),
-                                  focusNode: _emailFocus,
-                                  nextFocus: _phoneFocus,
-                                  controller: _emailController,
-                                  inputType: TextInputType.emailAddress,
-                                ),
-                                VerticalSpacing(
-                                  height: 16,
-                                ),
-                                Text(
-                                  "Phone Number",
-                                  style: TextStyle(
-                                      color: ColorResources.COLOR_GREY_CHATEAU),
-                                ),
-                                VerticalSpacing(),
-                                Row(children: [
-                                  CountryCodePicker(
-                                    enabled: true,
-                                    onChanged: (CountryCode countryCode) {
-                                      _countryDialCode = countryCode.dialCode!;
-                                    },
-                                    initialSelection: _countryDialCode,
-                                    favorite: [_countryDialCode],
-                                    showDropDownButton: true,
-                                    padding: EdgeInsets.zero,
-                                    showFlagMain: true,
-                                    dialogBackgroundColor:
-                                        Theme.of(context).cardColor,
-                                    backgroundColor:
-                                        Theme.of(context).cardColor,
-                                    textStyle: TextStyle(
-                                        color: Theme.of(context)
-                                            .textTheme
-                                            .displayLarge!
-                                            .color),
+                                  Text(
+                                    "Name",
+                                    style: TextStyle(
+                                        color:
+                                            ColorResources.COLOR_GREY_CHATEAU),
                                   ),
-                                  Expanded(
-                                      child: CustomTextField(
-                                    isApplyValidator: false,
-                                    hintText: "Please enter your phone number",
+                                  VerticalSpacing(),
+                                  CustomTextField(
+                                    hintText: "Please enter your name",
                                     isShowBorder: true,
                                     isShowPrefixIcon: true,
-                                    prefixIconUrl: const Icon(
-                                      Icons.phone_outlined,
+                                    prefixIconUrl: Icon(
+                                      Icons.perm_identity_rounded,
                                       color: Colors.grey,
                                     ),
-                                    controller: _phoneController,
-                                    focusNode: _phoneFocus,
-                                    inputType: TextInputType.phone,
-                                    nextFocus: _addressFocus,
-                                  )),
-                                ]),
-                                VerticalSpacing(
-                                  height: 16,
-                                ),
-                                Text(
-                                  "Birth Date",
-                                  style: TextStyle(
-                                      color: ColorResources.COLOR_GREY_CHATEAU),
-                                ),
-                                VerticalSpacing(),
-                                InkWell(
-                                    onTap: () {
-                                      _presentDatePicker(context);
-                                    },
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 16, horizontal: 18),
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                        color: Colors.white,
-                                        border: Border.all(
-                                            width: 1,
-                                            color: ColorResources
-                                                .COLOR_GREY_CHATEAU,
-                                            style: BorderStyle.solid),
-                                      ),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Icon(
-                                            Icons.calendar_month,
-                                            color: Colors.grey,
-                                            size: 15,
-                                          ),
-                                          HorizontalSpacing(
-                                            width: 13,
-                                          ),
-                                          Text(
-                                            _selectedDate,
-                                            style: _selectedDate ==
-                                                    "Please enter your birth date"
-                                                ? TextStyle(
-                                                    fontSize: Dimensions
-                                                        .FONT_SIZE_DEFAULT,
-                                                    color: ColorResources
-                                                        .COLOR_GREY_CHATEAU)
-                                                : Theme.of(context)
-                                                    .textTheme
-                                                    .displayMedium
-                                                    ?.copyWith(
-                                                        color: Theme.of(context)
-                                                            .textTheme
-                                                            .bodyLarge
-                                                            ?.color,
-                                                        fontSize: Dimensions
-                                                            .FONT_SIZE_LARGE),
-                                          )
-                                        ],
-                                      ),
-                                    )),
-                                VerticalSpacing(
-                                  height: 16,
-                                ),
-                                Text(
-                                  "Address",
-                                  style: TextStyle(
-                                      color: ColorResources.COLOR_GREY_CHATEAU),
-                                ),
-                                VerticalSpacing(),
-                                CustomTextField(
-                                  isApplyValidator: false,
-                                  hintText: "Please enter your address",
-                                  isShowBorder: true,
-                                  isShowPrefixIcon: true,
-                                  prefixIconUrl: Icon(
-                                    Icons.location_on_outlined,
-                                    color: Colors.grey,
+                                    focusNode: _nameFocus,
+                                    nextFocus: _emailFocus,
+                                    controller: _nameController,
+                                    inputType: TextInputType.text,
                                   ),
-                                  focusNode: _addressFocus,
-                                  controller: _addressController,
-                                  inputType: TextInputType.streetAddress,
-                                  maxLines: 3,
-                                  inputAction: TextInputAction.done,
-                                ),
-                                VerticalSpacing(
-                                  height: 16,
-                                ),
-                                Consumer<UserProvider>(
-                                    builder: (context, userProvider, child) {
-                                  return CustomButton(
-                                    btnTxt: 'Save',
-                                    onTap: () {
-                                      if (userProvider.isSubmitting) return;
-                                      _handleSubmission();
-                                    },
-                                  );
-                                })
-                              ]),
+                                  VerticalSpacing(
+                                    height: 16,
+                                  ),
+                                  Text(
+                                    "Gender",
+                                    style: TextStyle(
+                                        color:
+                                            ColorResources.COLOR_GREY_CHATEAU),
+                                  ),
+                                  VerticalSpacing(),
+                                  Container(
+                                    width: double.infinity,
+                                    child: CupertinoSlidingSegmentedControl<
+                                        String>(
+                                      thumbColor:
+                                          Theme.of(context).primaryColor,
+                                      groupValue: _selectedGender,
+                                      onValueChanged: (value) {
+                                        if (value != null) {
+                                          setState(() {
+                                            _selectedGender = value;
+                                          });
+                                        }
+                                      },
+                                      children: {
+                                        _gender[0]: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 10, horizontal: 10),
+                                          child: Text(
+                                            _gender[0],
+                                            style: TextStyle(
+                                              color: (_selectedGender ==
+                                                      _gender[0])
+                                                  ? ColorResources.COLOR_WHITE
+                                                  : ColorResources.COLOR_GREY,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                        _gender[1]: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 10, horizontal: 10),
+                                          child: Text(
+                                            _gender[1],
+                                            style: TextStyle(
+                                              color: (_selectedGender ==
+                                                      _gender[1])
+                                                  ? ColorResources.COLOR_WHITE
+                                                  : ColorResources.COLOR_GREY,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                      },
+                                    ),
+                                  ),
+                                  VerticalSpacing(
+                                    height: 16,
+                                  ),
+                                  Text(
+                                    "Email",
+                                    style: TextStyle(
+                                        color:
+                                            ColorResources.COLOR_GREY_CHATEAU),
+                                  ),
+                                  VerticalSpacing(),
+                                  CustomTextField(
+                                    isReadOnly: true,
+                                    hintText: "Please enter your email",
+                                    isShowBorder: true,
+                                    isShowPrefixIcon: true,
+                                    prefixIconUrl: Icon(
+                                      Icons.email_outlined,
+                                      color: Colors.grey,
+                                    ),
+                                    focusNode: _emailFocus,
+                                    nextFocus: _phoneFocus,
+                                    controller: _emailController,
+                                    inputType: TextInputType.emailAddress,
+                                  ),
+                                  VerticalSpacing(
+                                    height: 16,
+                                  ),
+                                  Text(
+                                    "Phone Number",
+                                    style: TextStyle(
+                                        color:
+                                            ColorResources.COLOR_GREY_CHATEAU),
+                                  ),
+                                  VerticalSpacing(),
+                                  Row(children: [
+                                    CountryCodePicker(
+                                      enabled: true,
+                                      onChanged: (CountryCode countryCode) {
+                                        _countryDialCode =
+                                            countryCode.dialCode!;
+                                      },
+                                      initialSelection: _countryDialCode,
+                                      favorite: [_countryDialCode],
+                                      showDropDownButton: true,
+                                      padding: EdgeInsets.zero,
+                                      showFlagMain: true,
+                                      dialogBackgroundColor:
+                                          Theme.of(context).cardColor,
+                                      backgroundColor:
+                                          Theme.of(context).cardColor,
+                                      textStyle: TextStyle(
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .displayLarge!
+                                              .color),
+                                    ),
+                                    Expanded(
+                                        child: CustomTextField(
+                                      isApplyValidator: false,
+                                      hintText:
+                                          "Please enter your phone number",
+                                      isShowBorder: true,
+                                      isShowPrefixIcon: true,
+                                      prefixIconUrl: const Icon(
+                                        Icons.phone_outlined,
+                                        color: Colors.grey,
+                                      ),
+                                      controller: _phoneController,
+                                      focusNode: _phoneFocus,
+                                      inputType: TextInputType.phone,
+                                      nextFocus: _addressFocus,
+                                    )),
+                                  ]),
+                                  VerticalSpacing(
+                                    height: 16,
+                                  ),
+                                  Text(
+                                    "Birth Date",
+                                    style: TextStyle(
+                                        color:
+                                            ColorResources.COLOR_GREY_CHATEAU),
+                                  ),
+                                  VerticalSpacing(),
+                                  InkWell(
+                                      onTap: () {
+                                        _presentDatePicker(context);
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 16, horizontal: 18),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          color: Colors.white,
+                                          border: Border.all(
+                                              width: 1,
+                                              color: ColorResources
+                                                  .COLOR_GREY_CHATEAU,
+                                              style: BorderStyle.solid),
+                                        ),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Icon(
+                                              Icons.calendar_month,
+                                              color: Colors.grey,
+                                              size: 15,
+                                            ),
+                                            HorizontalSpacing(
+                                              width: 13,
+                                            ),
+                                            Text(
+                                              _selectedDate,
+                                              style: _selectedDate ==
+                                                      "Please enter your birth date"
+                                                  ? TextStyle(
+                                                      fontSize: Dimensions
+                                                          .FONT_SIZE_DEFAULT,
+                                                      color: ColorResources
+                                                          .COLOR_GREY_CHATEAU)
+                                                  : Theme.of(context)
+                                                      .textTheme
+                                                      .displayMedium
+                                                      ?.copyWith(
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .bodyLarge
+                                                                  ?.color,
+                                                          fontSize: Dimensions
+                                                              .FONT_SIZE_LARGE),
+                                            )
+                                          ],
+                                        ),
+                                      )),
+                                  VerticalSpacing(
+                                    height: 16,
+                                  ),
+                                  Text(
+                                    "Address",
+                                    style: TextStyle(
+                                        color:
+                                            ColorResources.COLOR_GREY_CHATEAU),
+                                  ),
+                                  VerticalSpacing(),
+                                  CustomTextField(
+                                    isApplyValidator: false,
+                                    hintText: "Please enter your address",
+                                    isShowBorder: true,
+                                    isShowPrefixIcon: true,
+                                    prefixIconUrl: Icon(
+                                      Icons.location_on_outlined,
+                                      color: Colors.grey,
+                                    ),
+                                    focusNode: _addressFocus,
+                                    controller: _addressController,
+                                    inputType: TextInputType.streetAddress,
+                                    maxLines: 3,
+                                    inputAction: TextInputAction.done,
+                                  ),
+                                  VerticalSpacing(
+                                    height: 16,
+                                  ),
+                                  Consumer<UserProvider>(
+                                      builder: (context, userProvider, child) {
+                                    return CustomButton(
+                                      btnTxt: 'Save',
+                                      onTap: () {
+                                        if (userProvider.isSubmitting) return;
+                                        _handleSubmission();
+                                      },
+                                    );
+                                  })
+                                ]),
+                          ),
                         ),
                       ),
                     ),
