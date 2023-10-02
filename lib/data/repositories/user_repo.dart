@@ -47,4 +47,18 @@ class UserRepo {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
     }
   }
+
+  Future<ApiResponse> updatePassword(
+      String oldPassword, String newPassword) async {
+    try {
+      Response response =
+          await dioClient.post(AppConstants.CHANGE_PASSWORD_URI, data: {
+        "old_password": oldPassword,
+        "new_password": newPassword,
+      });
+      return ApiResponse.withSuccess(response);
+    } catch (e) {
+      return ApiResponse.withError(ApiErrorHandler.getMessage(e));
+    }
+  }
 }

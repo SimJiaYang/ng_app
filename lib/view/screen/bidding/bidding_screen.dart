@@ -18,7 +18,7 @@ class _BiddingScreenState extends State<BiddingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    // Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Text(

@@ -26,6 +26,8 @@ class Routes {
   // Account
   static const String ACCOUNT_SCREEN = '/account';
   static const String PROFILE_SCREEN = '/profile';
+  static const String SETTINGS_SCREEN = '/settings';
+  static const String CHANGE_PASSWORD_SCREEN = '/change-password';
 
   /** ROUTE **/
   static String getComingSoonRoute() => COMING_SOON;
@@ -57,4 +59,6 @@ class Routes {
   // Account
   static String getAcocuntRoute() => ACCOUNT_SCREEN;
   static String getProfileRoute() => PROFILE_SCREEN;
+  static String getSettingsRoute() => SETTINGS_SCREEN;
+  static String getChangePasswordRoute() => CHANGE_PASSWORD_SCREEN;
 }

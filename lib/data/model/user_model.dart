@@ -34,6 +34,7 @@ class UserModel {
 }
 
 class UserData {
+  int? id;
   String? name;
   String? address;
   String? email;
@@ -44,6 +45,7 @@ class UserData {
   DateTime? birthDate;
 
   UserData({
+    this.id,
     this.name,
     this.email,
     this.address,
@@ -55,6 +57,7 @@ class UserData {
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) => UserData(
+        id: json["id"],
         name: json["name"],
         email: json["email"],
         address: json["address"],
@@ -68,6 +71,7 @@ class UserData {
       );
 
   Map<String, dynamic> toJson() => {
+        "id": id,
         "name": name,
         "email": email,
         "address": address,

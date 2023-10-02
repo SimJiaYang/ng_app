@@ -74,6 +74,27 @@ class UserProvider extends ChangeNotifier {
     return result;
   }
 
+  // Changes Password
+  Future<bool> updatePassword(
+      BuildContext context, String oldPassword, String newPassword) async {
+    _isUploading = true;
+    notifyListeners();
+    bool result = false;
+    ApiResponse apiResponse =
+        await userRepo.updatePassword(oldPassword, newPassword);
+
+    if (context.mounted) {
+      result = ResponseHelper.responseHelper(context, apiResponse);
+      if (result) {
+        showCustomSnackBar('Success', context,
+            type: AppConstants.SNACKBAR_SUCCESS);
+      }
+    }
+    _isUploading = false;
+    notifyListeners();
+    return result;
+  }
+
   // ---------------------------User Profile Image Handling------------------------//
   Future<bool> upload(File file, String key, BuildContext context) async {
     bool result = false;

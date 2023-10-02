@@ -128,61 +128,115 @@ class _AccountScreenState extends State<AccountScreen> {
                   )),
               GestureDetector(
                 onTap: () {},
-                child: ListTile(
-                  leading: Icon(
-                    Icons.list_alt_outlined,
-                    color: ColorResources.COLOR_BLACK,
-                  ),
-                  title: Text(
-                    "Orders",
-                    style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16,
-                          color: ColorResources.COLOR_BLACK,
-                        ),
-                  ),
-                  trailing: Icon(
-                    Icons.chevron_right_outlined,
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {},
-                child: ListTile(
-                  leading: Icon(
-                    Icons.local_shipping_outlined,
-                    color: ColorResources.COLOR_BLACK,
-                  ),
-                  title: Text(
-                    "Delivery",
-                    style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16,
-                          color: ColorResources.COLOR_BLACK,
-                        ),
-                  ),
-                  trailing: Icon(
-                    Icons.chevron_right_outlined,
+                child: Container(
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                    color: ColorResources.COLOR_GREY.withOpacity(0.3),
+                    width: 0.5,
+                  ))),
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.list_alt_outlined,
+                      color: ColorResources.COLOR_BLACK,
+                    ),
+                    title: Text(
+                      "Orders",
+                      style: Theme.of(context).textTheme.displayLarge!.copyWith(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16,
+                            color: ColorResources.COLOR_BLACK,
+                          ),
+                    ),
+                    trailing: Icon(
+                      Icons.chevron_right_outlined,
+                    ),
                   ),
                 ),
               ),
               GestureDetector(
                 onTap: () {},
-                child: ListTile(
-                  leading: Icon(
-                    Icons.money_off_csred_outlined,
-                    color: ColorResources.COLOR_BLACK,
+                child: Container(
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                    color: ColorResources.COLOR_GREY.withOpacity(0.3),
+                    width: 0.5,
+                  ))),
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.local_shipping_outlined,
+                      color: ColorResources.COLOR_BLACK,
+                    ),
+                    title: Text(
+                      "Delivery",
+                      style: Theme.of(context).textTheme.displayLarge!.copyWith(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16,
+                            color: ColorResources.COLOR_BLACK,
+                          ),
+                    ),
+                    trailing: Icon(
+                      Icons.chevron_right_outlined,
+                    ),
                   ),
-                  title: Text(
-                    "Bidding Refund",
-                    style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16,
-                          color: ColorResources.COLOR_BLACK,
-                        ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {},
+                child: Container(
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                    color: ColorResources.COLOR_GREY.withOpacity(0.3),
+                    width: 0.5,
+                  ))),
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.money_off_csred_outlined,
+                      color: ColorResources.COLOR_BLACK,
+                    ),
+                    title: Text(
+                      "Bidding Refund",
+                      style: Theme.of(context).textTheme.displayLarge!.copyWith(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16,
+                            color: ColorResources.COLOR_BLACK,
+                          ),
+                    ),
+                    trailing: Icon(
+                      Icons.chevron_right_outlined,
+                    ),
                   ),
-                  trailing: Icon(
-                    Icons.chevron_right_outlined,
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, Routes.getSettingsRoute());
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                    color: ColorResources.COLOR_GREY.withOpacity(0.3),
+                    width: 0.5,
+                  ))),
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.settings_outlined,
+                      color: ColorResources.COLOR_BLACK,
+                    ),
+                    title: Text(
+                      "Account Settings",
+                      style: Theme.of(context).textTheme.displayLarge!.copyWith(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16,
+                            color: ColorResources.COLOR_BLACK,
+                          ),
+                    ),
+                    trailing: Icon(
+                      Icons.chevron_right_outlined,
+                    ),
                   ),
                 ),
               ),
