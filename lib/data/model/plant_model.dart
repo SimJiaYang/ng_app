@@ -10,9 +10,9 @@ PlantModel plantModelFromJson(String str) =>
 String plantModelToJson(PlantModel data) => json.encode(data.toJson());
 
 class PlantModel {
-  final bool? success;
-  final Data? data;
-  final String? error;
+  bool? success;
+  Data? data;
+  String? error;
 
   PlantModel({
     this.success,
@@ -34,42 +34,111 @@ class PlantModel {
 }
 
 class Data {
-  final List<Plant>? plant;
+  PlantList? plantList;
 
   Data({
-    this.plant,
+    this.plantList,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-        plant: json["plant"] == null
-            ? []
-            : List<Plant>.from(json["plant"]!.map((x) => Plant.fromJson(x))),
+        plantList:
+            json["plant"] == null ? null : PlantList.fromJson(json["plant"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "plant": plant == null
+        "plant": plantList?.toJson(),
+      };
+}
+
+class PlantList {
+  int? currentPage;
+  List<Plant>? plant;
+  String? firstPageUrl;
+  int? from;
+  int? lastPage;
+  String? lastPageUrl;
+  List<Link>? links;
+  String? nextPageUrl;
+  String? path;
+  int? perPage;
+  dynamic prevPageUrl;
+  int? to;
+  int? total;
+
+  PlantList({
+    this.currentPage,
+    this.plant,
+    this.firstPageUrl,
+    this.from,
+    this.lastPage,
+    this.lastPageUrl,
+    this.links,
+    this.nextPageUrl,
+    this.path,
+    this.perPage,
+    this.prevPageUrl,
+    this.to,
+    this.total,
+  });
+
+  factory PlantList.fromJson(Map<String, dynamic> json) => PlantList(
+        currentPage: json["current_page"],
+        plant: json["data"] == null
+            ? []
+            : List<Plant>.from(json["data"]!.map((x) => Plant.fromJson(x))),
+        firstPageUrl: json["first_page_url"],
+        from: json["from"],
+        lastPage: json["last_page"],
+        lastPageUrl: json["last_page_url"],
+        links: json["links"] == null
+            ? []
+            : List<Link>.from(json["links"]!.map((x) => Link.fromJson(x))),
+        nextPageUrl: json["next_page_url"],
+        path: json["path"],
+        perPage: json["per_page"],
+        prevPageUrl: json["prev_page_url"],
+        to: json["to"],
+        total: json["total"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "current_page": currentPage,
+        "data": plant == null
             ? []
             : List<dynamic>.from(plant!.map((x) => x.toJson())),
+        "first_page_url": firstPageUrl,
+        "from": from,
+        "last_page": lastPage,
+        "last_page_url": lastPageUrl,
+        "links": links == null
+            ? []
+            : List<dynamic>.from(links!.map((x) => x.toJson())),
+        "next_page_url": nextPageUrl,
+        "path": path,
+        "per_page": perPage,
+        "prev_page_url": prevPageUrl,
+        "to": to,
+        "total": total,
       };
 }
 
 class Plant {
-  final int? id;
-  final String? name;
-  final double? price;
-  final String? description;
-  final int? quantity;
-  final String? sunglightNeed;
-  final String? waterNeed;
-  final String? matureHeight;
-  final String? origin;
-  final String? status;
-  final String? image;
-  final int? catId;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-  final String? categoryName;
-  final String? imageURL;
+  int? id;
+  String? name;
+  double? price;
+  String? description;
+  int? quantity;
+  String? sunglightNeed;
+  String? waterNeed;
+  String? matureHeight;
+  String? origin;
+  String? status;
+  String? image;
+  int? catId;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  String? categoryName;
+  String? imageURL;
 
   Plant({
     this.id,
@@ -93,7 +162,7 @@ class Plant {
   factory Plant.fromJson(Map<String, dynamic> json) => Plant(
         id: json["id"],
         name: json["name"],
-        price: json["price"].toDouble(),
+        price: json["price"]?.toDouble(),
         description: json["description"],
         quantity: json["quantity"],
         sunglightNeed: json["sunglight_need"],
@@ -130,5 +199,29 @@ class Plant {
         "updated_at": updatedAt?.toIso8601String(),
         "category_name": categoryName,
         "image_url": imageURL,
+      };
+}
+
+class Link {
+  String? url;
+  String? label;
+  bool? active;
+
+  Link({
+    this.url,
+    this.label,
+    this.active,
+  });
+
+  factory Link.fromJson(Map<String, dynamic> json) => Link(
+        url: json["url"],
+        label: json["label"],
+        active: json["active"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "url": url,
+        "label": label,
+        "active": active,
       };
 }

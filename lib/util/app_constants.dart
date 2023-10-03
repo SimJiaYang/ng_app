@@ -43,6 +43,7 @@ class AppConstants {
 
   // Plant
   static const String PLANT_URI = '/plant';
+  static const String PLANT_LIST_URI = '/plantlist';
 
   // Product
   static const String PRODUCT_URI = '/product';

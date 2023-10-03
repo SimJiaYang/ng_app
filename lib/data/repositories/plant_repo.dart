@@ -14,9 +14,10 @@ class PlantRepo {
     required this.sharedPreferences,
   });
 
-  Future<ApiResponse> getPlantList() async {
+  Future<ApiResponse> getPlantList(param) async {
     try {
-      Response response = await dioClient.get(AppConstants.PLANT_URI);
+      Response response =
+          await dioClient.get('${AppConstants.PLANT_LIST_URI}$param');
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
