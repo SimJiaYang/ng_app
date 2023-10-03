@@ -42,11 +42,10 @@ class AppConstants {
   static const String CHANGE_PASSWORD_URI = '/profile/password/update';
 
   // Plant
-  static const String PLANT_URI = '/plant';
   static const String PLANT_LIST_URI = '/plantlist';
 
   // Product
-  static const String PRODUCT_URI = '/product';
+  static const String PRODUCT_LIST_URI = '/productlist';
 
   // Shared Key
   static const String THEME = 'theme';

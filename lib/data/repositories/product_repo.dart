@@ -14,9 +14,10 @@ class ProductRepo {
     required this.sharedPreferences,
   });
 
-  Future<ApiResponse> getProductList() async {
+  Future<ApiResponse> getProductList(param) async {
     try {
-      Response response = await dioClient.get(AppConstants.PRODUCT_URI);
+      Response response =
+          await dioClient.get('${AppConstants.PRODUCT_LIST_URI}$param');
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));

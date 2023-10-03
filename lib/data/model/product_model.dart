@@ -10,9 +10,9 @@ ProductModel productModelFromJson(String str) =>
 String productModelToJson(ProductModel data) => json.encode(data.toJson());
 
 class ProductModel {
-  final bool? success;
-  final Data? data;
-  final String? error;
+  bool? success;
+  Data? data;
+  String? error;
 
   ProductModel({
     this.success,
@@ -34,39 +34,108 @@ class ProductModel {
 }
 
 class Data {
-  final List<Product>? product;
+  ProductsList? productsList;
 
   Data({
-    this.product,
+    this.productsList,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-        product: json["product"] == null
-            ? []
-            : List<Product>.from(
-                json["product"]!.map((x) => Product.fromJson(x))),
+        productsList: json["products"] == null
+            ? null
+            : ProductsList.fromJson(json["products"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "product": product == null
+        "products": productsList?.toJson(),
+      };
+}
+
+class ProductsList {
+  int? currentPage;
+  List<Product>? product;
+  String? firstPageUrl;
+  int? from;
+  int? lastPage;
+  String? lastPageUrl;
+  List<Link>? links;
+  String? nextPageUrl;
+  String? path;
+  int? perPage;
+  dynamic prevPageUrl;
+  int? to;
+  int? total;
+
+  ProductsList({
+    this.currentPage,
+    this.product,
+    this.firstPageUrl,
+    this.from,
+    this.lastPage,
+    this.lastPageUrl,
+    this.links,
+    this.nextPageUrl,
+    this.path,
+    this.perPage,
+    this.prevPageUrl,
+    this.to,
+    this.total,
+  });
+
+  factory ProductsList.fromJson(Map<String, dynamic> json) => ProductsList(
+        currentPage: json["current_page"],
+        product: json["data"] == null
+            ? []
+            : List<Product>.from(json["data"]!.map((x) => Product.fromJson(x))),
+        firstPageUrl: json["first_page_url"],
+        from: json["from"],
+        lastPage: json["last_page"],
+        lastPageUrl: json["last_page_url"],
+        links: json["links"] == null
+            ? []
+            : List<Link>.from(json["links"]!.map((x) => Link.fromJson(x))),
+        nextPageUrl: json["next_page_url"],
+        path: json["path"],
+        perPage: json["per_page"],
+        prevPageUrl: json["prev_page_url"],
+        to: json["to"],
+        total: json["total"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "current_page": currentPage,
+        "data": product == null
             ? []
             : List<dynamic>.from(product!.map((x) => x.toJson())),
+        "first_page_url": firstPageUrl,
+        "from": from,
+        "last_page": lastPage,
+        "last_page_url": lastPageUrl,
+        "links": links == null
+            ? []
+            : List<dynamic>.from(links!.map((x) => x.toJson())),
+        "next_page_url": nextPageUrl,
+        "path": path,
+        "per_page": perPage,
+        "prev_page_url": prevPageUrl,
+        "to": to,
+        "total": total,
       };
 }
 
 class Product {
-  final int? id;
-  final String? name;
-  final double? price;
-  final String? description;
-  final int? quantity;
-  final String? status;
-  final String? image;
-  final int? catId;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-  final String? categoryName;
-  final String? imageURL;
+  int? id;
+  String? name;
+  double? price;
+  String? description;
+  int? quantity;
+  String? status;
+  String? image;
+  int? catId;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  String? categoryName;
+  String? imageURL;
 
   Product({
     this.id,
@@ -86,7 +155,7 @@ class Product {
   factory Product.fromJson(Map<String, dynamic> json) => Product(
         id: json["id"],
         name: json["name"],
-        price: json["price"].toDouble(),
+        price: json["price"]?.toDouble(),
         description: json["description"],
         quantity: json["quantity"],
         status: json["status"],
@@ -115,5 +184,29 @@ class Product {
         "updated_at": updatedAt?.toIso8601String(),
         "category_name": categoryName,
         "image_url": imageURL,
+      };
+}
+
+class Link {
+  String? url;
+  String? label;
+  bool? active;
+
+  Link({
+    this.url,
+    this.label,
+    this.active,
+  });
+
+  factory Link.fromJson(Map<String, dynamic> json) => Link(
+        url: json["url"],
+        label: json["label"],
+        active: json["active"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "url": url,
+        "label": label,
+        "active": active,
       };
 }

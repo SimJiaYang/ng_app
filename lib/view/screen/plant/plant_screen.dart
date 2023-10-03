@@ -16,14 +16,21 @@ class _PlantScreenState extends State<PlantScreen> {
       Provider.of<PlantProvider>(context, listen: false);
 
   bool _isEmptyPlant = false;
-
   final _scrollController = ScrollController();
+
+  bool _isLoadingData = false;
+
   // Param
   var params = {
     'limit': '8',
   };
 
   void _loadData({bool isLoadMore = false}) {
+    if (isLoadMore) {
+      setState(() {
+        _isLoadingData = true;
+      });
+    }
     plant_prov
         .listOfPlant(context, params, isLoadMore: isLoadMore)
         .then((value) => {
@@ -31,6 +38,13 @@ class _PlantScreenState extends State<PlantScreen> {
                 {
                   setState(() {
                     _isEmptyPlant = true;
+                    _isLoadingData = false;
+                  })
+                }
+              else
+                {
+                  setState(() {
+                    _isLoadingData = false;
                   })
                 }
             });
@@ -44,7 +58,6 @@ class _PlantScreenState extends State<PlantScreen> {
       currentLimit += 8;
       params['limit'] = currentLimit.toString();
       _loadData(isLoadMore: true);
-      setState(() {});
     }
   }
 
@@ -80,61 +93,59 @@ class _PlantScreenState extends State<PlantScreen> {
             ));
           }
           return SafeArea(
-            child: GridView.builder(
-              shrinkWrap: true,
-              controller: _scrollController,
-              physics: BouncingScrollPhysics(),
-              itemCount: plantProvider.plantList.length +
-                  ((plantProvider.isLoading &&
-                              plantProvider.plantList.length > 8) ||
-                          plantProvider.noMoreDataMessage.isNotEmpty
-                      ? 1
-                      : 0),
-              padding: const EdgeInsets.all(10),
-              primary: false,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 3 / 4,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-              ),
-              itemBuilder: (BuildContext context, int index) {
-                if (index == plantProvider.plantList.length &&
-                    plantProvider.noMoreDataMessage.isEmpty) {
-                  return Center(
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                          Theme.of(context).primaryColor),
-                    ),
-                  );
-                } else if (index == plantProvider.plantList.length &&
-                    plantProvider.noMoreDataMessage.isNotEmpty) {
-                  return Container(
-                    height: 60,
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Center(
-                      child: Text(plantProvider.noMoreDataMessage,
-                          style:
-                              TextStyle(color: Colors.grey.withOpacity(0.5))),
-                    ),
-                  );
-                } else {
-                  return PlantGridItem(
-                    key: ValueKey(plantProvider.plantList.elementAt(index).id),
-                    plant: plantProvider.plantList.elementAt(index),
-                    onTap: () async {
-                      await Navigator.pushNamed(
-                          context,
-                          Routes.getPlantDetailRoute(plantProvider.plantList
-                              .elementAt(index)
-                              .id!
-                              .toString()));
-                    },
-                  );
-                }
-              },
+              child: GridView.builder(
+            shrinkWrap: true,
+            controller: _scrollController,
+            physics: BouncingScrollPhysics(),
+            itemCount: plantProvider.plantList.length +
+                ((plantProvider.isLoading &&
+                            plantProvider.plantList.length > 8) ||
+                        plantProvider.noMoreDataMessage.isNotEmpty
+                    ? 1
+                    : 0),
+            padding: const EdgeInsets.all(10),
+            primary: false,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 3 / 4,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
             ),
-          );
+            itemBuilder: (BuildContext context, int index) {
+              if (index == plantProvider.plantList.length &&
+                  plantProvider.noMoreDataMessage.isEmpty) {
+                return Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                        Theme.of(context).primaryColor),
+                  ),
+                );
+              } else if (index == plantProvider.plantList.length &&
+                  plantProvider.noMoreDataMessage.isNotEmpty) {
+                return Container(
+                  height: 60,
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Center(
+                    child: Text(plantProvider.noMoreDataMessage,
+                        style: TextStyle(color: Colors.grey.withOpacity(0.5))),
+                  ),
+                );
+              } else {
+                return PlantGridItem(
+                  key: ValueKey(plantProvider.plantList.elementAt(index).id),
+                  plant: plantProvider.plantList.elementAt(index),
+                  onTap: () async {
+                    await Navigator.pushNamed(
+                        context,
+                        Routes.getPlantDetailRoute(plantProvider.plantList
+                            .elementAt(index)
+                            .id!
+                            .toString()));
+                  },
+                );
+              }
+            },
+          ));
         }));
   }
 }
