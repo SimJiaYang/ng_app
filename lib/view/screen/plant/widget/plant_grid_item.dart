@@ -53,7 +53,7 @@ class _PlantGridItemState extends State<PlantGridItem> {
                         decoration: BoxDecoration(
                           image: DecorationImage(
                             image: imageProvider,
-                            fit: BoxFit.fitWidth,
+                            fit: BoxFit.cover,
                           ),
                         ),
                       ),
