@@ -33,8 +33,13 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 
   Future<void> _getUserInformation() async {
-    if (context.mounted) {
-      await user_prov.showUserInformation(context);
+    await user_prov.showUserInformation(context);
+  }
+
+  @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
     }
   }
 

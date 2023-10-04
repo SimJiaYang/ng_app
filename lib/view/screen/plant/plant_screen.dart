@@ -17,10 +17,7 @@ class _PlantScreenState extends State<PlantScreen> {
   late PlantProvider plant_prov =
       Provider.of<PlantProvider>(context, listen: false);
 
-  bool _isEmptyPlant = false;
   final _scrollController = ScrollController();
-
-  bool _isLoadMore = false;
 
   bool _isFirstTime = true;
 
@@ -33,28 +30,12 @@ class _PlantScreenState extends State<PlantScreen> {
   };
 
   Future<void> _loadData({bool isLoadMore = false}) async {
-    await plant_prov
-        .listOfPlant(context, params, isLoadMore: isLoadMore)
-        .then((value) => {
-              setState(() {
-                _isLoadMore = false;
-                _isFirstTime = false;
-              }),
-              if (plant_prov.plantList.isEmpty)
-                {
-                  setState(() {
-                    _isEmptyPlant = true;
-                  })
-                }
-            });
+    await plant_prov.listOfPlant(context, params, isLoadMore: isLoadMore);
   }
 
   void _onScroll() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
-      setState(() {
-        _isLoadMore = true;
-      });
       if (plant_prov.plantList.length < int.parse(params['limit']!)) return;
       int currentLimit = int.parse(params['limit']!);
       currentLimit += 8;
@@ -125,6 +106,7 @@ class _PlantScreenState extends State<PlantScreen> {
                               )
                             : Expanded(
                                 child: RefreshIndicator(
+                                  key: _refreshIndicatorKey,
                                   onRefresh: () => _loadData(isLoadMore: false),
                                   child: GridView.builder(
                                     shrinkWrap: true,

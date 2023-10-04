@@ -47,6 +47,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     'Female',
   ];
 
+  DateTime oldDate = DateTime.now();
+
   late var _selectedGender = _gender[0];
 
   void _presentDatePicker(BuildContext context) async {
@@ -81,6 +83,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         debugPrint("User Name: " + user_prov.userModel.data!.name!);
         setState(() {
           dateTime = user_prov.userModel.data!.birthDate ?? DateTime.now();
+          oldDate = dateTime;
           profileHeader = user_prov.userModel.data!.name ?? "User";
           profileHeader = profileHeader + "\'s Profile";
           _nameController.text = user_prov.userModel.data!.name ?? "";
@@ -112,7 +115,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       uInfo.image_url = _profileImage;
       uInfo.image = _imageName;
       uInfo.birthDate =
-          user_prov.userModel.data!.birthDate != null ? dateTime : null;
+          user_prov.userModel.data!.birthDate == null && dateTime == oldDate
+              ? null
+              : dateTime;
       bool isSuccessful = await user_prov.updateUserProfile(context, uInfo);
       if (isSuccessful) {
         Navigator.pop(context, true);

@@ -18,9 +18,9 @@ class _ProductScreenState extends State<ProductScreen> {
       Provider.of<ProductProvider>(context, listen: false);
 
   final _scrollController = ScrollController();
-  bool _isEmptyProduct = false;
-  bool _isLoadMore = false;
   bool _isFirstTime = true;
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
 
   // Param
   var params = {
@@ -28,27 +28,12 @@ class _ProductScreenState extends State<ProductScreen> {
   };
 
   Future<void> _loadData({bool isLoadMore = false}) async {
-    await product_prov
-        .listOfProduct(context, params, isLoadMore: isLoadMore)
-        .then((value) => {
-              setState(() {
-                _isLoadMore = false;
-              }),
-              if (product_prov.productList.isEmpty)
-                {
-                  setState(() {
-                    _isEmptyProduct = true;
-                  })
-                }
-            });
+    await product_prov.listOfProduct(context, params, isLoadMore: isLoadMore);
   }
 
   void _onScroll() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
-      setState(() {
-        _isLoadMore = true;
-      });
       if (product_prov.productList.length < int.parse(params['limit']!)) return;
       int currentLimit = int.parse(params['limit']!);
       currentLimit += 8;
@@ -119,6 +104,7 @@ class _ProductScreenState extends State<ProductScreen> {
                               )
                             : Expanded(
                                 child: RefreshIndicator(
+                                  key: _refreshIndicatorKey,
                                   onRefresh: () => _loadData(isLoadMore: false),
                                   child: GridView.builder(
                                     shrinkWrap: true,
