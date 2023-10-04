@@ -60,7 +60,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                           color: ColorResources.COLOR_WHITE,
                           width: double.infinity,
                           child: CachedNetworkImage(
-                            filterQuality: FilterQuality.medium,
+                            filterQuality: FilterQuality.high,
                             height: 280,
                             fit: BoxFit.fitHeight,
                             imageUrl: "${plant.imageURL!}",
@@ -184,129 +184,141 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               // Show Origin
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Center(
-                                    child: Text("Plant\nOrigin",
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Center(
+                                      child: Text("Plant\nOrigin",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleLarge!
+                                              .copyWith(
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 18,
+                                                  color: ColorResources
+                                                      .COLOR_BLACK
+                                                      .withOpacity(0.8))),
+                                    ),
+                                    VerticalSpacing(
+                                      height: 10,
+                                    ),
+                                    Text("${plant.origin}",
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleLarge!
                                             .copyWith(
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 18,
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 16,
                                                 color: ColorResources
                                                     .COLOR_BLACK
                                                     .withOpacity(0.8))),
-                                  ),
-                                  VerticalSpacing(
-                                    height: 10,
-                                  ),
-                                  Text("${plant.origin}",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleLarge!
-                                          .copyWith(
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 16,
-                                              color: ColorResources.COLOR_BLACK
-                                                  .withOpacity(0.8))),
-                                ],
+                                  ],
+                                ),
                               ),
 
                               // Sunlight Need
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Center(
-                                    child: Text("Sunlight\n  Need",
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Center(
+                                      child: Text("Sunlight\n  Need",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleLarge!
+                                              .copyWith(
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 18,
+                                                  color: ColorResources
+                                                      .COLOR_BLACK
+                                                      .withOpacity(0.8))),
+                                    ),
+                                    VerticalSpacing(
+                                      height: 10,
+                                    ),
+                                    Text("${plant.sunglightNeed}",
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleLarge!
                                             .copyWith(
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 18,
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 16,
                                                 color: ColorResources
                                                     .COLOR_BLACK
                                                     .withOpacity(0.8))),
-                                  ),
-                                  VerticalSpacing(
-                                    height: 10,
-                                  ),
-                                  Text("${plant.sunglightNeed}",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleLarge!
-                                          .copyWith(
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 16,
-                                              color: ColorResources.COLOR_BLACK
-                                                  .withOpacity(0.8))),
-                                ],
+                                  ],
+                                ),
                               ),
                               // Water Need
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Center(
-                                    child: Text("Water\nNeed",
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Center(
+                                      child: Text("Water\nNeed",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleLarge!
+                                              .copyWith(
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 18,
+                                                  color: ColorResources
+                                                      .COLOR_BLACK
+                                                      .withOpacity(0.8))),
+                                    ),
+                                    VerticalSpacing(
+                                      height: 10,
+                                    ),
+                                    Text("${plant.waterNeed}",
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleLarge!
                                             .copyWith(
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 18,
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 16,
                                                 color: ColorResources
                                                     .COLOR_BLACK
                                                     .withOpacity(0.8))),
-                                  ),
-                                  VerticalSpacing(
-                                    height: 10,
-                                  ),
-                                  Text("${plant.waterNeed}",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleLarge!
-                                          .copyWith(
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 16,
-                                              color: ColorResources.COLOR_BLACK
-                                                  .withOpacity(0.8))),
-                                ],
+                                  ],
+                                ),
                               ),
                               // Height
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Center(
-                                    child: Text("Mature\n Height",
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Center(
+                                      child: Text("Mature\n Height",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleLarge!
+                                              .copyWith(
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 18,
+                                                  color: ColorResources
+                                                      .COLOR_BLACK
+                                                      .withOpacity(0.8))),
+                                    ),
+                                    VerticalSpacing(
+                                      height: 10,
+                                    ),
+                                    Text("${plant.matureHeight} m",
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleLarge!
                                             .copyWith(
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 18,
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 16,
                                                 color: ColorResources
                                                     .COLOR_BLACK
                                                     .withOpacity(0.8))),
-                                  ),
-                                  VerticalSpacing(
-                                    height: 10,
-                                  ),
-                                  Text("${plant.matureHeight} m",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleLarge!
-                                          .copyWith(
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 16,
-                                              color: ColorResources.COLOR_BLACK
-                                                  .withOpacity(0.8))),
-                                ],
+                                  ],
+                                ),
                               ),
                             ],
                           ),
