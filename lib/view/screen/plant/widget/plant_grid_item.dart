@@ -45,7 +45,7 @@ class _PlantGridItemState extends State<PlantGridItem> {
                 Expanded(
                     flex: 1,
                     child: CachedNetworkImage(
-                      filterQuality: FilterQuality.low,
+                      filterQuality: FilterQuality.high,
                       imageUrl: "${widget.plant.imageURL!}",
                       memCacheHeight: 200,
                       memCacheWidth: 200,
@@ -53,7 +53,7 @@ class _PlantGridItemState extends State<PlantGridItem> {
                         decoration: BoxDecoration(
                           image: DecorationImage(
                             image: imageProvider,
-                            fit: BoxFit.cover,
+                            fit: BoxFit.fitHeight,
                           ),
                         ),
                       ),

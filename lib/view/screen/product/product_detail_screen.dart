@@ -65,7 +65,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 height: 280,
                                 fit: BoxFit.fitHeight,
                                 imageUrl: "${product.imageURL!}",
-                                filterQuality: FilterQuality.medium,
+                                filterQuality: FilterQuality.high,
                                 memCacheHeight: 200,
                                 memCacheWidth: 200,
                                 placeholder: (context, url) => Padding(
@@ -117,67 +117,51 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               color: ColorResources.COLOR_WHITE,
                               padding: EdgeInsets.all(16),
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Category:",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleLarge!
-                                              .copyWith(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 16,
-                                                  color: ColorResources
-                                                      .COLOR_BLACK
-                                                      .withOpacity(0.8))),
-                                      HorizontalSpacing(
-                                        width: 5,
-                                      ),
-                                      Text("${product.categoryName}",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleLarge!
-                                              .copyWith(
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 16,
-                                                  color: ColorResources
-                                                      .COLOR_BLACK
-                                                      .withOpacity(0.8))),
-                                    ],
+                                  Text("Category:",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge!
+                                          .copyWith(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 13,
+                                              color: ColorResources.COLOR_BLACK
+                                                  .withOpacity(0.8))),
+                                  HorizontalSpacing(
+                                    width: 3,
                                   ),
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Inventory:",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleLarge!
-                                              .copyWith(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 16,
-                                                  color: ColorResources
-                                                      .COLOR_BLACK
-                                                      .withOpacity(0.8))),
-                                      HorizontalSpacing(
-                                        width: 5,
-                                      ),
-                                      Text("${product.quantity}",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleLarge!
-                                              .copyWith(
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 16,
-                                                  color: ColorResources
-                                                      .COLOR_BLACK
-                                                      .withOpacity(0.8))),
-                                    ],
-                                  )
+                                  Text("${product.categoryName}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge!
+                                          .copyWith(
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 13,
+                                              color: ColorResources.COLOR_BLACK
+                                                  .withOpacity(0.8))),
+                                  Expanded(child: Container()),
+                                  Text("Inventory:",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge!
+                                          .copyWith(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 13,
+                                              color: ColorResources.COLOR_BLACK
+                                                  .withOpacity(0.8))),
+                                  HorizontalSpacing(
+                                    width: 3,
+                                  ),
+                                  Text("${product.quantity}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge!
+                                          .copyWith(
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 13,
+                                              color: ColorResources.COLOR_BLACK
+                                                  .withOpacity(0.8)))
                                 ],
                               ),
                             ),
@@ -197,7 +181,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                           .titleLarge!
                                           .copyWith(
                                               fontWeight: FontWeight.w500,
-                                              fontSize: 18,
+                                              fontSize: 13,
                                               color: ColorResources.COLOR_BLACK
                                                   .withOpacity(0.8))),
                                   VerticalSpacing(
@@ -209,7 +193,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                           .titleLarge!
                                           .copyWith(
                                               fontWeight: FontWeight.w400,
-                                              fontSize: 16,
+                                              fontSize: 13,
                                               color: ColorResources.COLOR_BLACK
                                                   .withOpacity(0.8))),
                                 ],

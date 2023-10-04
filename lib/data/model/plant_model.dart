@@ -128,7 +128,7 @@ class Plant {
   double? price;
   String? description;
   int? quantity;
-  String? sunglightNeed;
+  String? sunlightNeed;
   String? waterNeed;
   String? matureHeight;
   String? origin;
@@ -146,7 +146,7 @@ class Plant {
     this.price,
     this.description,
     this.quantity,
-    this.sunglightNeed,
+    this.sunlightNeed,
     this.waterNeed,
     this.matureHeight,
     this.origin,
@@ -165,7 +165,7 @@ class Plant {
         price: json["price"]?.toDouble(),
         description: json["description"],
         quantity: json["quantity"],
-        sunglightNeed: json["sunglight_need"],
+        sunlightNeed: json["sunlight_need"],
         waterNeed: json["water_need"],
         matureHeight: json["mature_height"],
         origin: json["origin"],
@@ -188,7 +188,7 @@ class Plant {
         "price": price,
         "description": description,
         "quantity": quantity,
-        "sunglight_need": sunglightNeed,
+        "sunlight_need": sunlightNeed,
         "water_need": waterNeed,
         "mature_height": matureHeight,
         "origin": origin,
