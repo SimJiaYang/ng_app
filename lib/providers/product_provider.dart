@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/widgets.dart';
 import 'package:nurserygardenapp/data/model/product_model.dart';
 import 'package:nurserygardenapp/data/model/response/api_response.dart';
@@ -45,6 +47,7 @@ class ProductProvider extends ChangeNotifier {
       if (result) {
         _productModel = ProductModel.fromJson(apiResponse.response!.data);
         _productList = _productModel.data!.productsList!.product ?? [];
+        // setProductListInfo(_productList);
         if (_productList.length < limit && limit > 8) {
           _noMoreDataMessage = AppConstants.NO_MORE_DATA;
         }
@@ -55,5 +58,34 @@ class ProductProvider extends ChangeNotifier {
     notifyListeners();
 
     return result;
+  }
+
+  /// ================== PRODUCT SAVE IN LOCAL ==================
+  Future<void> setProductListInfo(productInfo) async {
+    try {
+      await sharedPreferences.setString(
+          AppConstants.PRODUCT_TOKEN, json.encode(productInfo));
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  void getProductListInfo() {
+    String productInfo =
+        sharedPreferences.getString(AppConstants.PRODUCT_TOKEN) ?? '';
+    if (productInfo.isNotEmpty) {
+      List<dynamic> decodedData = json.decode(productInfo);
+      List<Product> productListInfo =
+          decodedData.map((item) => Product.fromJson(item)).toList();
+      _productList = productListInfo;
+      notifyListeners();
+    } else {
+      _productList = [];
+      notifyListeners();
+    }
+  }
+
+  Future<void> clearProductListData() async {
+    await sharedPreferences.remove(AppConstants.PRODUCT_TOKEN);
   }
 }

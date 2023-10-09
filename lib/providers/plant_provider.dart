@@ -31,7 +31,6 @@ class PlantProvider extends ChangeNotifier {
     if (!isLoadMore) {
       _plantList = [];
       _noMoreDataMessage = '';
-      clearPlantListData();
     }
 
     bool result = false;
@@ -48,7 +47,7 @@ class PlantProvider extends ChangeNotifier {
       if (result) {
         _plantModel = PlantModel.fromJson(apiResponse.response!.data);
         _plantList = _plantModel.data!.plantList!.plant ?? [];
-        setPlantListInfo(_plantList);
+        // setPlantListInfo(_plantList);
         if (_plantList.length < limit && limit > 8) {
           _noMoreDataMessage = AppConstants.NO_MORE_DATA;
         }
@@ -82,6 +81,7 @@ class PlantProvider extends ChangeNotifier {
       notifyListeners();
     } else {
       _plantList = [];
+      notifyListeners();
     }
   }
 

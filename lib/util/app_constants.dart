@@ -51,4 +51,5 @@ class AppConstants {
   static const String THEME = 'theme';
   static const String TOKEN = 'token';
   static const String PLANT_TOKEN = 'plant_token';
+  static const String PRODUCT_TOKEN = 'product_token';
 }

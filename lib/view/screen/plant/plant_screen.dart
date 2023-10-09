@@ -30,9 +30,6 @@ class _PlantScreenState extends State<PlantScreen> {
   };
 
   Future<void> _loadData({bool isLoadMore = false}) async {
-    if (!isLoadMore) {
-      params['limit'] = 8.toString();
-    }
     await plant_prov.listOfPlant(context, params, isLoadMore: isLoadMore);
   }
 
@@ -53,10 +50,7 @@ class _PlantScreenState extends State<PlantScreen> {
     _scrollController.addListener(_onScroll);
     WidgetsFlutterBinding.ensureInitialized();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      plant_prov.getPlantListInfo();
-      if (plant_prov.plantList.isEmpty) {
-        _loadData();
-      }
+      _loadData();
     });
   }
 
