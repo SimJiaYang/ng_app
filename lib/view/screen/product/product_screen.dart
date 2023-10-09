@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/providers/product_provider.dart';
 import 'package:nurserygardenapp/util/routes.dart';
-import 'package:nurserygardenapp/view/base/circular_indicator.dart';
 import 'package:nurserygardenapp/view/base/empty_data_widget.dart';
 import 'package:nurserygardenapp/view/base/empty_grid_item.dart';
 import 'package:nurserygardenapp/view/screen/product/widget/product_grid_item.dart';

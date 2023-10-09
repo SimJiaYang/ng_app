@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/providers/plant_provider.dart';
 import 'package:nurserygardenapp/util/routes.dart';
-import 'package:nurserygardenapp/view/base/circular_indicator.dart';
+
 import 'package:nurserygardenapp/view/base/empty_data_widget.dart';
 import 'package:nurserygardenapp/view/base/empty_grid_item.dart';
 import 'package:nurserygardenapp/view/screen/plant/widget/plant_grid_item.dart';
@@ -19,10 +19,7 @@ class _PlantScreenState extends State<PlantScreen> {
       Provider.of<PlantProvider>(context, listen: false);
 
   final _scrollController = ScrollController();
-
   bool _isFirstTime = true;
-
-  int _firstLimit = 8;
 
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
@@ -33,6 +30,9 @@ class _PlantScreenState extends State<PlantScreen> {
   };
 
   Future<void> _loadData({bool isLoadMore = false}) async {
+    if (!isLoadMore) {
+      params['limit'] = 8.toString();
+    }
     await plant_prov.listOfPlant(context, params, isLoadMore: isLoadMore);
   }
 
@@ -42,7 +42,6 @@ class _PlantScreenState extends State<PlantScreen> {
       if (plant_prov.plantList.length < int.parse(params['limit']!)) return;
       int currentLimit = int.parse(params['limit']!);
       currentLimit += 8;
-      _firstLimit += 8;
       params['limit'] = currentLimit.toString();
       _loadData(isLoadMore: true);
     }
@@ -54,7 +53,10 @@ class _PlantScreenState extends State<PlantScreen> {
     _scrollController.addListener(_onScroll);
     WidgetsFlutterBinding.ensureInitialized();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _loadData();
+      plant_prov.getPlantListInfo();
+      if (plant_prov.plantList.isEmpty) {
+        _loadData();
+      }
     });
   }
 
@@ -111,6 +113,8 @@ class _PlantScreenState extends State<PlantScreen> {
                                     shrinkWrap: true,
                                     controller: _scrollController,
                                     physics: const BouncingScrollPhysics(),
+                                    // physics:
+                                    //     const AlwaysScrollableScrollPhysics(),
                                     itemCount: plantProvider.plantList.length +
                                         ((plantProvider.isLoading &&
                                                 plantProvider

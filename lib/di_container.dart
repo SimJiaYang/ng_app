@@ -36,8 +36,10 @@ Future<void> init() async {
   // Provider
   sl.registerFactory(() => AuthProvider(authRepo: sl()));
   sl.registerFactory(() => SplashProvider(splashRepo: sl()));
-  sl.registerFactory(() => PlantProvider(plantRepo: sl()));
-  sl.registerFactory(() => ProductProvider(productRepo: sl()));
+  sl.registerFactory(
+      () => PlantProvider(plantRepo: sl(), sharedPreferences: sl()));
+  sl.registerFactory(
+      () => ProductProvider(productRepo: sl(), sharedPreferences: sl()));
   sl.registerFactory(
       () => UserProvider(userRepo: sl(), sharedPreferences: sl()));
 

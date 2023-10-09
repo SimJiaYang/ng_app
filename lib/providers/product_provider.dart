@@ -4,10 +4,12 @@ import 'package:nurserygardenapp/data/model/response/api_response.dart';
 import 'package:nurserygardenapp/data/repositories/product_repo.dart';
 import 'package:nurserygardenapp/helper/response_helper.dart';
 import 'package:nurserygardenapp/util/app_constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductProvider extends ChangeNotifier {
   final ProductRepo productRepo;
-  ProductProvider({required this.productRepo});
+  final SharedPreferences sharedPreferences;
+  ProductProvider({required this.productRepo, required this.sharedPreferences});
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;

@@ -50,4 +50,5 @@ class AppConstants {
   // Shared Key
   static const String THEME = 'theme';
   static const String TOKEN = 'token';
+  static const String PLANT_TOKEN = 'plant_token';
 }
