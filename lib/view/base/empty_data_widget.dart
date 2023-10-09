@@ -34,16 +34,16 @@ class _EmptyWidgetState extends State<EmptyWidget> {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          loading
-              ? SizedBox(
-                  height: 3,
-                  child: LinearProgressIndicator(
-                    color: Theme.of(context).primaryColor,
-                    backgroundColor:
-                        Theme.of(context).secondaryHeaderColor.withOpacity(0.2),
-                  ),
-                )
-              : SizedBox(),
+          // loading
+          //     ? SizedBox(
+          //         height: 3,
+          //         child: LinearProgressIndicator(
+          //           color: Theme.of(context).primaryColor,
+          //           backgroundColor:
+          //               Theme.of(context).secondaryHeaderColor.withOpacity(0.2),
+          //         ),
+          //       )
+          //     : SizedBox(),
           widget.large
               ? Container(
                   alignment: AlignmentDirectional.center,

@@ -3,6 +3,7 @@ import 'package:nurserygardenapp/providers/plant_provider.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/circular_indicator.dart';
 import 'package:nurserygardenapp/view/base/empty_data_widget.dart';
+import 'package:nurserygardenapp/view/base/empty_grid_item.dart';
 import 'package:nurserygardenapp/view/screen/plant/widget/plant_grid_item.dart';
 import 'package:provider/provider.dart';
 
@@ -20,6 +21,8 @@ class _PlantScreenState extends State<PlantScreen> {
   final _scrollController = ScrollController();
 
   bool _isFirstTime = true;
+
+  int _firstLimit = 8;
 
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
@@ -39,6 +42,7 @@ class _PlantScreenState extends State<PlantScreen> {
       if (plant_prov.plantList.length < int.parse(params['limit']!)) return;
       int currentLimit = int.parse(params['limit']!);
       currentLimit += 8;
+      _firstLimit += 8;
       params['limit'] = currentLimit.toString();
       _loadData(isLoadMore: true);
     }
@@ -71,59 +75,61 @@ class _PlantScreenState extends State<PlantScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Plant',
-            style: TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: 18,
-            ),
-          ),
-        ),
-        body: SizedBox(
-            height: size.height,
-            width: size.width,
-            child: Consumer<PlantProvider>(
-                builder: (context, plantProvider, child) {
-              return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    plantProvider.plantList.isEmpty &&
-                            _isFirstTime &&
-                            plantProvider.isLoading
-                        ? EmptyWidget(
-                            large: true, isLoading: plantProvider.isLoading)
-                        : plantProvider.plantList.isEmpty &&
-                                !plantProvider.isLoading
-                            ? Center(
-                                child: Text(
-                                  "No Plant",
-                                  style: TextStyle(
-                                      color: Colors.grey.withOpacity(0.7),
-                                      fontSize: 18),
-                                ),
-                              )
-                            : Expanded(
-                                child: RefreshIndicator(
-                                  key: _refreshIndicatorKey,
-                                  onRefresh: () => _loadData(isLoadMore: false),
+        body: SafeArea(
+      child: SizedBox(
+          height: size.height,
+          width: size.width,
+          child:
+              Consumer<PlantProvider>(builder: (context, plantProvider, child) {
+            return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  plantProvider.plantList.isEmpty &&
+                          _isFirstTime &&
+                          plantProvider.isLoading
+                      ? EmptyWidget(
+                          large: true, isLoading: plantProvider.isLoading)
+                      : plantProvider.plantList.isEmpty &&
+                              !plantProvider.isLoading
+                          ? Center(
+                              child: Text(
+                                "No Plant",
+                                style: TextStyle(
+                                    color: Colors.grey.withOpacity(0.7),
+                                    fontSize: 18),
+                              ),
+                            )
+                          : Expanded(
+                              child: RefreshIndicator(
+                                color: Theme.of(context).primaryColor,
+                                key: _refreshIndicatorKey,
+                                onRefresh: () => _loadData(isLoadMore: false),
+                                child: Center(
                                   child: GridView.builder(
+                                    primary: false,
                                     shrinkWrap: true,
                                     controller: _scrollController,
                                     physics: const BouncingScrollPhysics(),
                                     itemCount: plantProvider.plantList.length +
                                         ((plantProvider.isLoading &&
-                                                    plantProvider
-                                                            .plantList.length >
-                                                        8) ||
-                                                plantProvider.noMoreDataMessage
+                                                plantProvider
+                                                        .plantList.length >=
+                                                    8)
+                                            ? 8
+                                            : plantProvider.noMoreDataMessage
                                                     .isNotEmpty
-                                            ? 1
-                                            : 0),
-                                    padding: EdgeInsets.only(
-                                        bottom: 100, left: 10, right: 10),
-                                    primary: false,
+                                                ? 1
+                                                : 0),
+                                    padding: (plantProvider
+                                                .noMoreDataMessage.isNotEmpty &&
+                                            !plantProvider.isLoading)
+                                        ? EdgeInsets.all(10)
+                                        : EdgeInsets.only(
+                                            bottom: 235,
+                                            left: 10,
+                                            right: 10,
+                                            top: 10),
                                     gridDelegate:
                                         SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 2,
@@ -133,29 +139,17 @@ class _PlantScreenState extends State<PlantScreen> {
                                     ),
                                     itemBuilder:
                                         (BuildContext context, int index) {
-                                      if (index ==
+                                      if (index >=
                                               plantProvider.plantList.length &&
                                           plantProvider
                                               .noMoreDataMessage.isEmpty) {
-                                        return Container(
-                                          height: 150,
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              SizedBox(height: 3),
-                                              CircularProgress(),
-                                              SizedBox(height: 3),
-                                              Text("loading...."),
-                                            ],
-                                          ),
-                                        );
+                                        return EmptyGridItem();
                                       } else if (index ==
                                               plantProvider.plantList.length &&
                                           plantProvider
                                               .noMoreDataMessage.isNotEmpty) {
                                         return Container(
-                                          height: 200,
+                                          height: 150,
                                           padding: const EdgeInsets.symmetric(
                                               vertical: 10),
                                           child: Center(
@@ -188,7 +182,9 @@ class _PlantScreenState extends State<PlantScreen> {
                                   ),
                                 ),
                               ),
-                  ]);
-            })));
+                            ),
+                ]);
+          })),
+    ));
   }
 }

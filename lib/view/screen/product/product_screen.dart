@@ -3,6 +3,7 @@ import 'package:nurserygardenapp/providers/product_provider.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/circular_indicator.dart';
 import 'package:nurserygardenapp/view/base/empty_data_widget.dart';
+import 'package:nurserygardenapp/view/base/empty_grid_item.dart';
 import 'package:nurserygardenapp/view/screen/product/widget/product_grid_item.dart';
 import 'package:provider/provider.dart';
 
@@ -69,135 +70,118 @@ class _ProductScreenState extends State<ProductScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Product',
-            style: TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: 18,
-            ),
-          ),
-        ),
-        body: SizedBox(
-            height: size.height,
-            width: size.width,
-            child: Consumer<ProductProvider>(
-                builder: (context, productProvider, child) {
-              return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    productProvider.productList.isEmpty &&
-                            _isFirstTime &&
-                            productProvider.isLoading
-                        ? EmptyWidget(
-                            large: true, isLoading: productProvider.isLoading)
-                        : productProvider.productList.isEmpty &&
-                                !productProvider.isLoading
-                            ? Center(
-                                child: Text(
-                                  "No Product",
-                                  style: TextStyle(
-                                      color: Colors.grey.withOpacity(0.7),
-                                      fontSize: 18),
-                                ),
-                              )
-                            : Expanded(
-                                child: RefreshIndicator(
-                                  key: _refreshIndicatorKey,
-                                  onRefresh: () => _loadData(isLoadMore: false),
-                                  child: GridView.builder(
-                                    shrinkWrap: true,
-                                    controller: _scrollController,
-                                    physics: const BouncingScrollPhysics(),
-                                    itemCount:
-                                        productProvider.productList.length +
-                                            ((productProvider.isLoading &&
-                                                        productProvider
-                                                                .productList
-                                                                .length >
-                                                            8) ||
-                                                    productProvider
-                                                        .noMoreDataMessage
-                                                        .isNotEmpty
-                                                ? 1
-                                                : 0),
-                                    padding: productProvider
-                                            .noMoreDataMessage.isEmpty
-                                        ? EdgeInsets.only(
-                                            bottom: 100, left: 10, right: 10)
-                                        : EdgeInsets.only(
-                                            bottom: 10, left: 10, right: 10),
-                                    primary: false,
-                                    gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      childAspectRatio: 3 / 4,
-                                      crossAxisSpacing: 10,
-                                      mainAxisSpacing: 10,
-                                    ),
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      if (index ==
-                                              productProvider
-                                                  .productList.length &&
-                                          productProvider
-                                              .noMoreDataMessage.isEmpty) {
-                                        return Container(
-                                          height: 150,
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              SizedBox(height: 3),
-                                              CircularProgress(),
-                                              SizedBox(height: 3),
-                                              Text("loading...."),
-                                            ],
-                                          ),
-                                        );
-                                      } else if (index ==
-                                              productProvider
-                                                  .productList.length &&
-                                          productProvider
-                                              .noMoreDataMessage.isNotEmpty) {
-                                        return Container(
-                                          height: 60,
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 10),
-                                          child: Center(
-                                            child: Text(
-                                                productProvider
-                                                    .noMoreDataMessage,
-                                                style: TextStyle(
-                                                    color: Colors.grey
-                                                        .withOpacity(0.5))),
-                                          ),
-                                        );
-                                      } else {
-                                        return ProductGridItem(
-                                          key: ValueKey(productProvider
-                                              .productList
-                                              .elementAt(index)
-                                              .id),
-                                          product: productProvider.productList
-                                              .elementAt(index),
-                                          onTap: () async {
-                                            await Navigator.pushNamed(
-                                                context,
-                                                Routes.getProductDetailRoute(
-                                                    productProvider.productList
-                                                        .elementAt(index)
-                                                        .id!
-                                                        .toString()));
-                                          },
-                                        );
-                                      }
-                                    },
+        body: SafeArea(
+      child: SizedBox(
+          height: size.height,
+          width: size.width,
+          child: Consumer<ProductProvider>(
+              builder: (context, productProvider, child) {
+            return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  productProvider.productList.isEmpty &&
+                          _isFirstTime &&
+                          productProvider.isLoading
+                      ? EmptyWidget(
+                          large: true, isLoading: productProvider.isLoading)
+                      : productProvider.productList.isEmpty &&
+                              !productProvider.isLoading
+                          ? Center(
+                              child: Text(
+                                "No Product",
+                                style: TextStyle(
+                                    color: Colors.grey.withOpacity(0.7),
+                                    fontSize: 18),
+                              ),
+                            )
+                          : Expanded(
+                              child: RefreshIndicator(
+                                key: _refreshIndicatorKey,
+                                onRefresh: () => _loadData(isLoadMore: false),
+                                child: GridView.builder(
+                                  shrinkWrap: true,
+                                  controller: _scrollController,
+                                  physics: const BouncingScrollPhysics(),
+                                  itemCount:
+                                      productProvider.productList.length +
+                                          ((productProvider.isLoading &&
+                                                  productProvider
+                                                          .productList.length >=
+                                                      8)
+                                              ? 8
+                                              : productProvider
+                                                      .noMoreDataMessage
+                                                      .isNotEmpty
+                                                  ? 1
+                                                  : 0),
+                                  padding: (productProvider
+                                              .noMoreDataMessage.isNotEmpty &&
+                                          !productProvider.isLoading)
+                                      ? EdgeInsets.all(10)
+                                      : EdgeInsets.only(
+                                          bottom: 235,
+                                          left: 10,
+                                          right: 10,
+                                          top: 10),
+                                  primary: false,
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    childAspectRatio: 3 / 4,
+                                    crossAxisSpacing: 10,
+                                    mainAxisSpacing: 10,
                                   ),
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    if (index >=
+                                            productProvider
+                                                .productList.length &&
+                                        productProvider
+                                            .noMoreDataMessage.isEmpty) {
+                                      return EmptyGridItem();
+                                    } else if (index ==
+                                            productProvider
+                                                .productList.length &&
+                                        productProvider
+                                            .noMoreDataMessage.isNotEmpty) {
+                                      return Container(
+                                        height: 60,
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10),
+                                        child: Center(
+                                          child: Text(
+                                              productProvider.noMoreDataMessage,
+                                              style: TextStyle(
+                                                  color: Colors.grey
+                                                      .withOpacity(0.5))),
+                                        ),
+                                      );
+                                    } else {
+                                      return ProductGridItem(
+                                        key: ValueKey(productProvider
+                                            .productList
+                                            .elementAt(index)
+                                            .id),
+                                        product: productProvider.productList
+                                            .elementAt(index),
+                                        onTap: () async {
+                                          await Navigator.pushNamed(
+                                              context,
+                                              Routes.getProductDetailRoute(
+                                                  productProvider.productList
+                                                      .elementAt(index)
+                                                      .id!
+                                                      .toString()));
+                                        },
+                                      );
+                                    }
+                                  },
                                 ),
                               ),
-                  ]);
-            })));
+                            ),
+                ]);
+          })),
+    ));
   }
 }
