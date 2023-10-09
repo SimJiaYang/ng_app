@@ -3,6 +3,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/screen/account/account_screen.dart';
+import 'package:nurserygardenapp/view/screen/account/sub_screen/changes_email_screen.dart';
 import 'package:nurserygardenapp/view/screen/account/sub_screen/changes_password_screen.dart';
 import 'package:nurserygardenapp/view/screen/account/sub_screen/profile_screen.dart';
 import 'package:nurserygardenapp/view/screen/account/sub_screen/settings_screen.dart';
@@ -93,6 +94,11 @@ class RouterHelper {
         ChangesPasswordScreen(),
   );
 
+  static Handler _changeEmailHandler = Handler(
+    handlerFunc: (context, Map<String, dynamic> parameters) =>
+        ChangesEmailScreen(),
+  );
+
 //*******Route Define*********
   static void setupRoute() {
     // router.define(Routes.DASHBOARD,
@@ -125,6 +131,8 @@ class RouterHelper {
         handler: _settingsHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.CHANGE_PASSWORD_SCREEN,
         handler: _changePasswordHandler, transitionType: TransitionType.fadeIn);
+    router.define(Routes.CHANGE_EMAIL,
+        handler: _changeEmailHandler, transitionType: TransitionType.fadeIn);
     // Selected Dashboard Screen
     router.define(Routes.DASHBOARD_SCREEN,
         handler: _dashScreenBoardHandler,

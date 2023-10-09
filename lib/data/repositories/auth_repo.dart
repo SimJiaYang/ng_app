@@ -76,6 +76,7 @@ class AuthRepo {
     await sharedPreferences.remove(AppConstants.TOKEN);
     await sharedPreferences.remove(AppConstants.USER_INFO);
     await sharedPreferences.remove(AppConstants.PLANT_TOKEN);
+    await sharedPreferences.remove(AppConstants.PRODUCT_TOKEN);
     return true;
   }
 }

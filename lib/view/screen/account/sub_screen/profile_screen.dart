@@ -303,30 +303,30 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                   VerticalSpacing(
                                     height: 16,
                                   ),
-                                  Text(
-                                    "Email",
-                                    style: TextStyle(
-                                        color:
-                                            ColorResources.COLOR_GREY_CHATEAU),
-                                  ),
-                                  VerticalSpacing(),
-                                  CustomTextField(
-                                    isReadOnly: true,
-                                    hintText: "Please enter your email",
-                                    isShowBorder: true,
-                                    isShowPrefixIcon: true,
-                                    prefixIconUrl: Icon(
-                                      Icons.email_outlined,
-                                      color: Colors.grey,
-                                    ),
-                                    focusNode: _emailFocus,
-                                    nextFocus: _phoneFocus,
-                                    controller: _emailController,
-                                    inputType: TextInputType.emailAddress,
-                                  ),
-                                  VerticalSpacing(
-                                    height: 16,
-                                  ),
+                                  // Text(
+                                  //   "Email",
+                                  //   style: TextStyle(
+                                  //       color:
+                                  //           ColorResources.COLOR_GREY_CHATEAU),
+                                  // ),
+                                  // VerticalSpacing(),
+                                  // CustomTextField(
+                                  //   isReadOnly: true,
+                                  //   hintText: "Please enter your email",
+                                  //   isShowBorder: true,
+                                  //   isShowPrefixIcon: true,
+                                  //   prefixIconUrl: Icon(
+                                  //     Icons.email_outlined,
+                                  //     color: Colors.grey,
+                                  //   ),
+                                  //   focusNode: _emailFocus,
+                                  //   nextFocus: _phoneFocus,
+                                  //   controller: _emailController,
+                                  //   inputType: TextInputType.emailAddress,
+                                  // ),
+                                  // VerticalSpacing(
+                                  //   height: 16,
+                                  // ),
                                   Text(
                                     "Phone Number",
                                     style: TextStyle(

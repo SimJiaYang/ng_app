@@ -69,6 +69,37 @@ class _SettingScreenState extends State<SettingScreen> {
                 ),
               ),
             ),
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, Routes.getChangeEmailRoute());
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border(
+                        bottom: BorderSide(
+                      color: ColorResources.COLOR_GREY.withOpacity(0.3),
+                      width: 0.5,
+                    ))),
+                child: ListTile(
+                  leading: Icon(
+                    Icons.mark_email_read_outlined,
+                    color: ColorResources.COLOR_BLACK,
+                  ),
+                  title: Text(
+                    "Change Email",
+                    style: Theme.of(context).textTheme.displayLarge!.copyWith(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16,
+                          color: ColorResources.COLOR_BLACK,
+                        ),
+                  ),
+                  trailing: Icon(
+                    Icons.chevron_right_outlined,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
