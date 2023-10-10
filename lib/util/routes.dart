@@ -15,6 +15,7 @@ class Routes {
   // Plant
   static const String PLANT_SCREEN = '/plant';
   static const String PLANT_DETAIL_SCREEN = '/plant-detail';
+  static const String PLANT_SEARCH_SCREEN = '/plant-search';
 
   // Product
   static const String PRODUCT_SCREEN = '/product';
@@ -48,6 +49,7 @@ class Routes {
   static String getPlantRoute() => PLANT_SCREEN;
   static String getPlantDetailRoute(String plantID) =>
       '$PLANT_DETAIL_SCREEN?plantID=$plantID';
+  static String getPlantSearchRoute() => PLANT_SEARCH_SCREEN;
 
   // Product
   static String getProductRoute() => PRODUCT_SCREEN;

@@ -37,6 +37,8 @@ class CustomTextField extends StatefulWidget {
   final String? validateMessage;
   final Function(dynamic)? validation;
   final bool? isPasswordValidator;
+  final Icon? suffixIcon;
+  final Icon? prefixIcon;
 
   CustomTextField({
     this.hintText = 'Write something...',
@@ -72,6 +74,8 @@ class CustomTextField extends StatefulWidget {
     this.validation,
     this.label,
     this.isPasswordValidator = false,
+    this.suffixIcon,
+    this.prefixIcon,
   });
 
   @override
@@ -172,13 +176,17 @@ class _CustomTextFieldState extends State<CustomTextField> {
                     : widget.isIcon
                         ? IconButton(
                             onPressed: widget.onSuffixTap,
-                            icon: Image.asset(
-                              widget.suffixIconUrl!,
-                              width: 15,
-                              height: 15,
-                              color:
-                                  Theme.of(context).textTheme.bodyLarge?.color,
-                            ),
+                            icon: widget.suffixIcon == null
+                                ? Image.asset(
+                                    widget.suffixIconUrl!,
+                                    width: 15,
+                                    height: 15,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge
+                                        ?.color,
+                                  )
+                                : widget.suffixIcon!,
                           )
                         : null
                 : null,

@@ -14,6 +14,7 @@ import 'package:nurserygardenapp/view/screen/dashboard/dashboard_screen.dart';
 import 'package:nurserygardenapp/view/screen/home/home_screen.dart';
 import 'package:nurserygardenapp/view/screen/plant/plant_detail_screen.dart';
 import 'package:nurserygardenapp/view/screen/plant/plant_screen.dart';
+import 'package:nurserygardenapp/view/screen/plant/widget/plant_search_screen.dart';
 import 'package:nurserygardenapp/view/screen/product/product_detail_screen.dart';
 import 'package:nurserygardenapp/view/screen/product/product_screen.dart';
 import 'package:nurserygardenapp/view/screen/splash/splash_screen.dart';
@@ -61,6 +62,11 @@ class RouterHelper {
   static Handler _plantDetailHandler = Handler(
     handlerFunc: (context, Map<String, dynamic> params) =>
         PlantDetailScreen(plantID: params['plantID'][0]),
+  );
+
+  static Handler _plantSearchHandler = Handler(
+    handlerFunc: (context, Map<String, dynamic> parameters) =>
+        PlantSearchScreen(),
   );
 
   static Handler _productHandler = Handler(
@@ -117,6 +123,8 @@ class RouterHelper {
         handler: _plantHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.PLANT_DETAIL_SCREEN,
         handler: _plantDetailHandler, transitionType: TransitionType.fadeIn);
+    router.define(Routes.PLANT_SEARCH_SCREEN,
+        transitionType: TransitionType.fadeIn, handler: _plantSearchHandler);
     router.define(Routes.PRODUCT_SCREEN,
         handler: _productHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.PRODUCT_DETAIL_SCREEN,

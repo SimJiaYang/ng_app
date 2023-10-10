@@ -4,8 +4,13 @@ class EmptyWidget extends StatefulWidget {
   final bool large;
   final bool isLoading;
   final int duration;
+  final bool isStart;
   EmptyWidget(
-      {Key? key, required this.large, this.isLoading = true, this.duration = 5})
+      {Key? key,
+      required this.large,
+      this.isLoading = true,
+      this.duration = 5,
+      this.isStart = false})
       : assert(duration > 0, 'Duration must greater then 0!'),
         super(key: key);
 
@@ -44,11 +49,14 @@ class _EmptyWidgetState extends State<EmptyWidget> {
           //         ),
           //       )
           //     : SizedBox(),
+          SizedBox(),
           widget.large
               ? Container(
-                  alignment: AlignmentDirectional.center,
+                  alignment: widget.isStart
+                      ? AlignmentDirectional.topCenter
+                      : AlignmentDirectional.center,
                   padding: EdgeInsets.symmetric(horizontal: 30),
-                  height: MediaQuery.of(context).size.height * .7,
+                  height: MediaQuery.of(context).size.height * 0.7954,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,

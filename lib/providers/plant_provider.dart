@@ -25,6 +25,11 @@ class PlantProvider extends ChangeNotifier {
   String _noMoreDataMessage = '';
   String get noMoreDataMessage => _noMoreDataMessage;
 
+  List<Plant> _plantListSearch = [];
+  List<Plant> get plantListSearch => _plantListSearch;
+
+  String searchTxt = '';
+
   /// ================== PLANT LIST ==================
   Future<bool> listOfPlant(BuildContext context, params,
       {bool isLoadMore = false, bool isLoad = true}) async {
@@ -59,6 +64,8 @@ class PlantProvider extends ChangeNotifier {
 
     return result;
   }
+
+  /// ================== PLANT SEARCH ==================
 
   /// ================== PLANT SAVE IN LOCAL ==================
   Future<void> setPlantListInfo(plantInfo) async {
