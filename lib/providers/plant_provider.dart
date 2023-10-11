@@ -25,9 +25,6 @@ class PlantProvider extends ChangeNotifier {
   String _noMoreDataMessage = '';
   String get noMoreDataMessage => _noMoreDataMessage;
 
-  List<Plant> _plantListSearch = [];
-  List<Plant> get plantListSearch => _plantListSearch;
-
   String searchTxt = '';
 
   /// ================== PLANT LIST ==================
@@ -65,24 +62,57 @@ class PlantProvider extends ChangeNotifier {
   }
 
   /// ================== PLANT SEARCH ==================
-  List<String> _plantName = [];
-  List<String> get plantName => _plantName;
+  List<String> _plantSearchHint = [];
+  List<String> get plantSearchHint => _plantSearchHint;
 
-  // void getPlantNameList(BuildContext context) {
-  //   if (_plantList.isNotEmpty) {
-  //     _plantName = _plantList.map((e) => e.name!).take(10).toList();
-  //   } else {
-  //     _plantName = [];
-  //   }
-  //   print(_plantName);
-  //   notifyListeners();
-  // }
+  List<String> _plantNameList = [];
+  List<String> get plantNameList => _plantNameList;
+
+  List<Plant> _plantListSearch = [];
+  List<Plant> get plantListSearch => _plantListSearch;
+
+  bool _isLoadingSearch = false;
+  bool get isLoadingSearch => _isLoadingSearch;
+
+  String _endSearchResult = "";
+  String get endSearchResult => _endSearchResult;
+
+  Future<bool> searchPlant(BuildContext context, params,
+      {bool isLoadMore = false, bool isLoad = true}) async {
+    if (!isLoadMore) {
+      _plantListSearch = [];
+      _endSearchResult = "";
+    }
+
+    bool result = false;
+    String query = ResponseHelper.buildQuery(params);
+    int limit = params['limit'] != null ? int.parse(params['limit']) : 8;
+
+    _isLoadingSearch = isLoad;
+    notifyListeners();
+
+    ApiResponse apiResponse = await plantRepo.searchPlant(query);
+
+    if (context.mounted) {
+      result = ResponseHelper.responseHelper(context, apiResponse);
+      if (result) {
+        PlantModel pm = PlantModel.fromJson(apiResponse.response!.data);
+        _plantListSearch = pm.data!.plantList!.plant ?? [];
+        if (_plantList.length < limit && limit > 8) {
+          _endSearchResult = AppConstants.NO_MORE_DATA;
+        }
+      }
+    }
+    _isLoadingSearch = false;
+    notifyListeners();
+
+    return result;
+  }
 
   void getSearchTips(String value) {
-    List<String> _plant = _plantList.map((e) => e.name!).toList();
-    ;
+    _plantNameList = _plantList.map((e) => e.name!).toList();
     if (_plantList.isNotEmpty) {
-      _plantName = _plant
+      _plantSearchHint = _plantNameList
           .where((plant) => plant.toLowerCase().contains(value.toLowerCase()))
           .take(10)
           .toList();

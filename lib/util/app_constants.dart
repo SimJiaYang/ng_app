@@ -44,6 +44,7 @@ class AppConstants {
   // Plant
   static const String PLANT_LIST_URI = '/plantlist';
   static const String PLANT_SEARCH = '/plant/search';
+  static const String PLANT_SEARCH_KEYWORD = '/plant/search/keyword';
 
   // Product
   static const String PRODUCT_LIST_URI = '/productlist';

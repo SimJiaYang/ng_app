@@ -31,6 +31,11 @@ class _PlantScreenState extends State<PlantScreen> {
   };
 
   Future<void> _loadData({bool isLoadMore = false}) async {
+    if (isLoadMore) {
+      setState(() {
+        _isFirstTime = false;
+      });
+    }
     await plant_prov.listOfPlant(context, params, isLoadMore: isLoadMore);
   }
 
@@ -226,7 +231,8 @@ class _PlantScreenState extends State<PlantScreen> {
                                                         plantProvider.plantList
                                                             .elementAt(index)
                                                             .id!
-                                                            .toString()));
+                                                            .toString(),
+                                                        "false"));
                                               },
                                             );
                                           }

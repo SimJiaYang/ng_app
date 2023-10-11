@@ -151,13 +151,15 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: ColorResources.COLOR_PRIMARY,
+        leading: const BackButton(
+          color: Colors.white, // <-- SEE HERE
+        ),
         centerTitle: true,
         title: Text(
           profileHeader,
           style: TextStyle(
-            fontWeight: FontWeight.w400,
-            fontSize: 18,
-          ),
+              fontWeight: FontWeight.w400, fontSize: 18, color: Colors.white),
         ),
       ),
       body: Consumer<UserProvider>(

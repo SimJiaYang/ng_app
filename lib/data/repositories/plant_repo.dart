@@ -24,6 +24,16 @@ class PlantRepo {
     }
   }
 
+  Future<ApiResponse> getPlantSearchKeyword() async {
+    try {
+      Response response =
+          await dioClient.get(AppConstants.PLANT_SEARCH_KEYWORD);
+      return ApiResponse.withSuccess(response);
+    } catch (e) {
+      return ApiResponse.withError(ApiErrorHandler.getMessage(e));
+    }
+  }
+
   Future<ApiResponse> searchPlant(param) async {
     try {
       Response response =

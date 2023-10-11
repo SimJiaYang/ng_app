@@ -19,11 +19,12 @@ class ResponseHelper {
   }
 
   static String buildQuery(params) {
-    List paramList = params.entries
-        .where((entry) => entry.value != null && entry.value != "")
-        .map((entry) => "${entry.key}=${entry.value}")
-        .toList();
+    print(params);
+    final queryParameters = params.entries
+        .where((entry) => entry.value != null && entry.value.isNotEmpty)
+        .map((entry) => "${entry.key}=${Uri.encodeComponent(entry.value)}")
+        .join('&');
 
-    return paramList.isNotEmpty ? "?${paramList.join("&")}" : "";
+    return queryParameters.isNotEmpty ? '?' + queryParameters : '';
   }
 }

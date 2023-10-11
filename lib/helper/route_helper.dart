@@ -61,8 +61,10 @@ class RouterHelper {
   );
 
   static Handler _plantDetailHandler = Handler(
-    handlerFunc: (context, Map<String, dynamic> params) =>
-        PlantDetailScreen(plantID: params['plantID'][0]),
+    handlerFunc: (context, Map<String, dynamic> params) => PlantDetailScreen(
+      plantID: params['plantID'][0],
+      isSearch: params['isSearch'][0],
+    ),
   );
 
   static Handler _plantSearchHandler = Handler(
@@ -72,7 +74,7 @@ class RouterHelper {
 
   static Handler _plantSearchResultHandler = Handler(
     handlerFunc: (context, Map<String, dynamic> parameters) =>
-        PlantSearchResultScreen(),
+        PlantSearchResultScreen(searchKeyword: parameters['searchKeyword'][0]),
   );
 
   static Handler _productHandler = Handler(

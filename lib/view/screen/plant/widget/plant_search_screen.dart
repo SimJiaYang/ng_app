@@ -48,6 +48,10 @@ class _PlantSearchScreenState extends State<PlantSearchScreen> {
               onChanged: (value) {
                 plantProvider.getSearchTips(value);
               },
+              onSubmitted: (value) {
+                Navigator.pushNamed(context,
+                    Routes.getPlantSearchResultRoute(_searchController.text));
+              },
               autofocus: true,
               cursorColor: Theme.of(context).primaryColor,
               controller: _searchController,
@@ -68,22 +72,34 @@ class _PlantSearchScreenState extends State<PlantSearchScreen> {
                   ),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(4)),
-                  suffixIcon: const Icon(Icons.search)),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      Icons.search,
+                    ),
+                    onPressed: () {
+                      Navigator.pushNamed(
+                          context,
+                          Routes.getPlantSearchResultRoute(
+                              _searchController.text));
+                    },
+                  )),
             );
           }),
         ),
       ),
       body: Consumer<PlantProvider>(builder: (context, plantProvider, child) {
         return ListView.builder(
-          itemCount: plantProvider.plantName.length,
+          itemCount: plantProvider.plantSearchHint.length,
           itemBuilder: (context, index) {
             return InkWell(
               onTap: () {
                 Navigator.pushNamed(
-                    context, Routes.getPlantSearchResultRoute());
+                    context,
+                    Routes.getPlantSearchResultRoute(
+                        plantProvider.plantSearchHint[index]));
               },
               child: ListTile(
-                title: Text(plantProvider.plantName[index]),
+                title: Text(plantProvider.plantSearchHint[index]),
               ),
             );
           },

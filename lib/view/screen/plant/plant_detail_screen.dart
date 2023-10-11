@@ -8,7 +8,9 @@ import 'package:provider/provider.dart';
 
 class PlantDetailScreen extends StatefulWidget {
   final String plantID;
+  final String isSearch;
   const PlantDetailScreen({
+    required this.isSearch,
     required this.plantID,
     super.key,
   });
@@ -31,8 +33,11 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
   }
 
   getPlantInformation() {
-    plant = plant_prov.plantList
-        .firstWhere((element) => element.id.toString() == widget.plantID);
+    plant = widget.isSearch == "true"
+        ? plant_prov.plantListSearch
+            .firstWhere((element) => element.id.toString() == widget.plantID)
+        : plant_prov.plantList
+            .firstWhere((element) => element.id.toString() == widget.plantID);
     setState(() {
       isLoading = false;
     });

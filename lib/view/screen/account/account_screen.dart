@@ -69,28 +69,35 @@ class _AccountScreenState extends State<AccountScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          ClipOval(
-                            child: SizedBox.fromSize(
-                                size: Size.fromRadius(30), // Image radius
-                                child: userProvider.userData.image_url == null
-                                    ? Image.asset(Images.profile_header,
-                                        fit: BoxFit.cover)
-                                    : CachedNetworkImage(
-                                        filterQuality: FilterQuality.low,
-                                        imageUrl:
-                                            userProvider.userData.image_url!,
-                                        memCacheHeight: 200,
-                                        memCacheWidth: 200,
-                                        placeholder: (context, url) => Padding(
-                                          padding: const EdgeInsets.all(1.0),
-                                          child: Center(
-                                              child:
-                                                  CircularProgressIndicator()),
-                                        ),
-                                        errorWidget: (context, url, error) =>
-                                            Image.asset(Images.profile_header,
-                                                fit: BoxFit.cover),
-                                      )),
+                          Container(
+                            padding: EdgeInsets.all(1), // Border width
+                            decoration: BoxDecoration(
+                                color: Colors.greenAccent.withOpacity(0.3),
+                                shape: BoxShape.circle),
+                            child: ClipOval(
+                              child: SizedBox.fromSize(
+                                  size: Size.fromRadius(30), // Image radius
+                                  child: userProvider.userData.image_url == null
+                                      ? Image.asset(Images.profile_header,
+                                          fit: BoxFit.cover)
+                                      : CachedNetworkImage(
+                                          filterQuality: FilterQuality.low,
+                                          imageUrl:
+                                              userProvider.userData.image_url!,
+                                          memCacheHeight: 200,
+                                          memCacheWidth: 200,
+                                          placeholder: (context, url) =>
+                                              Padding(
+                                            padding: const EdgeInsets.all(1.0),
+                                            child: Center(
+                                                child:
+                                                    CircularProgressIndicator()),
+                                          ),
+                                          errorWidget: (context, url, error) =>
+                                              Image.asset(Images.profile_header,
+                                                  fit: BoxFit.cover),
+                                        )),
+                            ),
                           ),
                           SizedBox(
                             width: 15,
