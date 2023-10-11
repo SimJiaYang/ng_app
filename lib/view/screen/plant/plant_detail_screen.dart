@@ -219,9 +219,6 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                             ],
                           ),
                         ),
-                        VerticalSpacing(
-                          height: 10,
-                        ),
                         Container(
                           width: double.infinity,
                           color: ColorResources.COLOR_WHITE,

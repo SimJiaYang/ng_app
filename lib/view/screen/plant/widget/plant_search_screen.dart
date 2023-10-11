@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/providers/plant_provider.dart';
+import 'package:nurserygardenapp/util/color_resources.dart';
+import 'package:nurserygardenapp/util/routes.dart';
 import 'package:provider/provider.dart';
 
 class PlantSearchScreen extends StatefulWidget {
@@ -34,6 +36,10 @@ class _PlantSearchScreenState extends State<PlantSearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: const BackButton(
+          color: Colors.white, // <-- SEE HERE
+        ),
+        backgroundColor: ColorResources.COLOR_PRIMARY,
         title: Container(
           height: 40,
           child:
@@ -48,6 +54,8 @@ class _PlantSearchScreenState extends State<PlantSearchScreen> {
               focusNode: _focusNode,
               textInputAction: TextInputAction.done,
               decoration: InputDecoration(
+                  fillColor: Colors.white,
+                  filled: true,
                   contentPadding: EdgeInsets.only(left: 10),
                   focusColor: Theme.of(context).primaryColor,
                   hintText: 'Search Plant',
@@ -69,8 +77,14 @@ class _PlantSearchScreenState extends State<PlantSearchScreen> {
         return ListView.builder(
           itemCount: plantProvider.plantName.length,
           itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(plantProvider.plantName[index]),
+            return InkWell(
+              onTap: () {
+                Navigator.pushNamed(
+                    context, Routes.getPlantSearchResultRoute());
+              },
+              child: ListTile(
+                title: Text(plantProvider.plantName[index]),
+              ),
             );
           },
         );

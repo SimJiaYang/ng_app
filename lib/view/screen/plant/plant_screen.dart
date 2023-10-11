@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/providers/plant_provider.dart';
+import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 
 import 'package:nurserygardenapp/view/base/empty_data_widget.dart';
@@ -72,6 +73,7 @@ class _PlantScreenState extends State<PlantScreen> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
+            backgroundColor: ColorResources.COLOR_PRIMARY,
             title: InkWell(
               onTap: () {
                 Navigator.pushNamed(
@@ -82,6 +84,7 @@ class _PlantScreenState extends State<PlantScreen> {
               child: Container(
                 height: 40,
                 decoration: BoxDecoration(
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(4),
                     border: Border.all()),
                 child: Padding(
@@ -89,7 +92,7 @@ class _PlantScreenState extends State<PlantScreen> {
                   child: Row(children: [
                     Expanded(
                         child: Text(
-                      "Search",
+                      "Search Plant",
                       style: TextStyle(
                         color: Colors.black.withOpacity(0.5),
                         fontSize: 14,
@@ -101,8 +104,15 @@ class _PlantScreenState extends State<PlantScreen> {
               ),
             ),
             actions: [
-              IconButton(
-                  onPressed: () {}, icon: Icon(Icons.shopping_cart_outlined))
+              Padding(
+                padding: const EdgeInsets.only(right: 15),
+                child: IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.shopping_cart_outlined,
+                      color: Colors.white,
+                    )),
+              )
             ]),
         body: SizedBox(
             height: size.height,
