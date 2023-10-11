@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:nurserygardenapp/providers/plant_provider.dart';
+import 'package:provider/provider.dart';
 
 class PlantSearchScreen extends StatefulWidget {
   @override
@@ -6,47 +8,73 @@ class PlantSearchScreen extends StatefulWidget {
 }
 
 class _PlantSearchScreenState extends State<PlantSearchScreen> {
-  List<String> _plants = [
-    'Rose',
-    'Lily',
-    'Tulip',
-    'Daisy',
-    'Sunflower',
-    'Orchid',
-    'Carnation',
-    'Chrysanthemum',
-    'Hydrangea',
-    'Peony',
-  ];
+  TextEditingController _searchController = TextEditingController();
+  FocusNode _focusNode = FocusNode();
 
-  List<String> _searchResults = [];
+  @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _searchController.dispose();
+    _focusNode.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: TextField(
-          onChanged: (value) {
-            setState(() {
-              _searchResults = _plants
-                  .where((plant) =>
-                      plant.toLowerCase().contains(value.toLowerCase()))
-                  .toList();
-            });
-          },
-          decoration: InputDecoration(
-            hintText: 'Search Plants',
-          ),
+        title: Container(
+          height: 40,
+          child:
+              Consumer<PlantProvider>(builder: (context, plantProvider, child) {
+            return TextField(
+              onChanged: (value) {
+                plantProvider.getSearchTips(value);
+              },
+              autofocus: true,
+              cursorColor: Theme.of(context).primaryColor,
+              controller: _searchController,
+              focusNode: _focusNode,
+              textInputAction: TextInputAction.done,
+              decoration: InputDecoration(
+                  contentPadding: EdgeInsets.only(left: 10),
+                  focusColor: Theme.of(context).primaryColor,
+                  hintText: 'Search Plant',
+                  hintStyle: TextStyle(
+                    color: Colors.black.withOpacity(0.5),
+                    fontSize: 14,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(4)),
+                  ),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(4)),
+                  suffixIcon: const Icon(Icons.search)),
+            );
+          }),
         ),
       ),
-      body: ListView.builder(
-        itemCount: _searchResults.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(_searchResults[index]),
-          );
-        },
-      ),
+      body: Consumer<PlantProvider>(builder: (context, plantProvider, child) {
+        return ListView.builder(
+          itemCount: plantProvider.plantName.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              title: Text(plantProvider.plantName[index]),
+            );
+          },
+        );
+      }),
     );
   }
 }

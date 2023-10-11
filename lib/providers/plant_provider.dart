@@ -52,7 +52,6 @@ class PlantProvider extends ChangeNotifier {
       if (result) {
         _plantModel = PlantModel.fromJson(apiResponse.response!.data);
         _plantList = _plantModel.data!.plantList!.plant ?? [];
-        // setPlantListInfo(_plantList);
         if (_plantList.length < limit && limit > 8) {
           _noMoreDataMessage = AppConstants.NO_MORE_DATA;
         }
@@ -66,6 +65,30 @@ class PlantProvider extends ChangeNotifier {
   }
 
   /// ================== PLANT SEARCH ==================
+  List<String> _plantName = [];
+  List<String> get plantName => _plantName;
+
+  // void getPlantNameList(BuildContext context) {
+  //   if (_plantList.isNotEmpty) {
+  //     _plantName = _plantList.map((e) => e.name!).take(10).toList();
+  //   } else {
+  //     _plantName = [];
+  //   }
+  //   print(_plantName);
+  //   notifyListeners();
+  // }
+
+  void getSearchTips(String value) {
+    List<String> _plant = _plantList.map((e) => e.name!).toList();
+    ;
+    if (_plantList.isNotEmpty) {
+      _plantName = _plant
+          .where((plant) => plant.toLowerCase().contains(value.toLowerCase()))
+          .take(10)
+          .toList();
+    }
+    notifyListeners();
+  }
 
   /// ================== PLANT SAVE IN LOCAL ==================
   Future<void> setPlantListInfo(plantInfo) async {

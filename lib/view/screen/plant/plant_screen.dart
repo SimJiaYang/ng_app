@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/providers/plant_provider.dart';
 import 'package:nurserygardenapp/util/routes.dart';
-import 'package:nurserygardenapp/view/base/custom_textfield.dart';
 
 import 'package:nurserygardenapp/view/base/empty_data_widget.dart';
 import 'package:nurserygardenapp/view/base/empty_grid_item.dart';
@@ -72,6 +71,39 @@ class _PlantScreenState extends State<PlantScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+        appBar: AppBar(
+            title: InkWell(
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  Routes.getPlantSearchRoute(),
+                );
+              },
+              child: Container(
+                height: 40,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    border: Border.all()),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(children: [
+                    Expanded(
+                        child: Text(
+                      "Search",
+                      style: TextStyle(
+                        color: Colors.black.withOpacity(0.5),
+                        fontSize: 14,
+                      ),
+                    )),
+                    Icon(Icons.search),
+                  ]),
+                ),
+              ),
+            ),
+            actions: [
+              IconButton(
+                  onPressed: () {}, icon: Icon(Icons.shopping_cart_outlined))
+            ]),
         body: SizedBox(
             height: size.height,
             width: size.width,
@@ -82,77 +114,6 @@ class _PlantScreenState extends State<PlantScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.pushNamed(
-                                  context,
-                                  Routes.getPlantSearchRoute(),
-                                );
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Container(
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                      // borderRadius: BorderRadius.circular(10),
-                                      border: Border.all()),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(children: [
-                                      Expanded(
-                                          child: Text(
-                                        "Search",
-                                        style: TextStyle(
-                                          color: Colors.black.withOpacity(0.5),
-                                          fontSize: 14,
-                                        ),
-                                      )),
-                                      Icon(Icons.search),
-                                    ]),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          IconButton(
-                              onPressed: () {},
-                              icon: Icon(Icons.shopping_cart_outlined))
-                        ],
-                      ),
-                      // Row(
-                      //   children: [
-                      //     Expanded(
-                      //       child: Container(
-                      //         height: 60,
-                      //         padding: const EdgeInsets.all(10.0),
-                      //         child: TextField(
-                      //           cursorColor: Theme.of(context).primaryColor,
-                      //           decoration: InputDecoration(
-                      //               contentPadding: EdgeInsets.only(left: 10),
-                      //               focusColor: Theme.of(context).primaryColor,
-                      //               hintText: 'Search',
-                      //               hintStyle: TextStyle(
-                      //                 color: Colors.black.withOpacity(0.5),
-                      //                 fontSize: 14,
-                      //               ),
-                      //               focusedBorder: OutlineInputBorder(
-                      //                 borderRadius:
-                      //                     BorderRadius.all(Radius.circular(0)),
-                      //               ),
-                      //               border: OutlineInputBorder(
-                      //                   borderRadius: BorderRadius.circular(0)),
-                      //               suffixIcon: const Icon(Icons.search)),
-                      //         ),
-                      //       ),
-                      //     ),
-                      //     IconButton(
-                      //         onPressed: () {},
-                      //         icon: Icon(Icons.shopping_cart_outlined))
-                      //   ],
-                      // ),
                       plantProvider.plantList.isEmpty &&
                               _isFirstTime &&
                               plantProvider.isLoading

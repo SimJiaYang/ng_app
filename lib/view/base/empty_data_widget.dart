@@ -56,7 +56,7 @@ class _EmptyWidgetState extends State<EmptyWidget> {
                       ? AlignmentDirectional.topCenter
                       : AlignmentDirectional.center,
                   padding: EdgeInsets.symmetric(horizontal: 30),
-                  height: MediaQuery.of(context).size.height * 0.7954,
+                  height: MediaQuery.of(context).size.height * 0.7,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
