@@ -101,8 +101,8 @@ class PlantProvider extends ChangeNotifier {
       if (result) {
         _searchPlantModel = PlantModel.fromJson(apiResponse.response!.data);
         _plantListSearch = _searchPlantModel.data!.plantList!.plant ?? [];
-        notifyListeners();
-        if (_plantListSearch.length < limit && limit > 8) {
+        if (_plantListSearch.length < limit && limit > 8 ||
+            _searchPlantModel.data!.plantList!.total! < 8) {
           _endSearchResult = AppConstants.NO_MORE_DATA;
         }
       }

@@ -46,7 +46,12 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(actions: []),
+        appBar: AppBar(
+          leading: const BackButton(
+            color: Colors.white, // <-- SEE HERE
+          ),
+          backgroundColor: ColorResources.COLOR_PRIMARY,
+        ),
         body: SafeArea(
           child: isLoading
               ? Center(
@@ -59,6 +64,9 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        SizedBox(
+                          height: 5,
+                        ),
                         Container(
                           color: ColorResources.COLOR_WHITE,
                           width: double.infinity,

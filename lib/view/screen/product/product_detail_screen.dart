@@ -42,7 +42,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(actions: []),
+        appBar: AppBar(),
         body: SafeArea(
           child: Center(
             child: isLoading

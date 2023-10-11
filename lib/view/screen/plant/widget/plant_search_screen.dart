@@ -49,6 +49,8 @@ class _PlantSearchScreenState extends State<PlantSearchScreen> {
                 plantProvider.getSearchTips(value);
               },
               onSubmitted: (value) {
+                FocusScope.of(context).unfocus();
+                FocusScope.of(context).unfocus();
                 Navigator.pushNamed(context,
                     Routes.getPlantSearchResultRoute(_searchController.text));
               },
@@ -56,7 +58,7 @@ class _PlantSearchScreenState extends State<PlantSearchScreen> {
               cursorColor: Theme.of(context).primaryColor,
               controller: _searchController,
               focusNode: _focusNode,
-              textInputAction: TextInputAction.done,
+              textInputAction: TextInputAction.search,
               decoration: InputDecoration(
                   fillColor: Colors.white,
                   filled: true,
@@ -68,6 +70,7 @@ class _PlantSearchScreenState extends State<PlantSearchScreen> {
                     fontSize: 14,
                   ),
                   focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
                     borderRadius: BorderRadius.all(Radius.circular(4)),
                   ),
                   border: OutlineInputBorder(
@@ -77,6 +80,7 @@ class _PlantSearchScreenState extends State<PlantSearchScreen> {
                       Icons.search,
                     ),
                     onPressed: () {
+                      FocusScope.of(context).unfocus();
                       Navigator.pushNamed(
                           context,
                           Routes.getPlantSearchResultRoute(
