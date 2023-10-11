@@ -45,11 +45,14 @@ class _PlantSearchResultScreenState extends State<PlantSearchResultScreen> {
   void _onScroll() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
-      if (plant_prov.plantList.length < int.parse(params['limit']!)) return;
-      int currentLimit = int.parse(params['limit']!);
-      currentLimit += 8;
-      params['limit'] = currentLimit.toString();
-      _loadData(isLoadMore: true);
+      if (plant_prov.plantListSearch.length < int.parse(params['limit']!)) {
+        return;
+      } else {
+        int currentLimit = int.parse(params['limit']!);
+        currentLimit += 8;
+        params['limit'] = currentLimit.toString();
+        _loadData(isLoadMore: true);
+      }
     }
   }
 

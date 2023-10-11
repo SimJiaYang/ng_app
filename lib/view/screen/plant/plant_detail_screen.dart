@@ -41,8 +41,6 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
     setState(() {
       isLoading = false;
     });
-    print(plant.name);
-    print(plant.imageURL);
   }
 
   @override

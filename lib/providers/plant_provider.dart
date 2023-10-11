@@ -77,6 +77,9 @@ class PlantProvider extends ChangeNotifier {
   String _endSearchResult = "";
   String get endSearchResult => _endSearchResult;
 
+  PlantModel _searchPlantModel = PlantModel();
+  PlantModel get searchPlantModel => _searchPlantModel;
+
   Future<bool> searchPlant(BuildContext context, params,
       {bool isLoadMore = false, bool isLoad = true}) async {
     if (!isLoadMore) {
@@ -96,9 +99,10 @@ class PlantProvider extends ChangeNotifier {
     if (context.mounted) {
       result = ResponseHelper.responseHelper(context, apiResponse);
       if (result) {
-        PlantModel pm = PlantModel.fromJson(apiResponse.response!.data);
-        _plantListSearch = pm.data!.plantList!.plant ?? [];
-        if (_plantList.length < limit && limit > 8) {
+        _searchPlantModel = PlantModel.fromJson(apiResponse.response!.data);
+        _plantListSearch = _searchPlantModel.data!.plantList!.plant ?? [];
+        notifyListeners();
+        if (_plantListSearch.length < limit && limit > 8) {
           _endSearchResult = AppConstants.NO_MORE_DATA;
         }
       }
