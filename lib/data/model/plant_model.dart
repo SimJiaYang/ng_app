@@ -61,7 +61,7 @@ class PlantList {
   String? nextPageUrl;
   String? path;
   int? perPage;
-  dynamic prevPageUrl;
+  String? prevPageUrl;
   int? to;
   int? total;
 
@@ -179,7 +179,7 @@ class Plant {
             ? null
             : DateTime.parse(json["updated_at"]),
         categoryName: json["category_name"],
-        imageURL: json["image_url"],
+        imageURL: jsonDecode(json["image_url"]),
       );
 
   Map<String, dynamic> toJson() => {

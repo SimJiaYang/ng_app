@@ -50,7 +50,6 @@ class _PlantSearchScreenState extends State<PlantSearchScreen> {
               },
               onSubmitted: (value) {
                 FocusScope.of(context).unfocus();
-                FocusScope.of(context).unfocus();
                 Navigator.pushNamed(context,
                     Routes.getPlantSearchResultRoute(_searchController.text));
               },

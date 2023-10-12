@@ -52,8 +52,8 @@ class AuthRepo {
   Future<void> saveUserToken(String token) async {
     dioClient.token = token;
     dioClient.dio.options.headers = {
-      'Accept': 'application/json',
       'Content-Type': 'application/json',
+      'Accept': 'application/json',
       'Authorization': 'Bearer $token'
     };
 

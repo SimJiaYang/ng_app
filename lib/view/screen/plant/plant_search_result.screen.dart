@@ -65,7 +65,19 @@ class _PlantSearchResultScreenState extends State<PlantSearchResultScreen> {
       });
     }
     await plant_prov.searchPlant(context, params, isLoadMore: isLoadMore);
-    // await plant_prov.listOfPlant(context, params, isLoadMore: isLoadMore);
+  }
+
+  String sortOrder = "asc";
+
+  void _handleParamChanged(param) {
+    params['limit'] = '8';
+    params['keyword'] = widget.searchKeyword;
+    params['sortOrder'] = param['sortOrder'] ?? "";
+    setState(() {
+      sortOrder = param['sortOrder'] ?? "asc";
+    });
+    params['category'] = param['category'] ?? "";
+    _loadData();
   }
 
   @override
@@ -73,7 +85,15 @@ class _PlantSearchResultScreenState extends State<PlantSearchResultScreen> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       key: _scaffoldKey,
-      endDrawer: PlantDrawerWidget(size: size),
+      endDrawer: PlantDrawerWidget(
+          sort: sortOrder,
+          paramCallback: (p) {
+            _handleParamChanged(p);
+          },
+          size: size,
+          closeEndDrawer: () {
+            _scaffoldKey.currentState!.closeEndDrawer();
+          }),
       appBar: AppBar(
           leading: const BackButton(
             color: Colors.white, // <-- SEE HERE
@@ -126,110 +146,113 @@ class _PlantSearchResultScreenState extends State<PlantSearchResultScreen> {
           child: SafeArea(
             child: Consumer<PlantProvider>(
                 builder: (context, plantProvider, child) {
-              return Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    plantProvider.isLoadingSearch &&
-                            plantProvider.endSearchResult.isEmpty &&
-                            _isFirstTime
-                        ? EmptyWidget(
-                            large: true,
-                            isLoading: plantProvider.isLoadingSearch,
-                          )
-                        : plantProvider.plantListSearch.isEmpty &&
-                                !plantProvider.isLoadingSearch
-                            ? Center(
-                                child: Text(
-                                  "No Plant Found",
-                                  style: TextStyle(
-                                      color: Colors.grey.withOpacity(0.7),
-                                      fontSize: 18),
-                                ),
-                              )
-                            : Expanded(
-                                child: GridView.builder(
-                                  primary: false,
-                                  shrinkWrap: true,
-                                  controller: _scrollController,
-                                  physics: const BouncingScrollPhysics(),
-                                  // physics:
-                                  //     const AlwaysScrollableScrollPhysics(),
-                                  itemCount:
-                                      plantProvider.plantListSearch.length +
-                                          ((plantProvider.isLoadingSearch &&
-                                                  plantProvider.plantListSearch
-                                                          .length >=
-                                                      8)
-                                              ? 8
-                                              : plantProvider.endSearchResult
-                                                      .isNotEmpty
-                                                  ? 1
-                                                  : 0),
-                                  padding: (plantProvider
-                                              .endSearchResult.isNotEmpty &&
-                                          !plantProvider.isLoadingSearch)
-                                      ? EdgeInsets.all(10)
-                                      : EdgeInsets.only(
-                                          bottom: 235,
-                                          left: 10,
-                                          right: 10,
-                                          top: 10),
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    childAspectRatio: 3 / 4,
-                                    crossAxisSpacing: 10,
-                                    mainAxisSpacing: 10,
+              return plantProvider.isLoadingSearch &&
+                      plantProvider.endSearchResult.isEmpty &&
+                      _isFirstTime
+                  ? EmptyWidget(
+                      large: true,
+                      isLoading: plantProvider.isLoadingSearch,
+                    )
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                          plantProvider.plantListSearch.isEmpty &&
+                                  !plantProvider.isLoadingSearch
+                              ? Center(
+                                  child: Text(
+                                    "No Plant Found",
+                                    style: TextStyle(
+                                        color: Colors.grey.withOpacity(0.7),
+                                        fontSize: 18),
                                   ),
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    if (index >=
-                                            plantProvider
-                                                .plantListSearch.length &&
-                                        plantProvider.endSearchResult.isEmpty) {
-                                      return EmptyGridItem();
-                                    } else if (index ==
-                                            plantProvider
-                                                .plantListSearch.length &&
-                                        plantProvider
-                                            .endSearchResult.isNotEmpty) {
-                                      return Container(
-                                        height: 150,
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 10),
-                                        child: Center(
-                                          child: Text(
-                                              plantProvider.endSearchResult,
-                                              style: TextStyle(
-                                                  color: Colors.grey
-                                                      .withOpacity(0.5))),
-                                        ),
-                                      );
-                                    } else {
-                                      return PlantGridItem(
-                                        key: ValueKey(plantProvider
-                                            .plantListSearch
-                                            .elementAt(index)
-                                            .id),
-                                        plant: plantProvider.plantListSearch
-                                            .elementAt(index),
-                                        onTap: () async {
-                                          await Navigator.pushNamed(
-                                              context,
-                                              Routes.getPlantDetailRoute(
-                                                  plantProvider.plantListSearch
-                                                      .elementAt(index)
-                                                      .id!
-                                                      .toString(),
-                                                  "true"));
-                                        },
-                                      );
-                                    }
-                                  },
+                                )
+                              : Expanded(
+                                  child: GridView.builder(
+                                    primary: false,
+                                    shrinkWrap: true,
+                                    controller: _scrollController,
+                                    physics: const BouncingScrollPhysics(),
+                                    // physics:
+                                    //     const AlwaysScrollableScrollPhysics(),
+                                    itemCount:
+                                        plantProvider.plantListSearch.length +
+                                            ((plantProvider.isLoadingSearch &&
+                                                    plantProvider
+                                                            .plantListSearch
+                                                            .length >=
+                                                        8)
+                                                ? 8
+                                                : plantProvider.endSearchResult
+                                                        .isNotEmpty
+                                                    ? 1
+                                                    : 0),
+                                    padding: (plantProvider
+                                                .endSearchResult.isNotEmpty &&
+                                            !plantProvider.isLoadingSearch)
+                                        ? EdgeInsets.all(10)
+                                        : EdgeInsets.only(
+                                            bottom: 235,
+                                            left: 10,
+                                            right: 10,
+                                            top: 10),
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      childAspectRatio: 3 / 4,
+                                      crossAxisSpacing: 10,
+                                      mainAxisSpacing: 10,
+                                    ),
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      if (index >=
+                                              plantProvider
+                                                  .plantListSearch.length &&
+                                          plantProvider
+                                              .endSearchResult.isEmpty) {
+                                        return EmptyGridItem();
+                                      } else if (index ==
+                                              plantProvider
+                                                  .plantListSearch.length &&
+                                          plantProvider
+                                              .endSearchResult.isNotEmpty) {
+                                        return Container(
+                                          height: 150,
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 10),
+                                          child: Center(
+                                            child: Text(
+                                                plantProvider.endSearchResult,
+                                                style: TextStyle(
+                                                    color: Colors.grey
+                                                        .withOpacity(0.5))),
+                                          ),
+                                        );
+                                      } else {
+                                        return PlantGridItem(
+                                          key: ValueKey(plantProvider
+                                              .plantListSearch
+                                              .elementAt(index)
+                                              .id),
+                                          plant: plantProvider.plantListSearch
+                                              .elementAt(index),
+                                          onTap: () async {
+                                            await Navigator.pushNamed(
+                                                context,
+                                                Routes.getPlantDetailRoute(
+                                                    plantProvider
+                                                        .plantListSearch
+                                                        .elementAt(index)
+                                                        .id!
+                                                        .toString(),
+                                                    "true"));
+                                          },
+                                        );
+                                      }
+                                    },
+                                  ),
                                 ),
-                              ),
-                  ]);
+                        ]);
             }),
           )),
     );
