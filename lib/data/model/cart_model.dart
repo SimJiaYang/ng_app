@@ -1,26 +1,28 @@
 // To parse this JSON data, do
 //
-//     final productModel = productModelFromJson(jsonString);
+//     final cartModel = cartModelFromJson(jsonString);
 
 import 'dart:convert';
 
-ProductModel productModelFromJson(String str) =>
-    ProductModel.fromJson(json.decode(str));
+import 'package:nurserygardenapp/data/model/plant_model.dart';
+import 'package:nurserygardenapp/data/model/product_model.dart';
 
-String productModelToJson(ProductModel data) => json.encode(data.toJson());
+CartModel cartModelFromJson(String str) => CartModel.fromJson(json.decode(str));
 
-class ProductModel {
+String cartModelToJson(CartModel data) => json.encode(data.toJson());
+
+class CartModel {
   bool? success;
   Data? data;
   String? error;
 
-  ProductModel({
+  CartModel({
     this.success,
     this.data,
     this.error,
   });
 
-  factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
+  factory CartModel.fromJson(Map<String, dynamic> json) => CartModel(
         success: json["success"],
         data: json["data"] == null ? null : Data.fromJson(json["data"]),
         error: json["error"],
@@ -34,41 +36,56 @@ class ProductModel {
 }
 
 class Data {
-  ProductsList? productsList;
+  List<Plant>? plant;
+  List<Product>? product;
+  CartList? cartList;
 
   Data({
-    this.productsList,
+    this.plant,
+    this.product,
+    this.cartList,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-        productsList: json["products"] == null
-            ? null
-            : ProductsList.fromJson(json["products"]),
+        plant: json["plant"] == null
+            ? []
+            : List<Plant>.from(json["plant"]!.map((x) => Plant.fromJson(x))),
+        product: json["product"] == null
+            ? []
+            : List<Product>.from(
+                json["product"]!.map((x) => Product.fromJson(x))),
+        cartList: json["cart"] == null ? null : CartList.fromJson(json["cart"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "products": productsList?.toJson(),
+        "plant": plant == null
+            ? []
+            : List<dynamic>.from(plant!.map((x) => x.toJson())),
+        "product": product == null
+            ? []
+            : List<dynamic>.from(product!.map((x) => x.toJson())),
+        "cart": cartList?.toJson(),
       };
 }
 
-class ProductsList {
+class CartList {
   int? currentPage;
-  List<Product>? product;
+  List<Cart>? cart;
   String? firstPageUrl;
   int? from;
   int? lastPage;
   String? lastPageUrl;
   List<Link>? links;
-  String? nextPageUrl;
+  dynamic nextPageUrl;
   String? path;
   int? perPage;
   dynamic prevPageUrl;
   int? to;
   int? total;
 
-  ProductsList({
+  CartList({
     this.currentPage,
-    this.product,
+    this.cart,
     this.firstPageUrl,
     this.from,
     this.lastPage,
@@ -82,11 +99,11 @@ class ProductsList {
     this.total,
   });
 
-  factory ProductsList.fromJson(Map<String, dynamic> json) => ProductsList(
+  factory CartList.fromJson(Map<String, dynamic> json) => CartList(
         currentPage: json["current_page"],
-        product: json["data"] == null
+        cart: json["data"] == null
             ? []
-            : List<Product>.from(json["data"]!.map((x) => Product.fromJson(x))),
+            : List<Cart>.from(json["data"]!.map((x) => Cart.fromJson(x))),
         firstPageUrl: json["first_page_url"],
         from: json["from"],
         lastPage: json["last_page"],
@@ -104,9 +121,9 @@ class ProductsList {
 
   Map<String, dynamic> toJson() => {
         "current_page": currentPage,
-        "data": product == null
+        "data": cart == null
             ? []
-            : List<dynamic>.from(product!.map((x) => x.toJson())),
+            : List<dynamic>.from(cart!.map((x) => x.toJson())),
         "first_page_url": firstPageUrl,
         "from": from,
         "last_page": lastPage,
@@ -123,67 +140,66 @@ class ProductsList {
       };
 }
 
-class Product {
+class Cart {
   int? id;
-  String? name;
-  double? price;
-  String? description;
   int? quantity;
-  String? status;
-  String? image;
-  int? catId;
+  double? price;
+  DateTime? dateAdded;
+  String? isPurchase;
+  int? productId;
+  int? plantId;
+  dynamic biddingId;
+  int? userId;
   DateTime? createdAt;
   DateTime? updatedAt;
-  String? categoryName;
-  String? imageURL;
 
-  Product({
+  Cart({
     this.id,
-    this.name,
-    this.price,
-    this.description,
     this.quantity,
-    this.status,
-    this.image,
-    this.catId,
+    this.price,
+    this.dateAdded,
+    this.isPurchase,
+    this.productId,
+    this.plantId,
+    this.biddingId,
+    this.userId,
     this.createdAt,
     this.updatedAt,
-    this.categoryName,
-    this.imageURL,
   });
 
-  factory Product.fromJson(Map<String, dynamic> json) => Product(
+  factory Cart.fromJson(Map<String, dynamic> json) => Cart(
         id: json["id"],
-        name: json["name"],
-        price: json["price"]?.toDouble(),
-        description: json["description"],
         quantity: json["quantity"],
-        status: json["status"],
-        image: json["image"],
-        catId: json["cat_id"],
+        price: json["price"]?.toDouble(),
+        dateAdded: json["date_added"] == null
+            ? null
+            : DateTime.parse(json["date_added"]),
+        isPurchase: json["is_purchase"],
+        productId: json["product_id"],
+        plantId: json["plant_id"],
+        biddingId: json["bidding_id"],
+        userId: json["user_id"],
         createdAt: json["created_at"] == null
             ? null
             : DateTime.parse(json["created_at"]),
         updatedAt: json["updated_at"] == null
             ? null
             : DateTime.parse(json["updated_at"]),
-        categoryName: json["category_name"],
-        imageURL: jsonDecode(json["image_url"]),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "name": name,
-        "price": price,
-        "description": description,
         "quantity": quantity,
-        "status": status,
-        "image": image,
-        "cat_id": catId,
+        "price": price,
+        "date_added":
+            "${dateAdded!.year.toString().padLeft(4, '0')}-${dateAdded!.month.toString().padLeft(2, '0')}-${dateAdded!.day.toString().padLeft(2, '0')}",
+        "is_purchase": isPurchase,
+        "product_id": productId,
+        "plant_id": plantId,
+        "bidding_id": biddingId,
+        "user_id": userId,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
-        "category_name": categoryName,
-        "image_url": imageURL,
       };
 }
 
@@ -209,4 +225,20 @@ class Link {
         "label": label,
         "active": active,
       };
+}
+
+class CheckBoxListTileModel {
+  String title;
+  bool isCheck;
+  Cart cart;
+  Plant? plant;
+  Product? product;
+
+  CheckBoxListTileModel({
+    required this.title,
+    required this.isCheck,
+    required this.cart,
+    this.plant,
+    this.product,
+  });
 }

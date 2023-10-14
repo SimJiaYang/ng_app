@@ -43,6 +43,66 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
     });
   }
 
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+      showModalBottom(index);
+    });
+  }
+
+  void showModalBottom(int index) {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return index == 0
+            ? Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                        color: Colors.grey.withOpacity(0.2),
+                        offset: const Offset(0, 2),
+                        blurRadius: 10.0),
+                  ],
+                ),
+                height: MediaQuery.of(context).size.height * 0.5,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      const Text('Modal BottomSheet'),
+                      ElevatedButton(
+                        child: const Text('Close BottomSheet'),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            : Container(
+                height: MediaQuery.of(context).size.height * 0.5,
+                color: Colors.grey,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      const Text('Modal BottomSheet'),
+                      ElevatedButton(
+                        child: const Text('Close BottomSheet'),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,6 +112,31 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
           ),
           backgroundColor: ColorResources.COLOR_PRIMARY,
         ),
+        bottomNavigationBar: BottomNavigationBar(
+            backgroundColor: ColorResources.COLOR_PRIMARY,
+            currentIndex: _selectedIndex, //New
+            onTap: _onItemTapped,
+            selectedFontSize: 13,
+            selectedIconTheme: IconThemeData(color: Colors.white, size: 20),
+            selectedItemColor: Colors.white,
+            selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+            unselectedItemColor: Colors.white,
+            unselectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+            unselectedIconTheme: IconThemeData(color: Colors.white, size: 20),
+            unselectedFontSize: 13,
+
+            // backgroundColor: ColorResources.COLOR_PRIMARY,
+            elevation: 0,
+            mouseCursor: SystemMouseCursors.grab,
+            items: [
+              BottomNavigationBarItem(
+                  label: "Add to cart",
+                  icon: Icon(
+                    Icons.add_shopping_cart_outlined,
+                  )),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.shopping_bag), label: "Buy now")
+            ]),
         body: SafeArea(
           child: isLoading
               ? Center(

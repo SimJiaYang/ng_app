@@ -112,7 +112,9 @@ class _PlantScreenState extends State<PlantScreen> {
               Padding(
                 padding: const EdgeInsets.only(right: 15),
                 child: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, Routes.getCartRoute());
+                    },
                     icon: Icon(
                       Icons.shopping_cart_outlined,
                       color: Colors.white,

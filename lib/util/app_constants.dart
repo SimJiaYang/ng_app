@@ -49,6 +49,9 @@ class AppConstants {
   // Product
   static const String PRODUCT_LIST_URI = '/productlist';
 
+  // Cart
+  static const String CART_URI = '/cart';
+
   // Shared Key
   static const String THEME = 'theme';
   static const String TOKEN = 'token';

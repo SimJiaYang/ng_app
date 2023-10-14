@@ -214,9 +214,9 @@ class _DrawerItemState extends State<DrawerItem> {
     return Expanded(
       child: InkWell(
         onTap: () {
-          setState(() {
-            isSelected = !isSelected;
-          });
+          // setState(() {
+          //   isSelected = !isSelected;
+          // });
           widget.onTap(widget.keyword);
         },
         child: Container(

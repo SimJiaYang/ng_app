@@ -6,6 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:nurserygardenapp/helper/route_helper.dart';
 import 'package:nurserygardenapp/providers/auth_provider.dart';
+import 'package:nurserygardenapp/providers/cart_provider.dart';
 import 'package:nurserygardenapp/providers/plant_provider.dart';
 import 'package:nurserygardenapp/providers/product_provider.dart';
 import 'package:nurserygardenapp/providers/splash_provider.dart';
@@ -26,6 +27,7 @@ Future<void> main() async {
     ChangeNotifierProvider(create: (context) => di.sl<SplashProvider>()),
     ChangeNotifierProvider(create: (context) => di.sl<PlantProvider>()),
     ChangeNotifierProvider(create: (context) => di.sl<ProductProvider>()),
+    ChangeNotifierProvider(create: (context) => di.sl<CartProvider>()),
     ChangeNotifierProvider(create: (context) => di.sl<UserProvider>()),
   ], child: MyApp()));
 }
