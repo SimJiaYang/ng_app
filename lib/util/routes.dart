@@ -51,16 +51,17 @@ class Routes {
 
   // Plant
   static String getPlantRoute() => PLANT_SCREEN;
-  static String getPlantDetailRoute(String plantID, String isSearch) =>
-      '$PLANT_DETAIL_SCREEN?plantID=$plantID&isSearch=$isSearch';
+  static String getPlantDetailRoute(
+          String plantID, String isSearch, String isCart) =>
+      '$PLANT_DETAIL_SCREEN?plantID=$plantID&isSearch=$isSearch&isCart=$isCart';
   static String getPlantSearchRoute() => PLANT_SEARCH_SCREEN;
   static String getPlantSearchResultRoute(String searchKeyword) =>
       '$PLANT_SEARCH_RESULT_SCREEN?searchKeyword=$searchKeyword';
 
   // Product
   static String getProductRoute() => PRODUCT_SCREEN;
-  static String getProductDetailRoute(String productID) =>
-      '$PRODUCT_DETAIL_SCREEN?productID=$productID';
+  static String getProductDetailRoute(String productID, String isCart) =>
+      '$PRODUCT_DETAIL_SCREEN?productID=$productID&isCart=$isCart';
 
   // Cart
   static String getCartRoute() => CART_SCREEN;

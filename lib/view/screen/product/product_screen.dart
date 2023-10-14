@@ -168,10 +168,12 @@ class _ProductScreenState extends State<ProductScreen> {
                                           await Navigator.pushNamed(
                                               context,
                                               Routes.getProductDetailRoute(
-                                                  productProvider.productList
-                                                      .elementAt(index)
-                                                      .id!
-                                                      .toString()));
+                                                productProvider.productList
+                                                    .elementAt(index)
+                                                    .id!
+                                                    .toString(),
+                                                "false",
+                                              ));
                                         },
                                       );
                                     }

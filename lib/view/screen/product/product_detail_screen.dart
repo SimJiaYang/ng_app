@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/data/model/product_model.dart';
+import 'package:nurserygardenapp/providers/cart_provider.dart';
 import 'package:nurserygardenapp/providers/product_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/view/base/custom_space.dart';
@@ -8,8 +9,10 @@ import 'package:provider/provider.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final String productID;
+  final String isCart;
   const ProductDetailScreen({
     required this.productID,
+    required this.isCart,
     super.key,
   });
 
@@ -19,6 +22,7 @@ class ProductDetailScreen extends StatefulWidget {
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   late var product_prov = Provider.of<ProductProvider>(context, listen: false);
+  late var cart_prov = Provider.of<CartProvider>(context, listen: false);
   late Product product = Product();
   bool isLoading = true;
 
@@ -31,12 +35,17 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   }
 
   getProductInformation() {
-    product = product_prov.productList
-        .firstWhere((element) => element.id.toString() == widget.productID);
+    if (widget.isCart == "true") {
+      product = cart_prov.getCartProductList
+          .firstWhere((element) => element.id.toString() == widget.productID);
+    } else {
+      product = product_prov.productList
+          .firstWhere((element) => element.id.toString() == widget.productID);
+    }
+
     setState(() {
       isLoading = false;
     });
-    print(product.name);
   }
 
   @override

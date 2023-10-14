@@ -65,6 +65,7 @@ class RouterHelper {
     handlerFunc: (context, Map<String, dynamic> params) => PlantDetailScreen(
       plantID: params['plantID'][0],
       isSearch: params['isSearch'][0],
+      isCart: params['isCart'][0],
     ),
   );
 
@@ -83,8 +84,10 @@ class RouterHelper {
   );
 
   static Handler _productDetailHandler = Handler(
-    handlerFunc: (context, Map<String, dynamic> params) =>
-        ProductDetailScreen(productID: params['productID'][0]),
+    handlerFunc: (context, Map<String, dynamic> params) => ProductDetailScreen(
+      productID: params['productID'][0],
+      isCart: params['isCart'][0],
+    ),
   );
 
   static Handler _cartHandler = Handler(

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/data/model/plant_model.dart';
+import 'package:nurserygardenapp/providers/cart_provider.dart';
 import 'package:nurserygardenapp/providers/plant_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/view/base/custom_space.dart';
@@ -9,9 +10,11 @@ import 'package:provider/provider.dart';
 class PlantDetailScreen extends StatefulWidget {
   final String plantID;
   final String isSearch;
+  final String isCart;
   const PlantDetailScreen({
     required this.isSearch,
     required this.plantID,
+    required this.isCart,
     super.key,
   });
 
@@ -21,6 +24,7 @@ class PlantDetailScreen extends StatefulWidget {
 
 class _PlantDetailScreenState extends State<PlantDetailScreen> {
   late var plant_prov = Provider.of<PlantProvider>(context, listen: false);
+  late var cart_prov = Provider.of<CartProvider>(context, listen: false);
   late Plant plant = Plant();
   bool isLoading = true;
 
@@ -33,22 +37,18 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
   }
 
   getPlantInformation() {
-    plant = widget.isSearch == "true"
-        ? plant_prov.plantListSearch
-            .firstWhere((element) => element.id.toString() == widget.plantID)
-        : plant_prov.plantList
-            .firstWhere((element) => element.id.toString() == widget.plantID);
+    if (widget.isCart == "true") {
+      plant = cart_prov.getCartPlantList
+          .firstWhere((element) => element.id.toString() == widget.plantID);
+    } else if (widget.isSearch == "true") {
+      plant = plant_prov.plantListSearch
+          .firstWhere((element) => element.id.toString() == widget.plantID);
+    } else {
+      plant = plant_prov.plantList
+          .firstWhere((element) => element.id.toString() == widget.plantID);
+    }
     setState(() {
       isLoading = false;
-    });
-  }
-
-  int _selectedIndex = 0;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-      showModalBottom(index);
     });
   }
 
@@ -112,31 +112,71 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
           ),
           backgroundColor: ColorResources.COLOR_PRIMARY,
         ),
-        bottomNavigationBar: BottomNavigationBar(
-            backgroundColor: ColorResources.COLOR_PRIMARY,
-            currentIndex: _selectedIndex, //New
-            onTap: _onItemTapped,
-            selectedFontSize: 13,
-            selectedIconTheme: IconThemeData(color: Colors.white, size: 20),
-            selectedItemColor: Colors.white,
-            selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-            unselectedItemColor: Colors.white,
-            unselectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-            unselectedIconTheme: IconThemeData(color: Colors.white, size: 20),
-            unselectedFontSize: 13,
-
-            // backgroundColor: ColorResources.COLOR_PRIMARY,
-            elevation: 0,
-            mouseCursor: SystemMouseCursors.grab,
-            items: [
-              BottomNavigationBarItem(
-                  label: "Add to cart",
-                  icon: Icon(
-                    Icons.add_shopping_cart_outlined,
-                  )),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.shopping_bag), label: "Buy now")
-            ]),
+        bottomNavigationBar: BottomAppBar(
+            height: 60,
+            padding: EdgeInsets.all(0),
+            child: Container(
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          showModalBottom(0);
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: ColorResources.COLOR_PRIMARY,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                Icons.add_shopping_cart_outlined,
+                                color: Colors.white,
+                              ),
+                              Text(
+                                'Add to cart',
+                                style: TextStyle(color: Colors.white),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    // Container(
+                    //   color: Colors.white,
+                    //   width: 2,
+                    // ),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          showModalBottom(1);
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: ColorResources.COLOR_WHITE,
+                              border: Border.all(
+                                color: ColorResources.COLOR_PRIMARY,
+                                width: 1,
+                              )),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                "Buy now",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: ColorResources.COLOR_PRIMARY),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                  ]),
+            )),
         body: SafeArea(
           child: isLoading
               ? Center(

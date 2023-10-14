@@ -245,7 +245,8 @@ class _PlantSearchResultScreenState extends State<PlantSearchResultScreen> {
                                                         .elementAt(index)
                                                         .id!
                                                         .toString(),
-                                                    "true"));
+                                                    "true",
+                                                    'false'));
                                           },
                                         );
                                       }
