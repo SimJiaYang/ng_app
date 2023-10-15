@@ -62,7 +62,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                   color: Colors.white,
                   boxShadow: <BoxShadow>[
                     BoxShadow(
-                        color: Colors.grey.withOpacity(0.2),
+                        color: Colors.grey.withOpacity(0.1),
                         offset: const Offset(0, 2),
                         blurRadius: 10.0),
                   ],
@@ -111,6 +111,15 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
             color: Colors.white, // <-- SEE HERE
           ),
           backgroundColor: ColorResources.COLOR_PRIMARY,
+          actions: [
+            IconButton(
+              onPressed: () {},
+              icon: Icon(
+                Icons.favorite_border_outlined,
+                color: Colors.white,
+              ),
+            )
+          ],
         ),
         bottomNavigationBar: BottomAppBar(
             height: 60,

@@ -53,6 +53,7 @@ dependencies:
   flutter_easyloading: ^3.0.5
   file_picker: ^5.5.0
   quantity_input: ^1.0.2
+  carousel_slider: ^4.2.1
 
 dev_dependencies:
   flutter_test:

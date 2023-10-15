@@ -12,6 +12,7 @@ import 'package:nurserygardenapp/providers/product_provider.dart';
 import 'package:nurserygardenapp/providers/splash_provider.dart';
 import 'package:nurserygardenapp/providers/user_provider.dart';
 import 'package:nurserygardenapp/util/app_constants.dart';
+import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:provider/provider.dart';
@@ -82,6 +83,8 @@ class MyHttpOverrides extends HttpOverrides {
 }
 
 ThemeData light = ThemeData(
+  //2555,30,133
+  primarySwatch: Colors.green,
   dialogTheme: DialogTheme(surfaceTintColor: Colors.white),
   appBarTheme: AppBarTheme(
       surfaceTintColor: Colors.white, backgroundColor: Colors.white),

@@ -52,7 +52,6 @@ class _PlantDrawerWidgetState extends State<PlantDrawerWidget> {
   _loadState() {
     setState(() {
       _sortOrder = widget.sort;
-      print(widget.sort);
     });
   }
 

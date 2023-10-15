@@ -35,11 +35,12 @@ class _PlantGridItemState extends State<PlantGridItem> {
       child: Container(
           padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
+            border: Border.all(width: 0.2, color: ColorResources.COLOR_PRIMARY),
             borderRadius: BorderRadius.circular(10),
             color: ColorResources.COLOR_WHITE,
             boxShadow: <BoxShadow>[
               BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
+                  color: Colors.grey.withOpacity(0.3),
                   offset: const Offset(0, 2),
                   blurRadius: 10.0),
             ],
