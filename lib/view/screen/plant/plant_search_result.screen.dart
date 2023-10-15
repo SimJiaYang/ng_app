@@ -4,7 +4,6 @@ import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/empty_data_widget.dart';
 import 'package:nurserygardenapp/view/base/empty_grid_item.dart';
-import 'package:nurserygardenapp/view/screen/plant/widget/plant_drawer_widget.dart';
 import 'package:nurserygardenapp/view/screen/plant/widget/plant_grid_item.dart';
 import 'package:provider/provider.dart';
 

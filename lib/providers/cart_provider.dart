@@ -3,7 +3,6 @@ import 'package:nurserygardenapp/data/model/cart_model.dart';
 import 'package:nurserygardenapp/data/model/plant_model.dart';
 import 'package:nurserygardenapp/data/model/product_model.dart';
 import 'package:nurserygardenapp/data/model/response/api_response.dart';
-import 'package:nurserygardenapp/data/repositories/auth_repo.dart';
 import 'package:nurserygardenapp/data/repositories/cart_repo.dart';
 import 'package:nurserygardenapp/helper/response_helper.dart';
 import 'package:nurserygardenapp/util/app_constants.dart';
