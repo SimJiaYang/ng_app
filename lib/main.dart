@@ -12,7 +12,6 @@ import 'package:nurserygardenapp/providers/product_provider.dart';
 import 'package:nurserygardenapp/providers/splash_provider.dart';
 import 'package:nurserygardenapp/providers/user_provider.dart';
 import 'package:nurserygardenapp/util/app_constants.dart';
-import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:provider/provider.dart';
