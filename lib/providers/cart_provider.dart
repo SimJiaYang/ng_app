@@ -6,6 +6,7 @@ import 'package:nurserygardenapp/data/model/response/api_response.dart';
 import 'package:nurserygardenapp/data/repositories/cart_repo.dart';
 import 'package:nurserygardenapp/helper/response_helper.dart';
 import 'package:nurserygardenapp/util/app_constants.dart';
+import 'package:nurserygardenapp/view/base/custom_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CartProvider extends ChangeNotifier {
@@ -35,7 +36,7 @@ class CartProvider extends ChangeNotifier {
   List<Product> _cartProductList = [];
   List<Product> get getCartProductList => _cartProductList;
 
-  /// ================== PLANT LIST ==================
+  /// ================== CART LIST ==================
   Future<bool> getCartItem(BuildContext context, params,
       {bool isLoadMore = false, bool isLoad = true}) async {
     if (!isLoadMore) {
@@ -84,6 +85,25 @@ class CartProvider extends ChangeNotifier {
     _isLoading = false;
     notifyListeners();
 
+    return result;
+  }
+
+  // ADD TO CART ** UPDATE CART
+  Future<bool> addToCart(BuildContext context, Cart cart) async {
+    bool result = false;
+    _isLoading = true;
+    notifyListeners();
+
+    ApiResponse apiResponse = await cartRepo.addToCart(cart);
+    if (context.mounted) {
+      result = ResponseHelper.responseHelper(context, apiResponse);
+      if (result) {
+        showCustomSnackBar('Success', context,
+            type: AppConstants.SNACKBAR_SUCCESS);
+      }
+    }
+    _isLoading = false;
+    notifyListeners();
     return result;
   }
 }

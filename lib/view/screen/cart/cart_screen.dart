@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:input_quantity/input_quantity.dart';
 import 'package:nurserygardenapp/providers/cart_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/empty_data_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:quantity_input/quantity_input.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -17,13 +17,13 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   late CartProvider cart_prov =
       Provider.of<CartProvider>(context, listen: false);
-  int simpleIntInput = 1;
 
   final _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(_onScroll);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadData();
     });
@@ -206,7 +206,7 @@ class _CartScreenState extends State<CartScreen> {
                                 ),
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     if (cartProvider
                                             .getCheckBoxListTileModel[index]
@@ -254,6 +254,7 @@ class _CartScreenState extends State<CartScreen> {
                                               .getCheckBoxListTileModel[index]
                                               .product!
                                               .name!),
+                                    const SizedBox(height: 5),
                                     if (cartProvider
                                             .getCheckBoxListTileModel[index]
                                             .cart
@@ -274,22 +275,46 @@ class _CartScreenState extends State<CartScreen> {
                                           .product!
                                           .price!
                                           .toStringAsFixed(2)),
-                                    QuantityInput(
-                                        inputWidth: 70,
-                                        // label: 'Simple int input',
-                                        value: cartProvider
+                                    const SizedBox(height: 5),
+                                    Container(
+                                      height: 30,
+                                      child: InputQty.int(
+                                        decoration: QtyDecorationProps(
+                                          isBordered: false,
+                                          borderShape: BorderShapeBtn.none,
+                                          btnColor:
+                                              ColorResources.COLOR_PRIMARY,
+                                          width: 12,
+                                          plusBtn: Icon(
+                                            Icons.add_box_outlined,
+                                            size: 30,
+                                            color: ColorResources.COLOR_PRIMARY,
+                                          ),
+                                          minusBtn: Icon(
+                                            Icons
+                                                .indeterminate_check_box_outlined,
+                                            size: 30,
+                                            color: ColorResources.COLOR_PRIMARY,
+                                          ),
+                                        ),
+                                        //Need Change
+                                        maxVal: 10000,
+                                        initVal: cartProvider
                                             .getCheckBoxListTileModel[index]
                                             .cart
-                                            .quantity,
-                                        onChanged: (value) => setState(
-                                            () =>
-                                                cartProvider
-                                                        .getCheckBoxListTileModel[
-                                                            index]
-                                                        .cart
-                                                        .quantity =
-                                                    int.parse(value.replaceAll(
-                                                        ',', '')))),
+                                            .quantity as num,
+                                        minVal: 1,
+                                        steps: 1,
+                                        onQtyChanged: (val) {
+                                          setState(() {
+                                            cartProvider
+                                                .getCheckBoxListTileModel[index]
+                                                .cart
+                                                .quantity = val;
+                                          });
+                                        },
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ],

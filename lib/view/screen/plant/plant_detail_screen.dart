@@ -1,9 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:input_quantity/input_quantity.dart';
 import 'package:nurserygardenapp/data/model/plant_model.dart';
 import 'package:nurserygardenapp/providers/cart_provider.dart';
 import 'package:nurserygardenapp/providers/plant_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
+import 'package:nurserygardenapp/view/base/custom_button.dart';
 import 'package:nurserygardenapp/view/base/custom_space.dart';
 import 'package:provider/provider.dart';
 
@@ -27,6 +30,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
   late var cart_prov = Provider.of<CartProvider>(context, listen: false);
   late Plant plant = Plant();
   bool isLoading = true;
+  int cartQuantity = 1;
 
   @override
   void initState() {
@@ -52,12 +56,26 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
     });
   }
 
-  void showModalBottom(int index) {
+  Future<void> addToCart() async {
+    Navigator.pop(context);
+    EasyLoading.show(status: 'loading...');
+    // Cart cart = Cart();
+    // cart.plantId = plant.id;
+    // cart.quantity = cartQuantity;
+    // cart.price = plant.price! * cartQuantity;
+    // cart.dateAdded = DateTime.now();
+    // cart.isPurchase = "false";
+    // await cart_prov.addToCart(context, cart);
+    EasyLoading.dismiss();
+  }
+
+  void showModalBottom(int index, BuildContext context) {
     showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) {
         return index == 0
             ? Container(
+                padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   boxShadow: <BoxShadow>[
@@ -70,14 +88,52 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                 height: MediaQuery.of(context).size.height * 0.5,
                 child: Center(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      const Text('Modal BottomSheet'),
-                      ElevatedButton(
-                        child: const Text('Close BottomSheet'),
-                        onPressed: () => Navigator.pop(context),
+                      Container(
+                        height: 30,
+                        child: InputQty.int(
+                          decoration: QtyDecorationProps(
+                            isBordered: false,
+                            borderShape: BorderShapeBtn.none,
+                            btnColor: ColorResources.COLOR_PRIMARY,
+                            width: 12,
+                            plusBtn: Icon(
+                              Icons.add_box_outlined,
+                              size: 30,
+                              color: ColorResources.COLOR_PRIMARY,
+                            ),
+                            minusBtn: Icon(
+                              Icons.indeterminate_check_box_outlined,
+                              size: 30,
+                              color: ColorResources.COLOR_PRIMARY,
+                            ),
+                          ),
+                          //Need Change
+                          maxVal: plant.quantity!,
+                          initVal: cartQuantity,
+                          minVal: 1,
+                          steps: 1,
+                          onQtyChanged: (val) {
+                            setState(() {
+                              cartQuantity = val;
+                            });
+                          },
+                        ),
                       ),
+                      Divider(),
+                      CustomButton(
+                        btnTxt: 'Add to cart',
+                        onTap: () async {
+                          await addToCart();
+                        },
+                      )
+                      // const Text('Modal BottomSheet'),
+                      // ElevatedButton(
+                      //   child: const Text('Close BottomSheet'),
+                      //   onPressed: () => Navigator.pop(context),
+                      // ),
                     ],
                   ),
                 ),
@@ -131,7 +187,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
-                          showModalBottom(0);
+                          showModalBottom(0, context);
                         },
                         child: Container(
                           decoration: BoxDecoration(
@@ -161,7 +217,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
-                          showModalBottom(1);
+                          showModalBottom(1, context);
                         },
                         child: Container(
                           decoration: BoxDecoration(
