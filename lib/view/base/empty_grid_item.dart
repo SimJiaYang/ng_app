@@ -40,7 +40,8 @@ class EmptyGridItem extends StatelessWidget {
                       height: 5,
                     ),
                     Container(
-                      width: 110,
+                      // width: 110,
+                      width: double.infinity,
                       height: 20,
                       color: Colors.grey[400],
                     ),

@@ -22,7 +22,6 @@ class _PlantGridItemState extends State<PlantGridItem> {
   @override
   void initState() {
     WidgetsFlutterBinding.ensureInitialized();
-
     super.initState();
   }
 
@@ -55,22 +54,25 @@ class _PlantGridItemState extends State<PlantGridItem> {
                     child: CachedNetworkImage(
                       filterQuality: FilterQuality.high,
                       imageUrl: "${widget.plant.imageURL!}",
-                      memCacheHeight: 200,
-                      memCacheWidth: 200,
                       imageBuilder: (context, imageProvider) => Container(
                         decoration: BoxDecoration(
                           image: DecorationImage(
                             image: imageProvider,
-                            fit: BoxFit.fitHeight,
+                            fit: BoxFit.fill,
                           ),
                         ),
                       ),
                       placeholder: (context, url) => Padding(
                         padding: const EdgeInsets.all(1.0),
-                        child: Center(
-                            child: CircularProgressIndicator(
-                          color: ColorResources.COLOR_GRAY,
-                        )),
+                        child: Container(
+                          width: double.infinity,
+                          height: 20,
+                          color: Colors.grey[400],
+                        ),
+                        // child: Center(
+                        //     child: CircularProgressIndicator(
+                        //   color: ColorResources.COLOR_GRAY,
+                        // )),
                       ),
                       errorWidget: (context, url, error) => Icon(Icons.error),
                     )),

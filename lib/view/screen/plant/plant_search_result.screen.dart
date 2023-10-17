@@ -163,6 +163,7 @@ class _PlantSearchResultScreenState extends State<PlantSearchResultScreen> {
             //     ))
           ]),
       body: SizedBox(
+          height: size.height,
           width: size.width,
           child: SafeArea(
             child: Container(
@@ -231,10 +232,21 @@ class _PlantSearchResultScreenState extends State<PlantSearchResultScreen> {
                             plantProvider.endSearchResult.isEmpty &&
                             _isFirstTime
                         ? Expanded(
-                            child: EmptyWidget(
-                              large: true,
-                              isLoading: plantProvider.isLoadingSearch,
-                            ),
+                            child: GridView.builder(
+                                primary: false,
+                                shrinkWrap: true,
+                                itemCount: 8,
+                                padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  childAspectRatio: 3 / 4,
+                                  crossAxisSpacing: 10,
+                                  mainAxisSpacing: 10,
+                                ),
+                                itemBuilder: (BuildContext context, int index) {
+                                  return EmptyGridItem();
+                                }),
                           )
                         : plantProvider.plantListSearch.isEmpty &&
                                 !plantProvider.isLoadingSearch

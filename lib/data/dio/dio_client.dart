@@ -23,11 +23,12 @@ class DioClient {
     dio = dioC;
     dio
       ..options.baseUrl = baseUrl
-      ..options.connectTimeout = Duration(milliseconds: 30000)
-      ..options.receiveTimeout = Duration(milliseconds: 30000)
+      ..options.connectTimeout = Duration(milliseconds: 100000)
+      ..options.receiveTimeout = Duration(milliseconds: 100000)
       ..httpClientAdapter
       ..options.headers = {
         'Content-Type': 'application/json',
+        'Accept': 'application/json',
         'Authorization': 'Bearer $token'
       };
     dio.interceptors.add(loggingInterceptor);

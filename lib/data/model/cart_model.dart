@@ -194,9 +194,9 @@ class Cart {
         "date_added":
             "${dateAdded!.year.toString().padLeft(4, '0')}-${dateAdded!.month.toString().padLeft(2, '0')}-${dateAdded!.day.toString().padLeft(2, '0')}",
         "is_purchase": isPurchase,
-        "product_id": productId,
-        "plant_id": plantId,
-        "bidding_id": biddingId,
+        "productID": productId.toString(),
+        "plantID": plantId.toString(),
+        "bidding_id": biddingId.toString(),
         "user_id": userId,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),

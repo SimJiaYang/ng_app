@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:input_quantity/input_quantity.dart';
+import 'package:nurserygardenapp/data/model/cart_model.dart';
 import 'package:nurserygardenapp/data/model/plant_model.dart';
 import 'package:nurserygardenapp/providers/cart_provider.dart';
 import 'package:nurserygardenapp/providers/plant_provider.dart';
@@ -59,13 +60,14 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
   Future<void> addToCart() async {
     Navigator.pop(context);
     EasyLoading.show(status: 'loading...');
-    // Cart cart = Cart();
-    // cart.plantId = plant.id;
-    // cart.quantity = cartQuantity;
-    // cart.price = plant.price! * cartQuantity;
-    // cart.dateAdded = DateTime.now();
-    // cart.isPurchase = "false";
-    // await cart_prov.addToCart(context, cart);
+    Cart cart = Cart();
+    cart.plantId = plant.id;
+    cart.quantity = cartQuantity;
+    cart.price = plant.price! * cartQuantity;
+    cart.dateAdded = DateTime.now();
+    cart.isPurchase = "false";
+
+    await cart_prov.addToCart(context, cart);
     EasyLoading.dismiss();
   }
 
@@ -86,43 +88,127 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                   ],
                 ),
                 height: MediaQuery.of(context).size.height * 0.5,
+                width: double.infinity,
                 child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
-                        height: 30,
-                        child: InputQty.int(
-                          decoration: QtyDecorationProps(
-                            isBordered: false,
-                            borderShape: BorderShapeBtn.none,
-                            btnColor: ColorResources.COLOR_PRIMARY,
-                            width: 12,
-                            plusBtn: Icon(
-                              Icons.add_box_outlined,
-                              size: 30,
-                              color: ColorResources.COLOR_PRIMARY,
+                        padding: EdgeInsets.all(3),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: 100,
+                              width: 100,
+                              child: CachedNetworkImage(
+                                filterQuality: FilterQuality.high,
+                                imageUrl: "${plant.imageURL!}",
+                                imageBuilder: (context, imageProvider) =>
+                                    Container(
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: imageProvider,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                ),
+                                placeholder: (context, url) => Padding(
+                                  padding: const EdgeInsets.all(1.0),
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: 20,
+                                    color: Colors.grey[400],
+                                  ),
+                                ),
+                                errorWidget: (context, url, error) =>
+                                    Icon(Icons.error),
+                              ),
                             ),
-                            minusBtn: Icon(
-                              Icons.indeterminate_check_box_outlined,
-                              size: 30,
-                              color: ColorResources.COLOR_PRIMARY,
+                            const SizedBox(
+                              width: 10,
                             ),
-                          ),
-                          //Need Change
-                          maxVal: plant.quantity!,
-                          initVal: cartQuantity,
-                          minVal: 1,
-                          steps: 1,
-                          onQtyChanged: (val) {
-                            setState(() {
-                              cartQuantity = val;
-                            });
-                          },
+                            Container(
+                              height: 100,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "${plant.name}",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 19,
+                                        color: ColorResources.COLOR_BLACK
+                                            .withOpacity(0.9)),
+                                  ),
+                                  Text(
+                                    "Inventory: ${plant.quantity}",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 15,
+                                        color: ColorResources.COLOR_BLACK
+                                            .withOpacity(0.7)),
+                                  ),
+                                  Expanded(child: Container()),
+                                  Text(
+                                    "RM ${plant.price!.toStringAsFixed(2)}",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 19,
+                                        color: ColorResources.COLOR_BLACK
+                                            .withOpacity(0.8)),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
                         ),
                       ),
                       Divider(),
+                      Expanded(child: Container()),
+                      Container(
+                        height: 30,
+                        child: Row(
+                          children: [
+                            Text(
+                              "Please enter the quantity: ",
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            InputQty.int(
+                              decoration: QtyDecorationProps(
+                                isBordered: false,
+                                borderShape: BorderShapeBtn.none,
+                                btnColor: ColorResources.COLOR_PRIMARY,
+                                width: 12,
+                                plusBtn: Icon(
+                                  Icons.add_box_outlined,
+                                  size: 30,
+                                  color: ColorResources.COLOR_PRIMARY,
+                                ),
+                                minusBtn: Icon(
+                                  Icons.indeterminate_check_box_outlined,
+                                  size: 30,
+                                  color: ColorResources.COLOR_PRIMARY,
+                                ),
+                              ),
+                              //Need Change
+                              maxVal: plant.quantity!,
+                              initVal: cartQuantity,
+                              minVal: 1,
+                              steps: 1,
+                              onQtyChanged: (val) {
+                                setState(() {
+                                  cartQuantity = val;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(child: Container()),
                       CustomButton(
                         btnTxt: 'Add to cart',
                         onTap: () async {

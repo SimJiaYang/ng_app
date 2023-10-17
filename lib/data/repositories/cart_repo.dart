@@ -22,6 +22,7 @@ class CartRepo {
   }
 
   Future<ApiResponse> addToCart(Cart cart) async {
+    print(cart.toJson());
     try {
       Response response = await dioClient
           .post('${AppConstants.ADD_TO_CART_URI}', data: cart.toJson());

@@ -4,7 +4,9 @@ import 'package:input_quantity/input_quantity.dart';
 import 'package:nurserygardenapp/providers/cart_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/routes.dart';
+import 'package:nurserygardenapp/view/base/circular_indicator.dart';
 import 'package:nurserygardenapp/view/base/empty_data_widget.dart';
+import 'package:nurserygardenapp/view/screen/cart/widget/empty_cart_item.dart';
 import 'package:provider/provider.dart';
 
 class CartScreen extends StatefulWidget {
@@ -58,6 +60,7 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -69,267 +72,331 @@ class _CartScreenState extends State<CartScreen> {
         ),
         backgroundColor: ColorResources.COLOR_PRIMARY,
       ),
-      body: Consumer<CartProvider>(builder: (context, cartProvider, child) {
-        return ListView.builder(
-          controller: _scrollController,
-          physics: const BouncingScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: cartProvider.getCheckBoxListTileModel.length +
-              (cartProvider.isLoading &&
-                      cartProvider.getCheckBoxListTileModel.length >= 8
-                  ? 1
-                  : 0),
-          itemBuilder: (BuildContext context, int index) {
-            if (cartProvider.noMoreDataMessage.isEmpty &&
-                cartProvider.isLoading) {
-              return EmptyWidget(
-                large: true,
-                isLoading: cartProvider.isLoading,
-              );
-            } else {
-              return Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Dismissible(
-                      key: ValueKey(
-                          cartProvider.getCheckBoxListTileModel[index].cart.id),
-                      child: GestureDetector(
-                        onTap: () {
-                          if (cartProvider.getCheckBoxListTileModel[index].cart
-                                  .plantId !=
-                              null)
-                            Navigator.pushNamed(
-                                context,
-                                Routes.getPlantDetailRoute(
-                                    cartProvider.getCheckBoxListTileModel[index]
-                                        .plant!.id!
-                                        .toString(),
-                                    "false",
-                                    "true"));
-                          if (cartProvider.getCheckBoxListTileModel[index].cart
-                                  .productId !=
-                              null)
-                            Navigator.pushNamed(
-                                context,
-                                Routes.getProductDetailRoute(
-                                    cartProvider.getCheckBoxListTileModel[index]
-                                        .product!.id!
-                                        .toString(),
-                                    'true'));
-                        },
-                        child: CheckboxListTile(
-                          dense: true,
-                          activeColor: ColorResources.COLOR_PRIMARY,
-                          checkColor: ColorResources.COLOR_WHITE,
-                          controlAffinity: ListTileControlAffinity.leading,
-                          value: cartProvider
-                              .getCheckBoxListTileModel[index].isCheck,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              cartProvider.getCheckBoxListTileModel[index]
-                                  .isCheck = value!;
-                            });
-                          },
-                          title: Container(
-                            height: 150,
-                            width: double.infinity,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                if (cartProvider.getCheckBoxListTileModel[index]
-                                        .cart.plantId !=
-                                    null)
-                                  Container(
-                                    height: 100,
-                                    width: 100,
-                                    child: CachedNetworkImage(
-                                      filterQuality: FilterQuality.high,
-                                      imageUrl:
-                                          "${cartProvider.getCheckBoxListTileModel[index].plant!.imageURL!}",
-                                      memCacheHeight: 200,
-                                      memCacheWidth: 200,
-                                      imageBuilder: (context, imageProvider) =>
-                                          Container(
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                            image: imageProvider,
-                                            fit: BoxFit.fitHeight,
-                                          ),
-                                        ),
-                                      ),
-                                      placeholder: (context, url) => Padding(
-                                        padding: const EdgeInsets.all(1.0),
-                                        child: Center(
-                                            child: CircularProgressIndicator(
-                                          color: ColorResources.COLOR_GRAY,
-                                        )),
-                                      ),
-                                      errorWidget: (context, url, error) =>
-                                          Icon(Icons.error),
-                                    ),
-                                  ),
-                                if (cartProvider.getCheckBoxListTileModel[index]
-                                        .cart.productId !=
-                                    null)
-                                  Container(
-                                    height: 100,
-                                    width: 100,
-                                    child: CachedNetworkImage(
-                                      filterQuality: FilterQuality.high,
-                                      imageUrl:
-                                          "${cartProvider.getCheckBoxListTileModel[index].product!.imageURL!}",
-                                      memCacheHeight: 200,
-                                      memCacheWidth: 200,
-                                      imageBuilder: (context, imageProvider) =>
-                                          Container(
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                            image: imageProvider,
-                                            fit: BoxFit.fitHeight,
-                                          ),
-                                        ),
-                                      ),
-                                      placeholder: (context, url) => Padding(
-                                        padding: const EdgeInsets.all(1.0),
-                                        child: Center(
-                                            child: CircularProgressIndicator(
-                                          color: ColorResources.COLOR_GRAY,
-                                        )),
-                                      ),
-                                      errorWidget: (context, url, error) =>
-                                          Icon(Icons.error),
-                                    ),
-                                  ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    if (cartProvider
-                                            .getCheckBoxListTileModel[index]
-                                            .cart
-                                            .plantId !=
-                                        null)
-                                      Text(cartProvider
-                                                  .getCheckBoxListTileModel[
-                                                      index]
-                                                  .plant!
-                                                  .name!
-                                                  .length >
-                                              10
-                                          ? cartProvider
-                                                  .getCheckBoxListTileModel[
-                                                      index]
-                                                  .plant!
-                                                  .name!
-                                                  .substring(0, 10) +
-                                              ".."
-                                          : cartProvider
-                                              .getCheckBoxListTileModel[index]
-                                              .plant!
-                                              .name!),
-                                    if (cartProvider
-                                            .getCheckBoxListTileModel[index]
-                                            .cart
-                                            .productId !=
-                                        null)
-                                      Text(cartProvider
-                                                  .getCheckBoxListTileModel[
-                                                      index]
-                                                  .product!
-                                                  .name!
-                                                  .length >
-                                              10
-                                          ? cartProvider
-                                                  .getCheckBoxListTileModel[
-                                                      index]
-                                                  .product!
-                                                  .name!
-                                                  .substring(0, 10) +
-                                              ".."
-                                          : cartProvider
-                                              .getCheckBoxListTileModel[index]
-                                              .product!
-                                              .name!),
-                                    const SizedBox(height: 5),
-                                    if (cartProvider
-                                            .getCheckBoxListTileModel[index]
-                                            .cart
-                                            .plantId !=
-                                        null)
-                                      Text(cartProvider
+      body: SizedBox(
+        height: size.height,
+        width: size.width,
+        child: Consumer<CartProvider>(builder: (context, cartProvider, child) {
+          return cartProvider.cartItem.isEmpty && cartProvider.isLoading
+              ? ListView.builder(
+                  padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                  itemCount: 8,
+                  itemBuilder: (context, index) {
+                    return EmptyCartItem();
+                  })
+              // EmptyWidget(
+              //     large: true,
+              //     isLoading: cartProvider.isLoading,
+              //   )
+              : ListView.builder(
+                  padding: (cartProvider.noMoreDataMessage.isNotEmpty &&
+                          !cartProvider.isLoading)
+                      ? EdgeInsets.fromLTRB(10, 0, 10, 10)
+                      : EdgeInsets.only(
+                          bottom: 235, left: 10, right: 10, top: 0),
+                  controller: _scrollController,
+                  physics: const BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: cartProvider.getCheckBoxListTileModel.length +
+                      (cartProvider.isLoading &&
+                              cartProvider.getCheckBoxListTileModel.length >= 8
+                          ? 1
+                          : 0),
+                  itemBuilder: (BuildContext context, int index) {
+                    if (index >= cartProvider.cartItem.length &&
+                        cartProvider.noMoreDataMessage.isEmpty) {
+                      return EmptyCartItem();
+                    } else {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Dismissible(
+                              key: ValueKey(cartProvider
+                                  .getCheckBoxListTileModel[index].cart.id),
+                              child: GestureDetector(
+                                onTap: () {
+                                  if (cartProvider
                                           .getCheckBoxListTileModel[index]
-                                          .plant!
-                                          .price!
-                                          .toStringAsFixed(2)),
-                                    if (cartProvider
-                                            .getCheckBoxListTileModel[index]
-                                            .cart
-                                            .productId !=
-                                        null)
-                                      Text(cartProvider
-                                          .getCheckBoxListTileModel[index]
-                                          .product!
-                                          .price!
-                                          .toStringAsFixed(2)),
-                                    const SizedBox(height: 5),
-                                    Container(
-                                      height: 30,
-                                      child: InputQty.int(
-                                        decoration: QtyDecorationProps(
-                                          isBordered: false,
-                                          borderShape: BorderShapeBtn.none,
-                                          btnColor:
-                                              ColorResources.COLOR_PRIMARY,
-                                          width: 12,
-                                          plusBtn: Icon(
-                                            Icons.add_box_outlined,
-                                            size: 30,
-                                            color: ColorResources.COLOR_PRIMARY,
-                                          ),
-                                          minusBtn: Icon(
-                                            Icons
-                                                .indeterminate_check_box_outlined,
-                                            size: 30,
-                                            color: ColorResources.COLOR_PRIMARY,
-                                          ),
-                                        ),
-                                        //Need Change
-                                        maxVal: 10000,
-                                        initVal: cartProvider
-                                            .getCheckBoxListTileModel[index]
-                                            .cart
-                                            .quantity as num,
-                                        minVal: 1,
-                                        steps: 1,
-                                        onQtyChanged: (val) {
-                                          setState(() {
+                                          .cart
+                                          .plantId !=
+                                      null)
+                                    Navigator.pushNamed(
+                                        context,
+                                        Routes.getPlantDetailRoute(
                                             cartProvider
                                                 .getCheckBoxListTileModel[index]
+                                                .plant!
+                                                .id!
+                                                .toString(),
+                                            "false",
+                                            "true"));
+                                  if (cartProvider
+                                          .getCheckBoxListTileModel[index]
+                                          .cart
+                                          .productId !=
+                                      null)
+                                    Navigator.pushNamed(
+                                        context,
+                                        Routes.getProductDetailRoute(
+                                            cartProvider
+                                                .getCheckBoxListTileModel[index]
+                                                .product!
+                                                .id!
+                                                .toString(),
+                                            'true'));
+                                },
+                                child: CheckboxListTile(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  dense: true,
+                                  activeColor: ColorResources.COLOR_PRIMARY,
+                                  checkColor: ColorResources.COLOR_WHITE,
+                                  controlAffinity:
+                                      ListTileControlAffinity.leading,
+                                  value: cartProvider
+                                      .getCheckBoxListTileModel[index].isCheck,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      cartProvider
+                                          .getCheckBoxListTileModel[index]
+                                          .isCheck = value!;
+                                    });
+                                  },
+                                  title: Container(
+                                    height: 150,
+                                    width: double.infinity,
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        if (cartProvider
+                                                .getCheckBoxListTileModel[index]
                                                 .cart
-                                                .quantity = val;
-                                          });
-                                        },
-                                      ),
+                                                .plantId !=
+                                            null)
+                                          Container(
+                                            height: 100,
+                                            width: 100,
+                                            child: CachedNetworkImage(
+                                              filterQuality: FilterQuality.high,
+                                              imageUrl:
+                                                  "${cartProvider.getCheckBoxListTileModel[index].plant!.imageURL!}",
+                                              memCacheHeight: 200,
+                                              memCacheWidth: 200,
+                                              imageBuilder:
+                                                  (context, imageProvider) =>
+                                                      Container(
+                                                decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                    image: imageProvider,
+                                                    fit: BoxFit.fitHeight,
+                                                  ),
+                                                ),
+                                              ),
+                                              placeholder: (context, url) =>
+                                                  Padding(
+                                                padding:
+                                                    const EdgeInsets.all(1.0),
+                                                child: Center(
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                  color:
+                                                      ColorResources.COLOR_GRAY,
+                                                )),
+                                              ),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      Icon(Icons.error),
+                                            ),
+                                          ),
+                                        if (cartProvider
+                                                .getCheckBoxListTileModel[index]
+                                                .cart
+                                                .productId !=
+                                            null)
+                                          Container(
+                                            height: 100,
+                                            width: 100,
+                                            child: CachedNetworkImage(
+                                              filterQuality: FilterQuality.high,
+                                              imageUrl:
+                                                  "${cartProvider.getCheckBoxListTileModel[index].product!.imageURL!}",
+                                              memCacheHeight: 200,
+                                              memCacheWidth: 200,
+                                              imageBuilder:
+                                                  (context, imageProvider) =>
+                                                      Container(
+                                                decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                    image: imageProvider,
+                                                    fit: BoxFit.fitHeight,
+                                                  ),
+                                                ),
+                                              ),
+                                              placeholder: (context, url) =>
+                                                  Padding(
+                                                padding:
+                                                    const EdgeInsets.all(1.0),
+                                                child: Center(
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                  color:
+                                                      ColorResources.COLOR_GRAY,
+                                                )),
+                                              ),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      Icon(Icons.error),
+                                            ),
+                                          ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            if (cartProvider
+                                                    .getCheckBoxListTileModel[
+                                                        index]
+                                                    .cart
+                                                    .plantId !=
+                                                null)
+                                              Text(cartProvider
+                                                          .getCheckBoxListTileModel[
+                                                              index]
+                                                          .plant!
+                                                          .name!
+                                                          .length >
+                                                      10
+                                                  ? cartProvider
+                                                          .getCheckBoxListTileModel[
+                                                              index]
+                                                          .plant!
+                                                          .name!
+                                                          .substring(0, 10) +
+                                                      ".."
+                                                  : cartProvider
+                                                      .getCheckBoxListTileModel[
+                                                          index]
+                                                      .plant!
+                                                      .name!),
+                                            if (cartProvider
+                                                    .getCheckBoxListTileModel[
+                                                        index]
+                                                    .cart
+                                                    .productId !=
+                                                null)
+                                              Text(cartProvider
+                                                          .getCheckBoxListTileModel[
+                                                              index]
+                                                          .product!
+                                                          .name!
+                                                          .length >
+                                                      10
+                                                  ? cartProvider
+                                                          .getCheckBoxListTileModel[
+                                                              index]
+                                                          .product!
+                                                          .name!
+                                                          .substring(0, 10) +
+                                                      ".."
+                                                  : cartProvider
+                                                      .getCheckBoxListTileModel[
+                                                          index]
+                                                      .product!
+                                                      .name!),
+                                            const SizedBox(height: 5),
+                                            if (cartProvider
+                                                    .getCheckBoxListTileModel[
+                                                        index]
+                                                    .cart
+                                                    .plantId !=
+                                                null)
+                                              Text(cartProvider
+                                                  .getCheckBoxListTileModel[
+                                                      index]
+                                                  .plant!
+                                                  .price!
+                                                  .toStringAsFixed(2)),
+                                            if (cartProvider
+                                                    .getCheckBoxListTileModel[
+                                                        index]
+                                                    .cart
+                                                    .productId !=
+                                                null)
+                                              Text(cartProvider
+                                                  .getCheckBoxListTileModel[
+                                                      index]
+                                                  .product!
+                                                  .price!
+                                                  .toStringAsFixed(2)),
+                                            const SizedBox(height: 5),
+                                            Container(
+                                              height: 30,
+                                              child: InputQty.int(
+                                                decoration: QtyDecorationProps(
+                                                  isBordered: false,
+                                                  borderShape:
+                                                      BorderShapeBtn.none,
+                                                  btnColor: ColorResources
+                                                      .COLOR_PRIMARY,
+                                                  width: 12,
+                                                  plusBtn: Icon(
+                                                    Icons.add_box_outlined,
+                                                    size: 30,
+                                                    color: ColorResources
+                                                        .COLOR_PRIMARY,
+                                                  ),
+                                                  minusBtn: Icon(
+                                                    Icons
+                                                        .indeterminate_check_box_outlined,
+                                                    size: 30,
+                                                    color: ColorResources
+                                                        .COLOR_PRIMARY,
+                                                  ),
+                                                ),
+                                                //Need Change
+                                                maxVal: 10000,
+                                                initVal: cartProvider
+                                                    .getCheckBoxListTileModel[
+                                                        index]
+                                                    .cart
+                                                    .quantity as num,
+                                                minVal: 1,
+                                                steps: 1,
+                                                onQtyChanged: (val) {
+                                                  setState(() {
+                                                    cartProvider
+                                                        .getCheckBoxListTileModel[
+                                                            index]
+                                                        .cart
+                                                        .quantity = val;
+                                                  });
+                                                },
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                  ),
                                 ),
-                              ],
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              );
-            }
-          },
-        );
-      }),
+                        ],
+                      );
+                    }
+                  },
+                );
+        }),
+      ),
     );
   }
 }
