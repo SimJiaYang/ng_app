@@ -52,6 +52,7 @@ class AppConstants {
   // Cart
   static const String CART_URI = '/cart';
   static const String ADD_TO_CART_URI = '/cart/add';
+  static const String DELETE_CART_URI = '/cart/delete';
 
   // Shared Key
   static const String THEME = 'theme';

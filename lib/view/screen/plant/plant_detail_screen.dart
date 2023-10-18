@@ -174,8 +174,8 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                         child: Row(
                           children: [
                             Text(
-                              "Please enter the quantity: ",
-                              style: TextStyle(fontSize: 16),
+                              "Enter the quantity: ",
+                              style: TextStyle(fontSize: 14),
                             ),
                             InputQty.int(
                               decoration: QtyDecorationProps(
@@ -185,12 +185,12 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                                 width: 12,
                                 plusBtn: Icon(
                                   Icons.add_box_outlined,
-                                  size: 30,
+                                  size: 25,
                                   color: ColorResources.COLOR_PRIMARY,
                                 ),
                                 minusBtn: Icon(
                                   Icons.indeterminate_check_box_outlined,
-                                  size: 30,
+                                  size: 25,
                                   color: ColorResources.COLOR_PRIMARY,
                                 ),
                               ),

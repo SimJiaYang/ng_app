@@ -22,10 +22,19 @@ class CartRepo {
   }
 
   Future<ApiResponse> addToCart(Cart cart) async {
-    print(cart.toJson());
     try {
       Response response = await dioClient
           .post('${AppConstants.ADD_TO_CART_URI}', data: cart.toJson());
+      return ApiResponse.withSuccess(response);
+    } catch (e) {
+      return ApiResponse.withError(ApiErrorHandler.getMessage(e));
+    }
+  }
+
+  Future<ApiResponse> deleteCartItem(String id) async {
+    try {
+      Response response = await dioClient
+          .post('${AppConstants.DELETE_CART_URI}', data: {"id": id});
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));

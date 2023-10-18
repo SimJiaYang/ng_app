@@ -106,4 +106,21 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
     return result;
   }
+
+  // DELETE CART
+  Future<bool> deleteCart(BuildContext context, String id) async {
+    bool result = false;
+    notifyListeners();
+
+    ApiResponse apiResponse = await cartRepo.deleteCartItem(id);
+    if (context.mounted) {
+      result = ResponseHelper.responseHelper(context, apiResponse);
+      if (result) {
+        showCustomSnackBar('Success', context,
+            type: AppConstants.SNACKBAR_SUCCESS);
+      }
+    }
+    notifyListeners();
+    return result;
+  }
 }

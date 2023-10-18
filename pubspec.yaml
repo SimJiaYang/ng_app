@@ -54,6 +54,7 @@ dependencies:
   file_picker: ^5.5.0
   carousel_slider: ^4.2.1
   input_quantity: ^2.1.1
+  flutter_slidable: ^3.0.0
 
 dev_dependencies:
   flutter_test:

@@ -190,21 +190,19 @@ class _PlantScreenState extends State<PlantScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        padding: EdgeInsets.all(8),
-                        child: CarouselSlider(
-                          items: imageSliders,
-                          carouselController: _controller,
-                          options: CarouselOptions(
-                              autoPlay: true,
-                              enlargeCenterPage: true,
-                              aspectRatio: 2.0,
-                              onPageChanged: (index, reason) {
-                                setState(() {
-                                  current = index;
-                                });
-                              }),
-                        ),
+                      CarouselSlider(
+                        items: imageSliders,
+                        carouselController: _controller,
+                        options: CarouselOptions(
+                            viewportFraction: 1,
+                            autoPlay: true,
+                            enlargeCenterPage: true,
+                            aspectRatio: 2.0,
+                            onPageChanged: (index, reason) {
+                              setState(() {
+                                current = index;
+                              });
+                            }),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
