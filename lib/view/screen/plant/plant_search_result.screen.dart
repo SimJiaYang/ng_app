@@ -93,7 +93,7 @@ class _PlantSearchResultScreenState extends State<PlantSearchResultScreen> {
     });
     // Test
     if (isPrice) {
-      params['category'] = "Lotus";
+      params['sortBy'] = "price";
     }
     if (isSales) {
       params['category'] = "Desert Rose";

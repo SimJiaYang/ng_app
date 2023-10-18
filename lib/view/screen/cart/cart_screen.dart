@@ -90,7 +90,9 @@ class _CartScreenState extends State<CartScreen> {
               //   )
               : ListView.builder(
                   padding: (cartProvider.noMoreDataMessage.isNotEmpty &&
-                          !cartProvider.isLoading)
+                              !cartProvider.isLoading ||
+                          (cartProvider.noMoreDataMessage.isEmpty &&
+                              cartProvider.cartItem.length < 8))
                       ? EdgeInsets.fromLTRB(10, 0, 10, 10)
                       : EdgeInsets.only(
                           bottom: 235, left: 10, right: 10, top: 0),
@@ -150,16 +152,20 @@ class _CartScreenState extends State<CartScreen> {
                                   motion: ScrollMotion(),
                                   children: [
                                     SlidableAction(
-                                      onPressed: (ctx) {
-                                        cartProvider.deleteCart(
-                                            context,
-                                            cartProvider
-                                                .getCheckBoxListTileModel[index]
-                                                .cart
-                                                .id!
-                                                .toString());
-                                        cartProvider.getCheckBoxListTileModel
-                                            .removeAt(index);
+                                      onPressed: (ctx) async {
+                                        bool isSucess =
+                                            await cartProvider.deleteCart(
+                                                context,
+                                                cartProvider
+                                                    .getCheckBoxListTileModel[
+                                                        index]
+                                                    .cart
+                                                    .id!
+                                                    .toString());
+                                        if (isSucess) {
+                                          cartProvider.getCheckBoxListTileModel
+                                              .removeAt(index);
+                                        }
                                       },
                                       backgroundColor: Color(0xFFFE4A49),
                                       foregroundColor: Colors.white,
