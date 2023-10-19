@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:input_quantity/input_quantity.dart';
+import 'package:nurserygardenapp/data/model/cart_model.dart';
 import 'package:nurserygardenapp/providers/cart_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/routes.dart';
@@ -424,7 +425,18 @@ class _CartScreenState extends State<CartScreen> {
                                                       .quantity as num,
                                                   minVal: 1,
                                                   steps: 1,
-                                                  onQtyChanged: (val) {
+                                                  onQtyChanged: (val) async {
+                                                    Cart cart = new Cart(
+                                                      quantity: val,
+                                                      id: cartProvider
+                                                          .getCheckBoxListTileModel[
+                                                              index]
+                                                          .cart
+                                                          .id,
+                                                    );
+                                                    await cartProvider
+                                                        .updateCart(
+                                                            context, cart);
                                                     setState(() {
                                                       cartProvider
                                                           .getCheckBoxListTileModel[

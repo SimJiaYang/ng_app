@@ -31,6 +31,16 @@ class CartRepo {
     }
   }
 
+  Future<ApiResponse> updateCartItem(Cart cart) async {
+    try {
+      Response response = await dioClient
+          .post('${AppConstants.UPDATE_CART_URI}', data: cart.toJson());
+      return ApiResponse.withSuccess(response);
+    } catch (e) {
+      return ApiResponse.withError(ApiErrorHandler.getMessage(e));
+    }
+  }
+
   Future<ApiResponse> deleteCartItem(String id) async {
     try {
       Response response = await dioClient

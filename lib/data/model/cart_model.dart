@@ -188,11 +188,12 @@ class Cart {
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
+        "id": id.toString(),
         "quantity": quantity,
         "price": price,
-        "date_added":
-            "${dateAdded!.year.toString().padLeft(4, '0')}-${dateAdded!.month.toString().padLeft(2, '0')}-${dateAdded!.day.toString().padLeft(2, '0')}",
+        "date_added": dateAdded == null
+            ? null
+            : "${dateAdded!.year.toString().padLeft(4, '0')}-${dateAdded!.month.toString().padLeft(2, '0')}-${dateAdded!.day.toString().padLeft(2, '0')}",
         "is_purchase": isPurchase,
         "productID": productId.toString(),
         "plantID": plantId.toString(),

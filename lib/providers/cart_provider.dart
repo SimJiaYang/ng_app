@@ -107,6 +107,23 @@ class CartProvider extends ChangeNotifier {
     return result;
   }
 
+  // UUPDATE CART
+  Future<bool> updateCart(BuildContext context, Cart cart) async {
+    bool result = false;
+    notifyListeners();
+
+    ApiResponse apiResponse = await cartRepo.updateCartItem(cart);
+    if (context.mounted) {
+      result = ResponseHelper.responseHelper(context, apiResponse);
+      if (result) {
+        showCustomSnackBar('Success', context,
+            type: AppConstants.SNACKBAR_SUCCESS);
+      }
+    }
+    notifyListeners();
+    return result;
+  }
+
   // DELETE CART
   Future<bool> deleteCart(BuildContext context, String id) async {
     bool result = false;
