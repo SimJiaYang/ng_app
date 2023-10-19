@@ -52,7 +52,7 @@ class EmptyCartItem extends StatelessWidget {
                       color: Colors.grey[400],
                     ),
                     SizedBox(
-                      height: 5,
+                      height: 8,
                     ),
                     Container(
                       width: 150,
@@ -60,7 +60,7 @@ class EmptyCartItem extends StatelessWidget {
                       color: Colors.grey[400],
                     ),
                     SizedBox(
-                      height: 5,
+                      height: 8,
                     ),
                     Container(
                       width: 150,

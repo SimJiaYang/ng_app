@@ -150,6 +150,7 @@ class Cart {
   int? plantId;
   dynamic biddingId;
   int? userId;
+  bool? isChecked;
   DateTime? createdAt;
   DateTime? updatedAt;
 
@@ -163,6 +164,7 @@ class Cart {
     this.plantId,
     this.biddingId,
     this.userId,
+    this.isChecked = false,
     this.createdAt,
     this.updatedAt,
   });

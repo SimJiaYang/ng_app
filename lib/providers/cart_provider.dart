@@ -27,10 +27,6 @@ class CartProvider extends ChangeNotifier {
   String _noMoreDataMessage = '';
   String get noMoreDataMessage => _noMoreDataMessage;
 
-  List<CheckBoxListTileModel> _checkBoxListTileModel = [];
-  List<CheckBoxListTileModel> get getCheckBoxListTileModel =>
-      _checkBoxListTileModel;
-
   List<Plant> _cartPlantList = [];
   List<Plant> get getCartPlantList => _cartPlantList;
   List<Product> _cartProductList = [];
@@ -60,22 +56,6 @@ class CartProvider extends ChangeNotifier {
         _cartItem = _cartModel.data!.cartList!.cart ?? [];
         _cartPlantList = _cartModel.data!.plant ?? [];
         _cartProductList = _cartModel.data!.product ?? [];
-        _checkBoxListTileModel = _cartItem
-            .map((e) => CheckBoxListTileModel(
-                cart: e,
-                title: e.quantity.toString(),
-                isCheck: false,
-                plant: e.plantId != null
-                    ? _cartPlantList.firstWhere(
-                        (element) => element.id == e.plantId,
-                      )
-                    : null,
-                product: e.productId != null
-                    ? _cartProductList.firstWhere(
-                        (element) => element.id == e.productId,
-                      )
-                    : null))
-            .toList();
         if (_cartItem.length < limit && limit > 8) {
           _noMoreDataMessage = AppConstants.NO_MORE_DATA;
         }
@@ -107,7 +87,7 @@ class CartProvider extends ChangeNotifier {
     return result;
   }
 
-  // UUPDATE CART
+  // UPDATE CART
   Future<bool> updateCart(BuildContext context, Cart cart) async {
     bool result = false;
     notifyListeners();

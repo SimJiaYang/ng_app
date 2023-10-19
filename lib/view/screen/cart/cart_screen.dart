@@ -85,10 +85,6 @@ class _CartScreenState extends State<CartScreen> {
                   itemBuilder: (context, index) {
                     return EmptyCartItem();
                   })
-              // EmptyWidget(
-              //     large: true,
-              //     isLoading: cartProvider.isLoading,
-              //   )
               : ListView.builder(
                   padding: (cartProvider.noMoreDataMessage.isNotEmpty &&
                               !cartProvider.isLoading ||
@@ -100,9 +96,9 @@ class _CartScreenState extends State<CartScreen> {
                   controller: _scrollController,
                   physics: const BouncingScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: cartProvider.getCheckBoxListTileModel.length +
+                  itemCount: cartProvider.cartItem.length +
                       (cartProvider.isLoading &&
-                              cartProvider.getCheckBoxListTileModel.length >= 8
+                              cartProvider.cartItem.length >= 8
                           ? 1
                           : 0),
                   itemBuilder: (BuildContext context, int index) {
@@ -118,35 +114,27 @@ class _CartScreenState extends State<CartScreen> {
                             padding: const EdgeInsets.symmetric(vertical: 10),
                             child: GestureDetector(
                               onTap: () {
-                                if (cartProvider.getCheckBoxListTileModel[index]
-                                        .cart.plantId !=
+                                if (cartProvider.cartItem[index].plantId !=
                                     null)
                                   Navigator.pushNamed(
                                       context,
                                       Routes.getPlantDetailRoute(
-                                          cartProvider
-                                              .getCheckBoxListTileModel[index]
-                                              .plant!
-                                              .id!
+                                          cartProvider.cartItem[index].plantId!
                                               .toString(),
                                           "false",
                                           "true"));
-                                if (cartProvider.getCheckBoxListTileModel[index]
-                                        .cart.productId !=
+                                if (cartProvider.cartItem[index].productId !=
                                     null)
                                   Navigator.pushNamed(
                                       context,
                                       Routes.getProductDetailRoute(
                                           cartProvider
-                                              .getCheckBoxListTileModel[index]
-                                              .product!
-                                              .id!
+                                              .cartItem[index].productId!
                                               .toString(),
                                           'true'));
                               },
                               child: Slidable(
-                                key: ValueKey(cartProvider
-                                    .getCheckBoxListTileModel[index].cart.id),
+                                key: ValueKey(cartProvider.cartItem[index].id),
 
                                 // The end action pane is the one at the right or the bottom side.
                                 endActionPane: ActionPane(
@@ -157,15 +145,10 @@ class _CartScreenState extends State<CartScreen> {
                                         bool isSucess =
                                             await cartProvider.deleteCart(
                                                 context,
-                                                cartProvider
-                                                    .getCheckBoxListTileModel[
-                                                        index]
-                                                    .cart
-                                                    .id!
+                                                cartProvider.cartItem[index].id!
                                                     .toString());
                                         if (isSucess) {
-                                          cartProvider.getCheckBoxListTileModel
-                                              .removeAt(index);
+                                          cartProvider.cartItem.removeAt(index);
                                         }
                                       },
                                       backgroundColor: Color(0xFFFE4A49),
@@ -194,37 +177,36 @@ class _CartScreenState extends State<CartScreen> {
                                           blurRadius: 10.0),
                                     ],
                                   ),
-                                  child: CheckboxListTile(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    dense: true,
-                                    activeColor: ColorResources.COLOR_PRIMARY,
-                                    checkColor: ColorResources.COLOR_WHITE,
-                                    controlAffinity:
-                                        ListTileControlAffinity.leading,
-                                    value: cartProvider
-                                        .getCheckBoxListTileModel[index]
-                                        .isCheck,
-                                    onChanged: (bool? value) {
-                                      setState(() {
-                                        cartProvider
-                                            .getCheckBoxListTileModel[index]
-                                            .isCheck = value!;
-                                      });
-                                    },
-                                    title: Container(
+                                  child: Container(
                                       height: 150,
                                       width: double.infinity,
                                       child: Row(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
+                                        // mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
+                                          SizedBox(
+                                            width: 15,
+                                          ),
+                                          Checkbox(
+                                            activeColor:
+                                                ColorResources.COLOR_PRIMARY,
+                                            checkColor:
+                                                ColorResources.COLOR_WHITE,
+                                            value: cartProvider
+                                                .cartItem[index].isChecked,
+                                            onChanged: (bool? value) {
+                                              setState(() {
+                                                cartProvider.cartItem[index]
+                                                    .isChecked = value!;
+                                              });
+                                            },
+                                          ),
+                                          SizedBox(
+                                            width: 20,
+                                          ),
                                           if (cartProvider
-                                                  .getCheckBoxListTileModel[
-                                                      index]
-                                                  .cart
-                                                  .plantId !=
+                                                  .cartItem[index].plantId !=
                                               null)
                                             Container(
                                               height: 100,
@@ -233,7 +215,13 @@ class _CartScreenState extends State<CartScreen> {
                                                 filterQuality:
                                                     FilterQuality.high,
                                                 imageUrl:
-                                                    "${cartProvider.getCheckBoxListTileModel[index].plant!.imageURL!}",
+                                                    "${cartProvider.getCartPlantList.where((element) {
+                                                          return element.id ==
+                                                              cartProvider
+                                                                  .cartItem[
+                                                                      index]
+                                                                  .plantId;
+                                                        }).first.imageURL!}",
                                                 memCacheHeight: 200,
                                                 memCacheWidth: 200,
                                                 imageBuilder:
@@ -263,10 +251,7 @@ class _CartScreenState extends State<CartScreen> {
                                               ),
                                             ),
                                           if (cartProvider
-                                                  .getCheckBoxListTileModel[
-                                                      index]
-                                                  .cart
-                                                  .productId !=
+                                                  .cartItem[index].productId !=
                                               null)
                                             Container(
                                               height: 100,
@@ -275,7 +260,13 @@ class _CartScreenState extends State<CartScreen> {
                                                 filterQuality:
                                                     FilterQuality.high,
                                                 imageUrl:
-                                                    "${cartProvider.getCheckBoxListTileModel[index].product!.imageURL!}",
+                                                    "${"${cartProvider.getCartProductList.where((element) {
+                                                          return element.id ==
+                                                              cartProvider
+                                                                  .cartItem[
+                                                                      index]
+                                                                  .productId;
+                                                        }).first.imageURL!}"}",
                                                 memCacheHeight: 200,
                                                 memCacheWidth: 200,
                                                 imageBuilder:
@@ -305,7 +296,7 @@ class _CartScreenState extends State<CartScreen> {
                                               ),
                                             ),
                                           SizedBox(
-                                            width: 10,
+                                            width: 15,
                                           ),
                                           Column(
                                             mainAxisAlignment:
@@ -313,84 +304,102 @@ class _CartScreenState extends State<CartScreen> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              if (cartProvider
-                                                      .getCheckBoxListTileModel[
-                                                          index]
-                                                      .cart
+                                              if (cartProvider.cartItem[index]
                                                       .plantId !=
                                                   null)
-                                                Text(cartProvider
-                                                            .getCheckBoxListTileModel[
-                                                                index]
-                                                            .plant!
-                                                            .name!
-                                                            .length >
-                                                        10
-                                                    ? cartProvider
-                                                            .getCheckBoxListTileModel[
-                                                                index]
-                                                            .plant!
-                                                            .name!
-                                                            .substring(0, 10) +
-                                                        ".."
-                                                    : cartProvider
-                                                        .getCheckBoxListTileModel[
-                                                            index]
-                                                        .plant!
-                                                        .name!),
-                                              if (cartProvider
-                                                      .getCheckBoxListTileModel[
-                                                          index]
-                                                      .cart
+                                                Text(
+                                                  "${cartProvider.getCartPlantList.where((element) {
+                                                                    return element
+                                                                            .id ==
+                                                                        cartProvider
+                                                                            .cartItem[index]
+                                                                            .plantId;
+                                                                  }).first.name}"
+                                                              .length >
+                                                          10
+                                                      ? "${cartProvider.getCartPlantList.where((element) {
+                                                            return element.id ==
+                                                                cartProvider
+                                                                    .cartItem[
+                                                                        index]
+                                                                    .plantId;
+                                                          }).first.name!.substring(0, 10)}"
+                                                      : "${cartProvider.getCartPlantList.where((element) {
+                                                            return element.id ==
+                                                                cartProvider
+                                                                    .cartItem[
+                                                                        index]
+                                                                    .plantId;
+                                                          }).first.name}",
+                                                  style:
+                                                      TextStyle(fontSize: 16),
+                                                ),
+                                              if (cartProvider.cartItem[index]
                                                       .productId !=
                                                   null)
-                                                Text(cartProvider
-                                                            .getCheckBoxListTileModel[
-                                                                index]
-                                                            .product!
-                                                            .name!
-                                                            .length >
-                                                        10
-                                                    ? cartProvider
-                                                            .getCheckBoxListTileModel[
-                                                                index]
-                                                            .product!
-                                                            .name!
-                                                            .substring(0, 10) +
-                                                        ".."
-                                                    : cartProvider
-                                                        .getCheckBoxListTileModel[
-                                                            index]
-                                                        .product!
-                                                        .name!),
-                                              const SizedBox(height: 5),
-                                              if (cartProvider
-                                                      .getCheckBoxListTileModel[
-                                                          index]
-                                                      .cart
+                                                Text(
+                                                  "${cartProvider.getCartProductList.where((element) {
+                                                                    return element
+                                                                            .id ==
+                                                                        cartProvider
+                                                                            .cartItem[index]
+                                                                            .productId;
+                                                                  }).first.name}"
+                                                              .length >
+                                                          10
+                                                      ? "${cartProvider.getCartProductList.where((element) {
+                                                            return element.id ==
+                                                                cartProvider
+                                                                    .cartItem[
+                                                                        index]
+                                                                    .productId;
+                                                          }).first.name!.substring(0, 10)}"
+                                                      : "${cartProvider.getCartProductList.where((element) {
+                                                            return element.id ==
+                                                                cartProvider
+                                                                    .cartItem[
+                                                                        index]
+                                                                    .productId;
+                                                          }).first.name}",
+                                                  style:
+                                                      TextStyle(fontSize: 16),
+                                                ),
+                                              SizedBox(
+                                                height: 8,
+                                              ),
+                                              if (cartProvider.cartItem[index]
                                                       .plantId !=
                                                   null)
-                                                Text("RM: " +
-                                                    cartProvider
-                                                        .getCheckBoxListTileModel[
-                                                            index]
-                                                        .plant!
-                                                        .price!
-                                                        .toStringAsFixed(2)),
-                                              if (cartProvider
-                                                      .getCheckBoxListTileModel[
-                                                          index]
-                                                      .cart
+                                                Text(
+                                                  "RM: " +
+                                                      "${cartProvider.getCartPlantList.where((element) {
+                                                            return element.id ==
+                                                                cartProvider
+                                                                    .cartItem[
+                                                                        index]
+                                                                    .plantId;
+                                                          }).first.price!.toStringAsFixed(2)}",
+                                                  style:
+                                                      TextStyle(fontSize: 14),
+                                                ),
+                                              if (cartProvider.cartItem[index]
                                                       .productId !=
                                                   null)
-                                                Text("RM: " +
-                                                    cartProvider
-                                                        .getCheckBoxListTileModel[
-                                                            index]
-                                                        .product!
-                                                        .price!
-                                                        .toStringAsFixed(2)),
-                                              const SizedBox(height: 5),
+                                                Text(
+                                                  "RM: " +
+                                                      "${cartProvider.getCartProductList.where((element) {
+                                                            return element.id ==
+                                                                cartProvider
+                                                                    .cartItem[
+                                                                        index]
+                                                                    .productId;
+                                                          }).first.price!.toStringAsFixed(2)}",
+                                                  style:
+                                                      TextStyle(fontSize: 14),
+                                                ),
+                                              SizedBox(
+                                                height: 8,
+                                              ),
                                               Container(
                                                 height: 30,
                                                 child: InputQty.int(
@@ -419,9 +428,7 @@ class _CartScreenState extends State<CartScreen> {
                                                   //Need Change
                                                   maxVal: 10000,
                                                   initVal: cartProvider
-                                                      .getCheckBoxListTileModel[
-                                                          index]
-                                                      .cart
+                                                      .cartItem[index]
                                                       .quantity as num,
                                                   minVal: 1,
                                                   steps: 1,
@@ -429,30 +436,23 @@ class _CartScreenState extends State<CartScreen> {
                                                     Cart cart = new Cart(
                                                       quantity: val,
                                                       id: cartProvider
-                                                          .getCheckBoxListTileModel[
-                                                              index]
-                                                          .cart
-                                                          .id,
+                                                          .cartItem[index].id,
                                                     );
                                                     await cartProvider
                                                         .updateCart(
                                                             context, cart);
                                                     setState(() {
                                                       cartProvider
-                                                          .getCheckBoxListTileModel[
-                                                              index]
-                                                          .cart
+                                                          .cartItem[index]
                                                           .quantity = val;
                                                     });
                                                   },
                                                 ),
                                               ),
                                             ],
-                                          ),
+                                          )
                                         ],
-                                      ),
-                                    ),
-                                  ),
+                                      )),
                                 ),
                               ),
                             ),
