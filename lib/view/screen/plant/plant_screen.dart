@@ -106,16 +106,16 @@ class _PlantScreenState extends State<PlantScreen> {
                           ),
                           padding: EdgeInsets.symmetric(
                               vertical: 5.0, horizontal: 20.0),
-                          child: Center(
-                            child: Text(
-                              'No. ${imgList.indexOf(item)} image',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
+                          // child: Center(
+                          //   child: Text(
+                          //     'No. ${imgList.indexOf(item)} image',
+                          //     style: TextStyle(
+                          //       color: Colors.white,
+                          //       fontSize: 15.0,
+                          //       fontWeight: FontWeight.bold,
+                          //     ),
+                          //   ),
+                          // ),
                         ),
                       ),
                     ],

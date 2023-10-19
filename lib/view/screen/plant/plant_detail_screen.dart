@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:input_quantity/input_quantity.dart';
 import 'package:nurserygardenapp/data/model/cart_model.dart';
@@ -346,22 +347,34 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                         Container(
                           color: ColorResources.COLOR_WHITE,
                           width: double.infinity,
-                          child: CachedNetworkImage(
-                            filterQuality: FilterQuality.high,
-                            height: 280,
-                            fit: BoxFit.fitHeight,
-                            imageUrl: "${plant.imageURL!}",
-                            memCacheHeight: 200,
-                            memCacheWidth: 200,
-                            placeholder: (context, url) => Padding(
-                              padding: const EdgeInsets.all(1.0),
-                              child: Center(
-                                  child: CircularProgressIndicator(
-                                color: ColorResources.COLOR_GRAY,
-                              )),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (_) {
+                                return ImageEnlargeWidget(
+                                  tag: "plant_${plant.id}",
+                                  url: "${plant.imageURL!}",
+                                );
+                              }));
+                            },
+                            child: Hero(
+                              tag: "plant_${plant.id}",
+                              child: CachedNetworkImage(
+                                filterQuality: FilterQuality.high,
+                                height: 300,
+                                fit: BoxFit.fitHeight,
+                                imageUrl: "${plant.imageURL!}",
+                                placeholder: (context, url) => Padding(
+                                  padding: const EdgeInsets.all(1.0),
+                                  child: Center(
+                                      child: CircularProgressIndicator(
+                                    color: ColorResources.COLOR_GRAY,
+                                  )),
+                                ),
+                                errorWidget: (context, url, error) =>
+                                    Icon(Icons.error),
+                              ),
                             ),
-                            errorWidget: (context, url, error) =>
-                                Icon(Icons.error),
                           ),
                         ),
                         Container(
@@ -599,5 +612,56 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                   ),
                 ),
         ));
+  }
+}
+
+class ImageEnlargeWidget extends StatefulWidget {
+  final String tag;
+  final String url;
+
+  ImageEnlargeWidget({required this.tag, required this.url});
+
+  @override
+  _ImageEnlargeWidgetState createState() => _ImageEnlargeWidgetState();
+}
+
+class _ImageEnlargeWidgetState extends State<ImageEnlargeWidget> {
+  @override
+  initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: GestureDetector(
+          child: Center(
+            child: Hero(
+              tag: widget.tag,
+              child: CachedNetworkImage(
+                imageUrl: widget.url,
+                placeholder: (context, url) => Padding(
+                  padding: const EdgeInsets.all(1.0),
+                  child: Center(
+                      child: CircularProgressIndicator(
+                    color: ColorResources.COLOR_GRAY,
+                  )),
+                ),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+              ),
+            ),
+          ),
+          onTap: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+    );
   }
 }
