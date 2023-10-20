@@ -131,6 +131,7 @@ class _CartScreenState extends State<CartScreen> {
                                           cartProvider
                                               .cartItem[index].productId!
                                               .toString(),
+                                          'false',
                                           'true'));
                               },
                               child: Slidable(

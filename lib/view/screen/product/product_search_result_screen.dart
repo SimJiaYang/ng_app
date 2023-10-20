@@ -1,26 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:nurserygardenapp/providers/product_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/routes.dart';
-import 'package:nurserygardenapp/view/base/empty_data_widget.dart';
 import 'package:nurserygardenapp/view/base/empty_grid_item.dart';
-import 'package:nurserygardenapp/view/screen/plant/widget/plant_grid_item.dart';
+import 'package:nurserygardenapp/view/screen/product/widget/product_grid_item.dart';
 import 'package:provider/provider.dart';
 
-import '../../../providers/plant_provider.dart';
-
-class PlantSearchResultScreen extends StatefulWidget {
+class ProductSearchResultScreen extends StatefulWidget {
   final String searchKeyword;
-  const PlantSearchResultScreen({super.key, required this.searchKeyword});
+  const ProductSearchResultScreen({super.key, required this.searchKeyword});
 
   @override
-  State<PlantSearchResultScreen> createState() =>
-      _PlantSearchResultScreenState();
+  State<ProductSearchResultScreen> createState() =>
+      _ProductSearchResultScreenState();
 }
 
-class _PlantSearchResultScreenState extends State<PlantSearchResultScreen> {
-  late PlantProvider plant_prov =
-      Provider.of<PlantProvider>(context, listen: false);
+class _ProductSearchResultScreenState extends State<ProductSearchResultScreen> {
+  late ProductProvider product_prov =
+      Provider.of<ProductProvider>(context, listen: false);
 
   final _scrollController = ScrollController();
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -51,7 +49,7 @@ class _PlantSearchResultScreenState extends State<PlantSearchResultScreen> {
   void _onScroll() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
-      if (plant_prov.plantListSearch.length < int.parse(params['limit']!)) {
+      if (product_prov.productListSearch.length < int.parse(params['limit']!)) {
         return;
       } else {
         int currentLimit = int.parse(params['limit']!);
@@ -68,7 +66,7 @@ class _PlantSearchResultScreenState extends State<PlantSearchResultScreen> {
         _isFirstTime = false;
       });
     }
-    await plant_prov.searchPlant(context, params, isLoadMore: isLoadMore);
+    await product_prov.searchProduct(context, params, isLoadMore: isLoadMore);
   }
 
   String sortOrder = "asc";
@@ -96,7 +94,7 @@ class _PlantSearchResultScreenState extends State<PlantSearchResultScreen> {
       params['sortBy'] = "price";
     }
     if (isSales) {
-      params['category'] = "Desert Rose";
+      params['category'] = "Pot";
     }
     params['category'] = param['category'] ?? "";
     _loadData();
@@ -107,34 +105,16 @@ class _PlantSearchResultScreenState extends State<PlantSearchResultScreen> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       key: _scaffoldKey,
-      // endDrawer: PlantDrawerWidget(
-      //     sort: sortOrder,
-      //     paramCallback: (p) {
-      //       _handleParamChanged(p);
-      //     },
-      //     size: size,
-      //     closeEndDrawer: () {
-      //       _scaffoldKey.currentState!.closeEndDrawer();
-      //     }),
       appBar: AppBar(
           leading: const BackButton(
             color: Colors.white, // <-- SEE HERE
           ),
           backgroundColor: ColorResources.COLOR_PRIMARY,
           title: InkWell(
-            onTap: () {
-              // Navigator.pushNamed(
-              //   context,
-              //   Routes.getPlantSearchRoute(),
-              // );
-            },
+            onTap: () {},
             child: Container(
               width: double.infinity,
               height: 40,
-              // decoration: BoxDecoration(
-              //     color: Colors.white,
-              //     borderRadius: BorderRadius.circular(4),
-              //     border: Border.all()),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(children: [
@@ -152,16 +132,7 @@ class _PlantSearchResultScreenState extends State<PlantSearchResultScreen> {
               ),
             ),
           ),
-          actions: [
-            // IconButton(
-            //     onPressed: () {
-            //       _scaffoldKey.currentState!.openEndDrawer();
-            //     },
-            //     icon: Icon(
-            //       Icons.filter_alt_off_outlined,
-            //       color: Colors.white,
-            //     ))
-          ]),
+          actions: []),
       body: SizedBox(
           height: size.height,
           width: size.width,
@@ -226,10 +197,10 @@ class _PlantSearchResultScreenState extends State<PlantSearchResultScreen> {
                           )
                         }),
                   ),
-                  Consumer<PlantProvider>(
-                      builder: (context, plantProvider, child) {
-                    return plantProvider.isLoadingSearch &&
-                            plantProvider.endSearchResult.isEmpty &&
+                  Consumer<ProductProvider>(
+                      builder: (context, productProvider, child) {
+                    return productProvider.isLoadingSearch &&
+                            productProvider.endSearchResult.isEmpty &&
                             _isFirstTime
                         ? Expanded(
                             child: GridView.builder(
@@ -248,11 +219,11 @@ class _PlantSearchResultScreenState extends State<PlantSearchResultScreen> {
                                   return EmptyGridItem();
                                 }),
                           )
-                        : plantProvider.plantListSearch.isEmpty &&
-                                !plantProvider.isLoadingSearch
+                        : productProvider.productListSearch.isEmpty &&
+                                !productProvider.isLoadingSearch
                             ? Center(
                                 child: Text(
-                                  "No Plant Found",
+                                  "No Product Found",
                                   style: TextStyle(
                                       color: Colors.grey.withOpacity(0.7),
                                       fontSize: 18),
@@ -267,19 +238,20 @@ class _PlantSearchResultScreenState extends State<PlantSearchResultScreen> {
                                   // physics:
                                   //     const AlwaysScrollableScrollPhysics(),
                                   itemCount:
-                                      plantProvider.plantListSearch.length +
-                                          ((plantProvider.isLoadingSearch &&
-                                                  plantProvider.plantListSearch
+                                      productProvider.productListSearch.length +
+                                          ((productProvider.isLoadingSearch &&
+                                                  productProvider
+                                                          .productListSearch
                                                           .length >=
                                                       8)
                                               ? 8
-                                              : plantProvider.endSearchResult
+                                              : productProvider.endSearchResult
                                                       .isNotEmpty
                                                   ? 1
                                                   : 0),
-                                  padding: (plantProvider
+                                  padding: (productProvider
                                               .endSearchResult.isNotEmpty &&
-                                          !plantProvider.isLoadingSearch)
+                                          !productProvider.isLoadingSearch)
                                       ? EdgeInsets.all(10)
                                       : EdgeInsets.only(
                                           bottom: 235,
@@ -296,14 +268,15 @@ class _PlantSearchResultScreenState extends State<PlantSearchResultScreen> {
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     if (index >=
-                                            plantProvider
-                                                .plantListSearch.length &&
-                                        plantProvider.endSearchResult.isEmpty) {
+                                            productProvider
+                                                .productListSearch.length &&
+                                        productProvider
+                                            .endSearchResult.isEmpty) {
                                       return EmptyGridItem();
                                     } else if (index ==
-                                            plantProvider
-                                                .plantListSearch.length &&
-                                        plantProvider
+                                            productProvider
+                                                .productListSearch.length &&
+                                        productProvider
                                             .endSearchResult.isNotEmpty) {
                                       return Container(
                                         height: 150,
@@ -311,25 +284,27 @@ class _PlantSearchResultScreenState extends State<PlantSearchResultScreen> {
                                             vertical: 10),
                                         child: Center(
                                           child: Text(
-                                              plantProvider.endSearchResult,
+                                              productProvider.endSearchResult,
                                               style: TextStyle(
                                                   color: Colors.grey
                                                       .withOpacity(0.5))),
                                         ),
                                       );
                                     } else {
-                                      return PlantGridItem(
-                                        key: ValueKey(plantProvider
-                                            .plantListSearch
+                                      return ProductGridItem(
+                                        key: ValueKey(productProvider
+                                            .productListSearch
                                             .elementAt(index)
                                             .id),
-                                        plant: plantProvider.plantListSearch
+                                        product: productProvider
+                                            .productListSearch
                                             .elementAt(index),
                                         onTap: () async {
                                           await Navigator.pushNamed(
                                               context,
-                                              Routes.getPlantDetailRoute(
-                                                  plantProvider.plantListSearch
+                                              Routes.getProductDetailRoute(
+                                                  productProvider
+                                                      .productListSearch
                                                       .elementAt(index)
                                                       .id!
                                                       .toString(),

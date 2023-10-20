@@ -21,6 +21,8 @@ class Routes {
   // Product
   static const String PRODUCT_SCREEN = '/product';
   static const String PRODUCT_DETAIL_SCREEN = '/product-detail';
+  static const String PRODUCT_SEARCH_SCREEN = '/product-search';
+  static const String PRODUCT_SEARCH_RESULT_SCREEN = '/product-search/result';
 
   // Cart
   static const String CART_SCREEN = '/cart';
@@ -60,8 +62,12 @@ class Routes {
 
   // Product
   static String getProductRoute() => PRODUCT_SCREEN;
-  static String getProductDetailRoute(String productID, String isCart) =>
-      '$PRODUCT_DETAIL_SCREEN?productID=$productID&isCart=$isCart';
+  static String getProductDetailRoute(
+          String productID, String isSearch, String isCart) =>
+      '$PRODUCT_DETAIL_SCREEN?productID=$productID&isSearch=$isSearch&isCart=$isCart';
+  static String getProductSearchRoute() => PRODUCT_SEARCH_SCREEN;
+  static String getProductSearchResultRoute(String searchKeyword) =>
+      '$PRODUCT_SEARCH_RESULT_SCREEN?searchKeyword=$searchKeyword';
 
   // Cart
   static String getCartRoute() => CART_SCREEN;

@@ -15,10 +15,12 @@ import 'package:nurserygardenapp/view/screen/dashboard/dashboard_screen.dart';
 import 'package:nurserygardenapp/view/screen/home/home_screen.dart';
 import 'package:nurserygardenapp/view/screen/plant/plant_detail_screen.dart';
 import 'package:nurserygardenapp/view/screen/plant/plant_screen.dart';
-import 'package:nurserygardenapp/view/screen/plant/plant_search_result.screen.dart';
+import 'package:nurserygardenapp/view/screen/plant/plant_search_result_screen.dart';
 import 'package:nurserygardenapp/view/screen/plant/widget/plant_search_screen.dart';
 import 'package:nurserygardenapp/view/screen/product/product_detail_screen.dart';
 import 'package:nurserygardenapp/view/screen/product/product_screen.dart';
+import 'package:nurserygardenapp/view/screen/product/product_search_result_screen.dart';
+import 'package:nurserygardenapp/view/screen/product/widget/product_search_screen.dart';
 import 'package:nurserygardenapp/view/screen/splash/splash_screen.dart';
 
 class RouterHelper {
@@ -27,6 +29,7 @@ class RouterHelper {
   static Handler _splashHandler = Handler(
       handlerFunc: (context, Map<String, dynamic> params) => SplashScreen());
 
+  /// =================================Auth=========================================
   static Handler _loginHandler = Handler(
       handlerFunc: (context, Map<String, dynamic> parameters) => LoginScreen());
 
@@ -38,7 +41,6 @@ class RouterHelper {
       handlerFunc: (context, Map<String, dynamic> params) =>
           DashboardScreen(pageIndex: 0));
 
-  // Selected  Certain Dashboard Screen
   static Handler _dashScreenBoardHandler =
       Handler(handlerFunc: (context, Map<String, dynamic> params) {
     return DashboardScreen(
@@ -57,6 +59,7 @@ class RouterHelper {
     handlerFunc: (context, Map<String, dynamic> parameters) => HomeScreen(),
   );
 
+  // =================================Plant=========================================
   static Handler _plantHandler = Handler(
     handlerFunc: (context, Map<String, dynamic> parameters) => PlantScreen(),
   );
@@ -79,6 +82,7 @@ class RouterHelper {
         PlantSearchResultScreen(searchKeyword: parameters['searchKeyword'][0]),
   );
 
+  // =================================Product=========================================
   static Handler _productHandler = Handler(
     handlerFunc: (context, Map<String, dynamic> parameters) => ProductScreen(),
   );
@@ -86,18 +90,33 @@ class RouterHelper {
   static Handler _productDetailHandler = Handler(
     handlerFunc: (context, Map<String, dynamic> params) => ProductDetailScreen(
       productID: params['productID'][0],
+      isSearch: params['isSearch'][0],
       isCart: params['isCart'][0],
     ),
   );
 
+  static Handler _productSearchHandler = Handler(
+    handlerFunc: (context, Map<String, dynamic> parameters) =>
+        ProductSearchScreen(),
+  );
+
+  static Handler _productSearchResultHandler = Handler(
+    handlerFunc: (context, Map<String, dynamic> parameters) =>
+        ProductSearchResultScreen(
+            searchKeyword: parameters['searchKeyword'][0]),
+  );
+
+  // =================================Cart=========================================
   static Handler _cartHandler = Handler(
     handlerFunc: (context, Map<String, dynamic> parameters) => CartScreen(),
   );
 
+  // =================================Bidding=========================================
   static Handler _biddingHandler = Handler(
     handlerFunc: (context, Map<String, dynamic> parameters) => BiddingScreen(),
   );
 
+  // =================================Account=========================================
   static Handler _accountHandler = Handler(
     handlerFunc: (context, Map<String, dynamic> parameters) => AccountScreen(),
   );
@@ -148,6 +167,11 @@ class RouterHelper {
         handler: _productHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.PRODUCT_DETAIL_SCREEN,
         transitionType: TransitionType.fadeIn, handler: _productDetailHandler);
+    router.define(Routes.PRODUCT_SEARCH_SCREEN,
+        transitionType: TransitionType.fadeIn, handler: _productSearchHandler);
+    router.define(Routes.PRODUCT_SEARCH_RESULT_SCREEN,
+        handler: _productSearchResultHandler,
+        transitionType: TransitionType.fadeIn);
     router.define(Routes.CART_SCREEN,
         transitionType: TransitionType.fadeIn, handler: _cartHandler);
     router.define(Routes.BIDDING_SCREEN,

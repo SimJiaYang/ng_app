@@ -48,6 +48,8 @@ class AppConstants {
 
   // Product
   static const String PRODUCT_LIST_URI = '/productlist';
+  static const String PRODUCT_SEARCH = '/product/search';
+  static const String PRODUCT_SEARCH_KEYWORD = '/product/search/keyword';
 
   // Cart
   static const String CART_URI = '/cart';

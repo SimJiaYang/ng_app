@@ -23,4 +23,24 @@ class ProductRepo {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
     }
   }
+
+  Future<ApiResponse> getProductSearchKeyword() async {
+    try {
+      Response response =
+          await dioClient.get(AppConstants.PRODUCT_SEARCH_KEYWORD);
+      return ApiResponse.withSuccess(response);
+    } catch (e) {
+      return ApiResponse.withError(ApiErrorHandler.getMessage(e));
+    }
+  }
+
+  Future<ApiResponse> searchProduct(param) async {
+    try {
+      Response response =
+          await dioClient.get('${AppConstants.PRODUCT_SEARCH}$param');
+      return ApiResponse.withSuccess(response);
+    } catch (e) {
+      return ApiResponse.withError(ApiErrorHandler.getMessage(e));
+    }
+  }
 }

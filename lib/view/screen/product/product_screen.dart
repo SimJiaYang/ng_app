@@ -118,7 +118,9 @@ class _ProductScreenState extends State<ProductScreen> {
         appBar: AppBar(
             backgroundColor: ColorResources.COLOR_PRIMARY,
             title: InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, Routes.getProductSearchRoute());
+              },
               child: Container(
                 height: 40,
                 decoration: BoxDecoration(
@@ -306,12 +308,12 @@ class _ProductScreenState extends State<ProductScreen> {
                                             await Navigator.pushNamed(
                                                 context,
                                                 Routes.getProductDetailRoute(
-                                                  productProvider.productList
-                                                      .elementAt(index)
-                                                      .id!
-                                                      .toString(),
-                                                  "false",
-                                                ));
+                                                    productProvider.productList
+                                                        .elementAt(index)
+                                                        .id!
+                                                        .toString(),
+                                                    "false",
+                                                    "false"));
                                           },
                                         );
                                       }

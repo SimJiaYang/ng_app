@@ -25,6 +25,8 @@ class ProductProvider extends ChangeNotifier {
   String _noMoreDataMessage = '';
   String get noMoreDataMessage => _noMoreDataMessage;
 
+  String searchTxt = '';
+
   /// ================== PRODUCT LIST ==================
   Future<bool> listOfProduct(BuildContext context, params,
       {bool isLoadMore = false, bool isLoad = true}) async {
@@ -58,6 +60,71 @@ class ProductProvider extends ChangeNotifier {
     notifyListeners();
 
     return result;
+  }
+
+  /// ================== PLANT SEARCH ==================
+  List<String> _productSearchHint = [];
+  List<String> get productSearchHint => _productSearchHint;
+
+  List<String> _productNameList = [];
+  List<String> get productNameList => _productNameList;
+
+  List<Product> _productListSearch = [];
+  List<Product> get productListSearch => _productListSearch;
+
+  bool _isLoadingSearch = false;
+  bool get isLoadingSearch => _isLoadingSearch;
+
+  String _endSearchResult = "";
+  String get endSearchResult => _endSearchResult;
+
+  ProductModel _searchProductModel = ProductModel();
+  ProductModel get searchProductModel => _searchProductModel;
+
+  Future<bool> searchProduct(BuildContext context, params,
+      {bool isLoadMore = false, bool isLoad = true}) async {
+    if (!isLoadMore) {
+      _productListSearch = [];
+      _endSearchResult = "";
+    }
+
+    bool result = false;
+    String query = ResponseHelper.buildQuery(params);
+    int limit = params['limit'] != null ? int.parse(params['limit']) : 8;
+
+    _isLoadingSearch = isLoad;
+    notifyListeners();
+
+    ApiResponse apiResponse = await productRepo.searchProduct(query);
+
+    if (context.mounted) {
+      result = ResponseHelper.responseHelper(context, apiResponse);
+      if (result) {
+        _searchProductModel = ProductModel.fromJson(apiResponse.response!.data);
+        _productListSearch =
+            _searchProductModel.data!.productsList!.product ?? [];
+        if (_productListSearch.length < limit && limit > 8 ||
+            _searchProductModel.data!.productsList!.total! < 8) {
+          _endSearchResult = AppConstants.NO_MORE_DATA;
+        }
+      }
+    }
+    _isLoadingSearch = false;
+    notifyListeners();
+
+    return result;
+  }
+
+  void getSearchTips(String value) {
+    _productNameList = _productList.map((e) => e.name!).toList();
+    if (_productList.isNotEmpty) {
+      _productSearchHint = _productNameList
+          .where(
+              (product) => product.toLowerCase().contains(value.toLowerCase()))
+          .take(10)
+          .toList();
+    }
+    notifyListeners();
   }
 
   /// ================== PRODUCT SAVE IN LOCAL ==================

@@ -9,15 +9,18 @@ import 'package:nurserygardenapp/providers/product_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/view/base/custom_button.dart';
 import 'package:nurserygardenapp/view/base/custom_space.dart';
+import 'package:nurserygardenapp/view/base/image_enlarge_widget.dart';
 import 'package:nurserygardenapp/view/screen/plant/plant_detail_screen.dart';
 import 'package:provider/provider.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final String productID;
   final String isCart;
+  final String isSearch;
   const ProductDetailScreen({
     required this.productID,
     required this.isCart,
+    required this.isSearch,
     super.key,
   });
 
@@ -43,6 +46,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   getProductInformation() {
     if (widget.isCart == "true") {
       product = cart_prov.getCartProductList
+          .firstWhere((element) => element.id.toString() == widget.productID);
+    } else if (widget.isSearch == "true") {
+      product = product_prov.productListSearch
           .firstWhere((element) => element.id.toString() == widget.productID);
     } else {
       product = product_prov.productList
