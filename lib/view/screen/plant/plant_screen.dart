@@ -27,7 +27,6 @@ class _PlantScreenState extends State<PlantScreen> {
       Provider.of<PlantProvider>(context, listen: false);
 
   final _scrollController = ScrollController();
-  bool _isFirstTime = true;
 
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
@@ -38,11 +37,6 @@ class _PlantScreenState extends State<PlantScreen> {
   };
 
   Future<void> _loadData({bool isLoadMore = false}) async {
-    if (isLoadMore) {
-      setState(() {
-        _isFirstTime = false;
-      });
-    }
     await plant_prov.listOfPlant(context, params, isLoadMore: isLoadMore);
   }
 
@@ -106,16 +100,6 @@ class _PlantScreenState extends State<PlantScreen> {
                           ),
                           padding: EdgeInsets.symmetric(
                               vertical: 5.0, horizontal: 20.0),
-                          // child: Center(
-                          //   child: Text(
-                          //     'No. ${imgList.indexOf(item)} image',
-                          //     style: TextStyle(
-                          //       color: Colors.white,
-                          //       fontSize: 15.0,
-                          //       fontWeight: FontWeight.bold,
-                          //     ),
-                          //   ),
-                          // ),
                         ),
                       ),
                     ],

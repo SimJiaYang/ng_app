@@ -69,10 +69,6 @@ class _PlantGridItemState extends State<PlantGridItem> {
                           height: 20,
                           color: Colors.grey[400],
                         ),
-                        // child: Center(
-                        //     child: CircularProgressIndicator(
-                        //   color: ColorResources.COLOR_GRAY,
-                        // )),
                       ),
                       errorWidget: (context, url, error) => Icon(Icons.error),
                     )),
