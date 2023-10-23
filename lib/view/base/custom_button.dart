@@ -22,7 +22,7 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final ButtonStyle flatButtonStyle = TextButton.styleFrom(
       backgroundColor: onTap == null
-          ? ColorResources.COLOR_GREY_CHATEAU
+          ? const Color.fromRGBO(160, 164, 168, 1)
           : backgroundColor == null
               ? Theme.of(context).primaryColor
               : backgroundColor,

@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:nurserygardenapp/providers/order_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/font_styles.dart';
+import 'package:nurserygardenapp/view/base/custom_button.dart';
+import 'package:nurserygardenapp/view/screen/order/widget/empty_order.dart';
 import 'package:provider/provider.dart';
 
 class OrderScreen extends StatefulWidget {
@@ -159,8 +161,12 @@ class _OrderScreenState extends State<OrderScreen> {
                   builder: (context, orderProvider, child) {
                     return orderProvider.orderList.isEmpty &&
                             orderProvider.isLoading
-                        ? Center(
-                            child: CircularProgressIndicator(),
+                        ? Expanded(
+                            child: ListView.builder(
+                                itemCount: 5,
+                                itemBuilder: (context, index) {
+                                  return EmptyOrder();
+                                }),
                           )
                         : orderProvider.orderList.isEmpty &&
                                 !orderProvider.isLoading
@@ -241,10 +247,10 @@ class _OrderScreenState extends State<OrderScreen> {
                                                                   .id
                                                                   .toString(),
                                                           style: TextStyle(
-                                                              fontSize: 15,
+                                                              fontSize: 16,
                                                               fontWeight:
                                                                   FontWeight
-                                                                      .w400),
+                                                                      .w500),
                                                         ),
                                                         Text(
                                                           orderProvider
@@ -330,19 +336,40 @@ class _OrderScreenState extends State<OrderScreen> {
                                                     ],
                                                   ),
                                                   Spacer(),
-                                                  Container(
-                                                    height: 35,
-                                                    width: double.infinity,
-                                                    child: Text(
-                                                      "Delivery Status",
-                                                      style: TextStyle(
-                                                          fontSize: 15,
-                                                          color: ColorResources
-                                                              .COLOR_PRIMARY,
-                                                          fontWeight:
-                                                              FontWeight.w400),
+                                                  if (orderProvider
+                                                              .orderList[index]
+                                                              .status! ==
+                                                          "ship" ||
+                                                      orderProvider
+                                                              .orderList[index]
+                                                              .status! ==
+                                                          "receive" ||
+                                                      orderProvider
+                                                              .orderList[index]
+                                                              .status! ==
+                                                          "completed")
+                                                    Container(
+                                                      height: 35,
+                                                      width: double.infinity,
+                                                      child: Text(
+                                                        "Delivery Status",
+                                                        style: TextStyle(
+                                                            fontSize: 15,
+                                                            color: ColorResources
+                                                                .COLOR_PRIMARY,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w400),
+                                                      ),
                                                     ),
-                                                  )
+                                                  if (orderProvider
+                                                          .orderList[index]
+                                                          .status! ==
+                                                      "pay")
+                                                    CustomButton(
+                                                      onTap: () {},
+                                                      btnTxt: "Pay Now",
+                                                    )
                                                 ]),
                                           ),
                                         );
