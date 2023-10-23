@@ -21,8 +21,8 @@ class CartProvider extends ChangeNotifier {
   CartModel _cartModel = CartModel();
   CartModel get cartModel => _cartModel;
 
-  List<Cart> _cartItem = [];
-  List<Cart> get cartItem => _cartItem;
+  List<Cart> _cartList = [];
+  List<Cart> get cartItem => _cartList;
 
   String _noMoreDataMessage = '';
   String get noMoreDataMessage => _noMoreDataMessage;
@@ -36,7 +36,7 @@ class CartProvider extends ChangeNotifier {
   Future<bool> getCartItem(BuildContext context, params,
       {bool isLoadMore = false, bool isLoad = true}) async {
     if (!isLoadMore) {
-      _cartItem = [];
+      _cartList = [];
       _noMoreDataMessage = '';
     }
 
@@ -53,10 +53,10 @@ class CartProvider extends ChangeNotifier {
       result = ResponseHelper.responseHelper(context, apiResponse);
       if (result) {
         _cartModel = CartModel.fromJson(apiResponse.response!.data);
-        _cartItem = _cartModel.data!.cartList!.cart ?? [];
+        _cartList = _cartModel.data!.cartList!.cart ?? [];
         _cartPlantList = _cartModel.data!.plant ?? [];
         _cartProductList = _cartModel.data!.product ?? [];
-        if (_cartItem.length < limit && limit > 8) {
+        if (_cartList.length < limit && limit > 8) {
           _noMoreDataMessage = AppConstants.NO_MORE_DATA;
         }
       }

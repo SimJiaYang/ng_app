@@ -7,6 +7,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:nurserygardenapp/helper/route_helper.dart';
 import 'package:nurserygardenapp/providers/auth_provider.dart';
 import 'package:nurserygardenapp/providers/cart_provider.dart';
+import 'package:nurserygardenapp/providers/order_provider.dart';
 import 'package:nurserygardenapp/providers/plant_provider.dart';
 import 'package:nurserygardenapp/providers/product_provider.dart';
 import 'package:nurserygardenapp/providers/splash_provider.dart';
@@ -29,6 +30,7 @@ Future<void> main() async {
     ChangeNotifierProvider(create: (context) => di.sl<ProductProvider>()),
     ChangeNotifierProvider(create: (context) => di.sl<CartProvider>()),
     ChangeNotifierProvider(create: (context) => di.sl<UserProvider>()),
+    ChangeNotifierProvider(create: (context) => di.sl<OrderProvider>()),
   ], child: MyApp()));
 }
 
@@ -57,7 +59,13 @@ class _MyAppState extends State<MyApp> {
           onGenerateRoute: RouterHelper.router.generator,
           title: AppConstants.APP_NAME,
           debugShowCheckedModeBanner: false,
-          builder: EasyLoading.init(),
+          builder: (contexty, child) {
+            EasyLoading.init(); // Initialize EasyLoading here
+            return MediaQuery(
+              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+              child: child!,
+            );
+          },
           navigatorKey: MyApp.navigatorKey,
           theme: light,
           scrollBehavior: MaterialScrollBehavior().copyWith(dragDevices: {

@@ -130,7 +130,9 @@ class _AccountScreenState extends State<AccountScreen> {
               height: 5,
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, Routes.getOrderRoute());
+              },
               child: Container(
                 decoration: BoxDecoration(
                     border: Border(
@@ -173,6 +175,34 @@ class _AccountScreenState extends State<AccountScreen> {
                   ),
                   title: Text(
                     "Delivery",
+                    style: Theme.of(context).textTheme.displayLarge!.copyWith(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16,
+                          color: ColorResources.COLOR_BLACK,
+                        ),
+                  ),
+                  trailing: Icon(
+                    Icons.chevron_right_outlined,
+                  ),
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {},
+              child: Container(
+                decoration: BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(
+                  color: ColorResources.COLOR_GREY.withOpacity(0.3),
+                  width: 0.5,
+                ))),
+                child: ListTile(
+                  leading: Icon(
+                    Icons.favorite_border_outlined,
+                    color: ColorResources.COLOR_BLACK,
+                  ),
+                  title: Text(
+                    "Favourite List",
                     style: Theme.of(context).textTheme.displayLarge!.copyWith(
                           fontWeight: FontWeight.w400,
                           fontSize: 16,

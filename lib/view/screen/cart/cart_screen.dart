@@ -66,8 +66,12 @@ class _CartScreenState extends State<CartScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'My Cart',
-          style: TextStyle(color: ColorResources.COLOR_WHITE),
+          "My Cart",
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w400,
+            fontSize: 18,
+          ),
         ),
         leading: const BackButton(
           color: Colors.white, // <-- SEE HERE

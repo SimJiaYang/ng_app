@@ -14,9 +14,14 @@ class _SettingScreenState extends State<SettingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: const BackButton(
+          color: Colors.white, // <-- SEE HERE
+        ),
+        backgroundColor: ColorResources.COLOR_PRIMARY,
         title: Text(
           'Settings',
           style: TextStyle(
+            color: Colors.white,
             fontWeight: FontWeight.w400,
             fontSize: 18,
           ),

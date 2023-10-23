@@ -13,6 +13,8 @@ import 'package:nurserygardenapp/view/screen/bidding/bidding_screen.dart';
 import 'package:nurserygardenapp/view/screen/cart/cart_screen.dart';
 import 'package:nurserygardenapp/view/screen/dashboard/dashboard_screen.dart';
 import 'package:nurserygardenapp/view/screen/home/home_screen.dart';
+import 'package:nurserygardenapp/view/screen/order/order_screen.dart';
+import 'package:nurserygardenapp/view/screen/order/sub_screen/order_detail_screen.dart';
 import 'package:nurserygardenapp/view/screen/plant/plant_detail_screen.dart';
 import 'package:nurserygardenapp/view/screen/plant/plant_screen.dart';
 import 'package:nurserygardenapp/view/screen/plant/plant_search_result_screen.dart';
@@ -111,6 +113,18 @@ class RouterHelper {
     handlerFunc: (context, Map<String, dynamic> parameters) => CartScreen(),
   );
 
+  // =================================Order=========================================
+  static Handler _orderHandler = Handler(
+    handlerFunc: (context, Map<String, dynamic> parameters) => OrderScreen(),
+  );
+
+  static Handler _orderDetailHandler = Handler(
+    handlerFunc: (context, Map<String, dynamic> parameters) =>
+        OrderDetailScreen(
+      orderID: parameters['orderID'][0],
+    ),
+  );
+
   // =================================Bidding=========================================
   static Handler _biddingHandler = Handler(
     handlerFunc: (context, Map<String, dynamic> parameters) => BiddingScreen(),
@@ -174,6 +188,10 @@ class RouterHelper {
         transitionType: TransitionType.fadeIn);
     router.define(Routes.CART_SCREEN,
         transitionType: TransitionType.fadeIn, handler: _cartHandler);
+    router.define(Routes.ORDER_SCREEN,
+        handler: _orderHandler, transitionType: TransitionType.fadeIn);
+    router.define(Routes.ORDER_DETAIL_SCREEN,
+        handler: _orderDetailHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.BIDDING_SCREEN,
         handler: _biddingHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.ACCOUNT_SCREEN,
