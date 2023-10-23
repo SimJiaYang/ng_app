@@ -20,4 +20,14 @@ class OrderRepo {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
     }
   }
+
+  Future<ApiResponse> getOrderDetail(param) async {
+    try {
+      Response response =
+          await dioClient.get('${AppConstants.ORDER_DETAIL_URI}$param');
+      return ApiResponse.withSuccess(response);
+    } catch (e) {
+      return ApiResponse.withError(ApiErrorHandler.getMessage(e));
+    }
+  }
 }

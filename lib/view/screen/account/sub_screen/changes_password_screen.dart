@@ -37,8 +37,9 @@ class _ChangesPasswordScreenState extends State<ChangesPasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        context: context,
         isBackButtonExist: false,
+        isBgPrimaryColor: true,
+        context: context,
         title: "Change Password",
       ),
       body: SafeArea(

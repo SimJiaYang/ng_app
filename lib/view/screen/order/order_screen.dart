@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:nurserygardenapp/providers/order_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/font_styles.dart';
+import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/custom_button.dart';
 import 'package:nurserygardenapp/view/screen/order/widget/empty_order.dart';
 import 'package:provider/provider.dart';
@@ -208,77 +209,136 @@ class _OrderScreenState extends State<OrderScreen> {
                                               orderProvider.orderList.length &&
                                           orderProvider
                                               .noMoreDataMessage.isEmpty) {
-                                        return CircularProgressIndicator();
+                                        return EmptyOrder();
                                       } else {
                                         return Padding(
                                           padding: const EdgeInsets.symmetric(
                                               vertical: 10),
-                                          child: Container(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                10, 10, 10, 5),
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10)),
-                                              boxShadow: <BoxShadow>[
-                                                BoxShadow(
-                                                    color: Colors.grey
-                                                        .withOpacity(0.2),
-                                                    offset: const Offset(0, 2),
-                                                    blurRadius: 10.0),
-                                              ],
-                                            ),
-                                            height: 150,
-                                            width: double.infinity,
-                                            child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          "Order ID: " +
-                                                              orderProvider
-                                                                  .orderList[
-                                                                      index]
-                                                                  .id
-                                                                  .toString(),
-                                                          style: TextStyle(
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
-                                                        ),
-                                                        Text(
-                                                          orderProvider
-                                                                          .orderList[
-                                                                              index]
-                                                                          .status! ==
-                                                                      "pay" ||
-                                                                  orderProvider
-                                                                          .orderList[
-                                                                              index]
-                                                                          .status! ==
-                                                                      "ship" ||
-                                                                  orderProvider
-                                                                          .orderList[
-                                                                              index]
-                                                                          .status! ==
-                                                                      "receive"
-                                                              ? 'To ' +
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              Navigator.pushNamed(
+                                                  context,
+                                                  Routes.getOrderDetailRoute(
+                                                      orderProvider
+                                                          .orderList[index].id
+                                                          .toString()));
+                                            },
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      10, 10, 10, 5),
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)),
+                                                boxShadow: <BoxShadow>[
+                                                  BoxShadow(
+                                                      color: Colors.grey
+                                                          .withOpacity(0.2),
+                                                      offset:
+                                                          const Offset(0, 2),
+                                                      blurRadius: 10.0),
+                                                ],
+                                              ),
+                                              height: 150,
+                                              width: double.infinity,
+                                              child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Text(
+                                                            "Order ID: " +
+                                                                orderProvider
+                                                                    .orderList[
+                                                                        index]
+                                                                    .id
+                                                                    .toString(),
+                                                            style: TextStyle(
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
+                                                          ),
+                                                          Text(
+                                                            orderProvider
+                                                                            .orderList[
+                                                                                index]
+                                                                            .status! ==
+                                                                        "pay" ||
+                                                                    orderProvider
+                                                                            .orderList[
+                                                                                index]
+                                                                            .status! ==
+                                                                        "ship" ||
+                                                                    orderProvider
+                                                                            .orderList[
+                                                                                index]
+                                                                            .status! ==
+                                                                        "receive"
+                                                                ? 'To ' +
+                                                                    orderProvider
+                                                                        .orderList[
+                                                                            index]
+                                                                        .status!
+                                                                        .capitalize()
+                                                                : orderProvider
+                                                                    .orderList[
+                                                                        index]
+                                                                    .status!
+                                                                    .capitalize(),
+                                                            style: TextStyle(
+                                                                fontSize: 15,
+                                                                color: ColorResources
+                                                                    .COLOR_PRIMARY,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400),
+                                                          ),
+                                                        ]),
+                                                    Spacer(),
+                                                    Text(
+                                                      'Order created at: ' +
+                                                          DateFormat(
+                                                                  'dd-MM-yyyy')
+                                                              .format(
                                                                   orderProvider
                                                                       .orderList[
                                                                           index]
-                                                                      .status!
-                                                                      .capitalize()
-                                                              : orderProvider
+                                                                      .date!),
+                                                      style: TextStyle(
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.w400),
+                                                    ),
+                                                    Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          "Order Total: ",
+                                                          style: TextStyle(
+                                                              fontSize: 15,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400),
+                                                        ),
+                                                        Text(
+                                                          "RM" +
+                                                              orderProvider
                                                                   .orderList[
                                                                       index]
-                                                                  .status!
-                                                                  .capitalize(),
+                                                                  .totalAmount!
+                                                                  .toStringAsFixed(
+                                                                      2),
                                                           style: TextStyle(
                                                               fontSize: 15,
                                                               color: ColorResources
@@ -287,90 +347,48 @@ class _OrderScreenState extends State<OrderScreen> {
                                                                   FontWeight
                                                                       .w400),
                                                         ),
-                                                      ]),
-                                                  Spacer(),
-                                                  Text(
-                                                    'Order created at: ' +
-                                                        DateFormat('dd-MM-yyyy')
-                                                            .format(
-                                                                orderProvider
-                                                                    .orderList[
-                                                                        index]
-                                                                    .date!),
-                                                    style: TextStyle(
-                                                        fontSize: 15,
-                                                        fontWeight:
-                                                            FontWeight.w400),
-                                                  ),
-                                                  Row(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    children: [
-                                                      Text(
-                                                        "Order Total: ",
-                                                        style: TextStyle(
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w400),
-                                                      ),
-                                                      Text(
-                                                        "RM" +
-                                                            orderProvider
+                                                      ],
+                                                    ),
+                                                    Spacer(),
+                                                    if (orderProvider
                                                                 .orderList[
                                                                     index]
-                                                                .totalAmount!
-                                                                .toStringAsFixed(
-                                                                    2),
-                                                        style: TextStyle(
-                                                            fontSize: 15,
-                                                            color: ColorResources
-                                                                .COLOR_PRIMARY,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w400),
+                                                                .status! ==
+                                                            "ship" ||
+                                                        orderProvider
+                                                                .orderList[
+                                                                    index]
+                                                                .status! ==
+                                                            "receive" ||
+                                                        orderProvider
+                                                                .orderList[
+                                                                    index]
+                                                                .status! ==
+                                                            "completed")
+                                                      Container(
+                                                        height: 35,
+                                                        width: double.infinity,
+                                                        child: Text(
+                                                          "Delivery Status",
+                                                          style: TextStyle(
+                                                              fontSize: 15,
+                                                              color: ColorResources
+                                                                  .COLOR_PRIMARY,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400),
+                                                        ),
                                                       ),
-                                                    ],
-                                                  ),
-                                                  Spacer(),
-                                                  if (orderProvider
-                                                              .orderList[index]
-                                                              .status! ==
-                                                          "ship" ||
-                                                      orderProvider
-                                                              .orderList[index]
-                                                              .status! ==
-                                                          "receive" ||
-                                                      orderProvider
-                                                              .orderList[index]
-                                                              .status! ==
-                                                          "completed")
-                                                    Container(
-                                                      height: 35,
-                                                      width: double.infinity,
-                                                      child: Text(
-                                                        "Delivery Status",
-                                                        style: TextStyle(
-                                                            fontSize: 15,
-                                                            color: ColorResources
-                                                                .COLOR_PRIMARY,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w400),
-                                                      ),
-                                                    ),
-                                                  if (orderProvider
-                                                          .orderList[index]
-                                                          .status! ==
-                                                      "pay")
-                                                    CustomButton(
-                                                      onTap: () {},
-                                                      btnTxt: "Pay Now",
-                                                    )
-                                                ]),
+                                                    if (orderProvider
+                                                            .orderList[index]
+                                                            .status! ==
+                                                        "pay")
+                                                      CustomButton(
+                                                        onTap: () {},
+                                                        btnTxt: "Pay Now",
+                                                      )
+                                                  ]),
+                                            ),
                                           ),
                                         );
                                       }

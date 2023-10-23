@@ -60,6 +60,7 @@ class _ChangesEmailScreenState extends State<ChangesEmailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
+        isBgPrimaryColor: true,
         context: context,
         isBackButtonExist: false,
         title: "Change Email",

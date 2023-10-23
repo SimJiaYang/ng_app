@@ -11,6 +11,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final BuildContext context;
   final List<Widget>? actionWidget;
   final bool? isCenter;
+  final bool? isBgPrimaryColor;
   CustomAppBar({
     required this.title,
     this.isBackButtonExist = true,
@@ -18,6 +19,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.onBackPressed,
     this.isCenter = true,
     this.actionWidget,
+    this.isBgPrimaryColor = false,
     required this.context,
   }) : assert(isActionButtonExist == false || actionWidget != null,
             'Action widget is required when action button is exist.');
@@ -28,7 +30,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Text(title,
           style: RubikMedium.copyWith(
               fontSize: Dimensions.FONT_SIZE_LARGE,
-              color: Theme.of(context).textTheme.bodyLarge?.color)),
+              color: isBgPrimaryColor!
+                  ? Colors.white
+                  : Theme.of(context).textTheme.bodyLarge?.color)),
       centerTitle: this.isCenter,
       iconTheme: IconThemeData(
         color: ColorResources.COLOR_BLACK,
@@ -39,14 +43,20 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 Icons.arrow_back_ios,
                 size: 18,
               ),
-              color: Theme.of(context).textTheme.bodyLarge?.color,
+              color: isBgPrimaryColor!
+                  ? Colors.white
+                  : Theme.of(context).textTheme.bodyLarge?.color,
               onPressed: () => onBackPressed != null
                   ? onBackPressed!()
                   : Navigator.pop(context),
             )
-          : null,
+          : const BackButton(
+              color: Colors.white, // <-- SEE HERE
+            ),
       actions: this.isActionButtonExist ? this.actionWidget : null,
-      backgroundColor: Theme.of(context).cardColor,
+      backgroundColor: isBgPrimaryColor!
+          ? ColorResources.COLOR_PRIMARY
+          : Theme.of(context).cardColor,
       elevation: 0,
     );
   }

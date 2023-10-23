@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/data/model/cart_model.dart';
+import 'package:nurserygardenapp/data/model/order_detail_model.dart';
 import 'package:nurserygardenapp/data/model/order_model.dart';
 import 'package:nurserygardenapp/data/model/response/api_response.dart';
 import 'package:nurserygardenapp/data/repositories/order_repo.dart';
@@ -54,6 +55,40 @@ class OrderProvider extends ChangeNotifier {
     }
 
     _isLoading = false;
+    notifyListeners();
+
+    return result;
+  }
+
+  /// ================== ORDER DETAIL ==================
+  OrderDetailModel _orderDetailModel = OrderDetailModel();
+  OrderDetailModel get orderDetailModel => _orderDetailModel;
+
+  List<OrderItem> _orderDetailList = [];
+  List<OrderItem> get orderDetailList => _orderDetailList;
+
+  bool _isLoadingDetail = false;
+  bool get isLoadingDetail => _isLoadingDetail;
+
+  Future<bool> getOrderDetail(BuildContext context, params) async {
+    bool result = false;
+    String query = ResponseHelper.buildQuery(params);
+
+    _isLoadingDetail = true;
+    notifyListeners();
+
+    ApiResponse apiResponse = await orderRepo.getOrderDetail(query);
+
+    if (context.mounted) {
+      result = ResponseHelper.responseHelper(context, apiResponse);
+      if (result) {
+        _orderDetailModel =
+            OrderDetailModel.fromJson(apiResponse.response!.data);
+        _orderDetailList = _orderDetailModel.data!.orderItem ?? [];
+      }
+    }
+
+    _isLoadingDetail = false;
     notifyListeners();
 
     return result;

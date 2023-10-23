@@ -7,6 +7,7 @@ import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/empty_grid_item.dart';
 import 'package:nurserygardenapp/view/screen/product/widget/product_grid_item.dart';
 import 'package:provider/provider.dart';
+import 'package:vs_scrollbar/vs_scrollbar.dart';
 
 final List<String> imgList = [
   Images.carousel_first,
@@ -164,163 +165,185 @@ class _ProductScreenState extends State<ProductScreen> {
                 color: Theme.of(context).primaryColor,
                 key: _refreshIndicatorKey,
                 onRefresh: () => _loadData(isLoadMore: false),
-                child: SingleChildScrollView(
+                child: VsScrollbar(
                   controller: _scrollController,
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CarouselSlider(
-                        items: imageSliders,
-                        carouselController: _controller,
-                        options: CarouselOptions(
-                            viewportFraction: 1,
-                            autoPlay: true,
-                            enlargeCenterPage: true,
-                            aspectRatio: 2.0,
-                            onPageChanged: (index, reason) {
-                              setState(() {
-                                current = index;
-                              });
-                            }),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: imgList.asMap().entries.map((entry) {
-                          return GestureDetector(
-                            onTap: () => _controller.animateToPage(entry.key),
-                            child: Container(
-                              width: 8.0,
-                              height: 8.0,
-                              margin: EdgeInsets.symmetric(
-                                  vertical: 6.0, horizontal: 4.0),
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: (Theme.of(context).brightness ==
-                                              Brightness.dark
-                                          ? Colors.white
-                                          : Colors.black)
-                                      .withOpacity(
-                                          current == entry.key ? 0.9 : 0.4)),
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Consumer<ProductProvider>(
-                          builder: (context, productProvider, child) {
-                        return productProvider.productList.isEmpty &&
-                                productProvider.isLoading
-                            ? GridView.builder(
-                                primary: false,
-                                shrinkWrap: true,
-                                itemCount: 8,
-                                padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  childAspectRatio: 3 / 4,
-                                  crossAxisSpacing: 10,
-                                  mainAxisSpacing: 10,
-                                ),
-                                itemBuilder: (BuildContext context, int index) {
-                                  return EmptyGridItem();
-                                })
-                            : productProvider.productList.isEmpty &&
-                                    !productProvider.isLoading
-                                ? Center(
-                                    child: Text(
-                                      "No Product",
-                                      style: TextStyle(
-                                          color: Colors.grey.withOpacity(0.7),
-                                          fontSize: 18),
-                                    ),
-                                  )
-                                : GridView.builder(
-                                    shrinkWrap: true,
-                                    itemCount:
-                                        productProvider.productList.length +
-                                            ((productProvider.isLoading &&
-                                                    productProvider.productList
-                                                            .length >=
-                                                        8)
-                                                ? 8
-                                                : productProvider
-                                                        .noMoreDataMessage
-                                                        .isNotEmpty
-                                                    ? 1
-                                                    : 0),
-                                    padding: (productProvider
-                                                .noMoreDataMessage.isNotEmpty &&
-                                            !productProvider.isLoading)
-                                        ? EdgeInsets.fromLTRB(10, 0, 10, 10)
-                                        : EdgeInsets.only(
-                                            bottom: 235,
-                                            left: 10,
-                                            right: 10,
-                                            top: 0),
-                                    primary: false,
-                                    gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      childAspectRatio: 3 / 4,
-                                      crossAxisSpacing: 10,
-                                      mainAxisSpacing: 10,
-                                    ),
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      if (index >=
-                                              productProvider
-                                                  .productList.length &&
-                                          productProvider
-                                              .noMoreDataMessage.isEmpty) {
-                                        return EmptyGridItem();
-                                      } else if (index ==
-                                              productProvider
-                                                  .productList.length &&
-                                          productProvider
-                                              .noMoreDataMessage.isNotEmpty) {
-                                        return Container(
-                                          height: 150,
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 10),
-                                          child: Center(
-                                            child: Text(
+                  showTrackOnHover: true, // default false
+                  isAlwaysShown: true, // default false
+                  scrollbarFadeDuration: Duration(
+                      milliseconds:
+                          500), // default : Duration(milliseconds: 300)
+                  scrollbarTimeToFade: Duration(
+                      milliseconds:
+                          800), // default : Duration(milliseconds: 600)
+                  style: VsScrollbarStyle(
+                    hoverThickness: 4.0, // default 12.0
+                    radius: Radius.circular(10), // default Radius.circular(8.0)
+                    thickness: 4.0, // [ default 8.0 ]
+                    color: ColorResources
+                        .COLOR_PRIMARY, // default ColorScheme Theme
+                  ),
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CarouselSlider(
+                          items: imageSliders,
+                          carouselController: _controller,
+                          options: CarouselOptions(
+                              viewportFraction: 1,
+                              autoPlay: true,
+                              enlargeCenterPage: true,
+                              aspectRatio: 2.0,
+                              onPageChanged: (index, reason) {
+                                setState(() {
+                                  current = index;
+                                });
+                              }),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: imgList.asMap().entries.map((entry) {
+                            return GestureDetector(
+                              onTap: () => _controller.animateToPage(entry.key),
+                              child: Container(
+                                width: 8.0,
+                                height: 8.0,
+                                margin: EdgeInsets.symmetric(
+                                    vertical: 6.0, horizontal: 4.0),
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: (Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? Colors.white
+                                            : Colors.black)
+                                        .withOpacity(
+                                            current == entry.key ? 0.9 : 0.4)),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Consumer<ProductProvider>(
+                            builder: (context, productProvider, child) {
+                          return productProvider.productList.isEmpty &&
+                                  productProvider.isLoading
+                              ? GridView.builder(
+                                  primary: false,
+                                  shrinkWrap: true,
+                                  itemCount: 8,
+                                  padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    childAspectRatio: 3 / 4,
+                                    crossAxisSpacing: 10,
+                                    mainAxisSpacing: 10,
+                                  ),
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return EmptyGridItem();
+                                  })
+                              : productProvider.productList.isEmpty &&
+                                      !productProvider.isLoading
+                                  ? Center(
+                                      child: Text(
+                                        "No Product",
+                                        style: TextStyle(
+                                            color: Colors.grey.withOpacity(0.7),
+                                            fontSize: 18),
+                                      ),
+                                    )
+                                  : GridView.builder(
+                                      shrinkWrap: true,
+                                      itemCount:
+                                          productProvider.productList.length +
+                                              ((productProvider.isLoading &&
+                                                      productProvider
+                                                              .productList
+                                                              .length >=
+                                                          8)
+                                                  ? 8
+                                                  : productProvider
+                                                          .noMoreDataMessage
+                                                          .isNotEmpty
+                                                      ? 1
+                                                      : 0),
+                                      padding: (productProvider
+                                                  .noMoreDataMessage
+                                                  .isNotEmpty &&
+                                              !productProvider.isLoading)
+                                          ? EdgeInsets.fromLTRB(10, 0, 10, 10)
+                                          : EdgeInsets.only(
+                                              bottom: 235,
+                                              left: 10,
+                                              right: 10,
+                                              top: 0),
+                                      primary: false,
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        childAspectRatio: 3 / 4,
+                                        crossAxisSpacing: 10,
+                                        mainAxisSpacing: 10,
+                                      ),
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        if (index >=
                                                 productProvider
-                                                    .noMoreDataMessage,
-                                                style: TextStyle(
-                                                    color: Colors.grey
-                                                        .withOpacity(0.5))),
-                                          ),
-                                        );
-                                      } else {
-                                        return ProductGridItem(
-                                          key: ValueKey(productProvider
-                                              .productList
-                                              .elementAt(index)
-                                              .id),
-                                          product: productProvider.productList
-                                              .elementAt(index),
-                                          onTap: () async {
-                                            await Navigator.pushNamed(
-                                                context,
-                                                Routes.getProductDetailRoute(
-                                                    productProvider.productList
-                                                        .elementAt(index)
-                                                        .id!
-                                                        .toString(),
-                                                    "false",
-                                                    "false"));
-                                          },
-                                        );
-                                      }
-                                    },
-                                  );
-                      }),
-                    ],
+                                                    .productList.length &&
+                                            productProvider
+                                                .noMoreDataMessage.isEmpty) {
+                                          return EmptyGridItem();
+                                        } else if (index ==
+                                                productProvider
+                                                    .productList.length &&
+                                            productProvider
+                                                .noMoreDataMessage.isNotEmpty) {
+                                          return Container(
+                                            height: 150,
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 10),
+                                            child: Center(
+                                              child: Text(
+                                                  productProvider
+                                                      .noMoreDataMessage,
+                                                  style: TextStyle(
+                                                      color: Colors.grey
+                                                          .withOpacity(0.5))),
+                                            ),
+                                          );
+                                        } else {
+                                          return ProductGridItem(
+                                            key: ValueKey(productProvider
+                                                .productList
+                                                .elementAt(index)
+                                                .id),
+                                            product: productProvider.productList
+                                                .elementAt(index),
+                                            onTap: () async {
+                                              await Navigator.pushNamed(
+                                                  context,
+                                                  Routes.getProductDetailRoute(
+                                                      productProvider
+                                                          .productList
+                                                          .elementAt(index)
+                                                          .id!
+                                                          .toString(),
+                                                      "false",
+                                                      "false"));
+                                            },
+                                          );
+                                        }
+                                      },
+                                    );
+                        }),
+                      ],
+                    ),
                   ),
                 ),
               ),
