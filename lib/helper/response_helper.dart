@@ -19,7 +19,6 @@ class ResponseHelper {
   }
 
   static String buildQuery(params) {
-    print(params);
     final queryParameters = params.entries
         .where((entry) => entry.value != null && entry.value.isNotEmpty)
         .map((entry) => "${entry.key}=${Uri.encodeComponent(entry.value)}")
