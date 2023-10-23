@@ -6,3 +6,9 @@ const RubikMedium = TextStyle(
   fontSize: Dimensions.FONT_SIZE_DEFAULT,
   fontWeight: FontWeight.w500,
 );
+
+extension StringExtension on String {
+  String capitalize() {
+    return "${this[0].toUpperCase()}${this.substring(1).toLowerCase()}";
+  }
+}

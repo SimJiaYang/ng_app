@@ -48,7 +48,7 @@ class _AccountScreenState extends State<AccountScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorResources.COLOR_PRIMARY,
-        toolbarHeight: 90,
+        toolbarHeight: 100,
         title: Consumer<UserProvider>(
           builder: (context, userProvider, child) {
             return userProvider.isLoading
@@ -126,9 +126,9 @@ class _AccountScreenState extends State<AccountScreen> {
         width: MediaQuery.of(context).size.width,
         child: Column(
           children: [
-            SizedBox(
-              height: 5,
-            ),
+            // SizedBox(
+            //   height: 5,
+            // ),
             GestureDetector(
               onTap: () {
                 Navigator.pushNamed(context, Routes.getOrderRoute());
