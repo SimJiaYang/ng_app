@@ -403,7 +403,11 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                       style: TextStyle(fontSize: 16),
                                     ),
                                     Text(
-                                      "RM" + "???",
+                                      "RM" +
+                                          "${orderProvider.orderList.where((element) {
+                                                return element.id.toString() ==
+                                                    widget.orderID;
+                                              }).first.totalAmount!.toStringAsFixed(2)}",
                                       style: TextStyle(
                                           fontSize: 16,
                                           color: ColorResources.COLOR_PRIMARY),
