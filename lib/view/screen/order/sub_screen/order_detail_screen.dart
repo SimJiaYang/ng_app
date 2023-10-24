@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/providers/order_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
@@ -34,22 +35,387 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        leading: const BackButton(
-          color: Colors.white, // <-- SEE HERE
-        ),
-        backgroundColor: ColorResources.COLOR_PRIMARY,
-        title: Text(
-          "Order Detail",
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w400,
-            fontSize: 18,
+        appBar: AppBar(
+          leading: const BackButton(
+            color: Colors.white, // <-- SEE HERE
+          ),
+          backgroundColor: ColorResources.COLOR_PRIMARY,
+          title: Text(
+            "Order Detail",
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w400,
+              fontSize: 18,
+            ),
           ),
         ),
-      ),
-      body: Container(),
-    );
+        body: Container(
+            width: size.width,
+            child: SingleChildScrollView(child: Consumer<OrderProvider>(
+              builder: (context, orderProvider, child) {
+                return orderProvider.isLoadingDetail
+                    ? Center(
+                        child: CircularProgressIndicator(
+                          color: ColorResources.COLOR_PRIMARY,
+                        ),
+                      )
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: double.infinity,
+                            color: Colors.white,
+                            padding: EdgeInsets.all(10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Shipping Information",
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                Text(
+                                  "Shipping Status",
+                                  style: TextStyle(fontSize: 14),
+                                ),
+                                SizedBox(
+                                  height: 25,
+                                )
+                              ],
+                            ),
+                          ),
+                          Container(
+                            color: Colors.white,
+                            child: Divider(
+                              color: ColorResources.COLOR_GREY.withOpacity(0.1),
+                            ),
+                          ),
+                          Container(
+                            width: double.infinity,
+                            color: Colors.white,
+                            padding: EdgeInsets.all(10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Delivery address",
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                Text(
+                                  "Address",
+                                  style: TextStyle(fontSize: 14),
+                                ),
+                                SizedBox(
+                                  height: 25,
+                                )
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          ListView.builder(
+                              padding: (orderProvider.isLoadingDetail ||
+                                      (orderProvider.orderDetailList.length <
+                                          8))
+                                  ? EdgeInsets.fromLTRB(10, 0, 10, 10)
+                                  : EdgeInsets.only(
+                                      bottom: 235, left: 10, right: 10, top: 0),
+                              shrinkWrap: true,
+                              itemCount: orderProvider.orderDetailList.length +
+                                  (orderProvider.isLoading &&
+                                          orderProvider
+                                                  .orderDetailList.length >=
+                                              8
+                                      ? 1
+                                      : 0),
+                              itemBuilder: (BuildContext context, int index) {
+                                return Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 5),
+                                        child: GestureDetector(
+                                          onTap: () {},
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10)),
+                                              boxShadow: <BoxShadow>[
+                                                BoxShadow(
+                                                    color: Colors.grey
+                                                        .withOpacity(0.2),
+                                                    offset: const Offset(0, 2),
+                                                    blurRadius: 10.0),
+                                              ],
+                                            ),
+                                            child: Container(
+                                                padding: EdgeInsets.all(5),
+                                                height: 120,
+                                                width: double.infinity,
+                                                child: Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    SizedBox(
+                                                      width: 15,
+                                                    ),
+                                                    if (orderProvider
+                                                            .orderDetailList[
+                                                                index]
+                                                            .plantId !=
+                                                        null)
+                                                      Container(
+                                                        height: 80,
+                                                        width: 80,
+                                                        child:
+                                                            CachedNetworkImage(
+                                                          filterQuality:
+                                                              FilterQuality
+                                                                  .high,
+                                                          imageUrl:
+                                                              "${orderProvider.getOrderPlantList.where((element) {
+                                                                    return element
+                                                                            .id ==
+                                                                        orderProvider
+                                                                            .orderDetailList[index]
+                                                                            .plantId;
+                                                                  }).first.imageURL!}",
+                                                          memCacheHeight: 200,
+                                                          memCacheWidth: 200,
+                                                          imageBuilder: (context,
+                                                                  imageProvider) =>
+                                                              Container(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              image:
+                                                                  DecorationImage(
+                                                                image:
+                                                                    imageProvider,
+                                                                fit: BoxFit
+                                                                    .fitHeight,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          placeholder:
+                                                              (context, url) =>
+                                                                  Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(1.0),
+                                                            child: Center(
+                                                                child:
+                                                                    CircularProgressIndicator(
+                                                              color:
+                                                                  ColorResources
+                                                                      .COLOR_GRAY,
+                                                            )),
+                                                          ),
+                                                          errorWidget: (context,
+                                                                  url, error) =>
+                                                              Icon(Icons.error),
+                                                        ),
+                                                      ),
+                                                    if (orderProvider
+                                                            .orderDetailList[
+                                                                index]
+                                                            .productId !=
+                                                        null)
+                                                      Container(
+                                                        height: 80,
+                                                        width: 80,
+                                                        child:
+                                                            CachedNetworkImage(
+                                                          filterQuality:
+                                                              FilterQuality
+                                                                  .high,
+                                                          imageUrl:
+                                                              "${"${orderProvider.getOrderProductList.where((element) {
+                                                                    return element
+                                                                            .id ==
+                                                                        orderProvider
+                                                                            .orderDetailList[index]
+                                                                            .productId;
+                                                                  }).first.imageURL!}"}",
+                                                          memCacheHeight: 200,
+                                                          memCacheWidth: 200,
+                                                          imageBuilder: (context,
+                                                                  imageProvider) =>
+                                                              Container(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              image:
+                                                                  DecorationImage(
+                                                                image:
+                                                                    imageProvider,
+                                                                fit: BoxFit
+                                                                    .fitHeight,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          placeholder:
+                                                              (context, url) =>
+                                                                  Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(1.0),
+                                                            child: Center(
+                                                                child:
+                                                                    CircularProgressIndicator(
+                                                              color:
+                                                                  ColorResources
+                                                                      .COLOR_GRAY,
+                                                            )),
+                                                          ),
+                                                          errorWidget: (context,
+                                                                  url, error) =>
+                                                              Icon(Icons.error),
+                                                        ),
+                                                      ),
+                                                    SizedBox(
+                                                      width: 15,
+                                                    ),
+                                                    Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        if (orderProvider
+                                                                .orderDetailList[
+                                                                    index]
+                                                                .plantId !=
+                                                            null)
+                                                          Text(
+                                                            "${orderProvider.getOrderPlantList.where((element) {
+                                                                              return element.id == orderProvider.orderDetailList[index].plantId;
+                                                                            }).first.name}"
+                                                                        .length >
+                                                                    10
+                                                                ? "${orderProvider.getOrderPlantList.where((element) {
+                                                                      return element
+                                                                              .id ==
+                                                                          orderProvider
+                                                                              .orderDetailList[index]
+                                                                              .plantId;
+                                                                    }).first.name!.substring(0, 10)}"
+                                                                : "${orderProvider.getOrderPlantList.where((element) {
+                                                                      return element
+                                                                              .id ==
+                                                                          orderProvider
+                                                                              .orderDetailList[index]
+                                                                              .plantId;
+                                                                    }).first.name}",
+                                                            style: TextStyle(
+                                                                fontSize: 16),
+                                                          ),
+                                                        if (orderProvider
+                                                                .orderDetailList[
+                                                                    index]
+                                                                .productId !=
+                                                            null)
+                                                          Text(
+                                                            "${orderProvider.getOrderProductList.where((element) {
+                                                                              return element.id == orderProvider.orderDetailList[index].productId;
+                                                                            }).first.name}"
+                                                                        .length >
+                                                                    10
+                                                                ? "${orderProvider.getOrderProductList.where((element) {
+                                                                      return element
+                                                                              .id ==
+                                                                          orderProvider
+                                                                              .orderDetailList[index]
+                                                                              .productId;
+                                                                    }).first.name!.substring(0, 10)}"
+                                                                : "${orderProvider.getOrderProductList.where((element) {
+                                                                      return element
+                                                                              .id ==
+                                                                          orderProvider
+                                                                              .orderDetailList[index]
+                                                                              .productId;
+                                                                    }).first.name}",
+                                                            style: TextStyle(
+                                                                fontSize: 16),
+                                                          ),
+                                                        SizedBox(
+                                                          height: 4,
+                                                        ),
+                                                        Text(
+                                                            "Quantity: ${orderProvider.orderDetailList[index].quantity}",
+                                                            style: TextStyle(
+                                                                fontSize: 14)),
+                                                        SizedBox(
+                                                          height: 4,
+                                                        ),
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .end,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .end,
+                                                          children: [
+                                                            Text(
+                                                                "RM" +
+                                                                    "${orderProvider.orderDetailList[index].amount}",
+                                                                style: TextStyle(
+                                                                    color: ColorResources
+                                                                        .COLOR_PRIMARY,
+                                                                    fontSize:
+                                                                        16))
+                                                          ],
+                                                        )
+                                                      ],
+                                                    )
+                                                  ],
+                                                )),
+                                          ),
+                                        ),
+                                      ),
+                                    ]);
+                              }),
+                          Container(
+                            width: double.infinity,
+                            color: Colors.white,
+                            padding: EdgeInsets.all(10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Order Total",
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                    Text(
+                                      "RM" + "???",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: ColorResources.COLOR_PRIMARY),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      );
+              },
+            ))));
   }
 }
