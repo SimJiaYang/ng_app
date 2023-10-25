@@ -369,7 +369,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                                           children: [
                                                             Text(
                                                                 "RM" +
-                                                                    "${orderProvider.orderDetailList[index].amount}",
+                                                                    "${orderProvider.orderDetailList[index].amount!.toStringAsFixed(2)}",
                                                                 style: TextStyle(
                                                                     color: ColorResources
                                                                         .COLOR_PRIMARY,

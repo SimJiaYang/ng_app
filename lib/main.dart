@@ -23,6 +23,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env');
   await di.init();
+  EasyLoading.init();
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => di.sl<AuthProvider>()),
     ChangeNotifierProvider(create: (context) => di.sl<SplashProvider>()),
@@ -59,13 +60,7 @@ class _MyAppState extends State<MyApp> {
           onGenerateRoute: RouterHelper.router.generator,
           title: AppConstants.APP_NAME,
           debugShowCheckedModeBanner: false,
-          builder: (contexty, child) {
-            EasyLoading.init(); // Initialize EasyLoading here
-            return MediaQuery(
-              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-              child: child!,
-            );
-          },
+          builder: EasyLoading.init(),
           navigatorKey: MyApp.navigatorKey,
           theme: light,
           scrollBehavior: MaterialScrollBehavior().copyWith(dragDevices: {

@@ -263,6 +263,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             height: 60,
             padding: EdgeInsets.all(0),
             child: Container(
+              decoration: BoxDecoration(
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                      color: Colors.grey,
+                      offset: const Offset(0, 2),
+                      blurRadius: 10.0),
+                ],
+              ),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
@@ -285,7 +293,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               ),
                               Text(
                                 'Add to cart',
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                ),
                               )
                             ],
                           ),
@@ -303,11 +314,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         },
                         child: Container(
                           decoration: BoxDecoration(
-                              color: ColorResources.COLOR_WHITE,
-                              border: Border.all(
-                                color: ColorResources.COLOR_PRIMARY,
-                                width: 1,
-                              )),
+                            color: ColorResources.COLOR_WHITE,
+                          ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
@@ -315,6 +323,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 "Buy now",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
+                                    fontSize: 14,
                                     color: ColorResources.COLOR_PRIMARY),
                               )
                             ],

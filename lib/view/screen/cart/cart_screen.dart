@@ -82,6 +82,66 @@ class _CartScreenState extends State<CartScreen> {
         ),
         backgroundColor: ColorResources.COLOR_PRIMARY,
       ),
+      bottomNavigationBar: BottomAppBar(
+          height: 60,
+          padding: EdgeInsets.all(0),
+          child: Container(
+            decoration: BoxDecoration(
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                    color: Colors.grey,
+                    offset: const Offset(0, 2),
+                    blurRadius: 10.0),
+              ],
+            ),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Expanded(
+                    flex: 2,
+                    child: GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: ColorResources.COLOR_WHITE,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              "Total RM: ",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                  color: ColorResources.COLOR_BLACK),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: ColorResources.COLOR_PRIMARY,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            'Checkout',
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ]),
+          )),
       body: SizedBox(
         height: size.height,
         width: size.width,
@@ -177,14 +237,12 @@ class _CartScreenState extends State<CartScreen> {
                                           backgroundColor: Color(0xFFFE4A49),
                                           foregroundColor: Colors.white,
                                           icon: Icons.delete,
-                                          label: 'Delete',
                                         ),
                                         SlidableAction(
                                           onPressed: (ctx) {},
                                           backgroundColor: Color(0xFF21B7CA),
                                           foregroundColor: Colors.white,
                                           icon: Icons.share,
-                                          label: 'Share',
                                         ),
                                       ],
                                     ),
