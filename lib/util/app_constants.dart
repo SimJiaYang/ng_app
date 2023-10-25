@@ -59,6 +59,7 @@ class AppConstants {
 
   // Order
   static const String ORDER_URI = '/order';
+  static const String ORDER_CREATE_URL = '/order/create';
   static const String ORDER_DETAIL_URI = '/order/detail';
 
   // Shared Key

@@ -4,6 +4,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:input_quantity/input_quantity.dart';
 import 'package:nurserygardenapp/data/model/cart_model.dart';
 import 'package:nurserygardenapp/providers/cart_provider.dart';
+import 'package:nurserygardenapp/providers/order_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/screen/cart/widget/empty_cart_item.dart';
@@ -19,6 +20,10 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   late CartProvider cart_prov =
       Provider.of<CartProvider>(context, listen: false);
+  late OrderProvider order_prov =
+      Provider.of<OrderProvider>(context, listen: false);
+
+  List<Cart> _addedCart = [];
 
   final _scrollController = ScrollController();
 
@@ -49,6 +54,11 @@ class _CartScreenState extends State<CartScreen> {
 
   Future<void> _loadData({bool isLoadMore = false}) async {
     await cart_prov.getCartItem(context, params, isLoadMore: isLoadMore);
+  }
+
+  Future<void> createOrder() async {
+    await order_prov.addOrder(_addedCart, context);
+    _loadData();
   }
 
   @override
@@ -116,7 +126,7 @@ class _CartScreenState extends State<CartScreen> {
                                   fontWeight: FontWeight.bold,
                                   fontSize: 15,
                                   color: ColorResources.COLOR_BLACK),
-                            )
+                            ),
                           ],
                         ),
                       ),
@@ -124,19 +134,25 @@ class _CartScreenState extends State<CartScreen> {
                   ),
                   Expanded(
                     flex: 1,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: ColorResources.COLOR_PRIMARY,
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            'Checkout',
-                            style: TextStyle(color: Colors.white, fontSize: 16),
-                          )
-                        ],
+                    child: GestureDetector(
+                      onTap: () async {
+                        await createOrder();
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: ColorResources.COLOR_PRIMARY,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              'Checkout',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -145,7 +161,8 @@ class _CartScreenState extends State<CartScreen> {
       body: SizedBox(
         height: size.height,
         width: size.width,
-        child: Consumer<CartProvider>(builder: (context, cartProvider, child) {
+        child: Consumer2<CartProvider, OrderProvider>(
+            builder: (context, cartProvider, orderProvider, child) {
           return cartProvider.cartItem.isEmpty && cartProvider.isLoading
               ? ListView.builder(
                   padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
@@ -281,6 +298,15 @@ class _CartScreenState extends State<CartScreen> {
                                                   setState(() {
                                                     cartProvider.cartItem[index]
                                                         .isChecked = value!;
+                                                    if (value == true) {
+                                                      _addedCart.add(
+                                                          cartProvider
+                                                              .cartItem[index]);
+                                                    } else {
+                                                      _addedCart.remove(
+                                                          cartProvider
+                                                              .cartItem[index]);
+                                                    }
                                                   });
                                                 },
                                               ),

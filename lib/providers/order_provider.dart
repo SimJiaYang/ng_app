@@ -102,4 +102,20 @@ class OrderProvider extends ChangeNotifier {
 
     return result;
   }
+
+  /// ================== MAKE ORDER ==================
+
+  Future<bool> addOrder(List<Cart> cartList, BuildContext context) async {
+    bool result = false;
+    _isLoading = true;
+    notifyListeners();
+
+    ApiResponse apiResponse = await orderRepo.addOrder(cartList);
+    if (context.mounted) {
+      result = ResponseHelper.responseHelper(context, apiResponse);
+    }
+    _isLoading = false;
+    notifyListeners();
+    return result;
+  }
 }
