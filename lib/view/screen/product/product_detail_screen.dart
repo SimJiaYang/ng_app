@@ -340,7 +340,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     child: CircularProgressIndicator(),
                   )
                 : SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
+                    physics: const AlwaysScrollableScrollPhysics(),
                     child: Container(
                       width: MediaQuery.of(context).size.width,
                       child: Column(

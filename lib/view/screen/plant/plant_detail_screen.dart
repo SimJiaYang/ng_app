@@ -345,7 +345,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                   child: CircularProgressIndicator(),
                 )
               : SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
+                  physics: const AlwaysScrollableScrollPhysics(),
                   child: Container(
                     width: MediaQuery.of(context).size.width,
                     child: Column(

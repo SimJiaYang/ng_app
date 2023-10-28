@@ -82,7 +82,7 @@ class _OrderScreenState extends State<OrderScreen> {
     } else if (status == _statusList[3]) {
       params['status'] = 'completed';
     } else if (status == _statusList[4]) {
-      params['status'] = 'cancelled';
+      params['status'] = 'cancel';
     }
     params['limit'] = '8';
     _loadData();

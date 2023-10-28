@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class EmptyCartItem extends StatelessWidget {
+  bool isAppliedCheckbox;
+  EmptyCartItem({super.key, this.isAppliedCheckbox = true});
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -27,11 +29,13 @@ class EmptyCartItem extends StatelessWidget {
                 SizedBox(
                   width: 15,
                 ),
-                Container(
-                  width: 20,
-                  height: 20,
-                  color: Colors.grey[400],
-                ),
+                isAppliedCheckbox
+                    ? Container(
+                        width: 20,
+                        height: 20,
+                        color: Colors.grey[400],
+                      )
+                    : Container(),
                 SizedBox(
                   width: 20,
                 ),

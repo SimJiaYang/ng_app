@@ -27,6 +27,8 @@ class _CartScreenState extends State<CartScreen> {
 
   final _scrollController = ScrollController();
 
+  double totalAmount = 0;
+
   @override
   void initState() {
     super.initState();
@@ -120,12 +122,22 @@ class _CartScreenState extends State<CartScreen> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Text(
-                              "Total RM: ",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                  color: ColorResources.COLOR_BLACK),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  "Total RM: ",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
+                                      color: ColorResources.COLOR_BLACK),
+                                ),
+                                Text(totalAmount.toStringAsFixed(2),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 17,
+                                        color: ColorResources.COLOR_BLACK))
+                              ],
                             ),
                           ],
                         ),
@@ -299,6 +311,7 @@ class _CartScreenState extends State<CartScreen> {
                                                     cartProvider.cartItem[index]
                                                         .isChecked = value!;
                                                     if (value == true) {
+                                                      setState(() {});
                                                       _addedCart.add(
                                                           cartProvider
                                                               .cartItem[index]);
