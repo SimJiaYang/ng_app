@@ -311,11 +311,32 @@ class _CartScreenState extends State<CartScreen> {
                                                     cartProvider.cartItem[index]
                                                         .isChecked = value!;
                                                     if (value == true) {
-                                                      setState(() {});
+                                                      setState(() {
+                                                        totalAmount +=
+                                                            (cartProvider
+                                                                    .cartItem[
+                                                                        index]
+                                                                    .price! *
+                                                                cartProvider
+                                                                    .cartItem[
+                                                                        index]
+                                                                    .quantity!);
+                                                      });
                                                       _addedCart.add(
                                                           cartProvider
                                                               .cartItem[index]);
                                                     } else {
+                                                      setState(() {
+                                                        totalAmount -=
+                                                            (cartProvider
+                                                                    .cartItem[
+                                                                        index]
+                                                                    .price! *
+                                                                cartProvider
+                                                                    .cartItem[
+                                                                        index]
+                                                                    .quantity!);
+                                                      });
                                                       _addedCart.remove(
                                                           cartProvider
                                                               .cartItem[index]);
