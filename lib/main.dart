@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:nurserygardenapp/helper/route_helper.dart';
 import 'package:nurserygardenapp/providers/auth_provider.dart';
 import 'package:nurserygardenapp/providers/cart_provider.dart';
@@ -22,6 +23,7 @@ Future<void> main() async {
   HttpOverrides.global = new MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env');
+  Stripe.publishableKey = dotenv.get('STRIPE_PUBLISHABLE_KEY');
   await di.init();
   EasyLoading.init();
   runApp(MultiProvider(providers: [

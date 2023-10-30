@@ -39,44 +39,47 @@ class CustomTextField extends StatefulWidget {
   final bool? isPasswordValidator;
   final Icon? suffixIcon;
   final Icon? prefixIcon;
+  final FormFieldValidator? validator;
+  final Widget? SuffixIconWidget;
 
-  CustomTextField({
-    this.hintText = 'Write something...',
-    this.controller,
-    this.focusNode,
-    this.nextFocus,
-    this.isEnabled = true,
-    this.inputType = TextInputType.text,
-    this.inputAction = TextInputAction.next,
-    this.maxLines = 1,
-    this.onSuffixTap,
-    this.fillColor,
-    this.onSubmit,
-    this.onChanged,
-    this.capitalization = TextCapitalization.none,
-    this.autoFocus = false,
-    this.isCountryPicker = false,
-    this.isShowBorder = false,
-    this.isShowSuffixIcon = false,
-    this.isShowPrefixIcon = false,
-    this.onTap,
-    this.isIcon = false,
-    this.isPassword = false,
-    this.suffixIconUrl,
-    this.prefixIconUrl,
-    this.isSearch = false,
-    this.isReadOnly = false,
-    this.inputDecoration,
-    this.inputFormatter,
-    this.isApplyValidator = true,
-    this.maxLength,
-    this.validateMessage,
-    this.validation,
-    this.label,
-    this.isPasswordValidator = false,
-    this.suffixIcon,
-    this.prefixIcon,
-  });
+  CustomTextField(
+      {this.hintText = 'Write something...',
+      this.controller,
+      this.focusNode,
+      this.nextFocus,
+      this.isEnabled = true,
+      this.inputType = TextInputType.text,
+      this.inputAction = TextInputAction.next,
+      this.maxLines = 1,
+      this.onSuffixTap,
+      this.fillColor,
+      this.onSubmit,
+      this.onChanged,
+      this.capitalization = TextCapitalization.none,
+      this.autoFocus = false,
+      this.isCountryPicker = false,
+      this.isShowBorder = false,
+      this.isShowSuffixIcon = false,
+      this.isShowPrefixIcon = false,
+      this.onTap,
+      this.isIcon = false,
+      this.isPassword = false,
+      this.suffixIconUrl,
+      this.prefixIconUrl,
+      this.isSearch = false,
+      this.isReadOnly = false,
+      this.inputDecoration,
+      this.inputFormatter,
+      this.isApplyValidator = true,
+      this.maxLength,
+      this.validateMessage,
+      this.validation,
+      this.label,
+      this.isPasswordValidator = false,
+      this.suffixIcon,
+      this.prefixIcon,
+      this.validator,
+      this.SuffixIconWidget});
 
   @override
   _CustomTextFieldState createState() => _CustomTextFieldState();
@@ -121,15 +124,17 @@ class _CustomTextFieldState extends State<CustomTextField> {
       autofocus: widget.autoFocus,
       //onChanged: widget.isSearch ? widget.languageProvider.searchLanguage : null,
       obscureText: widget.isPassword ? _obscureText : false,
-      inputFormatters: widget.inputType == TextInputType.phone
-          ? <TextInputFormatter>[
-              FilteringTextInputFormatter.allow(RegExp('[0-9+]'))
-            ]
-          : widget.inputType == TextInputType.number
+      inputFormatters: widget.inputFormatter == null
+          ? (widget.inputType == TextInputType.phone
               ? <TextInputFormatter>[
-                  FilteringTextInputFormatter.allow(RegExp('[0-9]'))
+                  FilteringTextInputFormatter.allow(RegExp('[0-9+]'))
                 ]
-              : widget.inputFormatter,
+              : widget.inputType == TextInputType.number
+                  ? <TextInputFormatter>[
+                      FilteringTextInputFormatter.allow(RegExp('[0-9]'))
+                    ]
+                  : widget.inputFormatter)
+          : widget.inputFormatter,
       decoration: widget.inputDecoration ??
           InputDecoration(
             floatingLabelStyle: TextStyle(
@@ -165,30 +170,32 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 : SizedBox.shrink(),
             prefixIconConstraints: BoxConstraints(minWidth: 23, maxHeight: 20),
             suffixIcon: widget.isShowSuffixIcon
-                ? widget.isPassword
-                    ? IconButton(
-                        icon: Icon(
-                            _obscureText
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                            color: ColorResources.COLOR_GREY_CHATEAU),
-                        onPressed: _toggle)
-                    : widget.isIcon
+                ? widget.SuffixIconWidget != null
+                    ? widget.SuffixIconWidget
+                    : widget.isPassword
                         ? IconButton(
-                            onPressed: widget.onSuffixTap,
-                            icon: widget.suffixIcon == null
-                                ? Image.asset(
-                                    widget.suffixIconUrl!,
-                                    width: 15,
-                                    height: 15,
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge
-                                        ?.color,
-                                  )
-                                : widget.suffixIcon!,
-                          )
-                        : null
+                            icon: Icon(
+                                _obscureText
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                color: ColorResources.COLOR_GREY_CHATEAU),
+                            onPressed: _toggle)
+                        : widget.isIcon
+                            ? IconButton(
+                                onPressed: widget.onSuffixTap,
+                                icon: widget.suffixIcon == null
+                                    ? Image.asset(
+                                        widget.suffixIconUrl!,
+                                        width: 15,
+                                        height: 15,
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge
+                                            ?.color,
+                                      )
+                                    : widget.suffixIcon!,
+                              )
+                            : null
                 : null,
           ),
       onTap: widget.onTap,
@@ -198,6 +205,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
       },
       validator: widget.isApplyValidator
           ? (value) {
+              if (widget.validator != null) {
+                return widget.validator!(value);
+              }
               if (value == null || value.isEmpty) {
                 return widget.validateMessage == null
                     ? 'Please enter a value'

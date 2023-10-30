@@ -8,4 +8,12 @@ class Images {
   static const String carousel_second = 'assets/image/carousel/promotion.png';
   static const String carousel_third = 'assets/image/carousel/csr_program.png';
   static const String carousel_fourth = 'assets/image/carousel/earth.png';
+  static const String visa = 'assets/image/visa-icon.png';
+  static const String mastercard = 'assets/image/master-card-icon.png';
+  static const String discover = 'assets/image/discover-icon.png';
+  static const String american_express =
+      'assets/image/american-express-icon.png';
+  static const String diners_club = 'assets/image/diners-club.png';
+  static const String jcb = 'assets/image/jcb-card-icon.png';
+  static const String cvv = 'assets/image/card-cvv-icon.png';
 }

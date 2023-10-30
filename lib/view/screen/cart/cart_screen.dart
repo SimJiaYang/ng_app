@@ -8,6 +8,7 @@ import 'package:nurserygardenapp/providers/order_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/screen/cart/widget/empty_cart_item.dart';
+import 'package:nurserygardenapp/view/screen/payment/payment_screen.dart';
 import 'package:provider/provider.dart';
 
 class CartScreen extends StatefulWidget {
@@ -59,8 +60,9 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   Future<void> createOrder() async {
-    await order_prov.addOrder(_addedCart, context);
-    _loadData();
+    Navigator.push(context, MaterialPageRoute(builder: (_) => PaymentScreen()));
+    // await order_prov.addOrder(_addedCart, context);
+    // _loadData();
   }
 
   @override
