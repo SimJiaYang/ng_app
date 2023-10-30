@@ -4,6 +4,8 @@ import 'package:nurserygardenapp/providers/cart_provider.dart';
 import 'package:nurserygardenapp/providers/order_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/routes.dart';
+import 'package:nurserygardenapp/view/base/circular_indicator.dart';
+import 'package:nurserygardenapp/view/screen/payment/payment_helper/payment_type.dart';
 import 'package:provider/provider.dart';
 
 class OrderConfirmationScreen extends StatefulWidget {
@@ -30,10 +32,8 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
     });
   }
 
-  Future<void> createOrder() async {
-    // Navigator.push(context, MaterialPageRoute(builder: (_) => PaymentScreen()));
-    // await order_prov.addOrder(cart_prov.addedCardList, context);
-    // _loadData();
+  Future<bool> createOrder() async {
+    return await order_prov.addOrder(cart_prov.addedCartList, context);
   }
 
   _getTotalAmount() {
@@ -113,10 +113,19 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                     ),
                     Expanded(
                       flex: 1,
-                      child: Consumer<CartProvider>(
-                          builder: (context, cartProvider, child) {
+                      child: Consumer<OrderProvider>(
+                          builder: (context, orderProvider, child) {
                         return GestureDetector(
-                          onTap: () async {},
+                          onTap: () async {
+                            if (orderProvider.isLoading) return;
+                            if (await createOrder()) {
+                              Navigator.pushReplacementNamed(
+                                  context,
+                                  Routes.getPaymentRoute(
+                                      (PaymentType.card).toString(),
+                                      orderProvider.orderIdCreated));
+                            }
+                          },
                           child: Container(
                             decoration: BoxDecoration(
                               color: ColorResources.COLOR_PRIMARY,
@@ -125,11 +134,13 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
-                                Text(
-                                  'Place Order',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 16),
-                                )
+                                orderProvider.isLoading
+                                    ? CircularProgress()
+                                    : Text(
+                                        'Place Order',
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 16),
+                                      )
                               ],
                             ),
                           ),

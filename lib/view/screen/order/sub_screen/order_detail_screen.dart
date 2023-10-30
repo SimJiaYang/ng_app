@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nurserygardenapp/providers/order_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
+import 'package:nurserygardenapp/view/base/custom_button.dart';
 import 'package:nurserygardenapp/view/screen/order/widget/empty_order_detail.dart';
 import 'package:provider/provider.dart';
 
@@ -496,6 +497,25 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                   ],
                                 ),
                               ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              if (orderProvider.orderList
+                                      .where((element) {
+                                        return element.id.toString() ==
+                                            widget.orderID;
+                                      })
+                                      .first
+                                      .status ==
+                                  "pay")
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 5),
+                                  child: CustomButton(
+                                    onTap: () {},
+                                    btnTxt: "Pay Now",
+                                  ),
+                                )
                             ],
                           );
                   },

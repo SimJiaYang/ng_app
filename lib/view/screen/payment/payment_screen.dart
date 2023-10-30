@@ -6,9 +6,13 @@ import 'package:nurserygardenapp/view/base/custom_button.dart';
 import 'package:nurserygardenapp/view/base/custom_textfield.dart';
 import 'package:nurserygardenapp/view/screen/payment/payment_helper/card_input_formatter.dart';
 import 'package:nurserygardenapp/view/screen/payment/payment_helper/card_type.dart';
+import 'package:nurserygardenapp/view/screen/payment/payment_helper/payment_type.dart';
 
 class PaymentScreen extends StatefulWidget {
-  const PaymentScreen({super.key});
+  final String paymentType;
+  final String orderID;
+  const PaymentScreen(
+      {super.key, required this.paymentType, required this.orderID});
 
   @override
   State<PaymentScreen> createState() => _PaymentScreenState();
@@ -36,6 +40,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         getCardTypeFrmNumber();
       },
     );
+
     super.initState();
   }
 
@@ -107,111 +112,116 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 fontWeight: FontWeight.w400, fontSize: 18, color: Colors.white),
           )),
       body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  CustomTextField(
-                    isShowPrefixIcon: true,
-                    isShowSuffixIcon: true,
-                    SuffixIconWidget: CardUtils.getCardIcon(cardType),
-                    prefixIconUrl: Icon(Icons.credit_card_outlined,
-                        color: ColorResources.COLOR_GREY_CHATEAU),
-                    controller: cardNumberController,
-                    inputType: TextInputType.number,
-                    inputFormatter: [
-                      FilteringTextInputFormatter.digitsOnly,
-                      LengthLimitingTextInputFormatter(16),
-                      CardNumberInputFormatter(),
-                    ],
-                    isApplyValidator: true,
-                    validator: (value) {
-                      return CardUtils.validateCardNum(value);
-                    },
-                    hintText: "Card number",
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    child: CustomTextField(
-                      isShowPrefixIcon: true,
-                      prefixIconUrl: Icon(Icons.person_2_outlined,
-                          color: ColorResources.COLOR_GREY_CHATEAU),
-                      controller: cardHolderNameController,
-                      hintText: "Full name",
+          width: double.infinity,
+          height: double.infinity,
+          padding: const EdgeInsets.all(16),
+          child: widget.paymentType == PaymentType.card.toString()
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          CustomTextField(
+                            isShowPrefixIcon: true,
+                            isShowSuffixIcon: true,
+                            SuffixIconWidget: CardUtils.getCardIcon(cardType),
+                            prefixIconUrl: Icon(Icons.credit_card_outlined,
+                                color: ColorResources.COLOR_GREY_CHATEAU),
+                            controller: cardNumberController,
+                            inputType: TextInputType.number,
+                            inputFormatter: [
+                              FilteringTextInputFormatter.digitsOnly,
+                              LengthLimitingTextInputFormatter(16),
+                              CardNumberInputFormatter(),
+                            ],
+                            isApplyValidator: true,
+                            validator: (value) {
+                              return CardUtils.validateCardNum(value);
+                            },
+                            hintText: "Card number",
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            child: CustomTextField(
+                              isShowPrefixIcon: true,
+                              prefixIconUrl: Icon(Icons.person_2_outlined,
+                                  color: ColorResources.COLOR_GREY_CHATEAU),
+                              controller: cardHolderNameController,
+                              hintText: "Full name",
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: CustomTextField(
+                                  isShowPrefixIcon: true,
+                                  prefixIconUrl: Container(
+                                      height: 20,
+                                      width: 20,
+                                      child: Image.asset(Images.cvv)),
+                                  controller: cvvController,
+                                  inputType: TextInputType.number,
+                                  inputFormatter: [
+                                    FilteringTextInputFormatter.digitsOnly,
+                                    LengthLimitingTextInputFormatter(3),
+                                  ],
+                                  hintText: "CVV",
+                                  isApplyValidator: true,
+                                  validator: (value) {
+                                    return CardUtils.validateCVV(value);
+                                  },
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: CustomTextField(
+                                  isShowPrefixIcon: true,
+                                  prefixIconUrl: Icon(
+                                      Icons.calendar_month_outlined,
+                                      color: ColorResources.COLOR_GREY_CHATEAU),
+                                  controller: expiryDateController,
+                                  inputType: TextInputType.number,
+                                  inputFormatter: [
+                                    FilteringTextInputFormatter.digitsOnly,
+                                    LengthLimitingTextInputFormatter(4),
+                                    CardMonthInputFormatter(),
+                                  ],
+                                  isApplyValidator: true,
+                                  validator: (value) {
+                                    return CardUtils.validateDate(value);
+                                  },
+                                  hintText: "MM/YY",
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CustomTextField(
-                          isShowPrefixIcon: true,
-                          prefixIconUrl: Container(
-                              height: 20,
-                              width: 20,
-                              child: Image.asset(Images.cvv)),
-                          controller: cvvController,
-                          inputType: TextInputType.number,
-                          inputFormatter: [
-                            FilteringTextInputFormatter.digitsOnly,
-                            LengthLimitingTextInputFormatter(3),
-                          ],
-                          hintText: "CVV",
-                          isApplyValidator: true,
-                          validator: (value) {
-                            return CardUtils.validateCVV(value);
+                    Padding(
+                        padding: const EdgeInsets.only(top: 16),
+                        child: CustomButton(
+                          btnTxt: "Proceed",
+                          onTap: () {
+                            bool validate = _formKey!.currentState!.validate();
+                            if (validate) {
+                              print(cardHolderNameController.text);
+                              print(cardNumberController.text);
+                              print(expiryDateController.text);
+                              print(cvvController.text);
+                            }
                           },
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: CustomTextField(
-                          isShowPrefixIcon: true,
-                          prefixIconUrl: Icon(Icons.calendar_month_outlined,
-                              color: ColorResources.COLOR_GREY_CHATEAU),
-                          controller: expiryDateController,
-                          inputType: TextInputType.number,
-                          inputFormatter: [
-                            FilteringTextInputFormatter.digitsOnly,
-                            LengthLimitingTextInputFormatter(4),
-                            CardMonthInputFormatter(),
-                          ],
-                          isApplyValidator: true,
-                          validator: (value) {
-                            return CardUtils.validateDate(value);
-                          },
-                          hintText: "MM/YY",
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-                padding: const EdgeInsets.only(top: 16),
-                child: CustomButton(
-                  btnTxt: "Add Card",
-                  onTap: () {
-                    bool validate = _formKey!.currentState!.validate();
-                    if (validate) {
-                      print(cardHolderNameController.text);
-                      print(cardNumberController.text);
-                      print(expiryDateController.text);
-                      print(cvvController.text);
-                    }
-                  },
-                )),
-            const Spacer(),
-          ],
-        ),
-      ),
+                        )),
+                    const Spacer(),
+                  ],
+                )
+              : Container(
+                  child: Center(
+                  child: Text("Comming Soon"),
+                ))),
     );
   }
 }

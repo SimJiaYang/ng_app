@@ -7,6 +7,7 @@ import 'package:nurserygardenapp/util/font_styles.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/custom_button.dart';
 import 'package:nurserygardenapp/view/screen/order/widget/empty_order.dart';
+import 'package:nurserygardenapp/view/screen/payment/payment_helper/payment_type.dart';
 import 'package:provider/provider.dart';
 
 class OrderScreen extends StatefulWidget {
@@ -384,7 +385,19 @@ class _OrderScreenState extends State<OrderScreen> {
                                                             .status! ==
                                                         "pay")
                                                       CustomButton(
-                                                        onTap: () {},
+                                                        onTap: () {
+                                                          Navigator.pushNamed(
+                                                              context,
+                                                              Routes.getPaymentRoute(
+                                                                  PaymentType
+                                                                      .card
+                                                                      .toString(),
+                                                                  orderProvider
+                                                                      .orderList[
+                                                                          index]
+                                                                      .id
+                                                                      .toString()));
+                                                        },
                                                         btnTxt: "Pay Now",
                                                       )
                                                   ]),
