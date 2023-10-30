@@ -1,14 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:input_quantity/input_quantity.dart';
 import 'package:nurserygardenapp/data/model/cart_model.dart';
 import 'package:nurserygardenapp/providers/cart_provider.dart';
-import 'package:nurserygardenapp/providers/order_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/screen/cart/widget/empty_cart_item.dart';
-import 'package:nurserygardenapp/view/screen/payment/payment_screen.dart';
 import 'package:provider/provider.dart';
 
 class CartScreen extends StatefulWidget {
@@ -21,10 +20,6 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   late CartProvider cart_prov =
       Provider.of<CartProvider>(context, listen: false);
-  late OrderProvider order_prov =
-      Provider.of<OrderProvider>(context, listen: false);
-
-  List<Cart> _addedCart = [];
 
   final _scrollController = ScrollController();
 
@@ -59,12 +54,6 @@ class _CartScreenState extends State<CartScreen> {
     await cart_prov.getCartItem(context, params, isLoadMore: isLoadMore);
   }
 
-  Future<void> createOrder() async {
-    Navigator.push(context, MaterialPageRoute(builder: (_) => PaymentScreen()));
-    // await order_prov.addOrder(_addedCart, context);
-    // _loadData();
-  }
-
   @override
   void setState(VoidCallback fn) {
     if (mounted) {
@@ -91,8 +80,11 @@ class _CartScreenState extends State<CartScreen> {
             fontSize: 18,
           ),
         ),
-        leading: const BackButton(
-          color: Colors.white, // <-- SEE HERE
+        leading: BackButton(
+          color: Colors.white,
+          onPressed: () {
+            Navigator.pop(context);
+          }, // <-- SEE HERE
         ),
         backgroundColor: ColorResources.COLOR_PRIMARY,
       ),
@@ -113,70 +105,82 @@ class _CartScreenState extends State<CartScreen> {
                 children: <Widget>[
                   Expanded(
                     flex: 2,
-                    child: GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: ColorResources.COLOR_WHITE,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text(
-                                  "Total RM: ",
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: ColorResources.COLOR_WHITE,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(
+                                "Total RM: ",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                    color: ColorResources.COLOR_BLACK),
+                              ),
+                              Text(totalAmount.toStringAsFixed(2),
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 15,
-                                      color: ColorResources.COLOR_BLACK),
-                                ),
-                                Text(totalAmount.toStringAsFixed(2),
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 17,
-                                        color: ColorResources.COLOR_BLACK))
-                              ],
-                            ),
-                          ],
-                        ),
+                                      fontSize: 17,
+                                      color: ColorResources.COLOR_BLACK))
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   ),
                   Expanded(
                     flex: 1,
-                    child: GestureDetector(
-                      onTap: () async {
-                        await createOrder();
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: ColorResources.COLOR_PRIMARY,
+                    child: Consumer<CartProvider>(
+                        builder: (context, cartProvider, child) {
+                      return GestureDetector(
+                        onTap: () async {
+                          if (cartProvider.addedCartList.isEmpty) {
+                            EasyLoading.showError('No item added yet',
+                                dismissOnTap: true,
+                                duration: Duration(milliseconds: 500));
+                            return;
+                          }
+                          ;
+                          Navigator.pushNamed(
+                                  context, Routes.ORDER_CONFIRMATION_SCREEN)
+                              .then((value) {
+                            _loadData();
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: cart_prov.addedCartList.isEmpty
+                                ? ColorResources.COLOR_PRIMARY.withOpacity(0.7)
+                                : ColorResources.COLOR_PRIMARY,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                'Checkout',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16),
+                              )
+                            ],
+                          ),
                         ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              'Checkout',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 16),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
+                      );
+                    }),
                   ),
                 ]),
           )),
       body: SizedBox(
         height: size.height,
         width: size.width,
-        child: Consumer2<CartProvider, OrderProvider>(
-            builder: (context, cartProvider, orderProvider, child) {
+        child: Consumer<CartProvider>(builder: (context, cartProvider, child) {
           return cartProvider.cartItem.isEmpty && cartProvider.isLoading
               ? ListView.builder(
                   padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
@@ -324,8 +328,8 @@ class _CartScreenState extends State<CartScreen> {
                                                                         index]
                                                                     .quantity!);
                                                       });
-                                                      _addedCart.add(
-                                                          cartProvider
+                                                      cartProvider.addedCartList
+                                                          .add(cartProvider
                                                               .cartItem[index]);
                                                     } else {
                                                       setState(() {
@@ -339,9 +343,14 @@ class _CartScreenState extends State<CartScreen> {
                                                                         index]
                                                                     .quantity!);
                                                       });
-                                                      _addedCart.remove(
-                                                          cartProvider
-                                                              .cartItem[index]);
+                                                      cartProvider.addedCartList
+                                                          .removeWhere(
+                                                              (element) =>
+                                                                  element.id ==
+                                                                  cartProvider
+                                                                      .cartItem[
+                                                                          index]
+                                                                      .id);
                                                     }
                                                   });
                                                 },

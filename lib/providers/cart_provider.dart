@@ -32,11 +32,15 @@ class CartProvider extends ChangeNotifier {
   List<Product> _cartProductList = [];
   List<Product> get getCartProductList => _cartProductList;
 
+  List<Cart> _addedCartList = [];
+  List<Cart> get addedCartList => _addedCartList;
+
   /// ================== CART LIST ==================
   Future<bool> getCartItem(BuildContext context, params,
       {bool isLoadMore = false, bool isLoad = true}) async {
     if (!isLoadMore) {
       _cartList = [];
+      _addedCartList = [];
       _noMoreDataMessage = '';
     }
 

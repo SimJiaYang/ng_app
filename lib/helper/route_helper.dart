@@ -14,6 +14,7 @@ import 'package:nurserygardenapp/view/screen/cart/cart_screen.dart';
 import 'package:nurserygardenapp/view/screen/dashboard/dashboard_screen.dart';
 import 'package:nurserygardenapp/view/screen/home/home_screen.dart';
 import 'package:nurserygardenapp/view/screen/order/order_screen.dart';
+import 'package:nurserygardenapp/view/screen/order/sub_screen/order_confirmation_screen.dart';
 import 'package:nurserygardenapp/view/screen/order/sub_screen/order_detail_screen.dart';
 import 'package:nurserygardenapp/view/screen/plant/plant_detail_screen.dart';
 import 'package:nurserygardenapp/view/screen/plant/plant_screen.dart';
@@ -125,6 +126,11 @@ class RouterHelper {
     ),
   );
 
+  static Handler _orderConfirmationHandler = Handler(
+    handlerFunc: (context, Map<String, dynamic> parameters) =>
+        OrderConfirmationScreen(),
+  );
+
   // =================================Bidding=========================================
   static Handler _biddingHandler = Handler(
     handlerFunc: (context, Map<String, dynamic> parameters) => BiddingScreen(),
@@ -192,6 +198,9 @@ class RouterHelper {
         handler: _orderHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.ORDER_DETAIL_SCREEN,
         handler: _orderDetailHandler, transitionType: TransitionType.fadeIn);
+    router.define(Routes.ORDER_CONFIRMATION_SCREEN,
+        handler: _orderConfirmationHandler,
+        transitionType: TransitionType.fadeIn);
     router.define(Routes.BIDDING_SCREEN,
         handler: _biddingHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.ACCOUNT_SCREEN,
