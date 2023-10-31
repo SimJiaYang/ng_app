@@ -95,7 +95,11 @@ class _OrderScreenState extends State<OrderScreen> {
 
     return Scaffold(
         appBar: AppBar(
-          leading: const BackButton(
+          leading: BackButton(
+            onPressed: () {
+              Navigator.pushNamedAndRemoveUntil(context,
+                  Routes.getDashboardRoute("Account"), (route) => false);
+            },
             color: Colors.white, // <-- SEE HERE
           ),
           backgroundColor: ColorResources.COLOR_PRIMARY,

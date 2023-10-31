@@ -67,19 +67,29 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
-                            CardFormField(
-                                style: CardFormStyle(
+                            Text("Debit/Credit Card Payment"),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              child: CardFormField(
+                                  style: CardFormStyle(
                                     backgroundColor: Colors.white,
-                                    cursorColor: ColorResources.COLOR_PRIMARY,
-                                    borderColor: ColorResources.COLOR_BLACK),
-                                countryCode: "MY",
-                                enablePostalCode: false,
-                                controller: controller,
-                                onCardChanged: (card) {
-                                  setState(() {
-                                    _card = card;
-                                  });
-                                }),
+                                    borderWidth: 1,
+                                    borderColor: Colors.grey,
+                                    borderRadius: 8,
+                                    cursorColor: Colors.black,
+                                    textColor: Colors.black,
+                                    fontSize: 16,
+                                    textErrorColor: Colors.red,
+                                    placeholderColor: Colors.grey,
+                                  ),
+                                  countryCode: "MY",
+                                  controller: controller,
+                                  onCardChanged: (card) {
+                                    setState(() {
+                                      _card = card;
+                                    });
+                                  }),
+                            ),
                             Padding(
                                 padding: const EdgeInsets.only(top: 1),
                                 child: CustomButton(
@@ -92,9 +102,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                         .makePayment(pay_prov.intentID, context)
                                         .then((value) {
                                       if (value == true) {
-                                        Navigator.pop(context);
-                                        Navigator.pushReplacementNamed(
-                                            context, Routes.getOrderRoute());
+                                        Navigator.pushNamedAndRemoveUntil(
+                                            context,
+                                            Routes.getOrderRoute(),
+                                            (route) => false);
                                       }
                                     });
                                   },
