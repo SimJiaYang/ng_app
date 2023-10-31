@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nurserygardenapp/providers/order_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
+import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/custom_button.dart';
 import 'package:nurserygardenapp/view/screen/order/widget/empty_order_detail.dart';
+import 'package:nurserygardenapp/view/screen/payment/payment_helper/payment_type.dart';
 import 'package:provider/provider.dart';
 
 class OrderDetailScreen extends StatefulWidget {
@@ -512,7 +514,21 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                   padding:
                                       const EdgeInsets.symmetric(horizontal: 5),
                                   child: CustomButton(
-                                    onTap: () {},
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                          context,
+                                          Routes.getPaymentRoute(
+                                              PaymentType.card.toString(),
+                                              orderProvider.orderList
+                                                  .where((element) {
+                                                    return element.id
+                                                            .toString() ==
+                                                        widget.orderID;
+                                                  })
+                                                  .first
+                                                  .id
+                                                  .toString()));
+                                    },
                                     btnTxt: "Pay Now",
                                   ),
                                 )

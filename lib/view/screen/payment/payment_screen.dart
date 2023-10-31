@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:nurserygardenapp/providers/pay_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
+import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/custom_button.dart';
 import 'package:nurserygardenapp/view/screen/payment/payment_helper/payment_type.dart';
 import 'package:provider/provider.dart';
@@ -84,8 +85,18 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 child: CustomButton(
                                   btnTxt: "Proceed",
                                   onTap: () async {
-                                    await pay_prov.makePayment(
-                                        pay_prov.intentID, context);
+                                    if (payProvider.isLoading) {
+                                      return;
+                                    }
+                                    await pay_prov
+                                        .makePayment(pay_prov.intentID, context)
+                                        .then((value) {
+                                      if (value == true) {
+                                        Navigator.pop(context);
+                                        Navigator.pushReplacementNamed(
+                                            context, Routes.getOrderRoute());
+                                      }
+                                    });
                                   },
                                 )),
                           ],

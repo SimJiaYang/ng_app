@@ -21,7 +21,7 @@ class _OrderScreenState extends State<OrderScreen> {
   late OrderProvider order_prov =
       Provider.of<OrderProvider>(context, listen: false);
   final _scrollController = ScrollController();
-  String _selectedStatus = 'Completed';
+  String _selectedStatus = 'To Ship';
   List<String> _statusList = [
     "To Pay",
     "To Ship",
@@ -51,7 +51,7 @@ class _OrderScreenState extends State<OrderScreen> {
   }
 
   // Param
-  var params = {'limit': '8', 'status': 'completed'};
+  var params = {'limit': '8', 'status': 'ship'};
 
   Future<void> _loadData({bool isLoadMore = false}) async {
     await order_prov.getOrderList(context, params, isLoadMore: isLoadMore);

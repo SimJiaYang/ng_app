@@ -55,9 +55,7 @@ class PayProvider extends ChangeNotifier {
         ),
       );
       Map<String, dynamic> responseStatus = response.toJson();
-      print(responseStatus);
-      print(responseStatus['status']);
-      if (responseStatus['status'] == 'succeeded') {
+      if (responseStatus['status'] == 'Succeeded') {
         ApiResponse apiResponse = await payRepo.handleSuccessPayment(_intentID);
         if (context.mounted) {
           result = ResponseHelper.responseHelper(context, apiResponse);
