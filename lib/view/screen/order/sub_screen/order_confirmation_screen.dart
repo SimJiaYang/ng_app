@@ -32,10 +32,6 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
     });
   }
 
-  Future<bool> createOrder() async {
-    return await order_prov.addOrder(cart_prov.addedCartList, context);
-  }
-
   _getTotalAmount() {
     double total = 0;
     cart_prov.addedCartList.forEach((element) {
@@ -118,13 +114,17 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                         return GestureDetector(
                           onTap: () async {
                             if (orderProvider.isLoading) return;
-                            if (await createOrder()) {
-                              Navigator.pushReplacementNamed(
-                                  context,
-                                  Routes.getPaymentRoute(
-                                      (PaymentType.card).toString(),
-                                      orderProvider.orderIdCreated));
-                            }
+                            await orderProvider
+                                .addOrder(cart_prov.addedCartList, context)
+                                .then((value) {
+                              if (value == true) {
+                                Navigator.pushReplacementNamed(
+                                    context,
+                                    Routes.getPaymentRoute(
+                                        (PaymentType.card).toString(),
+                                        orderProvider.orderIdCreated));
+                              }
+                            });
                           },
                           child: Container(
                             decoration: BoxDecoration(

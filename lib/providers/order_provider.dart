@@ -117,7 +117,9 @@ class OrderProvider extends ChangeNotifier {
     if (context.mounted) {
       result = ResponseHelper.responseHelper(context, apiResponse);
       if (result) {
-        _orderIdCreated = apiResponse.response!.data['order_id'].toString();
+        _orderIdCreated =
+            apiResponse.response!.data['data']['order_id'].toString();
+        print(_orderIdCreated);
       }
     }
     _isLoading = false;

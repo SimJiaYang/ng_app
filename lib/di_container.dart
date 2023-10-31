@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:nurserygardenapp/data/dio/login_interceptor.dart';
 import 'package:nurserygardenapp/data/repositories/cart_repo.dart';
 import 'package:nurserygardenapp/data/repositories/order_repo.dart';
+import 'package:nurserygardenapp/data/repositories/pay_repo.dart';
 import 'package:nurserygardenapp/data/repositories/plant_repo.dart';
 import 'package:nurserygardenapp/data/repositories/product_repo.dart';
 import 'package:nurserygardenapp/data/repositories/splash_repo.dart';
@@ -9,6 +10,7 @@ import 'package:nurserygardenapp/data/repositories/user_repo.dart';
 import 'package:nurserygardenapp/providers/auth_provider.dart';
 import 'package:nurserygardenapp/providers/cart_provider.dart';
 import 'package:nurserygardenapp/providers/order_provider.dart';
+import 'package:nurserygardenapp/providers/pay_provider.dart';
 import 'package:nurserygardenapp/providers/plant_provider.dart';
 import 'package:nurserygardenapp/providers/product_provider.dart';
 import 'package:nurserygardenapp/providers/splash_provider.dart';
@@ -39,6 +41,8 @@ Future<void> init() async {
   sl.registerLazySingleton(
       () => OrderRepo(dioClient: sl(), sharedPreferences: sl()));
   sl.registerLazySingleton(
+      () => PayRepo(dioClient: sl(), sharedPreferences: sl()));
+  sl.registerLazySingleton(
       () => UserRepo(dioClient: sl(), sharedPreferences: sl()));
 
   // Provider
@@ -52,6 +56,9 @@ Future<void> init() async {
       () => CartProvider(cartRepo: sl(), sharedPreferences: sl()));
   sl.registerFactory(
       () => OrderProvider(orderRepo: sl(), sharedPreferences: sl()));
+  sl.registerFactory(
+    () => PayProvider(payRepo: sl(), sharedPreferences: sl()),
+  );
   sl.registerFactory(
       () => UserProvider(userRepo: sl(), sharedPreferences: sl()));
 
