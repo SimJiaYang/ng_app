@@ -515,7 +515,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                       const EdgeInsets.symmetric(horizontal: 5),
                                   child: CustomButton(
                                     onTap: () {
-                                      Navigator.pushNamed(
+                                      Navigator.popAndPushNamed(
                                           context,
                                           Routes.getPaymentRoute(
                                               PaymentType.card.toString(),

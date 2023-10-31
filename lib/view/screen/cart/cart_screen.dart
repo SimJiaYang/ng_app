@@ -51,6 +51,9 @@ class _CartScreenState extends State<CartScreen> {
   };
 
   Future<void> _loadData({bool isLoadMore = false}) async {
+    setState(() {
+      totalAmount = 0;
+    });
     await cart_prov.getCartItem(context, params, isLoadMore: isLoadMore);
   }
 

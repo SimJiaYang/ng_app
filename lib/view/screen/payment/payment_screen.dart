@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:nurserygardenapp/providers/pay_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/custom_button.dart';
+import 'package:nurserygardenapp/view/base/custom_snackbar.dart';
 import 'package:nurserygardenapp/view/screen/payment/payment_helper/payment_type.dart';
 import 'package:provider/provider.dart';
 
@@ -20,7 +22,7 @@ class PaymentScreen extends StatefulWidget {
 class _PaymentScreenState extends State<PaymentScreen> {
   late PayProvider pay_prov = Provider.of<PayProvider>(context, listen: false);
   CardFieldInputDetails? _card = CardFieldInputDetails(complete: false);
-  final controller = CardFormEditController();
+  final cardFormontroller = CardFormEditController();
 
   @override
   void dispose() {
@@ -30,7 +32,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsFlutterBinding.ensureInitialized();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       return _getClientToken();
     });
@@ -45,7 +46,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
     return Scaffold(
       appBar: AppBar(
           backgroundColor: ColorResources.COLOR_PRIMARY,
-          leading: const BackButton(
+          leading: BackButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
             color: Colors.white, // <-- SEE HERE
           ),
           title: Text(
@@ -61,7 +65,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
               ? Consumer<PayProvider>(builder: (context, payProvider, child) {
                   return payProvider.isLoading
                       ? Center(
-                          child: CircularProgressIndicator.adaptive(),
+                          child: CircularProgressIndicator.adaptive(
+                            valueColor: new AlwaysStoppedAnimation<Color>(
+                              Theme.of(context).primaryColor,
+                            ),
+                          ),
                         )
                       : Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,14 +84,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     borderWidth: 1,
                                     borderColor: Colors.grey,
                                     borderRadius: 8,
-                                    cursorColor: Colors.black,
+                                    cursorColor: ColorResources.COLOR_PRIMARY,
                                     textColor: Colors.black,
                                     fontSize: 16,
                                     textErrorColor: Colors.red,
                                     placeholderColor: Colors.grey,
                                   ),
                                   countryCode: "MY",
-                                  controller: controller,
+                                  controller: cardFormontroller,
                                   onCardChanged: (card) {
                                     setState(() {
                                       _card = card;
@@ -98,16 +106,29 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     if (payProvider.isLoading) {
                                       return;
                                     }
-                                    await pay_prov
-                                        .makePayment(pay_prov.intentID, context)
-                                        .then((value) {
-                                      if (value == true) {
-                                        Navigator.pushNamedAndRemoveUntil(
+                                    if (cardFormontroller.details.complete ==
+                                        false) {
+                                      showCustomSnackBar(
+                                          "Please fill up the card", context);
+                                    }
+                                    if (cardFormontroller.details.complete ==
+                                        true) {
+                                      EasyLoading.show(
+                                        status: 'Please wait...',
+                                      );
+                                      await pay_prov
+                                          .makePayment(
+                                              pay_prov.intentID, context)
+                                          .then((value) {
+                                        EasyLoading.dismiss();
+                                        if (value == true) {
+                                          Navigator.pushNamed(
                                             context,
                                             Routes.getOrderRoute(),
-                                            (route) => false);
-                                      }
-                                    });
+                                          );
+                                        }
+                                      });
+                                    }
                                   },
                                 )),
                           ],

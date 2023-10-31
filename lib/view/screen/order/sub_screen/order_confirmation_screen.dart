@@ -50,7 +50,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
             leading: BackButton(
               color: Colors.white,
               onPressed: () {
-                Navigator.popAndPushNamed(context, Routes.getCartRoute());
+                Navigator.pushReplacementNamed(context, Routes.getCartRoute());
               },
             ),
             title: Text(
