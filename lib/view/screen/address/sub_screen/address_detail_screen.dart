@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/data/model/address_model.dart';
 import 'package:nurserygardenapp/providers/address_provider.dart';
+import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/view/base/custom_appbar.dart';
 import 'package:nurserygardenapp/view/base/custom_button.dart';
 import 'package:nurserygardenapp/view/base/custom_textfield.dart';
 import 'package:provider/provider.dart';
+import 'package:quickalert/quickalert.dart';
 
 class AddressDetailScreen extends StatefulWidget {
   final String addressID;
@@ -86,7 +88,53 @@ class _AddressDetailScreenState extends State<AddressDetailScreen> {
               Consumer<AddressProvider>(
                   builder: (context, addressProvider, child) {
                 return Padding(
-                  padding: const EdgeInsets.all(10),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  child: CustomButton(
+                    customTextStyle: TextStyle(color: Colors.white),
+                    backgroundColor: Colors.red,
+                    btnTxt: "Delete",
+                    onTap: () async {
+                      if (addressProvider.isLoading) return;
+                      QuickAlert.show(
+                        headerBackgroundColor: Colors.black,
+                        barrierDismissible: false,
+                        context: context,
+                        type: QuickAlertType.warning,
+                        showCancelBtn: true,
+                        showConfirmBtn: true,
+                        text: 'Do you want to delete this address',
+                        confirmBtnText: 'Yes',
+                        cancelBtnText: 'No',
+                        confirmBtnColor: ColorResources.COLOR_PRIMARY,
+                        onCancelBtnTap: () {
+                          Navigator.pop(context);
+                        },
+                        onConfirmBtnTap: () async {
+                          Navigator.pop(context);
+                          await addressProvider
+                              .deleteAddress(
+                                  context,
+                                  new Address(
+                                    id: address.id,
+                                    address: _addressController.text,
+                                  ))
+                              .then((value) {
+                            if (value) {
+                              Navigator.pop(context, true);
+                            }
+                          });
+                        },
+                      );
+                    },
+                  ),
+                );
+              }),
+              Consumer<AddressProvider>(
+                  builder: (context, addressProvider, child) {
+                return Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                   child: CustomButton(
                     btnTxt: "Save",
                     onTap: () async {

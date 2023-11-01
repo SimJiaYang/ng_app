@@ -58,6 +58,7 @@ dependencies:
   vs_scrollbar: ^1.0.0
   flutter_stripe: ^9.5.0+1
   fluttertoast: ^8.2.2
+  quickalert: ^1.0.2
 
 dev_dependencies:
   flutter_test:

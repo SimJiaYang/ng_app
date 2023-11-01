@@ -90,4 +90,21 @@ class AddressProvider extends ChangeNotifier {
 
     return result;
   }
+
+  Future<bool> deleteAddress(BuildContext context, Address address) async {
+    bool result = false;
+    _isLoading = true;
+    notifyListeners();
+
+    ApiResponse apiResponse = await addressRepo.daleteAddress(address);
+
+    if (context.mounted) {
+      result = ResponseHelper.responseHelper(context, apiResponse);
+    }
+
+    _isLoading = false;
+    notifyListeners();
+
+    return result;
+  }
 }
