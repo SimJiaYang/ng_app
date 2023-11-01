@@ -17,6 +17,7 @@ import 'package:nurserygardenapp/view/screen/cart/cart_screen.dart';
 import 'package:nurserygardenapp/view/screen/dashboard/dashboard_screen.dart';
 import 'package:nurserygardenapp/view/screen/home/home_screen.dart';
 import 'package:nurserygardenapp/view/screen/order/order_screen.dart';
+import 'package:nurserygardenapp/view/screen/order/sub_screen/order_address_screen.dart';
 import 'package:nurserygardenapp/view/screen/order/sub_screen/order_confirmation_screen.dart';
 import 'package:nurserygardenapp/view/screen/order/sub_screen/order_detail_screen.dart';
 import 'package:nurserygardenapp/view/screen/payment/payment_screen.dart';
@@ -135,6 +136,11 @@ class RouterHelper {
         OrderConfirmationScreen(),
   );
 
+  static Handler _orderAddressHandler = Handler(
+    handlerFunc: (context, Map<String, dynamic> parameters) =>
+        OrderAddressScreen(),
+  );
+
   // =================================Payment=========================================
   static Handler _paymentHandler = Handler(
     handlerFunc: (context, Map<String, dynamic> parameters) => PaymentScreen(
@@ -229,6 +235,8 @@ class RouterHelper {
     router.define(Routes.ORDER_CONFIRMATION_SCREEN,
         handler: _orderConfirmationHandler,
         transitionType: TransitionType.fadeIn);
+    router.define(Routes.ORDER_ADDRESS_SCREEN,
+        handler: _orderAddressHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.PAYMENT_SCREEN,
         handler: _paymentHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.ADDRESS_SCREEN,

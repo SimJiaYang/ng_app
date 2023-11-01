@@ -15,6 +15,9 @@ class AddressProvider extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
+  bool _isLoadingOrderAddress = false;
+  bool get isLoadingOrderAddress => _isLoadingOrderAddress;
+
   AddressModel _addressModel = AddressModel();
   AddressModel get addressModel => _addressModel;
 
@@ -26,7 +29,9 @@ class AddressProvider extends ChangeNotifier {
 
   /// ================== DELIVERY LIST ==================
   Future<bool> getAddressList(BuildContext context, params,
-      {bool isLoadMore = false, bool isLoad = true}) async {
+      {bool isLoadMore = false,
+      bool isLoad = true,
+      bool isLoadingOrderAddress = false}) async {
     if (!isLoadMore) {
       _addressList = [];
     }
@@ -36,6 +41,12 @@ class AddressProvider extends ChangeNotifier {
     int limit = params['limit'] != null ? int.parse(params['limit']) : 8;
 
     _isLoading = isLoad;
+
+    if (isLoadingOrderAddress) {
+      _isLoading = false;
+      _isLoadingOrderAddress = true;
+    }
+
     notifyListeners();
 
     ApiResponse apiResponse = await addressRepo.getAddress(query);
@@ -52,6 +63,7 @@ class AddressProvider extends ChangeNotifier {
     }
 
     _isLoading = false;
+    _isLoadingOrderAddress = false;
     notifyListeners();
 
     return result;

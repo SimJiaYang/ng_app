@@ -6,6 +6,7 @@ import 'package:nurserygardenapp/providers/order_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/circular_indicator.dart';
+import 'package:nurserygardenapp/view/screen/order/sub_screen/order_address_screen.dart';
 import 'package:nurserygardenapp/view/screen/payment/payment_helper/payment_type.dart';
 import 'package:provider/provider.dart';
 
@@ -27,7 +28,6 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
   double totalAmount = 0;
 
   String address = "";
-  String addressID = "";
 
   var params = {};
 
@@ -51,7 +51,6 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
       totalAmount = total;
       if (result) {
         address = address_prov.addressList[0].address ?? '';
-        addressID = address_prov.addressList[0].id.toString() ?? '';
       }
     });
   }
@@ -183,24 +182,37 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Container(
-                          width: double.infinity,
-                          color: Colors.white,
-                          padding: EdgeInsets.all(10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Delivery Address",
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                address,
-                                style: TextStyle(fontSize: 14),
-                              ),
-                            ],
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(
+                                    context, Routes.getOrderAddressRoute())
+                                .then((value) {
+                              if (value == null) return;
+                              setState(() {
+                                address = value as String;
+                              });
+                            });
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            color: Colors.white,
+                            padding: EdgeInsets.all(10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Delivery Address",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  address,
+                                  style: TextStyle(fontSize: 14),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         Container(
