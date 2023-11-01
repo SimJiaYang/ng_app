@@ -66,6 +66,12 @@ class AppConstants {
   static const String PAYMENT_URI = '/order/payment/intent';
   static const String PAYMENT_SUCCESS_HANDLING = '/order/payment/succeed';
 
+  // Address
+  static const String ADDRESS_URI = '/address';
+  static const String ADD_ADDRESS_URI = '/address/add';
+  static const String UPDATE_ADDRESS_URI = '/address/update';
+  static const String DELETE_ADDRESS_URI = '/address/delete';
+
   // Shared Key
   static const String THEME = 'theme';
   static const String TOKEN = 'token';

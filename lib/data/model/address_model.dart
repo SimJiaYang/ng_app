@@ -1,26 +1,26 @@
 // To parse this JSON data, do
 //
-//     final productModel = productModelFromJson(jsonString);
+//     final addressModel = addressModelFromJson(jsonString);
 
 import 'dart:convert';
 
-ProductModel productModelFromJson(String str) =>
-    ProductModel.fromJson(json.decode(str));
+AddressModel addressModelFromJson(String str) =>
+    AddressModel.fromJson(json.decode(str));
 
-String productModelToJson(ProductModel data) => json.encode(data.toJson());
+String addressModelToJson(AddressModel data) => json.encode(data.toJson());
 
-class ProductModel {
+class AddressModel {
   bool? success;
   Data? data;
   String? error;
 
-  ProductModel({
+  AddressModel({
     this.success,
     this.data,
     this.error,
   });
 
-  factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
+  factory AddressModel.fromJson(Map<String, dynamic> json) => AddressModel(
         success: json["success"],
         data: json["data"] == null ? null : Data.fromJson(json["data"]),
         error: json["error"],
@@ -34,41 +34,41 @@ class ProductModel {
 }
 
 class Data {
-  ProductsList? productsList;
+  AddressList? addressList;
 
   Data({
-    this.productsList,
+    this.addressList,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-        productsList: json["products"] == null
+        addressList: json["address_list"] == null
             ? null
-            : ProductsList.fromJson(json["products"]),
+            : AddressList.fromJson(json["address_list"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "products": productsList?.toJson(),
+        "address_list": addressList?.toJson(),
       };
 }
 
-class ProductsList {
+class AddressList {
   int? currentPage;
-  List<Product>? product;
+  List<Address>? data;
   String? firstPageUrl;
   int? from;
   int? lastPage;
   String? lastPageUrl;
   List<Link>? links;
-  String? nextPageUrl;
+  dynamic nextPageUrl;
   String? path;
   int? perPage;
   dynamic prevPageUrl;
   int? to;
   int? total;
 
-  ProductsList({
+  AddressList({
     this.currentPage,
-    this.product,
+    this.data,
     this.firstPageUrl,
     this.from,
     this.lastPage,
@@ -82,11 +82,11 @@ class ProductsList {
     this.total,
   });
 
-  factory ProductsList.fromJson(Map<String, dynamic> json) => ProductsList(
+  factory AddressList.fromJson(Map<String, dynamic> json) => AddressList(
         currentPage: json["current_page"],
-        product: json["data"] == null
+        data: json["data"] == null
             ? []
-            : List<Product>.from(json["data"]!.map((x) => Product.fromJson(x))),
+            : List<Address>.from(json["data"]!.map((x) => Address.fromJson(x))),
         firstPageUrl: json["first_page_url"],
         from: json["from"],
         lastPage: json["last_page"],
@@ -104,9 +104,9 @@ class ProductsList {
 
   Map<String, dynamic> toJson() => {
         "current_page": currentPage,
-        "data": product == null
+        "data": data == null
             ? []
-            : List<dynamic>.from(product!.map((x) => x.toJson())),
+            : List<dynamic>.from(data!.map((x) => x.toJson())),
         "first_page_url": firstPageUrl,
         "from": from,
         "last_page": lastPage,
@@ -123,67 +123,43 @@ class ProductsList {
       };
 }
 
-class Product {
+class Address {
   int? id;
-  String? name;
-  double? price;
-  String? description;
-  int? quantity;
+  String? address;
   String? status;
-  String? image;
-  int? catId;
+  int? userId;
   DateTime? createdAt;
   DateTime? updatedAt;
-  String? categoryName;
-  String? imageURL;
 
-  Product({
+  Address({
     this.id,
-    this.name,
-    this.price,
-    this.description,
-    this.quantity,
+    this.address,
     this.status,
-    this.image,
-    this.catId,
+    this.userId,
     this.createdAt,
     this.updatedAt,
-    this.categoryName,
-    this.imageURL,
   });
 
-  factory Product.fromJson(Map<String, dynamic> json) => Product(
+  factory Address.fromJson(Map<String, dynamic> json) => Address(
         id: json["id"],
-        name: json["name"],
-        price: json["price"]?.toDouble(),
-        description: json["description"],
-        quantity: json["quantity"],
+        address: json["address"],
         status: json["status"],
-        image: json["image"],
-        catId: json["cat_id"],
+        userId: json["user_id"],
         createdAt: json["created_at"] == null
             ? null
             : DateTime.parse(json["created_at"]),
         updatedAt: json["updated_at"] == null
             ? null
             : DateTime.parse(json["updated_at"]),
-        categoryName: json["category_name"],
-        imageURL: jsonDecode(json["image_url"]),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "name": name,
-        "price": price,
-        "description": description,
-        "quantity": quantity,
+        "address": address,
         "status": status,
-        "image": image,
-        "cat_id": catId,
+        "user_id": userId,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
-        "category_name": categoryName,
-        "image_url": imageURL,
       };
 }
 

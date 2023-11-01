@@ -8,6 +8,7 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:nurserygardenapp/helper/route_helper.dart';
 import 'package:nurserygardenapp/providers/auth_provider.dart';
 import 'package:nurserygardenapp/providers/cart_provider.dart';
+import 'package:nurserygardenapp/providers/delivery_provider.dart';
 import 'package:nurserygardenapp/providers/order_provider.dart';
 import 'package:nurserygardenapp/providers/pay_provider.dart';
 import 'package:nurserygardenapp/providers/plant_provider.dart';
@@ -36,6 +37,7 @@ Future<void> main() async {
     ChangeNotifierProvider(create: (context) => di.sl<UserProvider>()),
     ChangeNotifierProvider(create: (context) => di.sl<OrderProvider>()),
     ChangeNotifierProvider(create: (context) => di.sl<PayProvider>()),
+    ChangeNotifierProvider(create: (context) => di.sl<AddressProvider>()),
   ], child: MyApp()));
 }
 

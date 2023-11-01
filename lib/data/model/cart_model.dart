@@ -113,7 +113,7 @@ class CartList {
             : List<Link>.from(json["links"]!.map((x) => Link.fromJson(x))),
         nextPageUrl: json["next_page_url"],
         path: json["path"],
-        perPage: json["per_page"],
+        perPage: json["per_page"] == null ? null : json["per_page"],
         prevPageUrl: json["prev_page_url"],
         to: json["to"],
         total: json["total"],
