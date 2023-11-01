@@ -129,6 +129,7 @@ class Order {
   double? totalAmount;
   int? userId;
   dynamic cartId;
+  String? address;
   DateTime? createdAt;
   DateTime? updatedAt;
 
@@ -139,6 +140,7 @@ class Order {
     this.totalAmount,
     this.userId,
     this.cartId,
+    this.address,
     this.createdAt,
     this.updatedAt,
   });
@@ -150,6 +152,7 @@ class Order {
         totalAmount: json["total_amount"]?.toDouble(),
         userId: json["user_id"],
         cartId: json["cart_id"],
+        address: json["address"],
         createdAt: json["created_at"] == null
             ? null
             : DateTime.parse(json["created_at"]),

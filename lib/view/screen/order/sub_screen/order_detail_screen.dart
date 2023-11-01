@@ -107,10 +107,18 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                   children: [
                                     Text(
                                       "Delivery address",
-                                      style: TextStyle(fontSize: 16),
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                     Text(
-                                      "Address",
+                                      orderProvider.orderList
+                                          .where((element) {
+                                            return element.id.toString() ==
+                                                widget.orderID;
+                                          })
+                                          .first
+                                          .address!,
                                       style: TextStyle(fontSize: 14),
                                     ),
                                     SizedBox(

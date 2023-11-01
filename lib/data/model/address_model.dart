@@ -53,7 +53,7 @@ class Data {
 
 class AddressList {
   int? currentPage;
-  List<Address>? data;
+  List<Address>? address;
   String? firstPageUrl;
   int? from;
   int? lastPage;
@@ -68,7 +68,7 @@ class AddressList {
 
   AddressList({
     this.currentPage,
-    this.data,
+    this.address,
     this.firstPageUrl,
     this.from,
     this.lastPage,
@@ -84,7 +84,7 @@ class AddressList {
 
   factory AddressList.fromJson(Map<String, dynamic> json) => AddressList(
         currentPage: json["current_page"],
-        data: json["data"] == null
+        address: json["data"] == null
             ? []
             : List<Address>.from(json["data"]!.map((x) => Address.fromJson(x))),
         firstPageUrl: json["first_page_url"],
@@ -104,9 +104,9 @@ class AddressList {
 
   Map<String, dynamic> toJson() => {
         "current_page": currentPage,
-        "data": data == null
+        "data": address == null
             ? []
-            : List<dynamic>.from(data!.map((x) => x.toJson())),
+            : List<dynamic>.from(address!.map((x) => x.toJson())),
         "first_page_url": firstPageUrl,
         "from": from,
         "last_page": lastPage,
@@ -154,7 +154,7 @@ class Address {
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
+        "id": id.toString(),
         "address": address,
         "status": status,
         "user_id": userId,

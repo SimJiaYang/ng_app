@@ -107,13 +107,14 @@ class OrderProvider extends ChangeNotifier {
   String _orderIdCreated = '';
   String get orderIdCreated => _orderIdCreated;
 
-  Future<bool> addOrder(List<Cart> cartList, BuildContext context) async {
+  Future<bool> addOrder(
+      List<Cart> cartList, String address, BuildContext context) async {
     bool result = false;
     _isLoading = true;
     _orderIdCreated = '';
     notifyListeners();
 
-    ApiResponse apiResponse = await orderRepo.addOrder(cartList);
+    ApiResponse apiResponse = await orderRepo.addOrder(cartList, address);
     if (context.mounted) {
       result = ResponseHelper.responseHelper(context, apiResponse);
       if (result) {

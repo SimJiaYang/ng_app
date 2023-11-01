@@ -10,7 +10,7 @@ import 'package:nurserygardenapp/data/repositories/splash_repo.dart';
 import 'package:nurserygardenapp/data/repositories/user_repo.dart';
 import 'package:nurserygardenapp/providers/auth_provider.dart';
 import 'package:nurserygardenapp/providers/cart_provider.dart';
-import 'package:nurserygardenapp/providers/delivery_provider.dart';
+import 'package:nurserygardenapp/providers/address_provider.dart';
 import 'package:nurserygardenapp/providers/order_provider.dart';
 import 'package:nurserygardenapp/providers/pay_provider.dart';
 import 'package:nurserygardenapp/providers/plant_provider.dart';

@@ -32,14 +32,14 @@ class OrderRepo {
     }
   }
 
-  Future<ApiResponse> addOrder(List<Cart> cartList) async {
+  Future<ApiResponse> addOrder(List<Cart> cartList, String address) async {
     try {
       final List<Map<String, dynamic>> cartListJson =
           cartList.map((cart) => cart.toJson()).toList();
 
       Response response = await dioClient.post(
         AppConstants.ORDER_CREATE_URL,
-        data: {"cart_list": cartListJson},
+        data: {"cart_list": cartListJson, "address": address},
       );
       return ApiResponse.withSuccess(response);
     } catch (e) {

@@ -39,17 +39,20 @@ class OrderDetailModel {
 }
 
 class Data {
+  String? order_address;
   List<Plant>? plant;
   List<Product>? product;
   List<OrderItem>? orderItem;
 
   Data({
+    this.order_address,
     this.plant,
     this.product,
     this.orderItem,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
+        order_address: json["order_address"],
         plant: json["plant"] == null
             ? []
             : List<Plant>.from(json["plant"]!.map((x) => Plant.fromJson(x))),

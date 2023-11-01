@@ -35,6 +35,10 @@ class Routes {
   // Payment
   static const String PAYMENT_SCREEN = '/payment';
 
+  // Address
+  static const String ADDRESS_SCREEN = '/address';
+  static const String ADDRESS_DETAIL_SCREEN = '/address-detail';
+
   // Bidding
   static const String BIDDING_SCREEN = '/bidding';
 
@@ -89,6 +93,11 @@ class Routes {
   // Payment
   static String getPaymentRoute(String paymentType, String orderID) =>
       '$PAYMENT_SCREEN?paymentType=$paymentType&orderID=$orderID';
+
+  // Address
+  static String getAddressRoute() => ADDRESS_SCREEN;
+  static String getAddressDetailRoute(String addressID) =>
+      '$ADDRESS_DETAIL_SCREEN?addressID=$addressID';
 
   // Bidding
   static String getBiddingRoute() => BIDDING_SCREEN;

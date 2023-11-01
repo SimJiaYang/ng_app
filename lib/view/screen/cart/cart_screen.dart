@@ -83,11 +83,8 @@ class _CartScreenState extends State<CartScreen> {
             fontSize: 18,
           ),
         ),
-        leading: BackButton(
+        leading: const BackButton(
           color: Colors.white,
-          onPressed: () {
-            Navigator.pop(context);
-          }, // <-- SEE HERE
         ),
         backgroundColor: ColorResources.COLOR_PRIMARY,
       ),

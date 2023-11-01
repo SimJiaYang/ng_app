@@ -7,6 +7,8 @@ import 'package:nurserygardenapp/view/screen/account/sub_screen/changes_email_sc
 import 'package:nurserygardenapp/view/screen/account/sub_screen/changes_password_screen.dart';
 import 'package:nurserygardenapp/view/screen/account/sub_screen/profile_screen.dart';
 import 'package:nurserygardenapp/view/screen/account/sub_screen/settings_screen.dart';
+import 'package:nurserygardenapp/view/screen/address/address_screen.dart';
+import 'package:nurserygardenapp/view/screen/address/sub_screen/address_detail_screen.dart';
 import 'package:nurserygardenapp/view/screen/auth/login_screen.dart';
 import 'package:nurserygardenapp/view/screen/auth/register_screen.dart';
 import 'package:nurserygardenapp/view/screen/bidding/bidding_screen.dart';
@@ -159,6 +161,17 @@ class RouterHelper {
     handlerFunc: (context, Map<String, dynamic> parameters) => SettingScreen(),
   );
 
+  static Handler _addressHandler = Handler(
+    handlerFunc: (context, Map<String, dynamic> parameters) => AddressScreen(),
+  );
+
+  static Handler _addressDetailHanlder = Handler(
+    handlerFunc: (context, Map<String, dynamic> parameters) =>
+        AddressDetailScreen(
+      addressID: parameters['addressID'][0],
+    ),
+  );
+
   static Handler _changePasswordHandler = Handler(
     handlerFunc: (context, Map<String, dynamic> parameters) =>
         ChangesPasswordScreen(),
@@ -212,6 +225,10 @@ class RouterHelper {
         transitionType: TransitionType.fadeIn);
     router.define(Routes.PAYMENT_SCREEN,
         handler: _paymentHandler, transitionType: TransitionType.fadeIn);
+    router.define(Routes.ADDRESS_SCREEN,
+        handler: _addressHandler, transitionType: TransitionType.fadeIn);
+    router.define(Routes.ADDRESS_DETAIL_SCREEN,
+        handler: _addressDetailHanlder, transitionType: TransitionType.fadeIn);
     router.define(Routes.BIDDING_SCREEN,
         handler: _biddingHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.ACCOUNT_SCREEN,
