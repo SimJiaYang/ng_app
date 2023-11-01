@@ -8,6 +8,7 @@ import 'package:nurserygardenapp/view/screen/account/sub_screen/changes_password
 import 'package:nurserygardenapp/view/screen/account/sub_screen/profile_screen.dart';
 import 'package:nurserygardenapp/view/screen/account/sub_screen/settings_screen.dart';
 import 'package:nurserygardenapp/view/screen/address/address_screen.dart';
+import 'package:nurserygardenapp/view/screen/address/sub_screen/add_address_screen.dart';
 import 'package:nurserygardenapp/view/screen/address/sub_screen/address_detail_screen.dart';
 import 'package:nurserygardenapp/view/screen/auth/login_screen.dart';
 import 'package:nurserygardenapp/view/screen/auth/register_screen.dart';
@@ -172,6 +173,11 @@ class RouterHelper {
     ),
   );
 
+  static Handler _addAddressHandler = Handler(
+    handlerFunc: (context, Map<String, dynamic> parameters) =>
+        AddAddressScreen(),
+  );
+
   static Handler _changePasswordHandler = Handler(
     handlerFunc: (context, Map<String, dynamic> parameters) =>
         ChangesPasswordScreen(),
@@ -229,6 +235,8 @@ class RouterHelper {
         handler: _addressHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.ADDRESS_DETAIL_SCREEN,
         handler: _addressDetailHanlder, transitionType: TransitionType.fadeIn);
+    router.define(Routes.ADD_ADDRESS_SCREEN,
+        handler: _addAddressHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.BIDDING_SCREEN,
         handler: _biddingHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.ACCOUNT_SCREEN,

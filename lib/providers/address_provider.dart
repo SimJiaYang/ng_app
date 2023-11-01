@@ -57,6 +57,23 @@ class AddressProvider extends ChangeNotifier {
     return result;
   }
 
+  Future<bool> addNewAddress(BuildContext context, Address address) async {
+    bool result = false;
+    _isLoading = true;
+    notifyListeners();
+
+    ApiResponse apiResponse = await addressRepo.addAddress(address);
+
+    if (context.mounted) {
+      result = ResponseHelper.responseHelper(context, apiResponse);
+    }
+
+    _isLoading = false;
+    notifyListeners();
+
+    return result;
+  }
+
   Future<bool> updateAddress(BuildContext context, Address address) async {
     bool result = false;
     _isLoading = true;

@@ -75,7 +75,14 @@ class _AddressScreenState extends State<AddressScreen> {
                 Icons.add,
                 color: Colors.white,
               ),
-              onPressed: () {})
+              onPressed: () {
+                Navigator.pushNamed(context, Routes.getAddAddressRoute())
+                    .then((value) {
+                  if (value == true) {
+                    _loadData();
+                  }
+                });
+              })
         ],
       ),
       body: Container(

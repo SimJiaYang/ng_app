@@ -37,6 +37,7 @@ class Routes {
 
   // Address
   static const String ADDRESS_SCREEN = '/address';
+  static const String ADD_ADDRESS_SCREEN = '/add-address';
   static const String ADDRESS_DETAIL_SCREEN = '/address-detail';
 
   // Bidding
@@ -98,6 +99,7 @@ class Routes {
   static String getAddressRoute() => ADDRESS_SCREEN;
   static String getAddressDetailRoute(String addressID) =>
       '$ADDRESS_DETAIL_SCREEN?addressID=$addressID';
+  static String getAddAddressRoute() => ADD_ADDRESS_SCREEN;
 
   // Bidding
   static String getBiddingRoute() => BIDDING_SCREEN;
