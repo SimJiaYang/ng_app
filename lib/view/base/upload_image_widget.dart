@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:nurserygardenapp/providers/user_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/images.dart';
@@ -105,12 +106,40 @@ class _UploadImageWidgetState extends State<UploadImageWidget> {
   }
 
   _handleImage(BuildContext context, ImageSource source) async {
-    final pickedFile = await picker.pickImage(source: source, imageQuality: 50);
+    final XFile? pickedFile =
+        await picker.pickImage(source: source, imageQuality: 50);
 
     if (pickedFile != null && context.mounted) {
-      EasyLoading.show(status: 'Uploading...');
-      File image = File(pickedFile.path);
-      await _handleUploadImage(image, context);
+      final CroppedFile? croppedFile = await ImageCropper().cropImage(
+        sourcePath: pickedFile.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        uiSettings: [
+          AndroidUiSettings(
+              toolbarTitle: "Crop Image",
+              toolbarColor: Theme.of(context).primaryColor,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: false),
+          IOSUiSettings(
+            title: "Crop Image",
+          ),
+          WebUiSettings(
+            context: context,
+          ),
+        ],
+      );
+
+      if (croppedFile != null && context.mounted) {
+        EasyLoading.show(status: "Uploading");
+        File image = File(croppedFile.path);
+        await _handleUploadImage(image, context);
+      }
     }
   }
 
