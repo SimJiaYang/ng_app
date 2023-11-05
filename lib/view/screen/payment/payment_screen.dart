@@ -49,7 +49,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
           backgroundColor: ColorResources.COLOR_PRIMARY,
           leading: BackButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushNamed(context, Routes.getOrderRoute());
             },
             color: Colors.white, // <-- SEE HERE
           ),
@@ -123,9 +123,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                           .then((value) {
                                         EasyLoading.dismiss();
                                         if (value == true) {
-                                          Navigator.pushNamed(
+                                          Navigator.pushNamedAndRemoveUntil(
                                             context,
                                             Routes.getOrderRoute(),
+                                            (route) => false,
                                           );
                                         }
                                       });

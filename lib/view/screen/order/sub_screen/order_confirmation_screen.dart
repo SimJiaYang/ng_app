@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:nurserygardenapp/providers/cart_provider.dart';
 import 'package:nurserygardenapp/providers/address_provider.dart';
 import 'package:nurserygardenapp/providers/order_provider.dart';
@@ -27,6 +28,11 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
       Provider.of<AddressProvider>(context, listen: false);
   double totalAmount = 0;
 
+  final String emptyAddress_msg =
+      "Please add your address prior make the order.";
+
+  final String error_msg = "Some error occur, please try again later.";
+
   String address = "";
 
   var params = {};
@@ -50,7 +56,13 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
     setState(() {
       totalAmount = total;
       if (result) {
-        address = address_prov.addressList[0].address ?? '';
+        if (address_prov.addressList.length > 0) {
+          address = address_prov.addressList[0].address ?? '';
+        } else {
+          address = emptyAddress_msg;
+        }
+      } else {
+        address = error_msg;
       }
     });
   }
@@ -113,7 +125,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 17,
-                                        color: ColorResources.COLOR_BLACK))
+                                        color: ColorResources.COLOR_PRIMARY))
                               ],
                             ),
                           ],
@@ -126,6 +138,19 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                           builder: (context, orderProvider, child) {
                         return GestureDetector(
                           onTap: () async {
+                            if (address == emptyAddress_msg) {
+                              EasyLoading.showError('Please add your address',
+                                  dismissOnTap: true,
+                                  duration: Duration(milliseconds: 500));
+                              return;
+                            }
+                            if (address == error_msg) {
+                              EasyLoading.showError(
+                                  'Some error occur, please try again later',
+                                  dismissOnTap: true,
+                                  duration: Duration(milliseconds: 500));
+                              return;
+                            }
                             if (orderProvider.isLoading) return;
                             await orderProvider
                                 .addOrder(
@@ -142,7 +167,11 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                              color: ColorResources.COLOR_PRIMARY,
+                              color: address == emptyAddress_msg ||
+                                      address == error_msg
+                                  ? ColorResources.COLOR_PRIMARY
+                                      .withOpacity(0.7)
+                                  : ColorResources.COLOR_PRIMARY,
                             ),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -205,7 +234,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                   "Delivery Address",
                                   style: TextStyle(
                                       fontSize: 16,
-                                      fontWeight: FontWeight.bold),
+                                      fontWeight: FontWeight.w900),
                                 ),
                                 Text(
                                   address,

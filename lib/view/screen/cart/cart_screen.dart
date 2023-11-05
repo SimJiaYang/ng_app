@@ -126,9 +126,9 @@ class _CartScreenState extends State<CartScreen> {
                               ),
                               Text(totalAmount.toStringAsFixed(2),
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold,
+                                      fontWeight: FontWeight.w900,
                                       fontSize: 17,
-                                      color: ColorResources.COLOR_BLACK))
+                                      color: ColorResources.COLOR_PRIMARY))
                             ],
                           ),
                         ],

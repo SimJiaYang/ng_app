@@ -74,6 +74,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                   child: CustomButton(
                     btnTxt: "Save",
                     onTap: () async {
+                      if (!_formKey.currentState!.validate()) return;
                       if (addressProvider.isLoading) return;
                       await addressProvider
                           .addNewAddress(
