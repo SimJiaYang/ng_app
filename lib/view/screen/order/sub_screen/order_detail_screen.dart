@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nurserygardenapp/providers/order_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
+import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/custom_button.dart';
 import 'package:nurserygardenapp/view/screen/order/widget/empty_order_detail.dart';
@@ -41,6 +42,14 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context).textTheme;
+    TextStyle _title = theme.headlineMedium!.copyWith(
+      fontSize: Dimensions.FONT_SIZE_DEFAULT,
+      color: ColorResources.COLOR_BLACK.withOpacity(0.8),
+    );
+    TextStyle _subTitle = theme.headlineMedium!.copyWith(
+      fontSize: Dimensions.FONT_SIZE_DEFAULT,
+      color: ColorResources.COLOR_BLACK.withOpacity(0.6),
+    );
     Size size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
@@ -78,11 +87,11 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                   children: [
                                     Text(
                                       "Shipping Information",
-                                      style: TextStyle(fontSize: 16),
+                                      style: _title.copyWith(fontSize: 16),
                                     ),
                                     Text(
                                       "Shipping Status",
-                                      style: TextStyle(fontSize: 14),
+                                      style: _subTitle,
                                     ),
                                     SizedBox(
                                       height: 25,
@@ -107,9 +116,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                   children: [
                                     Text(
                                       "Delivery address",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold),
+                                      style: _title.copyWith(fontSize: 16),
                                     ),
                                     Text(
                                       orderProvider.orderList
@@ -119,7 +126,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                           })
                                           .first
                                           .address!,
-                                      style: TextStyle(fontSize: 14),
+                                      style: _subTitle,
                                     ),
                                     SizedBox(
                                       height: 25,
@@ -359,7 +366,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                                                             : "${orderProvider.getOrderPlantList.where((element) {
                                                                                   return element.id == orderProvider.orderDetailList[index].plantId;
                                                                                 }).first.name}",
-                                                                        style: TextStyle(
+                                                                        style: _title.copyWith(
                                                                             fontSize:
                                                                                 16),
                                                                       ),
@@ -379,7 +386,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                                                             : "${orderProvider.getOrderProductList.where((element) {
                                                                                   return element.id == orderProvider.orderDetailList[index].productId;
                                                                                 }).first.name}",
-                                                                        style: TextStyle(
+                                                                        style: _title.copyWith(
                                                                             fontSize:
                                                                                 16),
                                                                       ),
@@ -439,7 +446,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                       children: [
                                         Text(
                                           "Order Total",
-                                          style: TextStyle(fontSize: 16),
+                                          style: _title.copyWith(fontSize: 16),
                                         ),
                                         Text(
                                           "RM" +
@@ -475,9 +482,9 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                       children: [
                                         Text(
                                           "Order ID",
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold),
+                                          style: _title.copyWith(
+                                            fontSize: 16,
+                                          ),
                                         ),
                                         Text(
                                           "${orderProvider.orderList.where((element) {
