@@ -117,31 +117,29 @@ class _PlantSearchResultScreenState extends State<PlantSearchResultScreen> {
           backgroundColor: ColorResources.COLOR_PRIMARY,
           title: InkWell(
             onTap: () {
-              // Navigator.pushNamed(
-              //   context,
-              //   Routes.getPlantSearchRoute(),
-              // );
+              print(widget.searchKeyword);
+              Navigator.pop(context, {"keyword": widget.searchKeyword});
             },
             child: Container(
               width: double.infinity,
               height: 40,
-              // decoration: BoxDecoration(
-              //     color: Colors.white,
-              //     borderRadius: BorderRadius.circular(4),
-              //     border: Border.all()),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(4),
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(children: [
                   Expanded(
                       child: Text(
-                    "${"Search Result of \"" + widget.searchKeyword + "\""}",
+                    widget.searchKeyword,
                     style: TextStyle(
-                      // color: Colors.black.withOpacity(0.5),
-                      color: Colors.white,
+                      color: Colors.black.withOpacity(0.7),
+                      // color: Colors.white,
                       fontSize: 14,
                     ),
                   )),
-                  // Icon(Icons.search),
+                  Icon(Icons.search),
                 ]),
               ),
             ),

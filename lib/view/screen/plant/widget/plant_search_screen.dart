@@ -37,8 +37,11 @@ class _PlantSearchScreenState extends State<PlantSearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const BackButton(
-          color: Colors.white, // <-- SEE HERE
+        leading: BackButton(
+          color: Colors.white,
+          onPressed: () {
+            Navigator.pop(context);
+          }, // <-- SEE HERE
         ),
         backgroundColor: ColorResources.COLOR_PRIMARY,
         title: Container(
@@ -104,22 +107,31 @@ class _PlantSearchScreenState extends State<PlantSearchScreen> {
         ),
       ),
       body: Consumer<PlantProvider>(builder: (context, plantProvider, child) {
-        return ListView.builder(
-          itemCount: plantProvider.plantSearchHint.length,
-          itemBuilder: (context, index) {
-            return InkWell(
-              onTap: () {
-                Navigator.pushNamed(
-                    context,
-                    Routes.getPlantSearchResultRoute(
-                        plantProvider.plantSearchHint[index]));
-              },
-              child: ListTile(
-                title: Text(plantProvider.plantSearchHint[index]),
-              ),
-            );
-          },
-        );
+        return plantProvider.plantSearchHint.length == 0
+            ? Container(
+                height: 50,
+                child: Center(
+                    child: Text(
+                  'No result found',
+                  style: TextStyle(fontSize: 16),
+                )),
+              )
+            : ListView.builder(
+                itemCount: plantProvider.plantSearchHint.length,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(
+                          context,
+                          Routes.getPlantSearchResultRoute(
+                              plantProvider.plantSearchHint[index]));
+                    },
+                    child: ListTile(
+                      title: Text(plantProvider.plantSearchHint[index]),
+                    ),
+                  );
+                },
+              );
       }),
     );
   }

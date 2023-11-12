@@ -105,22 +105,32 @@ class _ProductSearchScreenState extends State<ProductSearchScreen> {
       ),
       body:
           Consumer<ProductProvider>(builder: (context, productProvider, child) {
-        return ListView.builder(
-          itemCount: productProvider.productSearchHint.length,
-          itemBuilder: (context, index) {
-            return InkWell(
-              onTap: () {
-                Navigator.pushNamed(
-                    context,
-                    Routes.getProductSearchResultRoute(
-                        productProvider.productSearchHint[index]));
-              },
-              child: ListTile(
-                title: Text(productProvider.productSearchHint[index]),
-              ),
-            );
-          },
-        );
+        return productProvider.productSearchHint.length == 0
+            ? Container(
+                height: 50,
+                child: Center(
+                  child: Text(
+                    'No Product Found',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
+              )
+            : ListView.builder(
+                itemCount: productProvider.productSearchHint.length,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(
+                          context,
+                          Routes.getProductSearchResultRoute(
+                              productProvider.productSearchHint[index]));
+                    },
+                    child: ListTile(
+                      title: Text(productProvider.productSearchHint[index]),
+                    ),
+                  );
+                },
+              );
       }),
     );
   }
