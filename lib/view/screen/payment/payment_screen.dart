@@ -44,19 +44,25 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context).textTheme;
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
           backgroundColor: ColorResources.COLOR_PRIMARY,
           leading: BackButton(
             onPressed: () {
-              Navigator.pushNamed(context, Routes.getOrderRoute());
+              FocusScope.of(context).unfocus();
+              Navigator.pop(context);
             },
             color: Colors.white, // <-- SEE HERE
           ),
           title: Text(
             "Payment",
-            style: TextStyle(
-                fontWeight: FontWeight.w400, fontSize: 18, color: Colors.white),
+            style: theme.bodyLarge!.copyWith(
+              color: Colors.white,
+              fontSize: 16,
+            ),
           )),
       body: Container(
           width: double.infinity,
@@ -79,25 +85,29 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             Text("Debit/Credit Card Payment"),
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 8),
-                              child: CardFormField(
-                                  style: CardFormStyle(
-                                    backgroundColor: Colors.white,
-                                    borderWidth: 1,
-                                    borderColor: Colors.grey,
-                                    borderRadius: 8,
-                                    cursorColor: ColorResources.COLOR_PRIMARY,
-                                    textColor: Colors.black,
-                                    fontSize: 16,
-                                    textErrorColor: Colors.red,
-                                    placeholderColor: Colors.grey,
-                                  ),
-                                  countryCode: "MY",
-                                  controller: cardFormontroller,
-                                  onCardChanged: (card) {
-                                    setState(() {
-                                      _card = card;
-                                    });
-                                  }),
+                              child: Container(
+                                height: size.height * 0.25,
+                                child: CardFormField(
+                                    style: CardFormStyle(
+                                      backgroundColor: Colors.white,
+                                      borderWidth: 1,
+                                      borderColor: Colors.grey,
+                                      borderRadius: 8,
+                                      cursorColor: ColorResources.COLOR_PRIMARY,
+                                      textColor: Colors.black,
+                                      fontSize: 16,
+                                      textErrorColor: Colors.red,
+                                      placeholderColor: Colors.grey,
+                                    ),
+                                    enablePostalCode: false,
+                                    countryCode: "MY",
+                                    controller: cardFormontroller,
+                                    onCardChanged: (card) {
+                                      setState(() {
+                                        _card = card;
+                                      });
+                                    }),
+                              ),
                             ),
                             Padding(
                                 padding: const EdgeInsets.only(top: 1),
@@ -114,6 +124,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     }
                                     if (cardFormontroller.details.complete ==
                                         true) {
+                                      FocusScope.of(context).unfocus();
                                       EasyLoading.show(
                                         status: 'Please wait...',
                                       );
@@ -123,11 +134,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                           .then((value) {
                                         EasyLoading.dismiss();
                                         if (value == true) {
-                                          Navigator.pushNamedAndRemoveUntil(
-                                            context,
-                                            Routes.getOrderRoute(),
-                                            (route) => false,
-                                          );
+                                          Navigator.popUntil(
+                                              context,
+                                              ModalRoute.withName(
+                                                  Routes.getOrderRoute()));
                                         }
                                       });
                                     }

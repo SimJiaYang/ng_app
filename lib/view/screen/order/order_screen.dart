@@ -97,6 +97,7 @@ class _OrderScreenState extends State<OrderScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context).textTheme;
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -111,10 +112,9 @@ class _OrderScreenState extends State<OrderScreen> {
           backgroundColor: ColorResources.COLOR_PRIMARY,
           title: Text(
             "Orders",
-            style: TextStyle(
+            style: theme.bodyLarge!.copyWith(
               color: Colors.white,
-              fontWeight: FontWeight.w400,
-              fontSize: 18,
+              fontSize: 16,
             ),
           ),
         ),
@@ -397,16 +397,29 @@ class _OrderScreenState extends State<OrderScreen> {
                                                       CustomButton(
                                                         onTap: () {
                                                           Navigator.pushNamed(
-                                                              context,
-                                                              Routes.getPaymentRoute(
-                                                                  PaymentType
-                                                                      .card
-                                                                      .toString(),
-                                                                  orderProvider
-                                                                      .orderList[
-                                                                          index]
-                                                                      .id
-                                                                      .toString()));
+                                                                  context,
+                                                                  Routes.getPaymentRoute(
+                                                                      PaymentType
+                                                                          .card
+                                                                          .toString(),
+                                                                      orderProvider
+                                                                          .orderList[
+                                                                              index]
+                                                                          .id
+                                                                          .toString()))
+                                                              .then((value) {
+                                                            if (value == true) {
+                                                              setState(() {
+                                                                orderProvider
+                                                                    .orderList[
+                                                                        index]
+                                                                    .status = "ship";
+                                                              });
+                                                              _loadData();
+                                                            } else {
+                                                              _loadData();
+                                                            }
+                                                          });
                                                         },
                                                         btnTxt: "Pay Now",
                                                       )

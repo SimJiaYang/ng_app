@@ -40,6 +40,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context).textTheme;
     Size size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
@@ -49,10 +50,9 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
           backgroundColor: ColorResources.COLOR_PRIMARY,
           title: Text(
             "Order Detail",
-            style: TextStyle(
+            style: theme.bodyLarge!.copyWith(
               color: Colors.white,
-              fontWeight: FontWeight.w400,
-              fontSize: 18,
+              fontSize: 16,
             ),
           ),
         ),
@@ -533,7 +533,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                       const EdgeInsets.symmetric(horizontal: 5),
                                   child: CustomButton(
                                     onTap: () {
-                                      Navigator.popAndPushNamed(
+                                      Navigator.pushNamed(
                                           context,
                                           Routes.getPaymentRoute(
                                               PaymentType.card.toString(),
