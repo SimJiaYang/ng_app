@@ -169,28 +169,30 @@ class _OrderScreenState extends State<OrderScreen> {
                         );
                       }),
                     )),
-                Consumer<OrderProvider>(
-                  builder: (context, orderProvider, child) {
-                    return orderProvider.orderList.isEmpty &&
-                            orderProvider.isLoading
-                        ? Expanded(
-                            child: ListView.builder(
-                                itemCount: 5,
-                                itemBuilder: (context, index) {
-                                  return EmptyOrder();
-                                }),
-                          )
-                        : orderProvider.orderList.isEmpty &&
-                                !orderProvider.isLoading
-                            ? Center(
-                                child: Text(
-                                "No Orders",
-                                style: TextStyle(
-                                    color: Colors.grey.withOpacity(0.7),
-                                    fontSize: 18),
-                              ))
-                            : Expanded(
+                Expanded(
+                  child: SizedBox(
+                    width: size.width,
+                    child: Consumer<OrderProvider>(
+                      builder: (context, orderProvider, child) {
+                        return orderProvider.orderList.isEmpty &&
+                                orderProvider.isLoading
+                            ? Expanded(
                                 child: ListView.builder(
+                                    itemCount: 5,
+                                    itemBuilder: (context, index) {
+                                      return EmptyOrder();
+                                    }),
+                              )
+                            : orderProvider.orderList.isEmpty &&
+                                    !orderProvider.isLoading
+                                ? Center(
+                                    child: Text(
+                                    "No Orders",
+                                    style: TextStyle(
+                                        color: Colors.grey.withOpacity(0.7),
+                                        fontSize: 18),
+                                  ))
+                                : ListView.builder(
                                     padding: (orderProvider.noMoreDataMessage
                                                     .isNotEmpty &&
                                                 !orderProvider.isLoading ||
@@ -428,9 +430,10 @@ class _OrderScreenState extends State<OrderScreen> {
                                           ),
                                         );
                                       }
-                                    }),
-                              );
-                  },
+                                    });
+                      },
+                    ),
+                  ),
                 ),
               ],
             )));

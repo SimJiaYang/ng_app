@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:nurserygardenapp/providers/product_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/routes.dart';
@@ -49,6 +50,12 @@ class _ProductSearchScreenState extends State<ProductSearchScreen> {
                 productProvider.getSearchTips(value);
               },
               onSubmitted: (value) {
+                if (_searchController.text.isEmpty) {
+                  EasyLoading.showError('Please enter the product name',
+                      dismissOnTap: true,
+                      duration: Duration(milliseconds: 500));
+                  return;
+                }
                 FocusScope.of(context).unfocus();
                 Navigator.pushNamed(context,
                     Routes.getProductSearchResultRoute(_searchController.text));
@@ -79,6 +86,12 @@ class _ProductSearchScreenState extends State<ProductSearchScreen> {
                       Icons.search,
                     ),
                     onPressed: () {
+                      if (_searchController.text.isEmpty) {
+                        EasyLoading.showError('Please enter the product name',
+                            dismissOnTap: true,
+                            duration: Duration(milliseconds: 500));
+                        return;
+                      }
                       FocusScope.of(context).unfocus();
                       Navigator.pushNamed(
                           context,
