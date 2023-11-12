@@ -70,32 +70,27 @@ class _PlantSearchResultScreenState extends State<PlantSearchResultScreen> {
     await plant_prov.searchPlant(context, params, isLoadMore: isLoadMore);
   }
 
-  String sortOrder = "asc";
-
-  void _handleParamChanged(param) {
-    params['limit'] = '8';
-    params['keyword'] = widget.searchKeyword;
-    params['sortOrder'] = param['sortOrder'] ?? "";
-    setState(() {
-      sortOrder = param['sortOrder'] ?? "asc";
-    });
-    params['category'] = param['category'] ?? "";
-    _loadData();
-  }
+  // void _handleParamChanged(param) {
+  //   params['limit'] = '8';
+  //   params['keyword'] = widget.searchKeyword;
+  //   params['sortOrder'] = param['sortOrder'] ?? "";
+  //   setState(() {
+  //     sortOrder = param['sortOrder'] ?? "asc";
+  //   });
+  //   params['category'] = param['category'] ?? "";
+  //   _loadData();
+  // }
 
   void _handleFilterParamChange(param, bool isPrice, bool isSales) {
     params['limit'] = '8';
     params['keyword'] = widget.searchKeyword;
-    params['sortOrder'] = param['sortOrder'] ?? "";
-    setState(() {
-      sortOrder = param['sortOrder'] ?? "asc";
-    });
+    params['sortOrder'] = param['sortOrder'] ?? "asc";
     // Test
     if (isPrice) {
       params['sortBy'] = "price";
     }
     if (isSales) {
-      params['category'] = "Desert Rose";
+      params['sortBy'] = "sales_amount";
     }
     params['category'] = param['category'] ?? "";
     _loadData();
@@ -180,6 +175,13 @@ class _PlantSearchResultScreenState extends State<PlantSearchResultScreen> {
                         // groupValue: _selectedFilterList,
                         onValueChanged: (value) {
                           setState(() {
+                            if (_selectedFilterList == value) {
+                              params['sortOrder'] = "asc" == params['sortOrder']
+                                  ? params['sortOrder'] = "desc"
+                                  : params['sortOrder'] = "asc";
+                            } else {
+                              params['sortOrder'] = "asc";
+                            }
                             _selectedFilterList = value!;
                             _selectedFilterList == _filtertList[0]
                                 ? _handleFilterParamChange(params, true, false)
@@ -196,13 +198,34 @@ class _PlantSearchResultScreenState extends State<PlantSearchResultScreen> {
                             ),
                             height: 40,
                             child: Center(
-                              child: Text(_filtertList[0],
-                                  style: TextStyle(
-                                    color:
-                                        _selectedFilterList == _filtertList[0]
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(_filtertList[0],
+                                      style: TextStyle(
+                                        color: _selectedFilterList ==
+                                                _filtertList[0]
                                             ? Colors.white
                                             : Colors.black,
-                                  )),
+                                      )),
+                                  if (_selectedFilterList != "None" &&
+                                      _selectedFilterList == _filtertList[0])
+                                    const SizedBox(width: 5),
+                                  if (_selectedFilterList != "None" &&
+                                      _selectedFilterList == _filtertList[0])
+                                    Icon(
+                                      params['sortOrder'] == "asc"
+                                          ? Icons.arrow_downward
+                                          : Icons.arrow_upward,
+                                      color:
+                                          _selectedFilterList == _filtertList[0]
+                                              ? Colors.white
+                                              : Colors.black,
+                                      size: 16,
+                                    ),
+                                ],
+                              ),
                             ),
                           ),
                           _filtertList[1]: Container(
@@ -213,14 +236,33 @@ class _PlantSearchResultScreenState extends State<PlantSearchResultScreen> {
                               borderRadius: BorderRadius.circular(4),
                             ),
                             height: 40,
-                            child: Center(
-                              child: Text(_filtertList[1],
-                                  style: TextStyle(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(_filtertList[1],
+                                    style: TextStyle(
+                                      color:
+                                          _selectedFilterList == _filtertList[1]
+                                              ? Colors.white
+                                              : Colors.black,
+                                    )),
+                                if (_selectedFilterList != "None" &&
+                                    _selectedFilterList == _filtertList[1])
+                                  const SizedBox(width: 5),
+                                if (_selectedFilterList != "None" &&
+                                    _selectedFilterList == _filtertList[1])
+                                  Icon(
+                                    params['sortOrder'] == "desc"
+                                        ? Icons.arrow_upward
+                                        : Icons.arrow_downward,
                                     color:
                                         _selectedFilterList == _filtertList[1]
                                             ? Colors.white
                                             : Colors.black,
-                                  )),
+                                    size: 16,
+                                  ),
+                              ],
                             ),
                           )
                         }),
