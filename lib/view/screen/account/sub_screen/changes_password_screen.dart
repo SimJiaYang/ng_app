@@ -41,6 +41,7 @@ class _ChangesPasswordScreenState extends State<ChangesPasswordScreen> {
         isBgPrimaryColor: true,
         context: context,
         title: "Change Password",
+        isCenter: false,
       ),
       body: SafeArea(
           child: WillPopScope(

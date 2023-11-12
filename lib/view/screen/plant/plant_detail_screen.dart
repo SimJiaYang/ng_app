@@ -8,6 +8,7 @@ import 'package:nurserygardenapp/data/model/plant_model.dart';
 import 'package:nurserygardenapp/providers/cart_provider.dart';
 import 'package:nurserygardenapp/providers/plant_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
+import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/view/base/custom_button.dart';
 import 'package:nurserygardenapp/view/base/custom_space.dart';
 import 'package:nurserygardenapp/view/base/image_enlarge_widget.dart';
@@ -249,6 +250,16 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context).textTheme;
+    TextStyle _title = theme.headlineMedium!.copyWith(
+      fontSize: Dimensions.FONT_SIZE_DEFAULT,
+      color: ColorResources.COLOR_BLACK.withOpacity(0.8),
+    );
+    TextStyle _subTitle = theme.headlineMedium!.copyWith(
+      fontSize: Dimensions.FONT_SIZE_DEFAULT,
+      color: ColorResources.COLOR_BLACK.withOpacity(0.6),
+    );
+
     return Scaffold(
         appBar: AppBar(
           leading: const BackButton(
@@ -395,24 +406,16 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text("${plant.name}",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleLarge!
-                                      .copyWith(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 20,
-                                      )),
+                                  style: _title.copyWith(
+                                      fontSize: Dimensions.FONT_SIZE_LARGE)),
                               VerticalSpacing(
                                 height: 10,
                               ),
                               Text("RM ${plant.price!.toStringAsFixed(2)}",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleLarge!
-                                      .copyWith(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 18,
-                                          color: ColorResources.COLOR_PRIMARY)),
+                                  style: _title.copyWith(
+                                      fontSize:
+                                          Dimensions.FONT_SIZE_EXTRA_LARGE,
+                                      color: ColorResources.COLOR_PRIMARY)),
                             ],
                           ),
                         ),
@@ -426,49 +429,17 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Category:",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleLarge!
-                                      .copyWith(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 13,
-                                          color: ColorResources.COLOR_BLACK
-                                              .withOpacity(0.8))),
+                              Text("Category:", style: _title),
                               HorizontalSpacing(
                                 width: 3,
                               ),
-                              Text("${plant.categoryName}",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleLarge!
-                                      .copyWith(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 13,
-                                          color: ColorResources.COLOR_BLACK
-                                              .withOpacity(0.8))),
+                              Text("${plant.categoryName}", style: _subTitle),
                               Expanded(child: Container()),
-                              Text("Inventory:",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleLarge!
-                                      .copyWith(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 13,
-                                          color: ColorResources.COLOR_BLACK
-                                              .withOpacity(0.8))),
+                              Text("Inventory:", style: _title),
                               HorizontalSpacing(
                                 width: 3,
                               ),
-                              Text("${plant.quantity}",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleLarge!
-                                      .copyWith(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 13,
-                                          color: ColorResources.COLOR_BLACK
-                                              .withOpacity(0.8)))
+                              Text("${plant.quantity}", style: _subTitle)
                             ],
                           ),
                         ),
@@ -482,50 +453,20 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Plant Origin:",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleLarge!
-                                      .copyWith(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 13,
-                                          color: ColorResources.COLOR_BLACK
-                                              .withOpacity(0.8))),
+                              Text("Plant Origin:", style: _title),
                               HorizontalSpacing(
                                 width: 3,
                               ),
                               Text(
                                   "${plant.origin!.length > 10 ? plant.origin!.substring(0, 10) + ".." : plant.origin}",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleLarge!
-                                      .copyWith(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 13,
-                                          color: ColorResources.COLOR_BLACK
-                                              .withOpacity(0.8))),
+                                  overflow: TextOverflow.ellipsis,
+                                  style: _subTitle),
                               Expanded(child: Container()),
-                              Text("Mature Height:",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleLarge!
-                                      .copyWith(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 13,
-                                          color: ColorResources.COLOR_BLACK
-                                              .withOpacity(0.8))),
+                              Text("Mature Height:", style: _title),
                               HorizontalSpacing(
                                 width: 3,
                               ),
-                              Text("${plant.matureHeight}",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleLarge!
-                                      .copyWith(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 13,
-                                          color: ColorResources.COLOR_BLACK
-                                              .withOpacity(0.8)))
+                              Text("${plant.matureHeight} m", style: _subTitle)
                             ],
                           ),
                         ),
@@ -536,49 +477,17 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Sunlight Need:",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleLarge!
-                                      .copyWith(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 13,
-                                          color: ColorResources.COLOR_BLACK
-                                              .withOpacity(0.8))),
+                              Text("Sunlight Need:", style: _title),
                               HorizontalSpacing(
                                 width: 3,
                               ),
-                              Text("${plant.sunlightNeed}",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleLarge!
-                                      .copyWith(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 13,
-                                          color: ColorResources.COLOR_BLACK
-                                              .withOpacity(0.8))),
+                              Text("${plant.sunlightNeed}", style: _subTitle),
                               Expanded(child: Container()),
-                              Text("Water Need:",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleLarge!
-                                      .copyWith(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 13,
-                                          color: ColorResources.COLOR_BLACK
-                                              .withOpacity(0.8))),
+                              Text("Water Need:", style: _title),
                               HorizontalSpacing(
                                 width: 3,
                               ),
-                              Text("${plant.waterNeed}",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleLarge!
-                                      .copyWith(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 13,
-                                          color: ColorResources.COLOR_BLACK
-                                              .withOpacity(0.8)))
+                              Text("${plant.waterNeed}", style: _subTitle)
                             ],
                           ),
                         ),
@@ -592,28 +501,13 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Description",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleLarge!
-                                      .copyWith(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 14,
-                                          color: ColorResources.COLOR_BLACK
-                                              .withOpacity(0.8))),
+                              Text("Description", style: _title),
                               VerticalSpacing(
                                 height: 10,
                               ),
                               Text("${plant.description}",
                                   textAlign: TextAlign.justify,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleLarge!
-                                      .copyWith(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 13,
-                                          color: ColorResources.COLOR_BLACK
-                                              .withOpacity(0.8))),
+                                  style: _subTitle),
                             ],
                           ),
                         ),

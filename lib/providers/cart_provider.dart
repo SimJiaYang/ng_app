@@ -124,4 +124,9 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
     return result;
   }
+
+  void clearCartList() {
+    _addedCartList = [];
+    notifyListeners();
+  }
 }

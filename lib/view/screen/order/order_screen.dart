@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nurserygardenapp/providers/order_provider.dart';
+import 'package:nurserygardenapp/util/app_constants.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/font_styles.dart';
 import 'package:nurserygardenapp/util/routes.dart';
@@ -22,9 +23,12 @@ class _OrderScreenState extends State<OrderScreen> {
       Provider.of<OrderProvider>(context, listen: false);
   final _scrollController = ScrollController();
   String _selectedStatus = 'To Ship';
+  String _selectedAddressStatatus = AppConstants.ADDRESS_PACK;
+
   List<String> _statusList = [
     "To Pay",
     "To Ship",
+    "Partial",
     "To Receive",
     "Completed",
     "Cancelled"
@@ -79,10 +83,12 @@ class _OrderScreenState extends State<OrderScreen> {
     } else if (status == _statusList[1]) {
       params['status'] = 'ship';
     } else if (status == _statusList[2]) {
-      params['status'] = 'receive';
+      params['status'] = 'partial';
     } else if (status == _statusList[3]) {
-      params['status'] = 'completed';
+      params['status'] = 'receive';
     } else if (status == _statusList[4]) {
+      params['status'] = 'completed';
+    } else if (status == _statusList[5]) {
       params['status'] = 'cancel';
     }
     params['limit'] = '8';
@@ -245,7 +251,6 @@ class _OrderScreenState extends State<OrderScreen> {
                                                       blurRadius: 10.0),
                                                 ],
                                               ),
-                                              height: 150,
                                               width: double.infinity,
                                               child: Column(
                                                   crossAxisAlignment:
@@ -305,7 +310,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                                                         .w400),
                                                           ),
                                                         ]),
-                                                    Spacer(),
+                                                    const SizedBox(height: 10),
                                                     Text(
                                                       'Order created at: ' +
                                                           DateFormat(
@@ -354,36 +359,37 @@ class _OrderScreenState extends State<OrderScreen> {
                                                         ),
                                                       ],
                                                     ),
-                                                    Spacer(),
-                                                    if (orderProvider
-                                                                .orderList[
-                                                                    index]
-                                                                .status! ==
-                                                            "ship" ||
-                                                        orderProvider
-                                                                .orderList[
-                                                                    index]
-                                                                .status! ==
-                                                            "receive" ||
-                                                        orderProvider
-                                                                .orderList[
-                                                                    index]
-                                                                .status! ==
-                                                            "completed")
-                                                      Container(
-                                                        height: 35,
-                                                        width: double.infinity,
-                                                        child: Text(
-                                                          "Delivery Status",
-                                                          style: TextStyle(
-                                                              fontSize: 15,
-                                                              color: ColorResources
-                                                                  .COLOR_PRIMARY,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400),
-                                                        ),
-                                                      ),
+                                                    // Spacer(),
+                                                    // if (orderProvider
+                                                    //             .orderList[
+                                                    //                 index]
+                                                    //             .status! ==
+                                                    //         "ship" ||
+                                                    //     orderProvider
+                                                    //             .orderList[
+                                                    //                 index]
+                                                    //             .status! ==
+                                                    //         "receive" ||
+                                                    //     orderProvider
+                                                    //             .orderList[
+                                                    //                 index]
+                                                    //             .status! ==
+                                                    //         "completed")
+                                                    //   Container(
+                                                    //     height: 35,
+                                                    //     width: double.infinity,
+                                                    //     child: Text(
+                                                    //       "Delivery Status",
+                                                    //       style: TextStyle(
+                                                    //           fontSize: 15,
+                                                    //           color: ColorResources
+                                                    //               .COLOR_PRIMARY,
+                                                    //           fontWeight:
+                                                    //               FontWeight
+                                                    //                   .w400),
+                                                    //     ),
+                                                    //   ),
+                                                    const SizedBox(height: 10),
                                                     if (orderProvider
                                                             .orderList[index]
                                                             .status! ==

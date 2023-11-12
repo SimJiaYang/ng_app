@@ -149,6 +149,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context).textTheme;
+    TextStyle _subTitle = theme.headlineMedium!.copyWith(
+      fontSize: Dimensions.FONT_SIZE_DEFAULT,
+      fontWeight: FontWeight.w300,
+      color: ColorResources.COLOR_BLACK.withOpacity(0.7),
+    );
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorResources.COLOR_PRIMARY,
@@ -158,8 +165,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         centerTitle: true,
         title: Text(
           profileHeader,
-          style: TextStyle(
-              fontWeight: FontWeight.w400, fontSize: 18, color: Colors.white),
+          style: theme.bodyLarge!.copyWith(
+              fontWeight: FontWeight.w400, fontSize: 16, color: Colors.white),
         ),
       ),
       body: Consumer<UserProvider>(

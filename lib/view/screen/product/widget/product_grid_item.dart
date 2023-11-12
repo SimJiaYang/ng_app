@@ -74,18 +74,16 @@ class _ProductGridItemState extends State<ProductGridItem> {
                 VerticalSpacing(),
                 Text(
                   widget.product.name!,
-                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  style: Theme.of(context).textTheme.displaySmall!.copyWith(
                         color: Theme.of(context).colorScheme.onBackground,
-                        fontWeight: FontWeight.w400,
                         fontSize: 16,
                       ),
                 ),
                 VerticalSpacing(),
                 Text(
                   "RM " + widget.product.price!.toStringAsFixed(2),
-                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                         color: ColorResources.COLOR_PRIMARY,
-                        fontWeight: FontWeight.w400,
                         fontSize: 16,
                       ),
                 ),

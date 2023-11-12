@@ -26,9 +26,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context).textTheme;
     return AppBar(
       title: Text(title,
-          style: RubikMedium.copyWith(
+          style: theme.bodyLarge!.copyWith(
               fontSize: Dimensions.FONT_SIZE_LARGE,
               color: isBgPrimaryColor!
                   ? Colors.white

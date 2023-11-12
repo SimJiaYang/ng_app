@@ -4,6 +4,7 @@ import 'package:nurserygardenapp/providers/auth_provider.dart';
 import 'package:nurserygardenapp/providers/user_provider.dart';
 import 'package:nurserygardenapp/util/app_constants.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
+import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/util/images.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:provider/provider.dart';
@@ -45,6 +46,17 @@ class _AccountScreenState extends State<AccountScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context).textTheme;
+    TextStyle _title = theme.headlineMedium!.copyWith(
+      fontSize: Dimensions.FONT_SIZE_DEFAULT,
+      color: ColorResources.COLOR_BLACK.withOpacity(0.8),
+    );
+    TextStyle _subTitle = theme.headlineMedium!.copyWith(
+      fontSize: Dimensions.FONT_SIZE_DEFAULT,
+      fontWeight: FontWeight.w300,
+      color: ColorResources.COLOR_BLACK.withOpacity(0.7),
+    );
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorResources.COLOR_PRIMARY,
@@ -105,10 +117,10 @@ class _AccountScreenState extends State<AccountScreen> {
                           Center(
                             child: Text(
                               userProvider.userData.name ?? '',
-                              style: const TextStyle(
+                              style: _title.copyWith(
                                   color: Colors.white,
                                   fontSize: 16,
-                                  fontWeight: FontWeight.w700),
+                                  fontWeight: FontWeight.w400),
                             ),
                           ),
                           const SizedBox(
@@ -147,11 +159,10 @@ class _AccountScreenState extends State<AccountScreen> {
                   ),
                   title: Text(
                     "Orders",
-                    style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16,
-                          color: ColorResources.COLOR_BLACK,
-                        ),
+                    style: _subTitle.copyWith(
+                      fontWeight: FontWeight.w300,
+                      fontSize: 16,
+                    ),
                   ),
                   trailing: Icon(
                     Icons.chevron_right_outlined,
@@ -175,11 +186,10 @@ class _AccountScreenState extends State<AccountScreen> {
                   ),
                   title: Text(
                     "Delivery",
-                    style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16,
-                          color: ColorResources.COLOR_BLACK,
-                        ),
+                    style: _subTitle.copyWith(
+                      fontWeight: FontWeight.w300,
+                      fontSize: 16,
+                    ),
                   ),
                   trailing: Icon(
                     Icons.chevron_right_outlined,
@@ -203,11 +213,10 @@ class _AccountScreenState extends State<AccountScreen> {
                   ),
                   title: Text(
                     "Favourite List",
-                    style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16,
-                          color: ColorResources.COLOR_BLACK,
-                        ),
+                    style: _subTitle.copyWith(
+                      fontWeight: FontWeight.w300,
+                      fontSize: 16,
+                    ),
                   ),
                   trailing: Icon(
                     Icons.chevron_right_outlined,
@@ -231,11 +240,10 @@ class _AccountScreenState extends State<AccountScreen> {
                   ),
                   title: Text(
                     "Bidding Refund",
-                    style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16,
-                          color: ColorResources.COLOR_BLACK,
-                        ),
+                    style: _subTitle.copyWith(
+                      fontWeight: FontWeight.w300,
+                      fontSize: 16,
+                    ),
                   ),
                   trailing: Icon(
                     Icons.chevron_right_outlined,
@@ -261,11 +269,10 @@ class _AccountScreenState extends State<AccountScreen> {
                   ),
                   title: Text(
                     "Account Settings",
-                    style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16,
-                          color: ColorResources.COLOR_BLACK,
-                        ),
+                    style: _subTitle.copyWith(
+                      fontWeight: FontWeight.w300,
+                      fontSize: 16,
+                    ),
                   ),
                   trailing: Icon(
                     Icons.chevron_right_outlined,
@@ -313,11 +320,11 @@ class _AccountScreenState extends State<AccountScreen> {
                     ),
                     title: Text(
                       "Logout",
-                      style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16,
-                            color: ColorResources.APPBAR_HEADER_COLOR,
-                          ),
+                      style: _subTitle.copyWith(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16,
+                        color: ColorResources.APPBAR_HEADER_COLOR,
+                      ),
                     ),
                   ),
                 );
@@ -326,13 +333,11 @@ class _AccountScreenState extends State<AccountScreen> {
             SizedBox(
               height: 5,
             ),
-            Text(
-              AppConstants.APP_VERSION,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                    fontSize: 15,
-                  ),
-            ),
+            Text(AppConstants.APP_VERSION,
+                textAlign: TextAlign.center,
+                style: _subTitle.copyWith(
+                  color: Colors.black.withOpacity(0.3),
+                )),
           ],
         ),
       ),

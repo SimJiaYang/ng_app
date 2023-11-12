@@ -1,10 +1,13 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:nurserygardenapp/helper/route_helper.dart';
 import 'package:nurserygardenapp/providers/auth_provider.dart';
 import 'package:nurserygardenapp/providers/cart_provider.dart';
@@ -28,6 +31,11 @@ Future<void> main() async {
   Stripe.publishableKey = dotenv.get('STRIPE_PUBLISHABLE_KEY');
   await di.init();
   EasyLoading.init();
+  LicenseRegistry.addLicense(() async* {
+    final license = await rootBundle.loadString('google_fonts/ROBOTO.txt');
+    yield LicenseEntryWithLineBreaks(['google_fonts'], license);
+  });
+  GoogleFonts.config.allowRuntimeFetching = false;
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => di.sl<AuthProvider>()),
     ChangeNotifierProvider(create: (context) => di.sl<SplashProvider>()),
@@ -117,25 +125,27 @@ ThemeData light = ThemeData(
     TargetPlatform.iOS: ZoomPageTransitionsBuilder(),
     TargetPlatform.fuchsia: ZoomPageTransitionsBuilder(),
   }),
-  textTheme: const TextTheme(
-    labelLarge: TextStyle(color: Colors.white),
-    displayLarge: TextStyle(
-        fontWeight: FontWeight.w300, fontSize: Dimensions.FONT_SIZE_DEFAULT),
-    displayMedium: TextStyle(
-        fontWeight: FontWeight.w400, fontSize: Dimensions.FONT_SIZE_DEFAULT),
-    displaySmall: TextStyle(
-        fontWeight: FontWeight.w500, fontSize: Dimensions.FONT_SIZE_DEFAULT),
-    headlineMedium: TextStyle(
-        fontWeight: FontWeight.w600, fontSize: Dimensions.FONT_SIZE_DEFAULT),
-    headlineSmall: TextStyle(
-        fontWeight: FontWeight.w700, fontSize: Dimensions.FONT_SIZE_DEFAULT),
-    titleLarge: TextStyle(
-        fontWeight: FontWeight.w800, fontSize: Dimensions.FONT_SIZE_DEFAULT),
-    bodySmall: TextStyle(
-        fontWeight: FontWeight.w900, fontSize: Dimensions.FONT_SIZE_DEFAULT),
-    titleMedium: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w500),
-    bodyMedium: TextStyle(fontSize: 12.0),
-    bodyLarge: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w600),
+  textTheme: GoogleFonts.robotoTextTheme(
+    TextTheme().copyWith(
+      labelLarge: TextStyle(color: Colors.white),
+      displayLarge: TextStyle(
+          fontWeight: FontWeight.w300, fontSize: Dimensions.FONT_SIZE_DEFAULT),
+      displayMedium: TextStyle(
+          fontWeight: FontWeight.w400, fontSize: Dimensions.FONT_SIZE_DEFAULT),
+      displaySmall: TextStyle(
+          fontWeight: FontWeight.w500, fontSize: Dimensions.FONT_SIZE_DEFAULT),
+      headlineMedium: TextStyle(
+          fontWeight: FontWeight.w600, fontSize: Dimensions.FONT_SIZE_DEFAULT),
+      headlineSmall: TextStyle(
+          fontWeight: FontWeight.w700, fontSize: Dimensions.FONT_SIZE_DEFAULT),
+      titleLarge: TextStyle(
+          fontWeight: FontWeight.w800, fontSize: Dimensions.FONT_SIZE_DEFAULT),
+      bodySmall: TextStyle(
+          fontWeight: FontWeight.w900, fontSize: Dimensions.FONT_SIZE_DEFAULT),
+      titleMedium: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w500),
+      bodyMedium: TextStyle(fontSize: 12.0),
+      bodyLarge: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w600),
+    ),
   ),
   textSelectionTheme: const TextSelectionThemeData(
     cursorColor: Color.fromARGB(255, 30, 133, 104),

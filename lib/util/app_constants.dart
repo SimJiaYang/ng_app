@@ -26,6 +26,11 @@ class AppConstants {
   static const String SNACKBAR_WARNING = 'warning';
   static const String SNACKBAR_INFO = 'info';
 
+  // Address Tye
+  static const String ADDRESS_PACK = 'Seller is preparing your parcel';
+  static const String ADDRESS_SHIP = 'Your parcel is on the way';
+  static const String ADDRESS_DELIVER = 'Your parcel has been delivered';
+
   // Upload Image/File
   static const String UPLOAD_IMAGE = '/upload_file';
 

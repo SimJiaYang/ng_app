@@ -5,9 +5,9 @@ import 'package:nurserygardenapp/providers/cart_provider.dart';
 import 'package:nurserygardenapp/providers/address_provider.dart';
 import 'package:nurserygardenapp/providers/order_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
+import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/circular_indicator.dart';
-import 'package:nurserygardenapp/view/screen/order/sub_screen/order_address_screen.dart';
 import 'package:nurserygardenapp/view/screen/payment/payment_helper/payment_type.dart';
 import 'package:provider/provider.dart';
 
@@ -69,18 +69,28 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context).textTheme;
+    TextStyle _title = theme.headlineMedium!.copyWith(
+      fontSize: Dimensions.FONT_SIZE_DEFAULT,
+      color: ColorResources.COLOR_BLACK.withOpacity(0.8),
+    );
+    TextStyle _subTitle = theme.headlineMedium!.copyWith(
+      fontSize: Dimensions.FONT_SIZE_DEFAULT,
+      color: ColorResources.COLOR_BLACK.withOpacity(0.6),
+    );
+
     return Scaffold(
         appBar: AppBar(
             backgroundColor: ColorResources.COLOR_PRIMARY,
             leading: BackButton(
               color: Colors.white,
               onPressed: () {
-                Navigator.pushReplacementNamed(context, Routes.getCartRoute());
+                Navigator.pop(context, true);
               },
             ),
             title: Text(
               "Checkout",
-              style: TextStyle(
+              style: _subTitle.copyWith(
                   fontWeight: FontWeight.w400,
                   fontSize: 18,
                   color: Colors.white),
@@ -232,9 +242,9 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                               children: [
                                 Text(
                                   "Delivery Address",
-                                  style: TextStyle(
+                                  style: _title.copyWith(
                                       fontSize: 16,
-                                      fontWeight: FontWeight.w900),
+                                      fontWeight: FontWeight.w500),
                                 ),
                                 Text(
                                   address,
@@ -253,262 +263,275 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                         SizedBox(
                           height: 10,
                         ),
-                        ListView.builder(
-                            padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
-                            shrinkWrap: true,
-                            itemCount: cartProvider.addedCartList.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 5),
-                                      child: GestureDetector(
-                                        onTap: () {},
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(10)),
-                                            boxShadow: <BoxShadow>[
-                                              BoxShadow(
-                                                  color: Colors.grey
-                                                      .withOpacity(0.2),
-                                                  offset: const Offset(0, 2),
-                                                  blurRadius: 10.0),
-                                            ],
-                                          ),
+                        Container(
+                          height: cartProvider.addedCartList.length < 2
+                              ? MediaQuery.of(context).size.height / 5
+                              : cartProvider.addedCartList.length == 3
+                                  ? MediaQuery.of(context).size.height / 2.8
+                                  : MediaQuery.of(context).size.height / 2.5,
+                          child: ListView.builder(
+                              padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                              shrinkWrap: true,
+                              itemCount: cartProvider.addedCartList.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 5),
+                                        child: GestureDetector(
+                                          onTap: () {},
                                           child: Container(
-                                              padding: EdgeInsets.all(5),
-                                              height: 120,
-                                              width: double.infinity,
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  SizedBox(
-                                                    width: 15,
-                                                  ),
-                                                  if (cartProvider
-                                                          .addedCartList[index]
-                                                          .plantId !=
-                                                      null)
-                                                    Container(
-                                                      height: 80,
-                                                      width: 80,
-                                                      child: CachedNetworkImage(
-                                                        filterQuality:
-                                                            FilterQuality.high,
-                                                        imageUrl:
-                                                            "${cartProvider.getCartPlantList.where((element) {
-                                                                  return element
-                                                                          .id ==
-                                                                      cartProvider
-                                                                          .addedCartList[
-                                                                              index]
-                                                                          .plantId;
-                                                                }).first.imageURL!}",
-                                                        memCacheHeight: 200,
-                                                        memCacheWidth: 200,
-                                                        imageBuilder: (context,
-                                                                imageProvider) =>
-                                                            Container(
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            image:
-                                                                DecorationImage(
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10)),
+                                              boxShadow: <BoxShadow>[
+                                                BoxShadow(
+                                                    color: Colors.grey
+                                                        .withOpacity(0.2),
+                                                    offset: const Offset(0, 2),
+                                                    blurRadius: 10.0),
+                                              ],
+                                            ),
+                                            child: Container(
+                                                padding: EdgeInsets.all(5),
+                                                height: 120,
+                                                width: double.infinity,
+                                                child: Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    SizedBox(
+                                                      width: 15,
+                                                    ),
+                                                    if (cartProvider
+                                                            .addedCartList[
+                                                                index]
+                                                            .plantId !=
+                                                        null)
+                                                      Container(
+                                                        height: 80,
+                                                        width: 80,
+                                                        child:
+                                                            CachedNetworkImage(
+                                                          filterQuality:
+                                                              FilterQuality
+                                                                  .high,
+                                                          imageUrl:
+                                                              "${cartProvider.getCartPlantList.where((element) {
+                                                                    return element
+                                                                            .id ==
+                                                                        cartProvider
+                                                                            .addedCartList[index]
+                                                                            .plantId;
+                                                                  }).first.imageURL!}",
+                                                          memCacheHeight: 200,
+                                                          memCacheWidth: 200,
+                                                          imageBuilder: (context,
+                                                                  imageProvider) =>
+                                                              Container(
+                                                            decoration:
+                                                                BoxDecoration(
                                                               image:
-                                                                  imageProvider,
-                                                              fit: BoxFit
-                                                                  .fitHeight,
+                                                                  DecorationImage(
+                                                                image:
+                                                                    imageProvider,
+                                                                fit: BoxFit
+                                                                    .fitHeight,
+                                                              ),
                                                             ),
                                                           ),
+                                                          placeholder:
+                                                              (context, url) =>
+                                                                  Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(1.0),
+                                                            child: Center(
+                                                                child:
+                                                                    CircularProgressIndicator(
+                                                              color:
+                                                                  ColorResources
+                                                                      .COLOR_GRAY,
+                                                            )),
+                                                          ),
+                                                          errorWidget: (context,
+                                                                  url, error) =>
+                                                              Icon(Icons.error),
                                                         ),
-                                                        placeholder:
-                                                            (context, url) =>
-                                                                Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(1.0),
-                                                          child: Center(
-                                                              child:
-                                                                  CircularProgressIndicator(
-                                                            color:
-                                                                ColorResources
-                                                                    .COLOR_GRAY,
-                                                          )),
-                                                        ),
-                                                        errorWidget: (context,
-                                                                url, error) =>
-                                                            Icon(Icons.error),
                                                       ),
-                                                    ),
-                                                  if (cartProvider
-                                                          .addedCartList[index]
-                                                          .productId !=
-                                                      null)
-                                                    Container(
-                                                      height: 80,
-                                                      width: 80,
-                                                      child: CachedNetworkImage(
-                                                        filterQuality:
-                                                            FilterQuality.high,
-                                                        imageUrl:
-                                                            "${"${cartProvider.getCartProductList.where((element) {
-                                                                  return element
-                                                                          .id ==
-                                                                      cartProvider
-                                                                          .addedCartList[
-                                                                              index]
-                                                                          .productId;
-                                                                }).first.imageURL!}"}",
-                                                        memCacheHeight: 200,
-                                                        memCacheWidth: 200,
-                                                        imageBuilder: (context,
-                                                                imageProvider) =>
-                                                            Container(
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            image:
-                                                                DecorationImage(
+                                                    if (cartProvider
+                                                            .addedCartList[
+                                                                index]
+                                                            .productId !=
+                                                        null)
+                                                      Container(
+                                                        height: 80,
+                                                        width: 80,
+                                                        child:
+                                                            CachedNetworkImage(
+                                                          filterQuality:
+                                                              FilterQuality
+                                                                  .high,
+                                                          imageUrl:
+                                                              "${"${cartProvider.getCartProductList.where((element) {
+                                                                    return element
+                                                                            .id ==
+                                                                        cartProvider
+                                                                            .addedCartList[index]
+                                                                            .productId;
+                                                                  }).first.imageURL!}"}",
+                                                          memCacheHeight: 200,
+                                                          memCacheWidth: 200,
+                                                          imageBuilder: (context,
+                                                                  imageProvider) =>
+                                                              Container(
+                                                            decoration:
+                                                                BoxDecoration(
                                                               image:
-                                                                  imageProvider,
-                                                              fit: BoxFit
-                                                                  .fitHeight,
+                                                                  DecorationImage(
+                                                                image:
+                                                                    imageProvider,
+                                                                fit: BoxFit
+                                                                    .fitHeight,
+                                                              ),
                                                             ),
                                                           ),
+                                                          placeholder:
+                                                              (context, url) =>
+                                                                  Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(1.0),
+                                                            child: Center(
+                                                                child:
+                                                                    CircularProgressIndicator(
+                                                              color:
+                                                                  ColorResources
+                                                                      .COLOR_GRAY,
+                                                            )),
+                                                          ),
+                                                          errorWidget: (context,
+                                                                  url, error) =>
+                                                              Icon(Icons.error),
                                                         ),
-                                                        placeholder:
-                                                            (context, url) =>
-                                                                Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(1.0),
-                                                          child: Center(
-                                                              child:
-                                                                  CircularProgressIndicator(
-                                                            color:
-                                                                ColorResources
-                                                                    .COLOR_GRAY,
-                                                          )),
-                                                        ),
-                                                        errorWidget: (context,
-                                                                url, error) =>
-                                                            Icon(Icons.error),
                                                       ),
+                                                    SizedBox(
+                                                      width: 15,
                                                     ),
-                                                  SizedBox(
-                                                    width: 15,
-                                                  ),
-                                                  Expanded(
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment.end,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            if (cartProvider
-                                                                    .addedCartList[
-                                                                        index]
-                                                                    .plantId !=
-                                                                null)
-                                                              Text(
-                                                                "${cartProvider.getCartPlantList.where((element) {
-                                                                                  return element.id == cartProvider.addedCartList[index].plantId;
-                                                                                }).first.name}"
-                                                                            .length >
-                                                                        10
-                                                                    ? "${cartProvider.getCartPlantList.where((element) {
-                                                                          return element.id ==
-                                                                              cartProvider.addedCartList[index].plantId;
-                                                                        }).first.name!.substring(0, 10)}"
-                                                                    : "${cartProvider.getCartPlantList.where((element) {
-                                                                          return element.id ==
-                                                                              cartProvider.addedCartList[index].plantId;
-                                                                        }).first.name}",
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        16),
-                                                              ),
-                                                            if (cartProvider
-                                                                    .addedCartList[
-                                                                        index]
-                                                                    .productId !=
-                                                                null)
-                                                              Text(
-                                                                "${cartProvider.getCartProductList.where((element) {
-                                                                                  return element.id == cartProvider.addedCartList[index].productId;
-                                                                                }).first.name}"
-                                                                            .length >
-                                                                        10
-                                                                    ? "${cartProvider.getCartProductList.where((element) {
-                                                                          return element.id ==
-                                                                              cartProvider.addedCartList[index].productId;
-                                                                        }).first.name!.substring(0, 10)}"
-                                                                    : "${cartProvider.getCartProductList.where((element) {
-                                                                          return element.id ==
-                                                                              cartProvider.addedCartList[index].productId;
-                                                                        }).first.name}",
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        16),
-                                                              ),
-                                                            SizedBox(
-                                                              height: 4,
-                                                            ),
-                                                            Text(
-                                                                "Quantity: ${cartProvider.addedCartList[index].quantity}",
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        14)),
-                                                            SizedBox(
-                                                              height: 4,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        Expanded(
-                                                          child: Row(
+                                                    Expanded(
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .end,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Column(
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
-                                                                    .end,
+                                                                    .center,
                                                             crossAxisAlignment:
                                                                 CrossAxisAlignment
-                                                                    .end,
+                                                                    .start,
                                                             children: [
-                                                              Text(
-                                                                  "RM" +
-                                                                      "${(cartProvider.addedCartList[index].quantity! * cartProvider.addedCartList[index].price!).toStringAsFixed(2)}",
+                                                              if (cartProvider
+                                                                      .addedCartList[
+                                                                          index]
+                                                                      .plantId !=
+                                                                  null)
+                                                                Text(
+                                                                  "${cartProvider.getCartPlantList.where((element) {
+                                                                                    return element.id == cartProvider.addedCartList[index].plantId;
+                                                                                  }).first.name}"
+                                                                              .length >
+                                                                          10
+                                                                      ? "${cartProvider.getCartPlantList.where((element) {
+                                                                            return element.id ==
+                                                                                cartProvider.addedCartList[index].plantId;
+                                                                          }).first.name!.substring(0, 10)}"
+                                                                      : "${cartProvider.getCartPlantList.where((element) {
+                                                                            return element.id ==
+                                                                                cartProvider.addedCartList[index].plantId;
+                                                                          }).first.name}",
                                                                   style: TextStyle(
-                                                                      color: ColorResources
-                                                                          .COLOR_PRIMARY,
                                                                       fontSize:
-                                                                          16))
+                                                                          16),
+                                                                ),
+                                                              if (cartProvider
+                                                                      .addedCartList[
+                                                                          index]
+                                                                      .productId !=
+                                                                  null)
+                                                                Text(
+                                                                  "${cartProvider.getCartProductList.where((element) {
+                                                                                    return element.id == cartProvider.addedCartList[index].productId;
+                                                                                  }).first.name}"
+                                                                              .length >
+                                                                          10
+                                                                      ? "${cartProvider.getCartProductList.where((element) {
+                                                                            return element.id ==
+                                                                                cartProvider.addedCartList[index].productId;
+                                                                          }).first.name!.substring(0, 10)}"
+                                                                      : "${cartProvider.getCartProductList.where((element) {
+                                                                            return element.id ==
+                                                                                cartProvider.addedCartList[index].productId;
+                                                                          }).first.name}",
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          16),
+                                                                ),
+                                                              SizedBox(
+                                                                height: 4,
+                                                              ),
+                                                              Text(
+                                                                  "Quantity: ${cartProvider.addedCartList[index].quantity}",
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          14)),
+                                                              SizedBox(
+                                                                height: 4,
+                                                              ),
                                                             ],
                                                           ),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  )
-                                                ],
-                                              )),
+                                                          Expanded(
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .end,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .end,
+                                                              children: [
+                                                                Text(
+                                                                    "RM" +
+                                                                        "${(cartProvider.addedCartList[index].quantity! * cartProvider.addedCartList[index].price!).toStringAsFixed(2)}",
+                                                                    style: TextStyle(
+                                                                        color: ColorResources
+                                                                            .COLOR_PRIMARY,
+                                                                        fontSize:
+                                                                            16))
+                                                              ],
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ],
+                                                )),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ]);
-                            }),
+                                    ]);
+                              }),
+                        ),
                         Container(
                           width: double.infinity,
                           color: Colors.white,

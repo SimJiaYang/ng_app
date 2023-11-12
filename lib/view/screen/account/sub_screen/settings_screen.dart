@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
+import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -12,18 +13,28 @@ class SettingScreen extends StatefulWidget {
 class _SettingScreenState extends State<SettingScreen> {
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context).textTheme;
+    TextStyle _title = theme.headlineMedium!.copyWith(
+      fontSize: Dimensions.FONT_SIZE_DEFAULT,
+      color: ColorResources.COLOR_BLACK.withOpacity(0.8),
+    );
+    TextStyle _subTitle = theme.headlineMedium!.copyWith(
+      fontSize: Dimensions.FONT_SIZE_LARGE,
+      fontWeight: FontWeight.w300,
+      color: ColorResources.COLOR_BLACK.withOpacity(0.7),
+    );
+
     return Scaffold(
       appBar: AppBar(
         leading: const BackButton(
-          color: Colors.white, // <-- SEE HERE
+          color: Color.fromRGBO(255, 255, 255, 1), // <-- SEE HERE
         ),
         backgroundColor: ColorResources.COLOR_PRIMARY,
         title: Text(
           'Settings',
-          style: TextStyle(
+          style: theme.bodyLarge!.copyWith(
             color: Colors.white,
-            fontWeight: FontWeight.w400,
-            fontSize: 18,
+            fontSize: 16,
           ),
         ),
       ),
@@ -37,10 +48,7 @@ class _SettingScreenState extends State<SettingScreen> {
               padding: EdgeInsets.only(left: 10, bottom: 10),
               child: Text(
                 "My Account",
-                style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
-                ),
+                style: _subTitle,
               ),
             ),
             GestureDetector(
@@ -62,11 +70,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   ),
                   title: Text(
                     "Change Password",
-                    style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16,
-                          color: ColorResources.COLOR_BLACK,
-                        ),
+                    style: _subTitle,
                   ),
                   trailing: Icon(
                     Icons.chevron_right_outlined,
@@ -93,11 +97,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   ),
                   title: Text(
                     "Change Email",
-                    style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16,
-                          color: ColorResources.COLOR_BLACK,
-                        ),
+                    style: _subTitle,
                   ),
                   trailing: Icon(
                     Icons.chevron_right_outlined,
@@ -124,11 +124,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   ),
                   title: Text(
                     "My addresses",
-                    style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16,
-                          color: ColorResources.COLOR_BLACK,
-                        ),
+                    style: _subTitle,
                   ),
                   trailing: Icon(
                     Icons.chevron_right_outlined,

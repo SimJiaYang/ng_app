@@ -75,18 +75,16 @@ class _PlantGridItemState extends State<PlantGridItem> {
                 VerticalSpacing(),
                 Text(
                   widget.plant.name!,
-                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  style: Theme.of(context).textTheme.displaySmall!.copyWith(
                         color: Theme.of(context).colorScheme.onBackground,
-                        fontWeight: FontWeight.w400,
                         fontSize: 16,
                       ),
                 ),
                 VerticalSpacing(),
                 Text(
                   "RM " + widget.plant.price!.toStringAsFixed(2),
-                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                         color: ColorResources.COLOR_PRIMARY,
-                        fontWeight: FontWeight.w400,
                         fontSize: 16,
                       ),
                 ),
