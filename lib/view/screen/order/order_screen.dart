@@ -134,64 +134,68 @@ class _OrderScreenState extends State<OrderScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Container(
-                    margin: EdgeInsets.symmetric(vertical: 10),
-                    width: double.infinity,
-                    height: 45,
-                    child: ListView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      padding: const EdgeInsets.only(left: 20, right: 10),
-                      itemCount: _statusList.length,
-                      itemBuilder: ((context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            if (order_prov.isLoading) return;
-                            _handleStatusChanged(_statusList[index]);
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.only(right: 10),
-                            padding: const EdgeInsets.symmetric(horizontal: 15),
-                            height: double.infinity,
-                            decoration: BoxDecoration(
-                              color: _selectedStatus == _statusList[index]
-                                  ? Theme.of(context)
-                                      .primaryColor
-                                      .withOpacity(0.1)
-                                  : ColorResources.COLOR_GREY.withOpacity(0.3),
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            child: Center(
-                              child: Text(
-                                _statusList[index],
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: _selectedStatus == _statusList[index]
-                                      ? Theme.of(context).primaryColor
-                                      : ColorResources.COLOR_BLACK
-                                          .withOpacity(0.7),
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 10),
+                      width: double.infinity,
+                      height: 45,
+                      child: ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.only(left: 20, right: 10),
+                        itemCount: _statusList.length,
+                        itemBuilder: ((context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              if (order_prov.isLoading) return;
+                              _handleStatusChanged(_statusList[index]);
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.only(right: 10),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15),
+                              height: double.infinity,
+                              decoration: BoxDecoration(
+                                color: _selectedStatus == _statusList[index]
+                                    ? Theme.of(context)
+                                        .primaryColor
+                                        .withOpacity(0.1)
+                                    : ColorResources.COLOR_GREY
+                                        .withOpacity(0.3),
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  _statusList[index],
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: _selectedStatus == _statusList[index]
+                                        ? Theme.of(context).primaryColor
+                                        : ColorResources.COLOR_BLACK
+                                            .withOpacity(0.7),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        );
-                      }),
-                    )),
+                          );
+                        }),
+                      )),
+                ),
                 Expanded(
-                  child: SizedBox(
+                  flex: 9,
+                  child: Container(
                     width: size.width,
                     child: Consumer<OrderProvider>(
                       builder: (context, orderProvider, child) {
                         return orderProvider.orderList.isEmpty &&
                                 orderProvider.isLoading
-                            ? Expanded(
-                                child: ListView.builder(
-                                    itemCount: 5,
-                                    itemBuilder: (context, index) {
-                                      return EmptyOrder();
-                                    }),
-                              )
+                            ? ListView.builder(
+                                itemCount: 5,
+                                itemBuilder: (context, index) {
+                                  return EmptyOrder();
+                                })
                             : orderProvider.orderList.isEmpty &&
                                     !orderProvider.isLoading
                                 ? Center(
