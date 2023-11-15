@@ -33,6 +33,7 @@ class AddressProvider extends ChangeNotifier {
       bool isLoad = true,
       bool isLoadingOrderAddress = false}) async {
     if (!isLoadMore) {
+      _noMoreDataMessage = '';
       _addressList = [];
     }
 

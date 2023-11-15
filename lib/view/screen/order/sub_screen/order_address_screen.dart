@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:nurserygardenapp/providers/address_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/custom_appbar.dart';
 import 'package:nurserygardenapp/view/base/custom_button.dart';
+import 'package:nurserygardenapp/view/base/page_loading.dart';
+import 'package:nurserygardenapp/view/screen/address/widget/empty_address.dart';
 import 'package:provider/provider.dart';
 
 class OrderAddressScreen extends StatefulWidget {
@@ -79,9 +82,11 @@ class _OrderAddressScreenState extends State<OrderAddressScreen> {
             builder: (context, addressProvider, child) {
           return addressProvider.isLoadingOrderAddress &&
                   addressProvider.addressList.isEmpty
-              ? Center(
-                  child: CircularProgressIndicator(),
-                )
+              ? ListView.builder(
+                  itemCount: 8,
+                  itemBuilder: (context, index) {
+                    return EmptyAddress();
+                  })
               : addressProvider.addressList.isEmpty &&
                       !addressProvider.isLoadingOrderAddress
                   ? Center(
@@ -122,24 +127,35 @@ class _OrderAddressScreenState extends State<OrderAddressScreen> {
                       ListView.builder(
                           padding: (addressProvider
                                           .noMoreDataMessage.isNotEmpty &&
-                                      !addressProvider.isLoading ||
+                                      !addressProvider.isLoadingOrderAddress ||
                                   (addressProvider.noMoreDataMessage.isEmpty &&
                                       addressProvider.addressList.length < 8))
                               ? EdgeInsets.fromLTRB(10, 0, 10, 10)
                               : EdgeInsets.only(
-                                  bottom: 40, left: 10, right: 10, top: 0),
+                                  bottom: 20, left: 10, right: 10, top: 0),
                           physics: const AlwaysScrollableScrollPhysics(),
                           shrinkWrap: true,
                           controller: _scrollController,
                           itemCount: addressProvider.addressList.length +
-                              (addressProvider.isLoading &&
-                                      addressProvider.addressList.length >= 8
+                              ((addressProvider.isLoadingOrderAddress &&
+                                      addressProvider.addressList.length >= 8)
                                   ? 1
-                                  : 0),
+                                  : addressProvider.noMoreDataMessage.isNotEmpty
+                                      ? 1
+                                      : 0),
                           itemBuilder: (context, index) {
                             if (index >= addressProvider.addressList.length &&
                                 addressProvider.noMoreDataMessage.isEmpty) {
-                              return CircularProgressIndicator.adaptive();
+                              return Center(
+                                  child: LoadingAnimationWidget.waveDots(
+                                      color: ColorResources.COLOR_PRIMARY,
+                                      size: 40));
+                            } else if (index >=
+                                    addressProvider.addressList.length &&
+                                addressProvider.noMoreDataMessage.isNotEmpty) {
+                              return Container(
+                                height: 50,
+                              );
                             } else {
                               return Padding(
                                 padding:

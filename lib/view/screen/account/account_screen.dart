@@ -171,7 +171,9 @@ class _AccountScreenState extends State<AccountScreen> {
               ),
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, Routes.getDeliveryRoute());
+              },
               child: Container(
                 decoration: BoxDecoration(
                     border: Border(

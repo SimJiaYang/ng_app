@@ -44,6 +44,9 @@ class Routes {
   // Bidding
   static const String BIDDING_SCREEN = '/bidding';
 
+  // Delivery
+  static const String DELIVERY_SCREEN = '/delivery';
+
   // Account
   static const String ACCOUNT_SCREEN = '/account';
   static const String PROFILE_SCREEN = '/profile';
@@ -102,6 +105,9 @@ class Routes {
   static String getAddressDetailRoute(String addressID) =>
       '$ADDRESS_DETAIL_SCREEN?addressID=$addressID';
   static String getAddAddressRoute() => ADD_ADDRESS_SCREEN;
+
+  // Delivery
+  static String getDeliveryRoute() => DELIVERY_SCREEN;
 
   // Bidding
   static String getBiddingRoute() => BIDDING_SCREEN;

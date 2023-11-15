@@ -11,6 +11,7 @@ import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/view/base/custom_button.dart';
 import 'package:nurserygardenapp/view/base/custom_space.dart';
 import 'package:nurserygardenapp/view/base/image_enlarge_widget.dart';
+import 'package:nurserygardenapp/view/base/page_loading.dart';
 import 'package:nurserygardenapp/view/screen/plant/plant_detail_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -347,9 +348,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         body: SafeArea(
           child: Center(
             child: isLoading
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
+                ? Loading()
                 : SingleChildScrollView(
                     physics: const AlwaysScrollableScrollPhysics(),
                     child: Container(

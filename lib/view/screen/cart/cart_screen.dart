@@ -243,6 +243,8 @@ class _CartScreenState extends State<CartScreen> {
                       ),
                     )
                   : SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      controller: _scrollController,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -290,7 +292,6 @@ class _CartScreenState extends State<CartScreen> {
                                 ? EdgeInsets.fromLTRB(10, 0, 10, 10)
                                 : EdgeInsets.only(
                                     bottom: 235, left: 10, right: 10, top: 0),
-                            controller: _scrollController,
                             physics: const BouncingScrollPhysics(),
                             shrinkWrap: true,
                             itemCount: cartProvider.cartItem.length +

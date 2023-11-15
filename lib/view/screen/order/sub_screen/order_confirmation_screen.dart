@@ -8,6 +8,7 @@ import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/circular_indicator.dart';
+import 'package:nurserygardenapp/view/base/page_loading.dart';
 import 'package:nurserygardenapp/view/screen/payment/payment_helper/payment_type.dart';
 import 'package:provider/provider.dart';
 
@@ -208,13 +209,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
             width: double.infinity,
             height: double.infinity,
             child: addressProvider.isLoading
-                ? Center(
-                    child: CircularProgressIndicator.adaptive(
-                      valueColor: new AlwaysStoppedAnimation<Color>(
-                        Theme.of(context).primaryColor,
-                      ),
-                    ),
-                  )
+                ? Loading()
                 : SingleChildScrollView(
                     physics: AlwaysScrollableScrollPhysics(),
                     child: Column(

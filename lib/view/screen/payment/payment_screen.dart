@@ -6,6 +6,7 @@ import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/custom_button.dart';
 import 'package:nurserygardenapp/view/base/custom_snackbar.dart';
+import 'package:nurserygardenapp/view/base/page_loading.dart';
 import 'package:nurserygardenapp/view/screen/payment/payment_helper/payment_type.dart';
 import 'package:provider/provider.dart';
 
@@ -71,13 +72,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
           child: widget.paymentType == PaymentType.card.toString()
               ? Consumer<PayProvider>(builder: (context, payProvider, child) {
                   return payProvider.isLoading
-                      ? Center(
-                          child: CircularProgressIndicator.adaptive(
-                            valueColor: new AlwaysStoppedAnimation<Color>(
-                              Theme.of(context).primaryColor,
-                            ),
-                          ),
-                        )
+                      ? Loading()
                       : Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
