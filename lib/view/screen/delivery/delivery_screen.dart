@@ -67,6 +67,8 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
 
     return Scaffold(
       appBar: CustomAppBar(
+        isBackButtonExist: false,
+        isBgPrimaryColor: true,
         title: 'Delivery',
         context: context,
         isCenter: false,
@@ -85,9 +87,12 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                     : ListView.builder(
                         controller: _scrollController,
                         itemCount: deliveryProvider.deliveryList.length +
-                            (deliveryProvider.noMoreDataMessage.isNotEmpty
+                            ((deliveryProvider.isLoading &&
+                                    deliveryProvider.deliveryList.length >= 8)
                                 ? 1
-                                : 0),
+                                : deliveryProvider.noMoreDataMessage.isNotEmpty
+                                    ? 1
+                                    : 0),
                         padding: (deliveryProvider
                                         .noMoreDataMessage.isNotEmpty &&
                                     !deliveryProvider.isLoading ||
@@ -101,6 +106,12 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                           if (index >= deliveryProvider.deliveryList.length &&
                               deliveryProvider.noMoreDataMessage.isEmpty) {
                             return CircularProgress();
+                          } else if (index >=
+                                  deliveryProvider.deliveryList.length &&
+                              deliveryProvider.noMoreDataMessage.isNotEmpty) {
+                            return Container(
+                              height: 50,
+                            );
                           } else if (index >=
                                   deliveryProvider.deliveryList.length &&
                               deliveryProvider.noMoreDataMessage.isNotEmpty) {
