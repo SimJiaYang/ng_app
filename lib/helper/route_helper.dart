@@ -16,6 +16,7 @@ import 'package:nurserygardenapp/view/screen/bidding/bidding_screen.dart';
 import 'package:nurserygardenapp/view/screen/cart/cart_screen.dart';
 import 'package:nurserygardenapp/view/screen/dashboard/dashboard_screen.dart';
 import 'package:nurserygardenapp/view/screen/delivery/delivery_screen.dart';
+import 'package:nurserygardenapp/view/screen/delivery/sub_screen/delivery_detail_screen.dart';
 import 'package:nurserygardenapp/view/screen/home/home_screen.dart';
 import 'package:nurserygardenapp/view/screen/order/order_screen.dart';
 import 'package:nurserygardenapp/view/screen/order/sub_screen/order_address_screen.dart';
@@ -155,6 +156,13 @@ class RouterHelper {
     handlerFunc: (context, Map<String, dynamic> parameters) => DeliveryScreen(),
   );
 
+  static Handler _deliveryDetailHandler = Handler(
+    handlerFunc: (context, Map<String, dynamic> parameters) =>
+        DeliveryDetailScreen(
+      deliveryId: parameters['deliveryID'][0],
+    ),
+  );
+
   // =================================Bidding=========================================
   static Handler _biddingHandler = Handler(
     handlerFunc: (context, Map<String, dynamic> parameters) => BiddingScreen(),
@@ -253,6 +261,8 @@ class RouterHelper {
         handler: _addAddressHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.DELIVERY_SCREEN,
         handler: _deliveryHandler, transitionType: TransitionType.fadeIn);
+    router.define(Routes.DELIVERY_DETAIL_SCREEN,
+        handler: _deliveryDetailHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.BIDDING_SCREEN,
         handler: _biddingHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.ACCOUNT_SCREEN,

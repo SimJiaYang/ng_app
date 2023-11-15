@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:nurserygardenapp/providers/delivery_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/dimensions.dart';
+import 'package:nurserygardenapp/util/font_styles.dart';
+import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/circular_indicator.dart';
 import 'package:nurserygardenapp/view/base/custom_appbar.dart';
+import 'package:nurserygardenapp/view/base/page_loading.dart';
 import 'package:provider/provider.dart';
 
 class DeliveryScreen extends StatefulWidget {
@@ -59,10 +63,14 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     var theme = Theme.of(context).textTheme;
+    TextStyle _title = theme.headlineMedium!.copyWith(
+      fontSize: Dimensions.FONT_SIZE_DEFAULT,
+      color: ColorResources.COLOR_BLACK.withOpacity(0.85),
+    );
     TextStyle _subTitle = theme.headlineMedium!.copyWith(
       fontSize: Dimensions.FONT_SIZE_DEFAULT,
       fontWeight: FontWeight.w300,
-      color: ColorResources.COLOR_BLACK.withOpacity(0.7),
+      color: ColorResources.COLOR_BLACK.withOpacity(0.65),
     );
 
     return Scaffold(
@@ -80,7 +88,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
               builder: (context, deliveryProvider, child) {
             return deliveryProvider.deliveryList.isEmpty &&
                     deliveryProvider.isLoading
-                ? Center(child: CircularProgressIndicator())
+                ? Loading()
                 : deliveryProvider.deliveryList.isEmpty &&
                         !deliveryProvider.isLoading
                     ? Center(child: Text('No Data Found'))
@@ -100,17 +108,20 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                                     deliveryProvider.deliveryList.length < 8))
                             ? EdgeInsets.fromLTRB(10, 0, 10, 10)
                             : EdgeInsets.only(
-                                bottom: 235, left: 10, right: 10, top: 0),
-                        physics: const BouncingScrollPhysics(),
+                                bottom: 45, left: 10, right: 10, top: 0),
+                        physics: const AlwaysScrollableScrollPhysics(),
                         itemBuilder: (BuildContext context, int index) {
                           if (index >= deliveryProvider.deliveryList.length &&
                               deliveryProvider.noMoreDataMessage.isEmpty) {
-                            return CircularProgress();
+                            return Center(
+                                child: LoadingAnimationWidget.waveDots(
+                                    color: ColorResources.COLOR_PRIMARY,
+                                    size: 40));
                           } else if (index >=
                                   deliveryProvider.deliveryList.length &&
                               deliveryProvider.noMoreDataMessage.isNotEmpty) {
                             return Container(
-                              height: 50,
+                              height: 10,
                             );
                           } else if (index >=
                                   deliveryProvider.deliveryList.length &&
@@ -128,7 +139,14 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                             return Padding(
                               padding: const EdgeInsets.symmetric(vertical: 10),
                               child: GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context,
+                                      Routes.getDeliveryDetailRoute(
+                                          deliveryProvider
+                                              .deliveryList[index].id
+                                              .toString()));
+                                },
                                 child: Container(
                                   width: double.infinity,
                                   padding: EdgeInsets.all(10),
@@ -149,15 +167,89 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                                         CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(4.0),
-                                        child: Text(
-                                          deliveryProvider.deliveryList[index]
-                                              .trackingNumber
-                                              .toString(),
-                                          style: _subTitle,
-                                        ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            "Tracking Number:",
+                                            style: _title,
+                                          ),
+                                          SizedBox(width: 5),
+                                          Text(
+                                            deliveryProvider.deliveryList[index]
+                                                .trackingNumber
+                                                .toString(),
+                                            style: _subTitle,
+                                          ),
+                                        ],
                                       ),
+                                      SizedBox(height: 5),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            "Courier Company: ",
+                                            style: _title,
+                                          ),
+                                          SizedBox(width: 5),
+                                          Text(
+                                            deliveryProvider
+                                                .deliveryList[index].method
+                                                .toString()
+                                                .capitalize(),
+                                            style: _subTitle,
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 2),
+                                      // Divider(
+                                      //   height: 1,
+                                      //   thickness: 1,
+                                      //   indent: 0,
+                                      //   endIndent: 0,
+                                      //   color: Colors.grey.withOpacity(0.05),
+                                      // ),
+                                      SizedBox(height: 2),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            "Shipping Status: ",
+                                            style: _title,
+                                          ),
+                                          SizedBox(width: 5),
+                                          Text(
+                                            deliveryProvider
+                                                .deliveryList[index].status
+                                                .toString()
+                                                .capitalize(),
+                                            style: _subTitle.copyWith(
+                                                color: deliveryProvider
+                                                            .deliveryList[index]
+                                                            .status
+                                                            .toString() ==
+                                                        'delivered'
+                                                    ? ColorResources
+                                                        .COLOR_PRIMARY
+                                                    : ColorResources
+                                                        .APPBAR_HEADER_COLOR),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 5),
+                                      // Row(
+                                      //   children: [
+                                      //     Text(
+                                      //       "Expected Delivery: ",
+                                      //       style: _title,
+                                      //     ),
+                                      //     SizedBox(width: 5),
+                                      //     Text(
+                                      //       deliveryProvider
+                                      //           .deliveryList[index].details
+                                      //           .toString()
+                                      //           .capitalize(),
+                                      //       style: _subTitle,
+                                      //     ),
+                                      //   ],
+                                      // ),
                                     ],
                                   ),
                                 ),

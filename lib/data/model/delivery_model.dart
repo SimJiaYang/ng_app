@@ -109,8 +109,8 @@ class Data {
 class Delivery {
   int? id;
   String? trackingNumber;
-  Method? method;
-  Status? status;
+  String? method;
+  String? status;
   dynamic details;
   String? prvImg;
   DateTime? expectedDate;
@@ -136,8 +136,8 @@ class Delivery {
   factory Delivery.fromJson(Map<String, dynamic> json) => Delivery(
         id: json["id"],
         trackingNumber: json["tracking_number"],
-        method: methodValues.map[json["method"]]!,
-        status: statusValues.map[json["status"]]!,
+        method: json["method"],
+        status: json["status"],
         details: json["details"],
         prvImg: json["prv_img"],
         expectedDate: json["expected_date"] == null
@@ -156,8 +156,8 @@ class Delivery {
   Map<String, dynamic> toJson() => {
         "id": id,
         "tracking_number": trackingNumber,
-        "method": methodValues.reverse[method],
-        "status": statusValues.reverse[status],
+        "method": method,
+        "status": status,
         "details": details,
         "prv_img": prvImg,
         "expected_date":
@@ -169,15 +169,15 @@ class Delivery {
       };
 }
 
-enum Method { BBOSS, GDEX, J_T }
+// enum Method { BBOSS, GDEX, J_T }
 
-final methodValues =
-    EnumValues({"BBOSS": Method.BBOSS, "GDEX": Method.GDEX, "J&T": Method.J_T});
+// final methodValues =
+//     EnumValues({"BBOSS": Method.BBOSS, "GDEX": Method.GDEX, "J&T": Method.J_T});
 
-enum Status { DELIVERED, SHIP }
+// enum Status { DELIVERED, SHIP }
 
-final statusValues =
-    EnumValues({"delivered": Status.DELIVERED, "ship": Status.SHIP});
+// final statusValues =
+//     EnumValues({"delivered": Status.DELIVERED, "ship": Status.SHIP});
 
 class Link {
   String? url;
