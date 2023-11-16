@@ -170,6 +170,22 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                                       Row(
                                         children: [
                                           Text(
+                                            "Order ID:",
+                                            style: _title,
+                                          ),
+                                          SizedBox(width: 5),
+                                          Text(
+                                            deliveryProvider
+                                                .deliveryList[index].orderId
+                                                .toString(),
+                                            style: _subTitle,
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 5),
+                                      Row(
+                                        children: [
+                                          Text(
                                             "Tracking Number:",
                                             style: _title,
                                           ),

@@ -118,6 +118,9 @@ class Delivery {
   int? orderId;
   DateTime? createdAt;
   DateTime? updatedAt;
+  String? imageURL;
+  DateTime? orderDate;
+  String? orderAddress;
 
   Delivery({
     this.id,
@@ -131,6 +134,9 @@ class Delivery {
     this.orderId,
     this.createdAt,
     this.updatedAt,
+    this.imageURL,
+    this.orderDate,
+    this.orderAddress,
   });
 
   factory Delivery.fromJson(Map<String, dynamic> json) => Delivery(
@@ -151,6 +157,11 @@ class Delivery {
         updatedAt: json["updated_at"] == null
             ? null
             : DateTime.parse(json["updated_at"]),
+        imageURL: jsonDecode(json["image_url"]),
+        orderDate: json["order_date"] == null
+            ? null
+            : DateTime.parse(json["order_date"]),
+        orderAddress: json["order_address"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -166,6 +177,9 @@ class Delivery {
         "order_id": orderId,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
+        "image_url": imageURL,
+        "order_date": orderDate?.toIso8601String(),
+        "order_address": orderAddress,
       };
 }
 

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
+import 'package:nurserygardenapp/view/base/custom_appbar.dart';
 
 class ImageEnlargeWidget extends StatefulWidget {
   final String tag;
@@ -26,6 +27,13 @@ class _ImageEnlargeWidgetState extends State<ImageEnlargeWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CustomAppBar(
+        isCenter: false,
+        isBgPrimaryColor: true,
+        title: '',
+        isBackButtonExist: true,
+        context: context,
+      ),
       body: SafeArea(
         child: GestureDetector(
           child: Center(
