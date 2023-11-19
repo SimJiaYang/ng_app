@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/data/model/cart_model.dart';
+import 'package:nurserygardenapp/data/model/delivery_model.dart';
 import 'package:nurserygardenapp/data/model/order_detail_model.dart';
 import 'package:nurserygardenapp/data/model/order_model.dart';
 import 'package:nurserygardenapp/data/model/plant_model.dart';
@@ -74,6 +75,9 @@ class OrderProvider extends ChangeNotifier {
   List<Product> _orderProductList = [];
   List<Product> get getOrderProductList => _orderProductList;
 
+  List<Delivery> _orderDeliveryList = [];
+  List<Delivery> get getOrderDeliveryList => _orderDeliveryList;
+
   bool _isLoadingDetail = false;
   bool get isLoadingDetail => _isLoadingDetail;
 
@@ -94,12 +98,12 @@ class OrderProvider extends ChangeNotifier {
         _orderDetailList = _orderDetailModel.data!.orderItem ?? [];
         _orderPlantList = _orderDetailModel.data!.plant ?? [];
         _orderProductList = _orderDetailModel.data!.product ?? [];
+        _orderDeliveryList = _orderDetailModel.data!.delivery ?? [];
       }
     }
 
     _isLoadingDetail = false;
     notifyListeners();
-
     return result;
   }
 

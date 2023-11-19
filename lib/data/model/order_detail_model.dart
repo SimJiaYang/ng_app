@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+import 'package:nurserygardenapp/data/model/delivery_model.dart';
 import 'package:nurserygardenapp/data/model/plant_model.dart';
 import 'package:nurserygardenapp/data/model/product_model.dart';
 
@@ -43,12 +44,14 @@ class Data {
   List<Plant>? plant;
   List<Product>? product;
   List<OrderItem>? orderItem;
+  List<Delivery>? delivery;
 
   Data({
     this.order_address,
     this.plant,
     this.product,
     this.orderItem,
+    this.delivery,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
@@ -64,6 +67,10 @@ class Data {
             ? []
             : List<OrderItem>.from(
                 json["order_item"]!.map((x) => OrderItem.fromJson(x))),
+        delivery: json["delivery_list"] == null
+            ? []
+            : List<Delivery>.from(
+                json["delivery_list"]!.map((x) => Delivery.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -76,6 +83,9 @@ class Data {
         "order_item": orderItem == null
             ? []
             : List<dynamic>.from(orderItem!.map((x) => x.toJson())),
+        "delivery_list": delivery == null
+            ? []
+            : List<dynamic>.from(delivery!.map((x) => x.toJson())),
       };
 }
 
