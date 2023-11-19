@@ -89,7 +89,7 @@ class _ShippingStatusState extends State<ShippingStatus> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             ShippingIcon(
-              icon: Icons.how_to_reg_outlined,
+              icon: Icons.inventory_rounded,
               color: ColorResources.COLOR_PRIMARY,
             ),
             SizedBox(

@@ -99,14 +99,14 @@ class _OrderScreenState extends State<OrderScreen> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context).textTheme;
-    // TextStyle _title = theme.headlineMedium!.copyWith(
-    //   fontSize: Dimensions.FONT_SIZE_DEFAULT,
-    //   color: ColorResources.COLOR_BLACK.withOpacity(0.8),
-    // );
-    // TextStyle _subTitle = theme.headlineMedium!.copyWith(
-    //   fontSize: Dimensions.FONT_SIZE_DEFAULT,
-    //   color: ColorResources.COLOR_BLACK.withOpacity(0.6),
-    // );
+    TextStyle _title = theme.headlineMedium!.copyWith(
+      fontSize: Dimensions.FONT_SIZE_DEFAULT,
+      color: ColorResources.COLOR_BLACK.withOpacity(0.8),
+    );
+    TextStyle _subTitle = theme.headlineMedium!.copyWith(
+      fontSize: Dimensions.FONT_SIZE_DEFAULT,
+      color: ColorResources.COLOR_BLACK.withOpacity(0.6),
+    );
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -274,21 +274,21 @@ class _OrderScreenState extends State<OrderScreen> {
                                                     Row(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
-                                                                .spaceBetween,
+                                                                .start,
                                                         children: [
                                                           Text(
-                                                            "Order ID: " +
-                                                                orderProvider
-                                                                    .orderList[
-                                                                        index]
-                                                                    .id
-                                                                    .toString(),
-                                                            style: TextStyle(
-                                                                fontSize: 16,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500),
+                                                            "Order ID: ",
+                                                            style: _title,
                                                           ),
+                                                          Text(
+                                                            orderProvider
+                                                                .orderList[
+                                                                    index]
+                                                                .id
+                                                                .toString(),
+                                                            style: _subTitle,
+                                                          ),
+                                                          Spacer(),
                                                           Text(
                                                             orderProvider
                                                                             .orderList[
@@ -316,8 +316,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                                                         index]
                                                                     .status!
                                                                     .capitalize(),
-                                                            style: TextStyle(
-                                                                fontSize: 15,
+                                                            style: _subTitle.copyWith(
                                                                 color: ColorResources
                                                                     .COLOR_PRIMARY,
                                                                 fontWeight:
@@ -326,8 +325,22 @@ class _OrderScreenState extends State<OrderScreen> {
                                                           ),
                                                         ]),
                                                     const SizedBox(height: 10),
-                                                    Text(
-                                                      'Order created at: ' +
+                                                    Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          'Order created at: ',
+                                                          style:
+                                                              _title.copyWith(
+                                                            fontSize: 15,
+                                                          ),
+                                                        ),
+                                                        Text(
                                                           DateFormat(
                                                                   'dd-MM-yyyy')
                                                               .format(
@@ -335,10 +348,12 @@ class _OrderScreenState extends State<OrderScreen> {
                                                                       .orderList[
                                                                           index]
                                                                       .date!),
-                                                      style: TextStyle(
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.w400),
+                                                          style: _subTitle
+                                                              .copyWith(
+                                                            fontSize: 15,
+                                                          ),
+                                                        )
+                                                      ],
                                                     ),
                                                     Row(
                                                       crossAxisAlignment:
@@ -350,11 +365,10 @@ class _OrderScreenState extends State<OrderScreen> {
                                                       children: [
                                                         Text(
                                                           "Order Total: ",
-                                                          style: TextStyle(
-                                                              fontSize: 15,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400),
+                                                          style:
+                                                              _title.copyWith(
+                                                            fontSize: 15,
+                                                          ),
                                                         ),
                                                         Text(
                                                           "RM" +
@@ -364,7 +378,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                                                   .totalAmount!
                                                                   .toStringAsFixed(
                                                                       2),
-                                                          style: TextStyle(
+                                                          style: _subTitle.copyWith(
                                                               fontSize: 15,
                                                               color: ColorResources
                                                                   .COLOR_PRIMARY,
