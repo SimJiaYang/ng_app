@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nurserygardenapp/data/model/order_model.dart';
+import 'package:nurserygardenapp/providers/delivery_provider.dart';
 import 'package:nurserygardenapp/providers/order_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/dimensions.dart';
@@ -63,8 +64,12 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
-          leading: const BackButton(
-            color: Colors.white, // <-- SEE HERE
+          leading: BackButton(
+            color: Colors.white,
+            onPressed: () {
+              order_prov.clearOrderDetail();
+              Navigator.pop(context);
+            }, // <-- SEE HERE
           ),
           backgroundColor: ColorResources.COLOR_PRIMARY,
           title: Text(

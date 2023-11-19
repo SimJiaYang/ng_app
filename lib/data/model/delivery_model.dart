@@ -157,7 +157,8 @@ class Delivery {
         updatedAt: json["updated_at"] == null
             ? null
             : DateTime.parse(json["updated_at"]),
-        imageURL: jsonDecode(json["image_url"]),
+        imageURL:
+            json["image_url"] == null ? null : jsonDecode(json["image_url"]),
         orderDate: json["order_date"] == null
             ? null
             : DateTime.parse(json["order_date"]),

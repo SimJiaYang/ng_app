@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nurserygardenapp/data/model/delivery_detail_model.dart';
 import 'package:nurserygardenapp/data/model/delivery_model.dart';
 import 'package:nurserygardenapp/data/model/response/api_response.dart';
 import 'package:nurserygardenapp/data/repositories/delivery_repo.dart';
@@ -25,7 +26,7 @@ class DeliveryProvider extends ChangeNotifier {
   String _noMoreDataMessage = '';
   String get noMoreDataMessage => _noMoreDataMessage;
 
-  /// ================== CART LIST ==================
+  /// ================== DELIVERY LIST ==================
   Future<bool> getDeliveryList(BuildContext context, params,
       {bool isLoadMore = false, bool isLoad = true}) async {
     if (!isLoadMore) {
@@ -54,6 +55,38 @@ class DeliveryProvider extends ChangeNotifier {
     }
 
     _isLoading = false;
+    notifyListeners();
+
+    return result;
+  }
+
+  /// ================== DELIVERY DETAIL ==================
+  bool _isLoadingDetail = false;
+  bool get isLoadingDetail => _isLoadingDetail;
+  DeliveryDetailModel _deliveryDetailModel = DeliveryDetailModel();
+  DeliveryDetailModel get deliveryDetailModel => _deliveryDetailModel;
+  Delivery _deliveryDetail = Delivery();
+  Delivery get deliveryDetail => _deliveryDetail;
+
+  Future<bool> getDeliveryDetail(BuildContext context, params) async {
+    bool result = false;
+    String query = ResponseHelper.buildQuery(params);
+
+    _isLoadingDetail = true;
+    notifyListeners();
+
+    ApiResponse apiResponse = await deliveryRepo.getDeliveryDetail(query);
+
+    if (context.mounted) {
+      result = ResponseHelper.responseHelper(context, apiResponse);
+      if (result) {
+        _deliveryDetailModel =
+            DeliveryDetailModel.fromJson(apiResponse.response!.data);
+        _deliveryDetail = _deliveryDetailModel.delivery ?? Delivery();
+      }
+    }
+
+    _isLoadingDetail = false;
     notifyListeners();
 
     return result;

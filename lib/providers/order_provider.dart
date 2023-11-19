@@ -82,6 +82,7 @@ class OrderProvider extends ChangeNotifier {
   bool get isLoadingDetail => _isLoadingDetail;
 
   Future<bool> getOrderDetail(BuildContext context, params) async {
+    clearOrderDetail();
     bool result = false;
     String query = ResponseHelper.buildQuery(params);
 
@@ -105,6 +106,15 @@ class OrderProvider extends ChangeNotifier {
     _isLoadingDetail = false;
     notifyListeners();
     return result;
+  }
+
+  clearOrderDetail() {
+    _orderDetailModel = OrderDetailModel();
+    _orderDetailList = [];
+    _orderPlantList = [];
+    _orderProductList = [];
+    _orderDeliveryList = [];
+    notifyListeners();
   }
 
   /// ================== MAKE ORDER ==================

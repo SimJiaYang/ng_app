@@ -1,5 +1,3 @@
-import 'package:easy_stepper/easy_stepper.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nurserygardenapp/data/model/delivery_model.dart';
@@ -29,9 +27,9 @@ class _DeliveryDetailScreenState extends State<DeliveryDetailScreen> {
       Provider.of<OrderProvider>(context, listen: false);
   late DeliveryProvider _deliveryProvider =
       Provider.of<DeliveryProvider>(context, listen: false);
+
   Delivery delivery = Delivery();
   int _currentStep = 0;
-  bool isLoading = false;
 
   void tapped(int step) {
     setState(() => _currentStep = step);
@@ -58,30 +56,38 @@ class _DeliveryDetailScreenState extends State<DeliveryDetailScreen> {
     });
   }
 
-  void _loadData() {
-    setState(() {
-      isLoading = true;
-    });
-    delivery = _deliveryProvider.deliveryList.firstWhere(
-        (element) => element.id.toString() == widget.deliveryId, orElse: () {
-      // Get from the route args
+  void _loadData() async {
+    // Get from the route args
+    if (widget.deliveryId == "0") {
       final args = ModalRoute.of(context)!.settings.arguments as Map;
       print(args);
-      Order order = _orderProv.orderList.firstWhere(
+      Order _order = _orderProv.orderList.firstWhere(
           (element) => element.id.toString() == args['orderID'].toString());
-      return Delivery(
-        id: 0,
-        orderId: order.id,
-        orderAddress: order.address,
-        orderDate: order.createdAt,
-        expectedDate: DateTime.now(),
-        status: "",
-        trackingNumber: "",
-        imageURL: "",
-        createdAt: order.createdAt,
-        updatedAt: order.updatedAt,
-      );
-    });
+      bool result = await _deliveryProvider
+          .getDeliveryList(context, {'order_id': _order.id.toString()});
+      if (result) {
+        delivery = _deliveryProvider.deliveryList.isEmpty
+            ? Delivery(
+                id: 0,
+                orderId: _order.id,
+                orderAddress: _order.address,
+                orderDate: _order.createdAt,
+                expectedDate: DateTime.now(),
+                status: "",
+                trackingNumber: "",
+                imageURL: "",
+                createdAt: _order.createdAt,
+                updatedAt: _order.updatedAt,
+              )
+            : _deliveryProvider.deliveryList.first;
+      }
+    } else {
+      bool result = await _deliveryProvider
+          .getDeliveryDetail(context, {'id': widget.deliveryId});
+      if (result) {
+        delivery = _deliveryProvider.deliveryDetail;
+      }
+    }
     if (delivery.status == "ship") {
       _currentStep = 1;
     } else if (delivery.status == "delivered") {
@@ -89,9 +95,6 @@ class _DeliveryDetailScreenState extends State<DeliveryDetailScreen> {
     } else {
       _currentStep = 0;
     }
-    setState(() {
-      isLoading = false;
-    });
   }
 
   @override
@@ -126,100 +129,144 @@ class _DeliveryDetailScreenState extends State<DeliveryDetailScreen> {
         padding: const EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),
         height: size.height,
         width: size.width,
-        child: isLoading
-            ? Loading()
-            : SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding:
-                          const EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),
-                      decoration: BoxDecoration(
-                        color: ColorResources.COLOR_WHITE,
-                        borderRadius: BorderRadius.circular(5),
+        child: Consumer2<OrderProvider, DeliveryProvider>(
+            builder: (context, orderProvider, deliveryProvider, child) {
+          return orderProvider.isLoading ||
+                  deliveryProvider.isLoading ||
+                  deliveryProvider.isLoadingDetail
+              ? Loading()
+              : SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(
+                            Dimensions.PADDING_SIZE_DEFAULT),
+                        decoration: BoxDecoration(
+                          color: ColorResources.COLOR_WHITE,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        width: double.infinity,
+                        child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              if (delivery.status == "")
+                                Container(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 10, 15, 10),
+                                  child: Icon(
+                                    Icons.inventory_rounded,
+                                    size: 30,
+                                    color: ColorResources.COLOR_PRIMARY,
+                                  ),
+                                ),
+                              if (delivery.status == "ship")
+                                Container(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 10, 15, 10),
+                                  child: Icon(
+                                    Icons.local_shipping_outlined,
+                                    size: 30,
+                                    color: ColorResources.COLOR_PRIMARY,
+                                  ),
+                                ),
+                              if (delivery.status == "delivered")
+                                Container(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 10, 15, 10),
+                                  child: Icon(
+                                    Icons.task_alt_outlined,
+                                    size: 30,
+                                    color: ColorResources.COLOR_PRIMARY,
+                                  ),
+                                ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  if (delivery.status == "")
+                                    Text("Seller is preparing your order",
+                                        style: _title),
+                                  if (delivery.status == "ship")
+                                    Text("Your parcel is on the way",
+                                        style: _title),
+                                  if (delivery.status == "delivered")
+                                    Text("Your Parcel has been delivered",
+                                        style: _title),
+                                  SizedBox(height: 10),
+                                  if (delivery.status == "")
+                                    Row(
+                                      children: [
+                                        Text("Order Date: ", style: _subTitle),
+                                        Text(
+                                            DateFormat('dd-MM-yyyy')
+                                                .format(delivery.orderDate!),
+                                            style: _subTitle),
+                                      ],
+                                    ),
+                                  if (delivery.status == "ship")
+                                    Row(
+                                      children: [
+                                        Text("Expected Date: ",
+                                            style: _subTitle),
+                                        Text(
+                                            DateFormat('dd-MM-yyyy')
+                                                .format(delivery.expectedDate!),
+                                            style: _subTitle),
+                                      ],
+                                    ),
+                                  if (delivery.status == "delivered")
+                                    Text(
+                                        DateFormat('dd-MM-yyyy').format(
+                                            delivery.updatedAt ??
+                                                DateTime.now()),
+                                        style: _subTitle),
+                                ],
+                              ),
+                            ]),
                       ),
-                      width: double.infinity,
-                      child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            if (delivery.status == "")
-                              Container(
-                                padding:
-                                    const EdgeInsets.fromLTRB(0, 10, 15, 10),
-                                child: Icon(
-                                  Icons.inventory_rounded,
-                                  size: 30,
-                                  color: ColorResources.COLOR_PRIMARY,
-                                ),
-                              ),
-                            if (delivery.status == "ship")
-                              Container(
-                                padding:
-                                    const EdgeInsets.fromLTRB(0, 10, 15, 10),
-                                child: Icon(
-                                  Icons.local_shipping_outlined,
-                                  size: 30,
-                                  color: ColorResources.COLOR_PRIMARY,
-                                ),
-                              ),
-                            if (delivery.status == "delivered")
-                              Container(
-                                padding:
-                                    const EdgeInsets.fromLTRB(0, 10, 15, 10),
-                                child: Icon(
-                                  Icons.task_alt_outlined,
-                                  size: 30,
-                                  color: ColorResources.COLOR_PRIMARY,
-                                ),
-                              ),
-                            Column(
+                      SizedBox(height: 20),
+                      if (delivery.status != null)
+                        Container(
+                          padding: const EdgeInsets.all(
+                              Dimensions.PADDING_SIZE_DEFAULT),
+                          decoration: BoxDecoration(
+                            color: ColorResources.COLOR_WHITE,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          width: double.infinity,
+                          child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                if (delivery.status == "")
-                                  Text("Seller is preparing your order",
-                                      style: _title),
-                                if (delivery.status == "ship")
-                                  Text("Your parcel is on the way",
-                                      style: _title),
-                                if (delivery.status == "delivered")
-                                  Text("Your Parcel has been delivered",
-                                      style: _title),
+                                Row(
+                                  children: [
+                                    Text("Order ID: ", style: _title),
+                                    SizedBox(height: 10),
+                                    Text(delivery.orderId.toString(),
+                                        style: _subTitle),
+                                  ],
+                                ),
                                 SizedBox(height: 10),
-                                if (delivery.status == "")
-                                  Row(
-                                    children: [
-                                      Text("Order Date: ", style: _subTitle),
-                                      Text(
-                                          DateFormat('dd-MM-yyyy')
-                                              .format(delivery.orderDate!),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Order Address: ", style: _title),
+                                    SizedBox(height: 10),
+                                    Flexible(
+                                      child: Text(delivery.orderAddress ?? "",
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 4,
                                           style: _subTitle),
-                                    ],
-                                  ),
-                                if (delivery.status == "ship")
-                                  Row(
-                                    children: [
-                                      Text("Expected Date: ", style: _subTitle),
-                                      Text(
-                                          DateFormat('dd-MM-yyyy')
-                                              .format(delivery.expectedDate!),
-                                          style: _subTitle),
-                                    ],
-                                  ),
-                                if (delivery.status == "delivered")
-                                  Text(
-                                      DateFormat('dd-MM-yyyy').format(
-                                          delivery.updatedAt ?? DateTime.now()),
-                                      style: _subTitle),
-                              ],
-                            ),
-                          ]),
-                    ),
-                    SizedBox(height: 20),
-                    if (delivery.status != null)
+                                    ),
+                                  ],
+                                ),
+                              ]),
+                        ),
+                      SizedBox(height: 20),
                       Container(
                         padding: const EdgeInsets.all(
                             Dimensions.PADDING_SIZE_DEFAULT),
@@ -234,156 +281,120 @@ class _DeliveryDetailScreenState extends State<DeliveryDetailScreen> {
                             children: [
                               Row(
                                 children: [
-                                  Text("Order ID: ", style: _title),
-                                  SizedBox(height: 10),
-                                  Text(delivery.orderId.toString(),
+                                  Text("Delivery Status", style: _title),
+                                  Spacer(),
+                                  Text(delivery.trackingNumber ?? "",
                                       style: _subTitle),
                                 ],
                               ),
-                              SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("Order Address: ", style: _title),
-                                  SizedBox(height: 10),
-                                  Flexible(
-                                    child: Text(delivery.orderAddress ?? "",
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 4,
+                              Stepper(
+                                connectorColor:
+                                    MaterialStateProperty.resolveWith((states) {
+                                  if (states.contains(MaterialState.disabled)) {
+                                    return ColorResources.COLOR_GREY;
+                                  }
+                                  return ColorResources.COLOR_PRIMARY;
+                                }),
+                                controlsBuilder: (context, details) {
+                                  if (delivery.status == "delivered") {
+                                    return Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            // print(delivery.imageURL!);
+                                            Navigator.push(context,
+                                                MaterialPageRoute(builder: (_) {
+                                              return ImageEnlargeWidget(
+                                                tag: "delivery_${delivery.id}",
+                                                url: "${delivery.imageURL!}",
+                                              );
+                                            }));
+                                          },
+                                          child: Container(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                5, 10, 5, 0),
+                                            child: Text(
+                                              "View Proof of Delivery",
+                                              style: _title.copyWith(
+                                                  color: ColorResources
+                                                      .COLOR_PRIMARY),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  }
+                                  return Container();
+                                },
+                                currentStep: _currentStep,
+                                steps: [
+                                  Step(
+                                    state: StepState.indexed,
+                                    title: Text(
+                                      'Order Placed',
+                                      style: _title,
+                                    ),
+                                    subtitle: Text(
+                                      DateFormat('dd-MM-yyyy').format(
+                                          delivery.orderDate ?? DateTime.now()),
+                                      style: _subTitle.copyWith(fontSize: 12),
+                                    ),
+                                    content: Text(
+                                        'Seller is preparing your parcel for shipment.',
                                         style: _subTitle),
+                                    isActive: true,
+                                  ),
+                                  Step(
+                                    state: StepState.indexed,
+                                    title: Text(
+                                      'Order Shipped',
+                                      style: _title,
+                                    ),
+                                    subtitle: delivery.status == "delivered" ||
+                                            delivery.status == "ship"
+                                        ? Text(
+                                            DateFormat('dd-MM-yyyy')
+                                                .format(delivery.createdAt!),
+                                            style: _subTitle.copyWith(
+                                                fontSize: 12),
+                                          )
+                                        : null,
+                                    content: Text(
+                                        'Your order has been shipped and is on the way.',
+                                        style: _subTitle),
+                                    isActive: delivery.status == "delivered" ||
+                                        delivery.status == "ship",
+                                  ),
+                                  Step(
+                                    state: StepState.complete,
+                                    title: Text(
+                                      'Order Delivered',
+                                      style: _title,
+                                    ),
+                                    subtitle: delivery.status == "delivered"
+                                        ? Text(
+                                            DateFormat('dd-MM-yyyy')
+                                                .format(delivery.updatedAt!),
+                                            style: _subTitle.copyWith(
+                                                fontSize: 12))
+                                        : null,
+                                    content: Text(
+                                        'Your order has been delivered and received.',
+                                        style: _subTitle),
+                                    isActive: delivery.status == "delivered",
                                   ),
                                 ],
                               ),
                             ]),
                       ),
-                    SizedBox(height: 20),
-                    Container(
-                      padding:
-                          const EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),
-                      decoration: BoxDecoration(
-                        color: ColorResources.COLOR_WHITE,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      width: double.infinity,
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Text("Delivery Status", style: _title),
-                                Spacer(),
-                                Text(delivery.trackingNumber ?? "",
-                                    style: _subTitle),
-                              ],
-                            ),
-                            Stepper(
-                              connectorColor:
-                                  MaterialStateProperty.resolveWith((states) {
-                                if (states.contains(MaterialState.disabled)) {
-                                  return ColorResources.COLOR_GREY;
-                                }
-                                return ColorResources.COLOR_PRIMARY;
-                              }),
-                              controlsBuilder: (context, details) {
-                                if (delivery.status == "delivered") {
-                                  return Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          // print(delivery.imageURL!);
-                                          Navigator.push(context,
-                                              MaterialPageRoute(builder: (_) {
-                                            return ImageEnlargeWidget(
-                                              tag: "delivery_${delivery.id}",
-                                              url: "${delivery.imageURL!}",
-                                            );
-                                          }));
-                                        },
-                                        child: Container(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              5, 10, 5, 0),
-                                          child: Text(
-                                            "View Proof of Delivery",
-                                            style: _title.copyWith(
-                                                color: ColorResources
-                                                    .COLOR_PRIMARY),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                }
-                                return Container();
-                              },
-                              currentStep: _currentStep,
-                              steps: [
-                                Step(
-                                  state: StepState.indexed,
-                                  title: Text(
-                                    'Order Placed',
-                                    style: _title,
-                                  ),
-                                  subtitle: Text(
-                                    DateFormat('dd-MM-yyyy').format(
-                                        delivery.orderDate ?? DateTime.now()),
-                                    style: _subTitle.copyWith(fontSize: 12),
-                                  ),
-                                  content: Text(
-                                      'Seller is preparing your parcel for shipment.',
-                                      style: _subTitle),
-                                  isActive: true,
-                                ),
-                                Step(
-                                  state: StepState.indexed,
-                                  title: Text(
-                                    'Order Shipped',
-                                    style: _title,
-                                  ),
-                                  subtitle: delivery.status == "delivered" ||
-                                          delivery.status == "ship"
-                                      ? Text(
-                                          DateFormat('dd-MM-yyyy')
-                                              .format(delivery.createdAt!),
-                                          style:
-                                              _subTitle.copyWith(fontSize: 12),
-                                        )
-                                      : null,
-                                  content: Text(
-                                      'Your order has been shipped and is on the way.',
-                                      style: _subTitle),
-                                  isActive: delivery.status == "delivered" ||
-                                      delivery.status == "ship",
-                                ),
-                                Step(
-                                  state: StepState.complete,
-                                  title: Text(
-                                    'Order Delivered',
-                                    style: _title,
-                                  ),
-                                  subtitle: delivery.status == "delivered"
-                                      ? Text(
-                                          DateFormat('dd-MM-yyyy')
-                                              .format(delivery.updatedAt!),
-                                          style:
-                                              _subTitle.copyWith(fontSize: 12))
-                                      : null,
-                                  content: Text(
-                                      'Your order has been delivered and received.',
-                                      style: _subTitle),
-                                  isActive: delivery.status == "delivered",
-                                ),
-                              ],
-                            ),
-                          ]),
-                    ),
-                  ],
-                ),
-              ),
+                    ],
+                  ),
+                );
+        }),
       ),
     );
   }

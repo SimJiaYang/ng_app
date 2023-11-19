@@ -79,6 +79,7 @@ class AppConstants {
 
   // Delivery
   static const String DELIVERY_URI = '/delivery';
+  static const String DELIVERY_DETAIL_URI = '/delivery/detail';
 
   // Shared Key
   static const String THEME = 'theme';

@@ -7,8 +7,12 @@ import 'package:nurserygardenapp/view/screen/order/widget/shipping_icon.dart';
 class ShippingStatus extends StatefulWidget {
   final String orderID;
   final String status;
-  const ShippingStatus(
-      {super.key, required this.status, required this.orderID});
+
+  ShippingStatus({
+    super.key,
+    required this.status,
+    required this.orderID,
+  });
 
   @override
   State<ShippingStatus> createState() => _ShippingStatusState();
@@ -68,11 +72,7 @@ class _ShippingStatusState extends State<ShippingStatus> {
 
     Widget shipWidget = GestureDetector(
       onTap: () {
-        Navigator.pushNamed(
-            context,
-            Routes.getDeliveryDetailRoute(
-              "0",
-            ),
+        Navigator.pushNamed(context, Routes.getDeliveryDetailRoute("0"),
             arguments: {
               "orderID": widget.orderID,
             });
@@ -119,6 +119,55 @@ class _ShippingStatusState extends State<ShippingStatus> {
       ),
     );
 
+    Widget receiveWidget = GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, Routes.getDeliveryDetailRoute("0"),
+            arguments: {
+              "orderID": widget.orderID,
+            });
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 3, vertical: 5),
+        decoration: BoxDecoration(
+          color: ColorResources.COLOR_WHITE,
+          borderRadius: BorderRadius.circular(5),
+        ),
+        width: double.infinity,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            ShippingIcon(
+              icon: Icons.local_shipping_outlined,
+              color: ColorResources.COLOR_PRIMARY,
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text("Order Shipped", style: _title.copyWith(fontSize: 16)),
+                SizedBox(height: 3),
+                Text("Your parcel is on the way",
+                    style: _subTitle.copyWith(fontSize: 14))
+              ],
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Spacer(),
+            Icon(
+              Icons.arrow_forward_ios,
+              size: 20,
+              color: ColorResources.COLOR_PRIMARY,
+            )
+          ],
+        ),
+      ),
+    );
+
     return Container(
       width: double.infinity,
       color: Colors.white,
@@ -129,6 +178,7 @@ class _ShippingStatusState extends State<ShippingStatus> {
         children: [
           if (widget.status == "pay") payWidget,
           if (widget.status == "ship") shipWidget,
+          if (widget.status == "receive") receiveWidget,
           // SizedBox(
           //   height: 20,
           // )

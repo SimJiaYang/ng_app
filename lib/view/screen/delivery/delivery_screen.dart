@@ -145,7 +145,12 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                                       Routes.getDeliveryDetailRoute(
                                           deliveryProvider
                                               .deliveryList[index].id
-                                              .toString()));
+                                              .toString()),
+                                      arguments: {
+                                        "orderID": deliveryProvider
+                                            .deliveryList[index].orderId
+                                            .toString(),
+                                      });
                                 },
                                 child: Container(
                                   width: double.infinity,
