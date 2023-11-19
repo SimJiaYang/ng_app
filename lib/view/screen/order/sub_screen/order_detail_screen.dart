@@ -91,6 +91,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 ShippingStatus(
+                                    orderID: widget.orderID,
                                     status: getSpecificOrder(orderProvider)!
                                             .status ??
                                         ""),
