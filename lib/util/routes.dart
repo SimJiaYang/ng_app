@@ -48,6 +48,7 @@ class Routes {
   // Delivery
   static const String DELIVERY_SCREEN = '/delivery';
   static const String DELIVERY_DETAIL_SCREEN = '/delivery-detail';
+  static const String DELIVERY_RECEIPT_SCREEN = '/delivery-receipt';
 
   // Account
   static const String ACCOUNT_SCREEN = '/account';
@@ -117,6 +118,8 @@ class Routes {
   static String getDeliveryRoute() => DELIVERY_SCREEN;
   static String getDeliveryDetailRoute(String deliveryID) =>
       '$DELIVERY_DETAIL_SCREEN?deliveryID=$deliveryID';
+  static String getDeliveryReceiptRoute(String deliveryID) =>
+      '$DELIVERY_RECEIPT_SCREEN?deliveryID=$deliveryID';
 
   // Bidding
   static String getBiddingRoute() => BIDDING_SCREEN;

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/data/model/delivery_detail_model.dart';
 import 'package:nurserygardenapp/data/model/delivery_model.dart';
+import 'package:nurserygardenapp/data/model/delivery_receipt_model.dart';
+import 'package:nurserygardenapp/data/model/order_model.dart';
 import 'package:nurserygardenapp/data/model/response/api_response.dart';
+import 'package:nurserygardenapp/data/model/user_model.dart';
 import 'package:nurserygardenapp/data/repositories/delivery_repo.dart';
 import 'package:nurserygardenapp/helper/response_helper.dart';
 import 'package:nurserygardenapp/util/app_constants.dart';
@@ -87,6 +90,51 @@ class DeliveryProvider extends ChangeNotifier {
     }
 
     _isLoadingDetail = false;
+    notifyListeners();
+
+    return result;
+  }
+
+  /// ================== DELIVERY RECEIPT ==================
+  bool _isLoadingReceipt = false;
+  bool get isLoadingReceipt => _isLoadingReceipt;
+  DeliveryReceiptModel _deliveryReceiptModel = DeliveryReceiptModel();
+  DeliveryReceiptModel get deliveryReceiptModel => _deliveryReceiptModel;
+  UserData _user = UserData();
+  UserData get user => _user;
+  List<DeliveryOrderDetail> _deliveryOrderDetail = [];
+  List<DeliveryOrderDetail> get deliveryOrderDetail => _deliveryOrderDetail;
+  Order _order = Order();
+  Order get order => _order;
+  Sender _sender = Sender();
+  Sender get sender => _sender;
+  Delivery _delivery = Delivery();
+  Delivery get delivery => _delivery;
+
+  Future<bool> getDeliveryReceipt(BuildContext context, params) async {
+    bool result = false;
+    String query = ResponseHelper.buildQuery(params);
+
+    _isLoadingReceipt = true;
+    notifyListeners();
+
+    ApiResponse apiResponse = await deliveryRepo.getDeliveryReceipt(query);
+
+    if (context.mounted) {
+      result = ResponseHelper.responseHelper(context, apiResponse);
+      if (result) {
+        _deliveryReceiptModel =
+            DeliveryReceiptModel.fromJson(apiResponse.response!.data);
+        _user = _deliveryReceiptModel.data!.user ?? UserData();
+        _deliveryOrderDetail =
+            _deliveryReceiptModel.data!.deliveryOrderDetail ?? [];
+        _order = _deliveryReceiptModel.data!.order ?? Order();
+        _sender = _deliveryReceiptModel.data!.sender ?? Sender();
+        _delivery = _deliveryReceiptModel.data!.delivery ?? Delivery();
+      }
+    }
+
+    _isLoadingReceipt = false;
     notifyListeners();
 
     return result;

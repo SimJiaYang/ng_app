@@ -52,7 +52,6 @@ class _DeliveryDetailScreenState extends State<DeliveryDetailScreen> {
   @override
   void initState() {
     super.initState();
-    print(widget.deliveryId);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadData();
     });
@@ -62,7 +61,6 @@ class _DeliveryDetailScreenState extends State<DeliveryDetailScreen> {
     // Get from the route args
     if (widget.deliveryId == "0") {
       final args = ModalRoute.of(context)!.settings.arguments as Map;
-      print(args);
       Order _order = _orderProv.orderList.firstWhere(
           (element) => element.id.toString() == args['orderID'].toString());
       bool result = await _deliveryProvider
@@ -273,25 +271,33 @@ class _DeliveryDetailScreenState extends State<DeliveryDetailScreen> {
                           delivery.status == "ship")
                         Padding(
                           padding: const EdgeInsets.only(top: 20),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 15),
-                            decoration: BoxDecoration(
-                              color: ColorResources.COLOR_WHITE,
-                              borderRadius: BorderRadius.circular(5),
+                          child: GestureDetector(
+                            onTap: () => Navigator.pushNamed(
+                              context,
+                              Routes.getDeliveryReceiptRoute(
+                                  delivery.id.toString()),
                             ),
-                            width: double.infinity,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("Click here to view delivery detail",
-                                    style: _title),
-                                Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: ColorResources.COLOR_PRIMARY,
-                                  size: 16,
-                                )
-                              ],
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 15),
+                              decoration: BoxDecoration(
+                                color: ColorResources.COLOR_WHITE,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              width: double.infinity,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text("Click here to view delivery detail",
+                                      style: _title),
+                                  Icon(
+                                    Icons.arrow_forward_ios,
+                                    color: ColorResources.COLOR_PRIMARY,
+                                    size: 16,
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
