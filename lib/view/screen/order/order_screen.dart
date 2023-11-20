@@ -317,8 +317,16 @@ class _OrderScreenState extends State<OrderScreen> {
                                                                     .status!
                                                                     .capitalize(),
                                                             style: _subTitle.copyWith(
-                                                                color: ColorResources
-                                                                    .COLOR_PRIMARY,
+                                                                color: orderProvider
+                                                                            .orderList[
+                                                                                index]
+                                                                            .status! ==
+                                                                        "cancel"
+                                                                    ? Colors.red
+                                                                        .withOpacity(
+                                                                            0.8)
+                                                                    : ColorResources
+                                                                        .COLOR_PRIMARY,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w400),

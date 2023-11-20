@@ -70,6 +70,38 @@ class _ShippingStatusState extends State<ShippingStatus> {
       ),
     );
 
+    Widget cancelWidget = Container(
+      padding: EdgeInsets.symmetric(horizontal: 3, vertical: 5),
+      decoration: BoxDecoration(
+        color: ColorResources.COLOR_WHITE,
+        borderRadius: BorderRadius.circular(5),
+      ),
+      width: double.infinity,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          ShippingIcon(
+            icon: Icons.close_sharp,
+            color: Colors.red.withOpacity(0.8),
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text("Order Cancelled", style: _title.copyWith(fontSize: 16)),
+              SizedBox(height: 3),
+              Text("Your order has been cancelled",
+                  style: _subTitle.copyWith(fontSize: 14))
+            ],
+          )
+        ],
+      ),
+    );
+
     Widget shipWidget = GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, Routes.getDeliveryDetailRoute("0"),
@@ -168,6 +200,60 @@ class _ShippingStatusState extends State<ShippingStatus> {
       ),
     );
 
+    Widget completeWidget = GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(
+            context,
+            Routes.getOrderDeliveryRoute(
+              widget.orderID,
+            ));
+        // Navigator.pushNamed(context, Routes.getDeliveryDetailRoute("0"),
+        //     arguments: {
+        //       "orderID": widget.orderID,
+        //     });
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 3, vertical: 5),
+        decoration: BoxDecoration(
+          color: ColorResources.COLOR_WHITE,
+          borderRadius: BorderRadius.circular(5),
+        ),
+        width: double.infinity,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            ShippingIcon(
+              icon: Icons.task_alt_outlined,
+              color: ColorResources.COLOR_PRIMARY,
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text("Order Delivered", style: _title.copyWith(fontSize: 16)),
+                SizedBox(height: 3),
+                Text("Your parcel has been delivered",
+                    style: _subTitle.copyWith(fontSize: 14))
+              ],
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Spacer(),
+            Icon(
+              Icons.arrow_forward_ios,
+              size: 20,
+              color: ColorResources.COLOR_PRIMARY,
+            )
+          ],
+        ),
+      ),
+    );
+
     return Container(
       width: double.infinity,
       color: Colors.white,
@@ -179,6 +265,8 @@ class _ShippingStatusState extends State<ShippingStatus> {
           if (widget.status == "pay") payWidget,
           if (widget.status == "ship") shipWidget,
           if (widget.status == "receive") receiveWidget,
+          if (widget.status == "completed") completeWidget,
+          if (widget.status == "cancel") cancelWidget,
           // SizedBox(
           //   height: 20,
           // )
