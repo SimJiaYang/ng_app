@@ -11,6 +11,7 @@ import 'package:nurserygardenapp/view/base/custom_appbar.dart';
 import 'package:nurserygardenapp/view/base/image_enlarge_widget.dart';
 import 'package:nurserygardenapp/view/base/page_loading.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/services.dart';
 
 class DeliveryDetailScreen extends StatefulWidget {
   final String deliveryId;
@@ -267,6 +268,33 @@ class _DeliveryDetailScreenState extends State<DeliveryDetailScreen> {
                                 ),
                               ]),
                         ),
+                      // Click to view delivery order item
+                      if (delivery.status == "delivered" ||
+                          delivery.status == "ship")
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 15),
+                            decoration: BoxDecoration(
+                              color: ColorResources.COLOR_WHITE,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            width: double.infinity,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Click here to view delivery detail",
+                                    style: _title),
+                                Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: ColorResources.COLOR_PRIMARY,
+                                  size: 16,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
                       SizedBox(height: 20),
                       Container(
                         padding: const EdgeInsets.all(
@@ -284,8 +312,28 @@ class _DeliveryDetailScreenState extends State<DeliveryDetailScreen> {
                                 children: [
                                   Text("Delivery Status", style: _title),
                                   Spacer(),
-                                  Text(delivery.trackingNumber ?? "",
-                                      style: _subTitle),
+                                  if (delivery.status == "delivered" ||
+                                      delivery.status == "ship")
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 5),
+                                      child: InkWell(
+                                        onTap: () {
+                                          Clipboard.setData(new ClipboardData(
+                                              text: delivery.trackingNumber ??
+                                                  ""));
+                                        },
+                                        child: Text(
+                                          "COPY",
+                                          style: _title.copyWith(
+                                              color:
+                                                  ColorResources.COLOR_PRIMARY),
+                                        ),
+                                      ),
+                                    ),
+                                  if (delivery.status == "delivered" ||
+                                      delivery.status == "ship")
+                                    Text(delivery.trackingNumber ?? "",
+                                        style: _subTitle),
                                 ],
                               ),
                               Stepper(

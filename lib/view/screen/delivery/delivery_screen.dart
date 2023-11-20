@@ -80,6 +80,18 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
         title: 'Delivery',
         context: context,
         isCenter: false,
+        isActionButtonExist: true,
+        actionWidget: [
+          // IconButton(
+          //   onPressed: () {
+          //     // Navigator.pushNamed(context, Routes.getAddDeliveryRoute());
+          //   },
+          //   icon: Icon(
+          //     Icons.search,
+          //     color: Colors.white,
+          //   ),
+          // ),
+        ],
       ),
       body: SizedBox(
           width: size.width,
