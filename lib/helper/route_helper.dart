@@ -2,6 +2,7 @@
 
 import 'package:fluro/fluro.dart';
 import 'package:nurserygardenapp/util/routes.dart';
+import 'package:nurserygardenapp/view/base/image_enlarge_widget.dart';
 import 'package:nurserygardenapp/view/screen/account/account_screen.dart';
 import 'package:nurserygardenapp/view/screen/account/sub_screen/changes_email_screen.dart';
 import 'package:nurserygardenapp/view/screen/account/sub_screen/changes_password_screen.dart';
@@ -216,6 +217,13 @@ class RouterHelper {
         ChangesEmailScreen(),
   );
 
+// =================================image=========================================
+  static Handler _imageEnlargeHandler = Handler(
+    handlerFunc: (context, Map<String, dynamic> parameters) =>
+        ImageEnlargeWidget(
+            tag: parameters['tag'][0], url: parameters['url'][0]),
+  );
+
 //*******Route Define*********
   static void setupRoute() {
     // router.define(Routes.DASHBOARD,
@@ -289,5 +297,8 @@ class RouterHelper {
     router.define(Routes.DASHBOARD_SCREEN,
         handler: _dashScreenBoardHandler,
         transitionType: TransitionType.fadeIn);
+    // Image widget
+    router.define(Routes.IMAGE_ENLARGE_SCREEN,
+        handler: _imageEnlargeHandler, transitionType: TransitionType.fadeIn);
   }
 }

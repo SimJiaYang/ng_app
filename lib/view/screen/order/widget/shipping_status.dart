@@ -254,6 +254,58 @@ class _ShippingStatusState extends State<ShippingStatus> {
       ),
     );
 
+    Widget partialWidget = GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(
+            context,
+            Routes.getOrderDeliveryRoute(
+              widget.orderID,
+            ));
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 3, vertical: 5),
+        decoration: BoxDecoration(
+          color: ColorResources.COLOR_WHITE,
+          borderRadius: BorderRadius.circular(5),
+        ),
+        width: double.infinity,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            ShippingIcon(
+              icon: Icons.list_alt_outlined,
+              color: ColorResources.COLOR_PRIMARY,
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text("Order Separate", style: _title.copyWith(fontSize: 16)),
+                SizedBox(height: 3),
+                Text("Your order has been separate to ship",
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    style: _subTitle.copyWith(fontSize: 14))
+              ],
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Spacer(),
+            Icon(
+              Icons.arrow_forward_ios,
+              size: 20,
+              color: ColorResources.COLOR_PRIMARY,
+            )
+          ],
+        ),
+      ),
+    );
+
     return Container(
       width: double.infinity,
       color: Colors.white,
@@ -265,41 +317,9 @@ class _ShippingStatusState extends State<ShippingStatus> {
           if (widget.status == "pay") payWidget,
           if (widget.status == "ship") shipWidget,
           if (widget.status == "receive") receiveWidget,
+          if (widget.status == "partial") partialWidget,
           if (widget.status == "completed") completeWidget,
           if (widget.status == "cancel") cancelWidget,
-          // SizedBox(
-          //   height: 20,
-          // )
-          // if (delivery.status == "delivered")
-          //   Container(
-          //     padding: const EdgeInsets.fromLTRB(0, 10, 15, 10),
-          //     child: Icon(
-          //       Icons.check_circle_outline,
-          //       size: 30,
-          //       color: ColorResources.COLOR_PRIMARY,
-          //     ),
-          //   ),
-          // Column(
-          //   crossAxisAlignment: CrossAxisAlignment.start,
-          //   mainAxisAlignment: MainAxisAlignment.start,
-          //   children: [
-          //     if (delivery.status == "ship")
-          //       Text("Expected Delivery Date", style: _title),
-          //     if (delivery.status == "delivered")
-          //       Text("Your Parcel has been delivered", style: _title),
-          //     SizedBox(height: 10),
-          //     if (delivery.status == "ship")
-          //       Text(
-          //           DateFormat('dd-MM-yyyy')
-          //               .format(delivery.expectedDate!),
-          //           style: _subTitle),
-          //     if (delivery.status == "delivered")
-          //       Text(
-          //           DateFormat('dd-MM-yyyy')
-          //               .format(delivery.updatedAt ?? DateTime.now()),
-          //           style: _subTitle),
-          //   ],
-          // ),
         ],
       ),
     );

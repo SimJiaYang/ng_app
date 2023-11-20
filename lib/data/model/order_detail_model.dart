@@ -95,6 +95,7 @@ class OrderItem {
   double? price;
   double? amount;
   int? orderId;
+  String? remark;
   dynamic cartId;
   int? productId;
   int? plantId;
@@ -108,6 +109,7 @@ class OrderItem {
     this.price,
     this.amount,
     this.orderId,
+    this.remark,
     this.cartId,
     this.productId,
     this.plantId,
@@ -122,6 +124,7 @@ class OrderItem {
         price: json["price"]?.toDouble(),
         amount: json["amount"]?.toDouble(),
         orderId: json["order_id"],
+        remark: json["remark"] ?? null,
         cartId: json["cart_id"],
         productId: json["product_id"],
         plantId: json["plant_id"],
@@ -140,6 +143,7 @@ class OrderItem {
         "price": price,
         "amount": amount,
         "order_id": orderId,
+        "remark": remark,
         "cart_id": cartId,
         "product_id": productId,
         "plant_id": plantId,

@@ -56,6 +56,9 @@ class Routes {
   static const String CHANGE_PASSWORD_SCREEN = '/change-password';
   static const String CHANGE_EMAIL = '/change-email';
 
+  // Image Widget
+  static const String IMAGE_ENLARGE_SCREEN = '/image-enlarge';
+
   /** ROUTE **/
   static String getComingSoonRoute() => COMING_SOON;
   static String getSplashRoute() => SPLASH_SCREEN;
@@ -117,6 +120,10 @@ class Routes {
 
   // Bidding
   static String getBiddingRoute() => BIDDING_SCREEN;
+
+  // Image widget
+  static String getImageEnlargeRoute(String tag, String url) =>
+      '$IMAGE_ENLARGE_SCREEN?tag=$tag&url=$url';
 
   // Account
   static String getAcocuntRoute() => ACCOUNT_SCREEN;

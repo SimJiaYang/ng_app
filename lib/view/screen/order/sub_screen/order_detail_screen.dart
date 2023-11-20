@@ -216,7 +216,38 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                                                   .start,
                                                           children: [
                                                             SizedBox(
-                                                              width: 15,
+                                                              width: 5,
+                                                            ),
+                                                            if (orderProvider
+                                                                    .orderDetailList[
+                                                                        index]
+                                                                    .remark !=
+                                                                null)
+                                                              Icon(
+                                                                Icons.done,
+                                                                color: ColorResources
+                                                                    .COLOR_PRIMARY,
+                                                              ),
+                                                            if (orderProvider
+                                                                        .orderDetailList[
+                                                                            index]
+                                                                        .remark ==
+                                                                    null &&
+                                                                (getSpecificOrder(orderProvider)!.status == "partial" ||
+                                                                    getSpecificOrder(orderProvider)!
+                                                                            .status ==
+                                                                        "recieve" ||
+                                                                    getSpecificOrder(orderProvider)!
+                                                                            .status ==
+                                                                        "completed"))
+                                                              Icon(
+                                                                Icons
+                                                                    .more_horiz_outlined,
+                                                                color: ColorResources
+                                                                    .COLOR_GREY,
+                                                              ),
+                                                            SizedBox(
+                                                              width: 5,
                                                             ),
                                                             if (orderProvider
                                                                     .orderDetailList[
