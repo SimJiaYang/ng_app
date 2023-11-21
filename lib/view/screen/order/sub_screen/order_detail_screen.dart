@@ -79,6 +79,18 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
               fontSize: 16,
             ),
           ),
+          actions: [
+            if (getSpecificOrder(order_prov)!.status == "completed")
+              IconButton(
+                tooltip: "Order Receipt",
+                onPressed: () {
+                  Navigator.pushNamed(
+                      context, Routes.getOrderReceiptRoute(widget.orderID));
+                },
+                icon: Icon(Icons.receipt_long_outlined),
+                color: Colors.white,
+              )
+          ],
         ),
         body: Container(
             width: size.width,

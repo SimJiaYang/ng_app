@@ -66,6 +66,7 @@ class AppConstants {
   static const String ORDER_URI = '/order';
   static const String ORDER_CREATE_URL = '/order/create';
   static const String ORDER_DETAIL_URI = '/order/detail';
+  static const String ORDER_RECEIPT_URI = '/order/receipt';
 
   // Payment
   static const String PAYMENT_URI = '/order/payment/intent';

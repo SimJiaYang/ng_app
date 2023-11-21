@@ -25,6 +25,7 @@ import 'package:nurserygardenapp/view/screen/order/sub_screen/order_address_scre
 import 'package:nurserygardenapp/view/screen/order/sub_screen/order_confirmation_screen.dart';
 import 'package:nurserygardenapp/view/screen/order/sub_screen/order_delivery_list.dart';
 import 'package:nurserygardenapp/view/screen/order/sub_screen/order_detail_screen.dart';
+import 'package:nurserygardenapp/view/screen/order/sub_screen/order_receipt_screen.dart';
 import 'package:nurserygardenapp/view/screen/payment/payment_screen.dart';
 import 'package:nurserygardenapp/view/screen/plant/plant_detail_screen.dart';
 import 'package:nurserygardenapp/view/screen/plant/plant_screen.dart';
@@ -153,6 +154,13 @@ class RouterHelper {
     ),
   );
 
+  static Handler _orderReceiptHandler = Handler(
+    handlerFunc: (context, Map<String, dynamic> parameters) =>
+        OrderReceiptScreen(
+      orderID: parameters['orderID'][0],
+    ),
+  );
+
   // =================================Payment=========================================
   static Handler _paymentHandler = Handler(
     handlerFunc: (context, Map<String, dynamic> parameters) => PaymentScreen(
@@ -277,6 +285,8 @@ class RouterHelper {
         handler: _orderAddressHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.ORDER_DELIVERY_SCREEN,
         handler: _orderDeliveryHandler, transitionType: TransitionType.fadeIn);
+    router.define(Routes.ORDER_RECEIPT_SCREEN,
+        handler: _orderReceiptHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.PAYMENT_SCREEN,
         handler: _paymentHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.ADDRESS_SCREEN,

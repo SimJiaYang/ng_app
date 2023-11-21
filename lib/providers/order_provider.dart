@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/data/model/cart_model.dart';
 import 'package:nurserygardenapp/data/model/delivery_model.dart';
+import 'package:nurserygardenapp/data/model/delivery_receipt_model.dart';
 import 'package:nurserygardenapp/data/model/order_detail_model.dart';
 import 'package:nurserygardenapp/data/model/order_model.dart';
+import 'package:nurserygardenapp/data/model/order_recieipt_model.dart';
 import 'package:nurserygardenapp/data/model/plant_model.dart';
 import 'package:nurserygardenapp/data/model/product_model.dart';
 import 'package:nurserygardenapp/data/model/response/api_response.dart';
@@ -139,6 +141,47 @@ class OrderProvider extends ChangeNotifier {
     }
     _isLoading = false;
     notifyListeners();
+    return result;
+  }
+
+  /// ================== ORDER RECEIPT ==================
+  OrderReceiptModel _orderReceiptModel = OrderReceiptModel();
+  OrderReceiptModel get orderReceiptModel => _orderReceiptModel;
+
+  Order _orderReceiptInfo = Order();
+  Order get orderReceiptInfo => _orderReceiptInfo;
+  List<DeliveryOrderDetail> _orderReceiptItem = [];
+  List<DeliveryOrderDetail> get orderReceiptItem => _orderReceiptItem;
+  Payment _orderReceiptPaymentInfo = Payment();
+  Payment get orderReceiptPaymentInfo => _orderReceiptPaymentInfo;
+
+  bool _isLoadingReceipt = false;
+  bool get isLoadingReceipt => _isLoadingReceipt;
+
+  Future<bool> getOrderReceipt(BuildContext context, params) async {
+    bool result = false;
+    String query = ResponseHelper.buildQuery(params);
+
+    _isLoadingReceipt = true;
+    notifyListeners();
+
+    ApiResponse apiResponse = await orderRepo.getReceipt(query);
+
+    if (context.mounted) {
+      result = ResponseHelper.responseHelper(context, apiResponse);
+      if (result) {
+        _orderReceiptModel =
+            OrderReceiptModel.fromJson(apiResponse.response!.data);
+        _orderReceiptInfo = _orderReceiptModel.data!.order ?? Order();
+        _orderReceiptItem = _orderReceiptModel.data!.orderItem ?? [];
+        _orderReceiptPaymentInfo =
+            _orderReceiptModel.data!.payment ?? Payment();
+      }
+    }
+
+    _isLoadingReceipt = false;
+    notifyListeners();
+
     return result;
   }
 }
