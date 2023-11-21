@@ -8,6 +8,7 @@ import 'package:nurserygardenapp/data/model/order_recieipt_model.dart';
 import 'package:nurserygardenapp/data/model/plant_model.dart';
 import 'package:nurserygardenapp/data/model/product_model.dart';
 import 'package:nurserygardenapp/data/model/response/api_response.dart';
+import 'package:nurserygardenapp/data/model/user_model.dart';
 import 'package:nurserygardenapp/data/repositories/order_repo.dart';
 import 'package:nurserygardenapp/helper/response_helper.dart';
 import 'package:nurserygardenapp/util/app_constants.dart';
@@ -154,6 +155,10 @@ class OrderProvider extends ChangeNotifier {
   List<DeliveryOrderDetail> get orderReceiptItem => _orderReceiptItem;
   Payment _orderReceiptPaymentInfo = Payment();
   Payment get orderReceiptPaymentInfo => _orderReceiptPaymentInfo;
+  Sender _receiptSender = Sender();
+  Sender get receiptSender => _receiptSender;
+  UserData _receiptUser = UserData();
+  UserData get receiptUser => _receiptUser;
 
   bool _isLoadingReceipt = false;
   bool get isLoadingReceipt => _isLoadingReceipt;
@@ -176,6 +181,8 @@ class OrderProvider extends ChangeNotifier {
         _orderReceiptItem = _orderReceiptModel.data!.orderItem ?? [];
         _orderReceiptPaymentInfo =
             _orderReceiptModel.data!.payment ?? Payment();
+        _receiptSender = _orderReceiptModel.data!.sender ?? Sender();
+        _receiptUser = _orderReceiptModel.data!.user ?? UserData();
       }
     }
 

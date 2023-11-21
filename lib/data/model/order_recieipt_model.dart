@@ -6,6 +6,7 @@ import 'dart:convert';
 
 import 'package:nurserygardenapp/data/model/delivery_receipt_model.dart';
 import 'package:nurserygardenapp/data/model/order_model.dart';
+import 'package:nurserygardenapp/data/model/user_model.dart';
 
 OrderReceiptModel orderReceiptModelFromJson(String str) =>
     OrderReceiptModel.fromJson(json.decode(str));
@@ -39,17 +40,22 @@ class OrderReceiptModel {
 }
 
 class Data {
+  UserData? user;
   Order? order;
   List<DeliveryOrderDetail>? orderItem;
   Payment? payment;
+  Sender? sender;
 
   Data({
+    this.user,
     this.order,
     this.orderItem,
     this.payment,
+    this.sender,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
+        user: json["user"] == null ? null : UserData.fromJson(json["user"]),
         order: json["order"] == null ? null : Order.fromJson(json["order"]),
         orderItem: json["order_item"] == null
             ? []
@@ -57,14 +63,17 @@ class Data {
                 .map((x) => DeliveryOrderDetail.fromJson(x))),
         payment:
             json["payment"] == null ? null : Payment.fromJson(json["payment"]),
+        sender: json["sender"] == null ? null : Sender.fromJson(json["sender"]),
       );
 
   Map<String, dynamic> toJson() => {
+        "user": user?.toJson(),
         "order": order?.toJson(),
         "order_item": orderItem == null
             ? []
             : List<dynamic>.from(orderItem!.map((x) => x.toJson())),
         "payment": payment?.toJson(),
+        "sender": sender?.toJson(),
       };
 }
 
