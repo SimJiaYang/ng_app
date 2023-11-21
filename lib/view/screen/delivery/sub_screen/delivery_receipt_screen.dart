@@ -59,7 +59,7 @@ class _DeliveryReceiptScreenState extends State<DeliveryReceiptScreen> {
           isBgPrimaryColor: true,
           isCenter: false,
           isBackButtonExist: false,
-          title: "Delivery Receipt",
+          title: "Delivery Detail",
           context: context,
         ),
         body: Container(
@@ -98,15 +98,15 @@ class _DeliveryReceiptScreenState extends State<DeliveryReceiptScreen> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Delivery Details",
+                            Text("Delivery Information",
                                 style: _title.copyWith(fontSize: 16)),
                             SizedBox(height: 5),
                             Row(
                               children: [
                                 Text("Tracking Number: ", style: _title),
                                 Text(
-                                    deliveryProvider.delivery.trackingNumber!
-                                        .toString(),
+                                    deliveryProvider.delivery.trackingNumber ??
+                                        "",
                                     style: _subTitle),
                               ],
                             ),
@@ -137,7 +137,7 @@ class _DeliveryReceiptScreenState extends State<DeliveryReceiptScreen> {
                             Row(
                               children: [
                                 Text("Sender: ", style: _title),
-                                Text(deliveryProvider.sender.sender!,
+                                Text(deliveryProvider.sender.sender ?? "",
                                     style: _subTitle),
                               ],
                             ),
@@ -163,7 +163,7 @@ class _DeliveryReceiptScreenState extends State<DeliveryReceiptScreen> {
                             Row(
                               children: [
                                 Text("Receiver: ", style: _title),
-                                Text(deliveryProvider.user.name!,
+                                Text(deliveryProvider.user.name ?? "",
                                     style: _subTitle),
                               ],
                             ),
@@ -236,7 +236,8 @@ class _DeliveryReceiptScreenState extends State<DeliveryReceiptScreen> {
                                                     .plantName ??
                                                 deliveryProvider
                                                     .deliveryOrderDetail[index]
-                                                    .productName,
+                                                    .productName ??
+                                                "",
                                             style: _title),
                                         Text(
                                             " x " +
