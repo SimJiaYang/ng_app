@@ -8,11 +8,11 @@ import 'package:nurserygardenapp/providers/cart_provider.dart';
 import 'package:nurserygardenapp/providers/product_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/dimensions.dart';
+import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/custom_button.dart';
 import 'package:nurserygardenapp/view/base/custom_space.dart';
 import 'package:nurserygardenapp/view/base/image_enlarge_widget.dart';
 import 'package:nurserygardenapp/view/base/page_loading.dart';
-import 'package:nurserygardenapp/view/screen/plant/plant_detail_screen.dart';
 import 'package:provider/provider.dart';
 
 class ProductDetailScreen extends StatefulWidget {
@@ -74,171 +74,173 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     EasyLoading.dismiss();
   }
 
+  void checkout() {
+    Navigator.pop(context);
+    Cart cart = Cart();
+    cart.productId = product.id;
+    cart.quantity = cartQuantity;
+    cart.price = product.price! * cartQuantity;
+    cart.dateAdded = DateTime.now();
+    cart.isPurchase = "false";
+    cart.isCart = false;
+    cart_prov.addCartList(cart);
+    Navigator.pushNamed(context, Routes.getOrderConfirmationRoute("product"))
+        .then((value) {
+      if (value == true) {
+        cart_prov.clearCartList();
+        getProductInformation();
+      }
+      ;
+    });
+  }
+
   void showModalBottom(int index, BuildContext context) {
     showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) {
-        return index == 0
-            ? Container(
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                        color: Colors.grey.withOpacity(0.1),
-                        offset: const Offset(0, 2),
-                        blurRadius: 10.0),
-                  ],
-                ),
-                height: MediaQuery.of(context).size.height * 0.5,
-                width: double.infinity,
-                child: Center(
-                  child: Column(
+        return Container(
+          padding: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                  color: Colors.grey.withOpacity(0.1),
+                  offset: const Offset(0, 2),
+                  blurRadius: 10.0),
+            ],
+          ),
+          height: MediaQuery.of(context).size.height * 0.4,
+          width: double.infinity,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.all(3),
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
+                    children: [
                       Container(
-                        padding: EdgeInsets.all(3),
-                        child: Row(
+                        height: 100,
+                        width: 100,
+                        child: CachedNetworkImage(
+                          filterQuality: FilterQuality.high,
+                          imageUrl: "${product.imageURL!}",
+                          imageBuilder: (context, imageProvider) => Container(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: imageProvider,
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                          ),
+                          placeholder: (context, url) => Padding(
+                            padding: const EdgeInsets.all(1.0),
+                            child: Container(
+                              width: double.infinity,
+                              height: 20,
+                              color: Colors.grey[400],
+                            ),
+                          ),
+                          errorWidget: (context, url, error) =>
+                              Icon(Icons.error),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                        height: 100,
+                        child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              height: 100,
-                              width: 100,
-                              child: CachedNetworkImage(
-                                filterQuality: FilterQuality.high,
-                                imageUrl: "${product.imageURL!}",
-                                imageBuilder: (context, imageProvider) =>
-                                    Container(
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: imageProvider,
-                                      fit: BoxFit.fill,
-                                    ),
-                                  ),
-                                ),
-                                placeholder: (context, url) => Padding(
-                                  padding: const EdgeInsets.all(1.0),
-                                  child: Container(
-                                    width: double.infinity,
-                                    height: 20,
-                                    color: Colors.grey[400],
-                                  ),
-                                ),
-                                errorWidget: (context, url, error) =>
-                                    Icon(Icons.error),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Container(
-                              height: 100,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "${product.name}",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 19,
-                                        color: ColorResources.COLOR_BLACK
-                                            .withOpacity(0.9)),
-                                  ),
-                                  Text(
-                                    "Inventory: ${product.quantity}",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 15,
-                                        color: ColorResources.COLOR_BLACK
-                                            .withOpacity(0.7)),
-                                  ),
-                                  Expanded(child: Container()),
-                                  Text(
-                                    "RM ${product.price!.toStringAsFixed(2)}",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 19,
-                                        color: ColorResources.COLOR_BLACK
-                                            .withOpacity(0.8)),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Divider(),
-                      Expanded(child: Container()),
-                      Container(
-                        height: 30,
-                        child: Row(
-                          children: [
                             Text(
-                              "Enter the quantity: ",
-                              style: TextStyle(fontSize: 14),
+                              "${product.name}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 19,
+                                  color: ColorResources.COLOR_BLACK
+                                      .withOpacity(0.9)),
                             ),
-                            InputQty.int(
-                              decoration: QtyDecorationProps(
-                                isBordered: false,
-                                borderShape: BorderShapeBtn.none,
-                                btnColor: ColorResources.COLOR_PRIMARY,
-                                width: 12,
-                                plusBtn: Icon(
-                                  Icons.add_box_outlined,
-                                  size: 25,
-                                  color: ColorResources.COLOR_PRIMARY,
-                                ),
-                                minusBtn: Icon(
-                                  Icons.indeterminate_check_box_outlined,
-                                  size: 25,
-                                  color: ColorResources.COLOR_PRIMARY,
-                                ),
-                              ),
-                              //Need Change
-                              maxVal: product.quantity!,
-                              initVal: cartQuantity,
-                              minVal: 1,
-                              steps: 1,
-                              onQtyChanged: (val) {
-                                setState(() {
-                                  cartQuantity = val;
-                                });
-                              },
+                            Text(
+                              "Inventory: ${product.quantity}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 15,
+                                  color: ColorResources.COLOR_BLACK
+                                      .withOpacity(0.7)),
+                            ),
+                            Expanded(child: Container()),
+                            Text(
+                              "RM ${product.price!.toStringAsFixed(2)}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 19,
+                                  color: ColorResources.COLOR_BLACK
+                                      .withOpacity(0.8)),
                             ),
                           ],
                         ),
-                      ),
-                      Expanded(child: Container()),
-                      CustomButton(
-                        btnTxt: 'Add to cart',
-                        onTap: () async {
-                          await addToCart();
-                        },
                       )
                     ],
                   ),
                 ),
-              )
-            : Container(
-                height: MediaQuery.of(context).size.height * 0.5,
-                color: Colors.grey,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      const Text('Modal BottomSheet'),
-                      ElevatedButton(
-                        child: const Text('Close BottomSheet'),
-                        onPressed: () => Navigator.pop(context),
+                Divider(),
+                Expanded(child: Container()),
+                Container(
+                  height: 30,
+                  child: Row(
+                    children: [
+                      Text(
+                        "Enter the quantity: ",
+                        style: TextStyle(fontSize: 14),
+                      ),
+                      InputQty.int(
+                        decoration: QtyDecorationProps(
+                          isBordered: false,
+                          borderShape: BorderShapeBtn.none,
+                          btnColor: ColorResources.COLOR_PRIMARY,
+                          width: 12,
+                          plusBtn: Icon(
+                            Icons.add_box_outlined,
+                            size: 25,
+                            color: ColorResources.COLOR_PRIMARY,
+                          ),
+                          minusBtn: Icon(
+                            Icons.indeterminate_check_box_outlined,
+                            size: 25,
+                            color: ColorResources.COLOR_PRIMARY,
+                          ),
+                        ),
+                        //Need Change
+                        maxVal: product.quantity!,
+                        initVal: cartQuantity,
+                        minVal: 1,
+                        steps: 1,
+                        onQtyChanged: (val) {
+                          setState(() {
+                            cartQuantity = val;
+                          });
+                        },
                       ),
                     ],
                   ),
                 ),
-              );
+                Expanded(child: Container()),
+                CustomButton(
+                  btnTxt: index == 0 ? 'Add to cart' : 'Checkout',
+                  onTap: () async {
+                    if (index == 0) await addToCart();
+                    if (index == 1) checkout();
+                  },
+                )
+              ],
+            ),
+          ),
+        );
       },
     );
   }

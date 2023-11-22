@@ -209,6 +209,28 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                 }
                               });
                             }
+                            if (widget.comeFrom == productMode) {
+                              await cartProvider
+                                  .addToCart(
+                                      context, cartProvider.addedCartList.first,
+                                      ismsg: false, isCart: false)
+                                  .then((value) async {
+                                if (value == true) {
+                                  await orderProvider
+                                      .addOrder(cartProvider.returnAddCart,
+                                          address, context)
+                                      .then((value) {
+                                    if (value == true) {
+                                      Navigator.pushReplacementNamed(
+                                          context,
+                                          Routes.getPaymentRoute(
+                                              (PaymentType.card).toString(),
+                                              orderProvider.orderIdCreated));
+                                    }
+                                  });
+                                }
+                              });
+                            }
                           },
                           child: Container(
                             decoration: BoxDecoration(

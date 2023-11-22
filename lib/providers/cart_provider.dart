@@ -123,10 +123,6 @@ class CartProvider extends ChangeNotifier {
     ApiResponse apiResponse = await cartRepo.deleteCartItem(id);
     if (context.mounted) {
       result = ResponseHelper.responseHelper(context, apiResponse);
-      // if (result) {
-      //   showCustomSnackBar('Success', context,
-      //       type: AppConstants.SNACKBAR_SUCCESS);
-      // }
     }
     notifyListeners();
     return result;
@@ -137,15 +133,9 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addCartList(Cart cart, {Plant? plant, Product? product}) {
+  void addCartList(Cart cart) {
     clearCartList();
     _addedCartList = [cart];
-    if (plant != null) {
-      // _cartPlantList = [plant];
-    }
-    if (product != null) {
-      // _cartProductList = [product];
-    }
     notifyListeners();
   }
 }

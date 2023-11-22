@@ -84,7 +84,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
     cart.dateAdded = DateTime.now();
     cart.isPurchase = "false";
     cart.isCart = false;
-    cart_prov.addCartList(cart, plant: plant);
+    cart_prov.addCartList(cart);
     Navigator.pushNamed(context, Routes.getOrderConfirmationRoute("plant"))
         .then((value) {
       if (value == true) {
