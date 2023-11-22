@@ -78,12 +78,12 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
   void checkout() {
     Navigator.pop(context);
     Cart cart = Cart();
-    cart.id = 0;
     cart.plantId = plant.id;
     cart.quantity = cartQuantity;
     cart.price = plant.price! * cartQuantity;
     cart.dateAdded = DateTime.now();
     cart.isPurchase = "false";
+    cart.isCart = false;
     cart_prov.addCartList(cart, plant: plant);
     Navigator.pushNamed(context, Routes.getOrderConfirmationRoute("plant"))
         .then((value) {

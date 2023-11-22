@@ -75,17 +75,26 @@ class CartProvider extends ChangeNotifier {
   }
 
   // ADD TO CART ** UPDATE CART
-  Future<bool> addToCart(BuildContext context, Cart cart) async {
+  List<Cart> _returnAddCart = [];
+  List<Cart> get returnAddCart => _returnAddCart;
+
+  Future<bool> addToCart(BuildContext context, Cart cart,
+      {bool ismsg = true, bool isCart = true}) async {
     bool result = false;
     _isLoading = true;
+    _returnAddCart = [];
     notifyListeners();
 
     ApiResponse apiResponse = await cartRepo.addToCart(cart);
     if (context.mounted) {
       result = ResponseHelper.responseHelper(context, apiResponse);
       if (result) {
-        showCustomSnackBar('Success', context,
-            type: AppConstants.SNACKBAR_SUCCESS);
+        _returnAddCart =
+            CartModel.fromJson(apiResponse.response!.data).data!.returnCart!;
+        if (ismsg) {
+          showCustomSnackBar('Success', context,
+              type: AppConstants.SNACKBAR_SUCCESS);
+        }
       }
     }
     _isLoading = false;
@@ -101,10 +110,6 @@ class CartProvider extends ChangeNotifier {
     ApiResponse apiResponse = await cartRepo.updateCartItem(cart);
     if (context.mounted) {
       result = ResponseHelper.responseHelper(context, apiResponse);
-      // if (result) {
-      //   showCustomSnackBar('Success', context,
-      //       type: AppConstants.SNACKBAR_SUCCESS);
-      // }
     }
     notifyListeners();
     return result;

@@ -39,11 +39,13 @@ class Data {
   List<Plant>? plant;
   List<Product>? product;
   CartList? cartList;
+  List<Cart>? returnCart;
 
   Data({
     this.plant,
     this.product,
     this.cartList,
+    this.returnCart,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
@@ -55,6 +57,10 @@ class Data {
             : List<Product>.from(
                 json["product"]!.map((x) => Product.fromJson(x))),
         cartList: json["cart"] == null ? null : CartList.fromJson(json["cart"]),
+        returnCart: json["return_cart"] == null
+            ? []
+            : List<Cart>.from(
+                json["return_cart"]!.map((x) => Cart.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -65,6 +71,9 @@ class Data {
             ? []
             : List<dynamic>.from(product!.map((x) => x.toJson())),
         "cart": cartList?.toJson(),
+        "return_cart": returnCart == null
+            ? []
+            : List<dynamic>.from(returnCart!.map((x) => x.toJson())),
       };
 }
 
@@ -151,6 +160,7 @@ class Cart {
   dynamic biddingId;
   int? userId;
   bool? isChecked;
+  bool? isCart;
   DateTime? createdAt;
   DateTime? updatedAt;
 
@@ -165,6 +175,7 @@ class Cart {
     this.biddingId,
     this.userId,
     this.isChecked = false,
+    this.isCart,
     this.createdAt,
     this.updatedAt,
   });
@@ -178,7 +189,7 @@ class Cart {
             : DateTime.parse(json["date_added"]),
         isPurchase: json["is_purchase"],
         productId: json["product_id"],
-        plantId: json["plant_id"],
+        plantId: (json["plant_id"]),
         biddingId: json["bidding_id"],
         userId: json["user_id"],
         createdAt: json["created_at"] == null
@@ -197,12 +208,13 @@ class Cart {
             ? null
             : "${dateAdded!.year.toString().padLeft(4, '0')}-${dateAdded!.month.toString().padLeft(2, '0')}-${dateAdded!.day.toString().padLeft(2, '0')}",
         "is_purchase": isPurchase,
-        "productID": productId.toString(),
-        "plantID": plantId.toString(),
+        "productID": productId == null ? "null" : productId.toString(),
+        "plantID": plantId == null ? "null" : plantId.toString(),
         "bidding_id": biddingId.toString(),
         "user_id": userId,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
+        "is_cart": isCart == null ? null : isCart.toString(),
       };
 }
 

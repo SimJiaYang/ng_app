@@ -155,8 +155,8 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                     ),
                     Expanded(
                       flex: 1,
-                      child: Consumer<OrderProvider>(
-                          builder: (context, orderProvider, child) {
+                      child: Consumer2<OrderProvider, CartProvider>(builder:
+                          (context, orderProvider, cartProvider, child) {
                         return GestureDetector(
                           onTap: () async {
                             if (address == emptyAddress_msg) {
@@ -173,18 +173,42 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                               return;
                             }
                             if (orderProvider.isLoading) return;
-                            await orderProvider
-                                .addOrder(
-                                    cart_prov.addedCartList, address, context)
-                                .then((value) {
-                              if (value == true) {
-                                Navigator.pushReplacementNamed(
-                                    context,
-                                    Routes.getPaymentRoute(
-                                        (PaymentType.card).toString(),
-                                        orderProvider.orderIdCreated));
-                              }
-                            });
+                            if (widget.comeFrom == cartMode) {
+                              await orderProvider
+                                  .addOrder(
+                                      cart_prov.addedCartList, address, context)
+                                  .then((value) {
+                                if (value == true) {
+                                  Navigator.pushReplacementNamed(
+                                      context,
+                                      Routes.getPaymentRoute(
+                                          (PaymentType.card).toString(),
+                                          orderProvider.orderIdCreated));
+                                }
+                              });
+                            }
+                            if (widget.comeFrom == plantMode) {
+                              await cartProvider
+                                  .addToCart(
+                                      context, cartProvider.addedCartList.first,
+                                      ismsg: false, isCart: false)
+                                  .then((value) async {
+                                if (value == true) {
+                                  await orderProvider
+                                      .addOrder(cartProvider.returnAddCart,
+                                          address, context)
+                                      .then((value) {
+                                    if (value == true) {
+                                      Navigator.pushReplacementNamed(
+                                          context,
+                                          Routes.getPaymentRoute(
+                                              (PaymentType.card).toString(),
+                                              orderProvider.orderIdCreated));
+                                    }
+                                  });
+                                }
+                              });
+                            }
                           },
                           child: Container(
                             decoration: BoxDecoration(
