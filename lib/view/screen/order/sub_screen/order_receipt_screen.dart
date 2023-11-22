@@ -218,8 +218,8 @@ class _OrderReceiptScreenState extends State<OrderReceiptScreen> {
                                               " RM " +
                                                   orderProvider
                                                       .orderReceiptItem[index]
-                                                      .amount
-                                                      .toString(),
+                                                      .amount!
+                                                      .toStringAsFixed(2),
                                               style: _subTitle.copyWith(
                                                   fontWeight: FontWeight.w400,
                                                   color: Colors.black)),
@@ -242,8 +242,8 @@ class _OrderReceiptScreenState extends State<OrderReceiptScreen> {
                                   Text(
                                       "RM " +
                                           orderProvider
-                                              .orderReceiptInfo.totalAmount
-                                              .toString(),
+                                              .orderReceiptInfo.totalAmount!
+                                              .toStringAsFixed(2),
                                       style: _subTitle.copyWith(
                                           fontWeight: FontWeight.w400,
                                           color: Colors.black))

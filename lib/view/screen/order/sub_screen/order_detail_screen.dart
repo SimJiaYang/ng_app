@@ -555,14 +555,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                 SizedBox(
                                   height: 10,
                                 ),
-                                if (orderProvider.orderList
-                                        .where((element) {
-                                          return element.id.toString() ==
-                                              widget.orderID;
-                                        })
-                                        .first
-                                        .status ==
-                                    "pay")
+                                if (order.status == "pay")
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 5),
