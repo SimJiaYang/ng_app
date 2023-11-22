@@ -41,6 +41,8 @@ class CartProvider extends ChangeNotifier {
     if (!isLoadMore) {
       _cartList = [];
       _addedCartList = [];
+      _cartPlantList = [];
+      _cartProductList = [];
       _noMoreDataMessage = '';
     }
 
@@ -127,6 +129,18 @@ class CartProvider extends ChangeNotifier {
 
   void clearCartList() {
     _addedCartList = [];
+    notifyListeners();
+  }
+
+  void addCartList(Cart cart, {Plant? plant, Product? product}) {
+    clearCartList();
+    _addedCartList = [cart];
+    if (plant != null) {
+      // _cartPlantList = [plant];
+    }
+    if (product != null) {
+      // _cartProductList = [product];
+    }
     notifyListeners();
   }
 }

@@ -100,7 +100,8 @@ class Routes {
   static String getOrderRoute() => ORDER_SCREEN;
   static String getOrderDetailRoute(String orderID) =>
       '$ORDER_DETAIL_SCREEN?orderID=$orderID';
-  static String getOrderConfirmationRoute() => ORDER_CONFIRMATION_SCREEN;
+  static String getOrderConfirmationRoute(String comeFrom) =>
+      '$ORDER_CONFIRMATION_SCREEN?comeFrom=$comeFrom';
   static String getOrderAddressRoute() => ORDER_ADDRESS_SCREEN;
   static String getOrderDeliveryRoute(String orderID) =>
       '$ORDER_DELIVERY_SCREEN?orderID=$orderID';

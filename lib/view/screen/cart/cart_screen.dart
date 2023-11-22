@@ -194,8 +194,8 @@ class _CartScreenState extends State<CartScreen> {
                             return;
                           }
                           ;
-                          Navigator.pushNamed(
-                                  context, Routes.ORDER_CONFIRMATION_SCREEN)
+                          Navigator.pushNamed(context,
+                                  Routes.getOrderConfirmationRoute("cart"))
                               .then((value) {
                             _loadData();
                           });

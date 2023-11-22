@@ -139,7 +139,9 @@ class RouterHelper {
 
   static Handler _orderConfirmationHandler = Handler(
     handlerFunc: (context, Map<String, dynamic> parameters) =>
-        OrderConfirmationScreen(),
+        OrderConfirmationScreen(
+      comeFrom: parameters['comeFrom'][0],
+    ),
   );
 
   static Handler _orderAddressHandler = Handler(

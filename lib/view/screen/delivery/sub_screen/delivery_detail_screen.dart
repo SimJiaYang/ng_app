@@ -394,7 +394,7 @@ class _DeliveryDetailScreenState extends State<DeliveryDetailScreen> {
                                       style: _title,
                                     ),
                                     subtitle: Text(
-                                      DateFormat('dd-MM-yyyy').format(
+                                      DateFormat('dd-MM-yyyy HH:mm').format(
                                           delivery.orderDate ?? DateTime.now()),
                                       style: _subTitle.copyWith(fontSize: 12),
                                     ),
@@ -412,7 +412,7 @@ class _DeliveryDetailScreenState extends State<DeliveryDetailScreen> {
                                     subtitle: delivery.status == "delivered" ||
                                             delivery.status == "ship"
                                         ? Text(
-                                            DateFormat('dd-MM-yyyy')
+                                            DateFormat('dd-MM-yyyy HH:mm')
                                                 .format(delivery.createdAt!),
                                             style: _subTitle.copyWith(
                                                 fontSize: 12),
@@ -432,7 +432,7 @@ class _DeliveryDetailScreenState extends State<DeliveryDetailScreen> {
                                     ),
                                     subtitle: delivery.status == "delivered"
                                         ? Text(
-                                            DateFormat('dd-MM-yyyy')
+                                            DateFormat('dd-MM-yyyy HH:mm')
                                                 .format(delivery.updatedAt!),
                                             style: _subTitle.copyWith(
                                                 fontSize: 12))

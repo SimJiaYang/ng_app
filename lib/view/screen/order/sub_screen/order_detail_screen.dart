@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nurserygardenapp/data/model/order_model.dart';
-import 'package:nurserygardenapp/providers/delivery_provider.dart';
 import 'package:nurserygardenapp/providers/order_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/dimensions.dart';
@@ -25,6 +24,7 @@ class OrderDetailScreen extends StatefulWidget {
 class _OrderDetailScreenState extends State<OrderDetailScreen> {
   late OrderProvider order_prov =
       Provider.of<OrderProvider>(context, listen: false);
+  Order order = Order();
 
   // Param
   var params = {};
@@ -39,15 +39,13 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
   }
 
   Future<void> _loadData() async {
+    setState(() {
+      order = order_prov.orderList
+              .where((element) => element.id.toString() == widget.orderID)
+              .firstOrNull ??
+          Order();
+    });
     await order_prov.getOrderDetail(context, params);
-  }
-
-  Order? getSpecificOrder(OrderProvider orderProvider) {
-    List<Order> filteredOrders = orderProvider.orderList
-        .where((element) => element.id.toString() == widget.orderID)
-        .toList();
-
-    return filteredOrders.isNotEmpty ? filteredOrders.first : Order();
   }
 
   @override
@@ -80,7 +78,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
             ),
           ),
           actions: [
-            if (getSpecificOrder(order_prov)!.status == "completed")
+            if (order.status == "completed")
               IconButton(
                 tooltip: "Order Receipt",
                 onPressed: () {
@@ -109,9 +107,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                               children: [
                                 ShippingStatus(
                                     orderID: widget.orderID,
-                                    status: getSpecificOrder(orderProvider)!
-                                            .status ??
-                                        ""),
+                                    status: order.status ?? ""),
                                 Container(
                                   color: Colors.white,
                                   child: Divider(
@@ -133,13 +129,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                         style: _title.copyWith(fontSize: 16),
                                       ),
                                       Text(
-                                        orderProvider.orderList
-                                            .where((element) {
-                                              return element.id.toString() ==
-                                                  widget.orderID;
-                                            })
-                                            .first
-                                            .address!,
+                                        order.address ?? "",
                                         style: _subTitle,
                                       ),
                                       SizedBox(
@@ -245,12 +235,12 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                                                             index]
                                                                         .remark ==
                                                                     null &&
-                                                                (getSpecificOrder(orderProvider)!.status == "partial" ||
-                                                                    getSpecificOrder(orderProvider)!
+                                                                (order
                                                                             .status ==
+                                                                        "partial" ||
+                                                                    order.status ==
                                                                         "recieve" ||
-                                                                    getSpecificOrder(orderProvider)!
-                                                                            .status ==
+                                                                    order.status ==
                                                                         "completed"))
                                                               Icon(
                                                                 Icons
@@ -497,11 +487,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                           ),
                                           Text(
                                             "RM" +
-                                                "${orderProvider.orderList.where((element) {
-                                                      return element.id
-                                                              .toString() ==
-                                                          widget.orderID;
-                                                    }).first.totalAmount!.toStringAsFixed(2)}",
+                                                "${order.totalAmount == null ? "" : order.totalAmount!.toStringAsFixed(2)}",
                                             style: TextStyle(
                                                 fontSize: 16,
                                                 color: ColorResources
@@ -535,11 +521,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                             ),
                                           ),
                                           Text(
-                                            "${orderProvider.orderList.where((element) {
-                                                  return element.id
-                                                          .toString() ==
-                                                      widget.orderID;
-                                                }).first.id}",
+                                            "${order.id}",
                                             style: TextStyle(
                                               fontSize: 16,
                                             ),
@@ -559,11 +541,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                                 fontWeight: FontWeight.normal),
                                           ),
                                           Text(
-                                            "${DateFormat('dd-MM-yyyy HH:mm').format(orderProvider.orderList.where((element) {
-                                                  return element.id
-                                                          .toString() ==
-                                                      widget.orderID;
-                                                }).first.createdAt!)}",
+                                            "${DateFormat('dd-MM-yyyy HH:mm').format(order.createdAt ?? DateTime.now())}",
                                             style: TextStyle(
                                                 fontSize: 16,
                                                 color: ColorResources.COLOR_GREY
@@ -594,15 +572,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                             context,
                                             Routes.getPaymentRoute(
                                                 PaymentType.card.toString(),
-                                                orderProvider.orderList
-                                                    .where((element) {
-                                                      return element.id
-                                                              .toString() ==
-                                                          widget.orderID;
-                                                    })
-                                                    .first
-                                                    .id
-                                                    .toString()));
+                                                order.id.toString()));
                                       },
                                       btnTxt: "Pay Now",
                                     ),

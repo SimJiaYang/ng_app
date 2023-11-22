@@ -129,10 +129,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                           .then((value) {
                                         EasyLoading.dismiss();
                                         if (value == true) {
-                                          Navigator.popUntil(
-                                              context,
-                                              ModalRoute.withName(
-                                                  Routes.getOrderRoute()));
+                                          Navigator.pushReplacementNamed(
+                                              context, Routes.getOrderRoute());
                                         }
                                       });
                                     }

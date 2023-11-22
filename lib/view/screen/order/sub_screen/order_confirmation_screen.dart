@@ -4,6 +4,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:nurserygardenapp/providers/cart_provider.dart';
 import 'package:nurserygardenapp/providers/address_provider.dart';
 import 'package:nurserygardenapp/providers/order_provider.dart';
+import 'package:nurserygardenapp/providers/plant_provider.dart';
+import 'package:nurserygardenapp/providers/product_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/util/routes.dart';
@@ -13,7 +15,11 @@ import 'package:nurserygardenapp/view/screen/payment/payment_helper/payment_type
 import 'package:provider/provider.dart';
 
 class OrderConfirmationScreen extends StatefulWidget {
-  const OrderConfirmationScreen({super.key});
+  final String comeFrom;
+  const OrderConfirmationScreen({
+    super.key,
+    this.comeFrom = "cart",
+  });
 
   @override
   State<OrderConfirmationScreen> createState() =>
@@ -21,6 +27,10 @@ class OrderConfirmationScreen extends StatefulWidget {
 }
 
 class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
+  final String cartMode = "cart";
+  final String plantMode = "plant";
+  final String productMode = "product";
+
   late CartProvider cart_prov =
       Provider.of<CartProvider>(context, listen: false);
   late OrderProvider order_prov =
@@ -203,8 +213,10 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                     ),
                   ]),
             )),
-        body: Consumer2<CartProvider, AddressProvider>(
-            builder: (context, cartProvider, addressProvider, child) {
+        body: Consumer4<CartProvider, AddressProvider, PlantProvider,
+                ProductProvider>(
+            builder: (context, cartProvider, addressProvider, plantProvider,
+                productProvider, child) {
           return Container(
             width: double.infinity,
             height: double.infinity,
@@ -318,8 +330,17 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                                           filterQuality:
                                                               FilterQuality
                                                                   .high,
-                                                          imageUrl:
-                                                              "${cartProvider.getCartPlantList.where((element) {
+                                                          imageUrl: widget
+                                                                      .comeFrom ==
+                                                                  cartMode
+                                                              ? "${cartProvider.getCartPlantList.where((element) {
+                                                                    return element
+                                                                            .id ==
+                                                                        cartProvider
+                                                                            .addedCartList[index]
+                                                                            .plantId;
+                                                                  }).first.imageURL!}"
+                                                              : "${plantProvider.plantList.where((element) {
                                                                     return element
                                                                             .id ==
                                                                         cartProvider
@@ -374,14 +395,23 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                                           filterQuality:
                                                               FilterQuality
                                                                   .high,
-                                                          imageUrl:
-                                                              "${"${cartProvider.getCartProductList.where((element) {
+                                                          imageUrl: widget
+                                                                      .comeFrom ==
+                                                                  cartMode
+                                                              ? "${cartProvider.getCartProductList.where((element) {
                                                                     return element
                                                                             .id ==
                                                                         cartProvider
                                                                             .addedCartList[index]
                                                                             .productId;
-                                                                  }).first.imageURL!}"}",
+                                                                  }).first.imageURL!}"
+                                                              : "${productProvider.productList.where((element) {
+                                                                    return element
+                                                                            .id ==
+                                                                        cartProvider
+                                                                            .addedCartList[index]
+                                                                            .productId;
+                                                                  }).first.imageURL!}",
                                                           memCacheHeight: 200,
                                                           memCacheWidth: 200,
                                                           imageBuilder: (context,
@@ -442,47 +472,63 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                                                           index]
                                                                       .plantId !=
                                                                   null)
-                                                                Text(
-                                                                  "${cartProvider.getCartPlantList.where((element) {
-                                                                                    return element.id == cartProvider.addedCartList[index].plantId;
-                                                                                  }).first.name}"
-                                                                              .length >
-                                                                          10
-                                                                      ? "${cartProvider.getCartPlantList.where((element) {
-                                                                            return element.id ==
-                                                                                cartProvider.addedCartList[index].plantId;
-                                                                          }).first.name!.substring(0, 10)}"
-                                                                      : "${cartProvider.getCartPlantList.where((element) {
-                                                                            return element.id ==
-                                                                                cartProvider.addedCartList[index].plantId;
-                                                                          }).first.name}",
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          16),
-                                                                ),
+                                                                widget.comeFrom ==
+                                                                        cartMode
+                                                                    ? Flexible(
+                                                                        child:
+                                                                            Text(
+                                                                          "${cartProvider.getCartPlantList.where((element) {
+                                                                                return element.id == cartProvider.addedCartList[index].plantId;
+                                                                              }).first.name}",
+                                                                          style:
+                                                                              TextStyle(fontSize: 16),
+                                                                          overflow:
+                                                                              TextOverflow.ellipsis,
+                                                                        ),
+                                                                      )
+                                                                    : Flexible(
+                                                                        child:
+                                                                            Text(
+                                                                          "${plantProvider.plantList.where((element) {
+                                                                                return element.id == cartProvider.addedCartList[index].plantId;
+                                                                              }).first.name}",
+                                                                          style:
+                                                                              TextStyle(fontSize: 16),
+                                                                          overflow:
+                                                                              TextOverflow.ellipsis,
+                                                                        ),
+                                                                      ),
                                                               if (cartProvider
                                                                       .addedCartList[
                                                                           index]
                                                                       .productId !=
                                                                   null)
-                                                                Text(
-                                                                  "${cartProvider.getCartProductList.where((element) {
-                                                                                    return element.id == cartProvider.addedCartList[index].productId;
-                                                                                  }).first.name}"
-                                                                              .length >
-                                                                          10
-                                                                      ? "${cartProvider.getCartProductList.where((element) {
-                                                                            return element.id ==
-                                                                                cartProvider.addedCartList[index].productId;
-                                                                          }).first.name!.substring(0, 10)}"
-                                                                      : "${cartProvider.getCartProductList.where((element) {
-                                                                            return element.id ==
-                                                                                cartProvider.addedCartList[index].productId;
-                                                                          }).first.name}",
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          16),
-                                                                ),
+                                                                widget.comeFrom ==
+                                                                        cartMode
+                                                                    ? Flexible(
+                                                                        child:
+                                                                            Text(
+                                                                          "${cartProvider.getCartProductList.where((element) {
+                                                                                return element.id == cartProvider.addedCartList[index].productId;
+                                                                              }).first.name}",
+                                                                          style:
+                                                                              TextStyle(fontSize: 16),
+                                                                          overflow:
+                                                                              TextOverflow.ellipsis,
+                                                                        ),
+                                                                      )
+                                                                    : Flexible(
+                                                                        child:
+                                                                            Text(
+                                                                          "${productProvider.productList.where((element) {
+                                                                                return element.id == cartProvider.addedCartList[index].productId;
+                                                                              }).first.name}",
+                                                                          style:
+                                                                              TextStyle(fontSize: 16),
+                                                                          overflow:
+                                                                              TextOverflow.ellipsis,
+                                                                        ),
+                                                                      ),
                                                               SizedBox(
                                                                 height: 4,
                                                               ),
