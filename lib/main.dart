@@ -12,6 +12,7 @@ import 'package:nurserygardenapp/helper/route_helper.dart';
 import 'package:nurserygardenapp/providers/auth_provider.dart';
 import 'package:nurserygardenapp/providers/cart_provider.dart';
 import 'package:nurserygardenapp/providers/address_provider.dart';
+import 'package:nurserygardenapp/providers/customize_provider.dart';
 import 'package:nurserygardenapp/providers/delivery_provider.dart';
 import 'package:nurserygardenapp/providers/order_provider.dart';
 import 'package:nurserygardenapp/providers/pay_provider.dart';
@@ -42,6 +43,7 @@ Future<void> main() async {
     ChangeNotifierProvider(create: (context) => di.sl<SplashProvider>()),
     ChangeNotifierProvider(create: (context) => di.sl<PlantProvider>()),
     ChangeNotifierProvider(create: (context) => di.sl<ProductProvider>()),
+    ChangeNotifierProvider(create: (context) => di.sl<CustomizeProvider>()),
     ChangeNotifierProvider(create: (context) => di.sl<CartProvider>()),
     ChangeNotifierProvider(create: (context) => di.sl<UserProvider>()),
     ChangeNotifierProvider(create: (context) => di.sl<OrderProvider>()),

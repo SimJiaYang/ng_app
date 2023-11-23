@@ -24,6 +24,9 @@ class Routes {
   static const String PRODUCT_SEARCH_SCREEN = '/product-search';
   static const String PRODUCT_SEARCH_RESULT_SCREEN = '/product-search/result';
 
+  // Customization
+  static const String CUSTOMIZATION_SCREEN = '/customization';
+
   // Cart
   static const String CART_SCREEN = '/cart';
 
@@ -92,6 +95,9 @@ class Routes {
   static String getProductSearchRoute() => PRODUCT_SEARCH_SCREEN;
   static String getProductSearchResultRoute(String searchKeyword) =>
       '$PRODUCT_SEARCH_RESULT_SCREEN?searchKeyword=$searchKeyword';
+
+  // Customization
+  static String getCustomizationRoute() => CUSTOMIZATION_SCREEN;
 
   // Cart
   static String getCartRoute() => CART_SCREEN;

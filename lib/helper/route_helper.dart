@@ -15,6 +15,7 @@ import 'package:nurserygardenapp/view/screen/auth/login_screen.dart';
 import 'package:nurserygardenapp/view/screen/auth/register_screen.dart';
 import 'package:nurserygardenapp/view/screen/bidding/bidding_screen.dart';
 import 'package:nurserygardenapp/view/screen/cart/cart_screen.dart';
+import 'package:nurserygardenapp/view/screen/customization/customization_screen.dart';
 import 'package:nurserygardenapp/view/screen/dashboard/dashboard_screen.dart';
 import 'package:nurserygardenapp/view/screen/delivery/delivery_screen.dart';
 import 'package:nurserygardenapp/view/screen/delivery/sub_screen/delivery_detail_screen.dart';
@@ -62,11 +63,13 @@ class RouterHelper {
             ? 0
             : params['page'][0] == 'Product'
                 ? 1
-                : params['page'][0] == 'Bidding'
+                : params['page'][0] == 'Customization'
                     ? 2
-                    : params['page'][0] == 'Account'
+                    : params['page'][0] == 'Bidding'
                         ? 3
-                        : 0);
+                        : params['page'][0] == 'Account'
+                            ? 4
+                            : 0);
   });
 
   static Handler _homeHandler = Handler(
@@ -119,6 +122,11 @@ class RouterHelper {
         ProductSearchResultScreen(
             searchKeyword: parameters['searchKeyword'][0]),
   );
+
+  // =================================Customization=========================================
+  static Handler _customizationHandler = Handler(
+      handlerFunc: (context, Map<String, dynamic> parameters) =>
+          CustomizationScreen());
 
   // =================================Cart=========================================
   static Handler _cartHandler = Handler(
@@ -274,6 +282,8 @@ class RouterHelper {
     router.define(Routes.PRODUCT_SEARCH_RESULT_SCREEN,
         handler: _productSearchResultHandler,
         transitionType: TransitionType.fadeIn);
+    router.define(Routes.CUSTOMIZATION_SCREEN,
+        handler: _customizationHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.CART_SCREEN,
         transitionType: TransitionType.fadeIn, handler: _cartHandler);
     router.define(Routes.ORDER_SCREEN,
