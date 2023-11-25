@@ -26,6 +26,15 @@ class AppConstants {
   static const String SNACKBAR_WARNING = 'warning';
   static const String SNACKBAR_INFO = 'info';
 
+  // Plant Type
+  static const String LOTUS = "lotus";
+  static const String DESERT_ROSE = "desert rose";
+  static const String HYDRANGEAS = "hydrangeas";
+  static const String CACTUS = "cactus";
+
+  // Product Type
+  static const String POT = "pot";
+
   // Address Tye
   static const String ADDRESS_PACK = 'Seller is preparing your parcel';
   static const String ADDRESS_SHIP = 'Your parcel is on the way';

@@ -214,15 +214,19 @@ class _OrderReceiptScreenState extends State<OrderReceiptScreen> {
                                                       .toString(),
                                               style: _subTitle),
                                           Spacer(),
-                                          Text(
-                                              " RM " +
-                                                  orderProvider
-                                                      .orderReceiptItem[index]
-                                                      .amount!
-                                                      .toStringAsFixed(2),
-                                              style: _subTitle.copyWith(
-                                                  fontWeight: FontWeight.w400,
-                                                  color: Colors.black)),
+                                          if (orderProvider
+                                                  .orderReceiptItem[index]
+                                                  .amount !=
+                                              null)
+                                            Text(
+                                                " RM " +
+                                                    orderProvider
+                                                        .orderReceiptItem[index]
+                                                        .amount!
+                                                        .toStringAsFixed(2),
+                                                style: _subTitle.copyWith(
+                                                    fontWeight: FontWeight.w400,
+                                                    color: Colors.black)),
                                         ],
                                       ),
                                       SizedBox(height: 5),
@@ -231,24 +235,26 @@ class _OrderReceiptScreenState extends State<OrderReceiptScreen> {
                                 },
                               ),
                               Divider(),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Total amount: ",
-                                    style: _title,
-                                  ),
-                                  Text(
-                                      "RM " +
-                                          orderProvider
-                                              .orderReceiptInfo.totalAmount!
-                                              .toStringAsFixed(2),
-                                      style: _subTitle.copyWith(
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.black))
-                                ],
-                              ),
+                              if (orderProvider.orderReceiptInfo.totalAmount !=
+                                  null)
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Total amount: ",
+                                      style: _title,
+                                    ),
+                                    Text(
+                                        "RM " +
+                                            orderProvider
+                                                .orderReceiptInfo.totalAmount!
+                                                .toStringAsFixed(2),
+                                        style: _subTitle.copyWith(
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.black))
+                                  ],
+                                ),
                               Divider(),
                               Row(
                                 children: [
