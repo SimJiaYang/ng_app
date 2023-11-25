@@ -134,7 +134,7 @@ class _DeliveryDetailScreenState extends State<DeliveryDetailScreen> {
           return orderProvider.isLoading ||
                   deliveryProvider.isLoading ||
                   deliveryProvider.isLoadingDetail
-              ? Loading()
+              ? LoadingThreeCircle()
               : SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

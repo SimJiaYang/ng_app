@@ -356,7 +356,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
             )),
         body: SafeArea(
           child: isLoading
-              ? Loading()
+              ? LoadingThreeCircle()
               : SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
                   child: Container(

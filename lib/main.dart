@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:ui';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -24,6 +23,9 @@ import 'package:nurserygardenapp/util/app_constants.dart';
 import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/foundation.dart'
+    show LicenseEntryWithLineBreaks, LicenseRegistry, kIsWeb;
+import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'di_container.dart' as di;
 
 Future<void> main() async {
@@ -38,23 +40,30 @@ Future<void> main() async {
     yield LicenseEntryWithLineBreaks(['google_fonts'], license);
   });
   GoogleFonts.config.allowRuntimeFetching = false;
-  runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: (context) => di.sl<AuthProvider>()),
-    ChangeNotifierProvider(create: (context) => di.sl<SplashProvider>()),
-    ChangeNotifierProvider(create: (context) => di.sl<PlantProvider>()),
-    ChangeNotifierProvider(create: (context) => di.sl<ProductProvider>()),
-    ChangeNotifierProvider(create: (context) => di.sl<CustomizeProvider>()),
-    ChangeNotifierProvider(create: (context) => di.sl<CartProvider>()),
-    ChangeNotifierProvider(create: (context) => di.sl<UserProvider>()),
-    ChangeNotifierProvider(create: (context) => di.sl<OrderProvider>()),
-    ChangeNotifierProvider(create: (context) => di.sl<PayProvider>()),
-    ChangeNotifierProvider(create: (context) => di.sl<AddressProvider>()),
-    ChangeNotifierProvider(create: (context) => di.sl<DeliveryProvider>()),
-  ], child: MyApp()));
+  runApp(MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => di.sl<AuthProvider>()),
+        ChangeNotifierProvider(create: (context) => di.sl<SplashProvider>()),
+        ChangeNotifierProvider(create: (context) => di.sl<PlantProvider>()),
+        ChangeNotifierProvider(create: (context) => di.sl<ProductProvider>()),
+        ChangeNotifierProvider(create: (context) => di.sl<CustomizeProvider>()),
+        ChangeNotifierProvider(create: (context) => di.sl<CartProvider>()),
+        ChangeNotifierProvider(create: (context) => di.sl<UserProvider>()),
+        ChangeNotifierProvider(create: (context) => di.sl<OrderProvider>()),
+        ChangeNotifierProvider(create: (context) => di.sl<PayProvider>()),
+        ChangeNotifierProvider(create: (context) => di.sl<AddressProvider>()),
+        ChangeNotifierProvider(create: (context) => di.sl<DeliveryProvider>()),
+      ],
+      child: MyApp(
+        isWeb: !kIsWeb,
+      )));
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final bool isWeb;
+
+  const MyApp({Key? key, required this.isWeb}) : super(key: key);
+
   static final navigatorKey = new GlobalKey<NavigatorState>();
   @override
   State<MyApp> createState() => _MyAppState();
@@ -65,6 +74,9 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     RouterHelper.setupRoute();
+    if (kIsWeb) {
+      print('using web');
+    }
   }
 
   // This widget is the root of your application.

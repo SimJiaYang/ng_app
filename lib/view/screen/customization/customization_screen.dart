@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:model_viewer_plus/model_viewer_plus.dart';
 import 'package:nurserygardenapp/providers/customize_provider.dart';
 import 'package:nurserygardenapp/util/app_constants.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
@@ -22,6 +23,8 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
   ScrollController _productController = ScrollController();
   ScrollController _soilController = ScrollController();
   int _currentStep = 0;
+
+  // O3DController threed_controller = O3DController();
 
   var plant_params = {
     'limit': '8',
@@ -147,10 +150,23 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
       color: ColorResources.COLOR_BLACK.withOpacity(0.6),
     );
 
+    Widget _viewer = Container(
+      height: size.height * 0.5,
+      child: const ModelViewer(
+        backgroundColor: Color.fromARGB(0xFF, 0xEE, 0xEE, 0xEE),
+        src: 'https://modelviewer.dev/shared-assets/models/Astronaut.glb',
+        alt: 'A 3D model of an astronaut',
+        ar: true,
+        autoRotate: true,
+        // iosSrc: 'https://modelviewer.dev/shared-assets/models/Astronaut.usdz',
+        disableZoom: true,
+      ),
+    );
+
     Widget _plantBuilder =
         Consumer<CustomizeProvider>(builder: (context, customProvider, child) {
       return customProvider.isLoading && customProvider.plantList.isEmpty
-          ? Container(height: 150, child: Loading())
+          ? Container(height: 150, child: LoadingThreeCircle())
           : customProvider.plantList.isEmpty && !customProvider.isLoading
               ? Center(
                   child: Container(
@@ -273,7 +289,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
     Widget _productBuilder =
         Consumer<CustomizeProvider>(builder: (context, customProvider, child) {
       return customProvider.isLoading && customProvider.productList.isEmpty
-          ? Container(height: 150, child: Loading())
+          ? Container(height: 150, child: LoadingThreeCircle())
           : customProvider.productList.isEmpty && !customProvider.isLoading
               ? Center(
                   child: Container(
@@ -397,7 +413,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
     Widget _soilBuilder =
         Consumer<CustomizeProvider>(builder: (context, customProvider, child) {
       return customProvider.isLoading && customProvider.soilList.isEmpty
-          ? Container(height: 150, child: Loading())
+          ? Container(height: 150, child: LoadingThreeCircle())
           : customProvider.soilList.isEmpty && !customProvider.isLoading
               ? Center(
                   child: Container(
@@ -516,6 +532,12 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                   ],
                 );
     });
+
+    // Widget _viewer = O3D(
+    //   // loading: ,
+    //   controller: threed_controller,
+    //   src: 'https://modelviewer.dev/shared-assets/models/Astronaut.glb',
+    // );
 
     return Scaffold(
         appBar: AppBar(
@@ -696,7 +718,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                     Step(
                       title: SizedBox.shrink(),
                       label: new Text("Checkout"),
-                      content: Text("Completed"),
+                      content: _viewer,
                       isActive: _currentStep >= 0,
                       state: _currentStep >= 3
                           ? StepState.complete

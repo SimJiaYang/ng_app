@@ -70,7 +70,7 @@ class _DeliveryReceiptScreenState extends State<DeliveryReceiptScreen> {
             child: Consumer<DeliveryProvider>(
                 builder: (context, deliveryProvider, child) {
               return deliveryProvider.isLoadingReceipt
-                  ? Loading()
+                  ? LoadingThreeCircle()
                   : Container(
                       padding:
                           const EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),

@@ -72,7 +72,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
           child: widget.paymentType == PaymentType.card.toString()
               ? Consumer<PayProvider>(builder: (context, payProvider, child) {
                   return payProvider.isLoading
-                      ? Loading()
+                      ? LoadingThreeCircle()
                       : Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,

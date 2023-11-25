@@ -351,7 +351,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         body: SafeArea(
           child: Center(
             child: isLoading
-                ? Loading()
+                ? LoadingThreeCircle()
                 : SingleChildScrollView(
                     physics: const AlwaysScrollableScrollPhysics(),
                     child: Container(

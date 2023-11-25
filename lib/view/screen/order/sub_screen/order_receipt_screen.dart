@@ -72,7 +72,7 @@ class _OrderReceiptScreenState extends State<OrderReceiptScreen> {
                 builder: (context, orderProvider, child) {
               // Change
               return orderProvider.isLoadingReceipt
-                  ? Loading()
+                  ? LoadingThreeCircle()
                   : Container(
                       padding:
                           const EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),

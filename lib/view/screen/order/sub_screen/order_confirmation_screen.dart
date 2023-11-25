@@ -271,7 +271,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
             width: double.infinity,
             height: double.infinity,
             child: addressProvider.isLoading
-                ? Loading()
+                ? LoadingThreeCircle()
                 : SingleChildScrollView(
                     physics: AlwaysScrollableScrollPhysics(),
                     child: Column(

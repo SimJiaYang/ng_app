@@ -90,7 +90,7 @@ class _OrderDeliveryListScreenState extends State<OrderDeliveryListScreen> {
               builder: (context, deliveryProvider, child) {
             return deliveryProvider.deliveryList.isEmpty &&
                     deliveryProvider.isLoading
-                ? Loading()
+                ? LoadingThreeCircle()
                 : deliveryProvider.deliveryList.isEmpty &&
                         !deliveryProvider.isLoading
                     ? Center(child: Text('No Data Found'))
