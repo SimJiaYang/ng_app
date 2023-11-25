@@ -104,4 +104,48 @@ class CustomizeProvider extends ChangeNotifier {
 
     return result;
   }
+
+  /// ================== SOIL LIST ==================
+  ProductModel _soilModel = ProductModel();
+  ProductModel get soilModel => _soilModel;
+
+  List<Product> _soilList = [];
+  List<Product> get soilList => _soilList;
+
+  String _soilNoMoreData = '';
+  String get soilNoMoreData => _soilNoMoreData;
+
+  /// ================== PLANT LIST ==================
+  Future<bool> listOfSoil(BuildContext context, params,
+      {bool isLoadMore = false, bool isLoad = true}) async {
+    if (!isLoadMore) {
+      _soilList = [];
+      _soilNoMoreData = '';
+    }
+
+    bool result = false;
+    String query = ResponseHelper.buildQuery(params);
+    int limit = params['limit'] != null ? int.parse(params['limit']) : 8;
+
+    _isLoading = isLoad;
+    notifyListeners();
+
+    ApiResponse apiResponse = await customizeRepo.getProductList(query);
+
+    if (context.mounted) {
+      result = ResponseHelper.responseHelper(context, apiResponse);
+      if (result) {
+        _soilModel = ProductModel.fromJson(apiResponse.response!.data);
+        _soilList = _soilModel.data!.productsList!.product ?? [];
+        if (_soilList.length < limit && limit > 8) {
+          _soilNoMoreData = AppConstants.NO_MORE_DATA;
+        }
+      }
+    }
+
+    _isLoading = false;
+    notifyListeners();
+
+    return result;
+  }
 }

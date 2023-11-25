@@ -33,6 +33,11 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
     'category': AppConstants.POT,
   };
 
+  var soil_params = {
+    'limit': '8',
+    'category': AppConstants.SOIL,
+  };
+
   Future<void> _loadPlant({bool isLoadMore = false}) async {
     await custom_prov.listOfPlant(context, plant_params,
         isLoadMore: isLoadMore);
@@ -41,6 +46,10 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
   Future<void> _loadProduct({bool isLoadMore = false}) async {
     await custom_prov.listOfProduct(context, product_params,
         isLoadMore: isLoadMore);
+  }
+
+  Future<void> _loadSoil({bool isLoadMore = false}) async {
+    await custom_prov.listOfSoil(context, soil_params, isLoadMore: isLoadMore);
   }
 
   void _plantScroll() {
@@ -67,15 +76,29 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
     }
   }
 
+  void _soilScroll() {
+    if (_soilController.position.pixels ==
+        _soilController.position.maxScrollExtent) {
+      if (custom_prov.soilList.length < int.parse(soil_params['limit']!))
+        return;
+      int currentLimit = int.parse(soil_params['limit']!);
+      currentLimit += 8;
+      soil_params['limit'] = currentLimit.toString();
+      _loadSoil(isLoadMore: true);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     _plantController.addListener(_plantScroll);
     _productController.addListener(_productScroll);
+    _soilController.addListener(_soilScroll);
     WidgetsFlutterBinding.ensureInitialized();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadPlant();
       _loadProduct();
+      _loadSoil();
     });
   }
 
@@ -371,6 +394,129 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                 );
     });
 
+    Widget _soilBuilder =
+        Consumer<CustomizeProvider>(builder: (context, customProvider, child) {
+      return customProvider.isLoading && customProvider.soilList.isEmpty
+          ? Container(height: 150, child: Loading())
+          : customProvider.soilList.isEmpty && !customProvider.isLoading
+              ? Center(
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'No Soil Data Available',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Select Soil',
+                      style: _title,
+                    ),
+                    Container(
+                      color: Colors.white,
+                      width: double.infinity,
+                      height: 200,
+                      // height: size.height * 0.5,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          padding: (customProvider.soilNoMoreData.isNotEmpty &&
+                                      !customProvider.isLoading ||
+                                  (customProvider.soilNoMoreData.isEmpty &&
+                                      customProvider.soilList.length < 8))
+                              ? EdgeInsets.fromLTRB(0, 0, 10, 0)
+                              : EdgeInsets.fromLTRB(0, 0, 50, 0),
+                          physics: const BouncingScrollPhysics(),
+                          shrinkWrap: true,
+                          controller: _soilController,
+                          itemCount: customProvider.soilList.length +
+                              ((customProvider.isLoading &&
+                                      customProvider.soilList.length >= 8)
+                                  ? 1
+                                  : customProvider.soilNoMoreData.isNotEmpty
+                                      ? 1
+                                      : 0),
+                          itemBuilder: (context, index) {
+                            if (index >= customProvider.soilList.length &&
+                                customProvider.soilNoMoreData.isEmpty) {
+                              return Center(
+                                child: LoadingAnimationWidget.waveDots(
+                                    color: ColorResources.COLOR_PRIMARY,
+                                    size: 40),
+                              );
+                            } else if (index >=
+                                    customProvider.soilList.length &&
+                                customProvider.soilNoMoreData.isNotEmpty) {
+                              // return Container(
+                              //   height: 50,
+                              // );
+                            } else {
+                              return Center(
+                                child: Container(
+                                  padding: EdgeInsets.all(5),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        height: 150,
+                                        width: 150,
+                                        child: CachedNetworkImage(
+                                          filterQuality: FilterQuality.high,
+                                          imageUrl:
+                                              "${customProvider.soilList[index].imageURL}",
+                                          imageBuilder:
+                                              (context, imageProvider) =>
+                                                  Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              image: DecorationImage(
+                                                image: imageProvider,
+                                                fit: BoxFit.fill,
+                                              ),
+                                            ),
+                                          ),
+                                          placeholder: (context, url) =>
+                                              Padding(
+                                            padding: const EdgeInsets.all(1.0),
+                                            child: Container(
+                                              width: double.infinity,
+                                              height: 20,
+                                              color: Colors.grey[400],
+                                            ),
+                                          ),
+                                          errorWidget: (context, url, error) =>
+                                              Icon(Icons.error),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }
+                          }),
+                    ),
+                  ],
+                );
+    });
+
     return Scaffold(
         appBar: AppBar(
             backgroundColor: ColorResources.COLOR_PRIMARY,
@@ -541,7 +687,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                     Step(
                       title: SizedBox.shrink(),
                       label: new Text("Soil"),
-                      content: Text("Select Soil"),
+                      content: _soilBuilder,
                       isActive: _currentStep >= 0,
                       state: _currentStep >= 2
                           ? StepState.complete
@@ -549,7 +695,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                     ),
                     Step(
                       title: SizedBox.shrink(),
-                      label: new Text("Completed"),
+                      label: new Text("Checkout"),
                       content: Text("Completed"),
                       isActive: _currentStep >= 0,
                       state: _currentStep >= 3

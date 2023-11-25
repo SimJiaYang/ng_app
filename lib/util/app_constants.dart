@@ -34,6 +34,7 @@ class AppConstants {
 
   // Product Type
   static const String POT = "pot";
+  static const String SOIL = "soil";
 
   // Address Tye
   static const String ADDRESS_PACK = 'Seller is preparing your parcel';
