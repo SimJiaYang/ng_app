@@ -214,7 +214,7 @@ class Cart {
         "user_id": userId,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
-        "is_cart": isCart == null ? null : isCart.toString(),
+        "is_cart": isCart == null ? null : isCart,
       };
 }
 

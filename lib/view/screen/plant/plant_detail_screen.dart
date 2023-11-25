@@ -71,7 +71,13 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
     cart.price = plant.price! * cartQuantity;
     cart.dateAdded = DateTime.now();
     cart.isPurchase = "false";
-    await cart_prov.addToCart(context, cart);
+    cart.isCart = true;
+    try {
+      await cart_prov.addToCart(context, cart);
+    } on Exception catch (e) {
+      print(e.toString());
+      EasyLoading.dismiss();
+    }
     EasyLoading.dismiss();
   }
 

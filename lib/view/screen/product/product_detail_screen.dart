@@ -70,6 +70,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     cart.quantity = cartQuantity;
     cart.dateAdded = DateTime.now();
     cart.isPurchase = "false";
+    cart.isCart = true;
     await cart_prov.addToCart(context, cart);
     EasyLoading.dismiss();
   }

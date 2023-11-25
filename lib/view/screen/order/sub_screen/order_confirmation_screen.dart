@@ -174,6 +174,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                             }
                             if (orderProvider.isLoading) return;
                             if (widget.comeFrom == cartMode) {
+                              if (orderProvider.isLoading) return;
                               await orderProvider
                                   .addOrder(
                                       cart_prov.addedCartList, address, context)
@@ -188,6 +189,9 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                               });
                             }
                             if (widget.comeFrom == plantMode) {
+                              if (cartProvider.isLoading ||
+                                  orderProvider.isLoading) return;
+
                               await cartProvider
                                   .addToCart(
                                       context, cartProvider.addedCartList.first,
