@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:model_viewer_plus/model_viewer_plus.dart';
 import 'package:nurserygardenapp/providers/customize_provider.dart';
 import 'package:nurserygardenapp/util/app_constants.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
@@ -23,6 +22,9 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
   ScrollController _productController = ScrollController();
   ScrollController _soilController = ScrollController();
   int _currentStep = 0;
+  String plantID = '0';
+  String productID = '0';
+  String soilID = '0';
 
   // O3DController threed_controller = O3DController();
 
@@ -42,17 +44,51 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
   };
 
   Future<void> _loadPlant({bool isLoadMore = false}) async {
-    await custom_prov.listOfPlant(context, plant_params,
-        isLoadMore: isLoadMore);
+    await custom_prov
+        .listOfPlant(context, plant_params, isLoadMore: isLoadMore)
+        .then((value) {
+      if (custom_prov.plantList.isNotEmpty) {
+        setState(() {
+          plantID = custom_prov.plantList
+              .firstWhere((element) => element.id == int.parse(plantID),
+                  orElse: () => custom_prov.plantList.first)
+              .id
+              .toString();
+        });
+      }
+    });
   }
 
   Future<void> _loadProduct({bool isLoadMore = false}) async {
-    await custom_prov.listOfProduct(context, product_params,
-        isLoadMore: isLoadMore);
+    await custom_prov
+        .listOfProduct(context, product_params, isLoadMore: isLoadMore)
+        .then((value) {
+      if (custom_prov.productList.isNotEmpty) {
+        setState(() {
+          productID = custom_prov.productList
+              .firstWhere((element) => element.id == int.parse(productID),
+                  orElse: () => custom_prov.productList.first)
+              .id
+              .toString();
+        });
+      }
+    });
   }
 
   Future<void> _loadSoil({bool isLoadMore = false}) async {
-    await custom_prov.listOfSoil(context, soil_params, isLoadMore: isLoadMore);
+    await custom_prov
+        .listOfSoil(context, soil_params, isLoadMore: isLoadMore)
+        .then((value) {
+      if (custom_prov.soilList.isNotEmpty) {
+        setState(() {
+          soilID = custom_prov.soilList
+              .firstWhere((element) => element.id == int.parse(soilID),
+                  orElse: () => custom_prov.soilList.first)
+              .id
+              .toString();
+        });
+      }
+    });
   }
 
   void _plantScroll() {
@@ -127,7 +163,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
 
   void continued() {
     FocusScope.of(context).unfocus();
-    _currentStep < 3 ? setState(() => _currentStep += 1) : _handleSubmit();
+    _currentStep < 2 ? setState(() => _currentStep += 1) : _handleSubmit();
   }
 
   void cancel() {
@@ -135,7 +171,11 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
     _currentStep > 0 ? setState(() => _currentStep -= 1) : null;
   }
 
-  _handleSubmit() {}
+  _handleSubmit() {
+    print(plantID);
+    print(productID);
+    print(soilID);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -147,21 +187,23 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
     );
     TextStyle _subTitle = theme.headlineMedium!.copyWith(
       fontSize: Dimensions.FONT_SIZE_DEFAULT,
-      color: ColorResources.COLOR_BLACK.withOpacity(0.6),
+      color: const Color.fromRGBO(45, 45, 45, 1).withOpacity(0.6),
     );
 
-    Widget _viewer = Container(
-      height: size.height * 0.5,
-      child: const ModelViewer(
-        backgroundColor: Color.fromARGB(0xFF, 0xEE, 0xEE, 0xEE),
-        src: 'https://modelviewer.dev/shared-assets/models/Astronaut.glb',
-        alt: 'A 3D model of an astronaut',
-        ar: true,
-        autoRotate: true,
-        // iosSrc: 'https://modelviewer.dev/shared-assets/models/Astronaut.usdz',
-        disableZoom: true,
-      ),
-    );
+    // Widget _viewer =
+    //     Consumer<CustomizeProvider>(builder: (context, customProvider, child) {
+    //   return Container(height: size.height * 0.4, child: Container()
+    //       // ModelViewer(
+    //       //   backgroundColor: Color.fromARGB(0xFF, 0xEE, 0xEE, 0xEE),
+    //       //   src: 'https://modelviewer.dev/shared-assets/models/Astronaut.glb',
+    //       //   alt: 'A 3D model of an astronaut',
+    //       //   ar: true,
+    //       //   autoRotate: true,
+    //       //   // iosSrc: 'https://modelviewer.dev/shared-assets/models/Astronaut.usdz',
+    //       //   disableZoom: true,
+    //       // ),
+    //       );
+    // });
 
     Widget _plantBuilder =
         Consumer<CustomizeProvider>(builder: (context, customProvider, child) {
@@ -200,7 +242,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                     Container(
                       color: Colors.white,
                       width: double.infinity,
-                      height: 200,
+                      height: 220,
                       // height: size.height * 0.5,
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
@@ -243,38 +285,65 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      Container(
-                                        height: 150,
-                                        width: 150,
-                                        child: CachedNetworkImage(
-                                          filterQuality: FilterQuality.high,
-                                          imageUrl:
-                                              "${customProvider.plantList[index].imageURL}",
-                                          imageBuilder:
-                                              (context, imageProvider) =>
-                                                  Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              image: DecorationImage(
-                                                image: imageProvider,
-                                                fit: BoxFit.fill,
+                                      GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            plantID = customProvider
+                                                .plantList[index].id
+                                                .toString();
+                                          });
+                                        },
+                                        child: Container(
+                                          height: 150,
+                                          width: 150,
+                                          child: CachedNetworkImage(
+                                            filterQuality: FilterQuality.high,
+                                            imageUrl:
+                                                "${customProvider.plantList[index].imageURL}",
+                                            imageBuilder:
+                                                (context, imageProvider) =>
+                                                    Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                image: DecorationImage(
+                                                  image: imageProvider,
+                                                  fit: BoxFit.fill,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          placeholder: (context, url) =>
-                                              Padding(
-                                            padding: const EdgeInsets.all(1.0),
-                                            child: Container(
-                                              width: double.infinity,
-                                              height: 20,
-                                              color: Colors.grey[400],
+                                            placeholder: (context, url) =>
+                                                Padding(
+                                              padding:
+                                                  const EdgeInsets.all(1.0),
+                                              child: Container(
+                                                width: double.infinity,
+                                                height: 20,
+                                                color: Colors.grey[400],
+                                              ),
                                             ),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Icon(Icons.error),
                                           ),
-                                          errorWidget: (context, url, error) =>
-                                              Icon(Icons.error),
                                         ),
                                       ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      customProvider.plantList[index].id
+                                                  .toString() ==
+                                              plantID
+                                          ? Icon(
+                                              Icons
+                                                  .check_circle_outline_rounded,
+                                              size: 25,
+                                              color:
+                                                  ColorResources.COLOR_PRIMARY,
+                                            )
+                                          : Container(
+                                              height: 25,
+                                            )
                                     ],
                                   ),
                                 ),
@@ -367,38 +436,63 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      Container(
-                                        height: 150,
-                                        width: 150,
-                                        child: CachedNetworkImage(
-                                          filterQuality: FilterQuality.high,
-                                          imageUrl:
-                                              "${customProvider.productList[index].imageURL}",
-                                          imageBuilder:
-                                              (context, imageProvider) =>
-                                                  Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              image: DecorationImage(
-                                                image: imageProvider,
-                                                fit: BoxFit.fill,
+                                      GestureDetector(
+                                        onTap: () => setState(() {
+                                          productID = customProvider
+                                              .productList[index].id
+                                              .toString();
+                                        }),
+                                        child: Container(
+                                          height: 150,
+                                          width: 150,
+                                          child: CachedNetworkImage(
+                                            filterQuality: FilterQuality.high,
+                                            imageUrl:
+                                                "${customProvider.productList[index].imageURL}",
+                                            imageBuilder:
+                                                (context, imageProvider) =>
+                                                    Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                image: DecorationImage(
+                                                  image: imageProvider,
+                                                  fit: BoxFit.fill,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          placeholder: (context, url) =>
-                                              Padding(
-                                            padding: const EdgeInsets.all(1.0),
-                                            child: Container(
-                                              width: double.infinity,
-                                              height: 20,
-                                              color: Colors.grey[400],
+                                            placeholder: (context, url) =>
+                                                Padding(
+                                              padding:
+                                                  const EdgeInsets.all(1.0),
+                                              child: Container(
+                                                width: double.infinity,
+                                                height: 20,
+                                                color: Colors.grey[400],
+                                              ),
                                             ),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Icon(Icons.error),
                                           ),
-                                          errorWidget: (context, url, error) =>
-                                              Icon(Icons.error),
                                         ),
                                       ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      customProvider.productList[index].id
+                                                  .toString() ==
+                                              productID
+                                          ? Icon(
+                                              Icons
+                                                  .check_circle_outline_rounded,
+                                              size: 25,
+                                              color:
+                                                  ColorResources.COLOR_PRIMARY,
+                                            )
+                                          : Container(
+                                              height: 25,
+                                            )
                                     ],
                                   ),
                                 ),
@@ -490,38 +584,63 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      Container(
-                                        height: 150,
-                                        width: 150,
-                                        child: CachedNetworkImage(
-                                          filterQuality: FilterQuality.high,
-                                          imageUrl:
-                                              "${customProvider.soilList[index].imageURL}",
-                                          imageBuilder:
-                                              (context, imageProvider) =>
-                                                  Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              image: DecorationImage(
-                                                image: imageProvider,
-                                                fit: BoxFit.fill,
+                                      GestureDetector(
+                                        onTap: () => setState(() {
+                                          soilID = customProvider
+                                              .soilList[index].id
+                                              .toString();
+                                        }),
+                                        child: Container(
+                                          height: 150,
+                                          width: 150,
+                                          child: CachedNetworkImage(
+                                            filterQuality: FilterQuality.high,
+                                            imageUrl:
+                                                "${customProvider.soilList[index].imageURL}",
+                                            imageBuilder:
+                                                (context, imageProvider) =>
+                                                    Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                image: DecorationImage(
+                                                  image: imageProvider,
+                                                  fit: BoxFit.fill,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          placeholder: (context, url) =>
-                                              Padding(
-                                            padding: const EdgeInsets.all(1.0),
-                                            child: Container(
-                                              width: double.infinity,
-                                              height: 20,
-                                              color: Colors.grey[400],
+                                            placeholder: (context, url) =>
+                                                Padding(
+                                              padding:
+                                                  const EdgeInsets.all(1.0),
+                                              child: Container(
+                                                width: double.infinity,
+                                                height: 20,
+                                                color: Colors.grey[400],
+                                              ),
                                             ),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Icon(Icons.error),
                                           ),
-                                          errorWidget: (context, url, error) =>
-                                              Icon(Icons.error),
                                         ),
                                       ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      customProvider.soilList[index].id
+                                                  .toString() ==
+                                              soilID
+                                          ? Icon(
+                                              Icons
+                                                  .check_circle_outline_rounded,
+                                              size: 25,
+                                              color:
+                                                  ColorResources.COLOR_PRIMARY,
+                                            )
+                                          : Container(
+                                              height: 25,
+                                            )
                                     ],
                                   ),
                                 ),
@@ -561,173 +680,178 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                     )),
               )
             ]),
-        body: Container(
-          color: Colors.white,
-          height: size.height,
-          width: size.width,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Stepper(
-                  connectorColor: MaterialStateProperty.resolveWith((states) {
-                    if (states.contains(MaterialState.pressed)) {
-                      return ColorResources.COLOR_GREY;
-                    }
-                    return ColorResources.COLOR_PRIMARY;
-                  }),
-                  elevation: 0,
-                  type: StepperType.horizontal,
-                  physics: BouncingScrollPhysics(),
-                  currentStep: _currentStep,
-                  onStepTapped: (step) => tapped(step),
-                  onStepContinue: continued,
-                  onStepCancel: cancel,
-                  controlsBuilder: (context, details) {
-                    if (_currentStep <= 3) {
-                      return Container(
-                        margin: EdgeInsets.only(top: 16),
-                        child: Row(
-                          mainAxisAlignment: _currentStep != 0
-                              ? MainAxisAlignment.spaceBetween
-                              : MainAxisAlignment.end,
-                          children: [
-                            if (_currentStep != 0)
-                              GestureDetector(
-                                onTap: details.onStepCancel,
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 6),
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.arrow_back_ios_new_outlined,
-                                        color: ColorResources.COLOR_BLACK
-                                            .withOpacity(0.6),
-                                        size: 14,
-                                      ),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text(
-                                        "PREV",
-                                        style: _subTitle,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            if (_currentStep != 3)
-                              GestureDetector(
-                                onTap: details.onStepContinue,
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 6),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Theme.of(context).primaryColor),
-                                    borderRadius: BorderRadius.circular(4),
-                                    color: Theme.of(context).cardColor,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      // _currentStep == 2
-                                      Text(
-                                        "NEXT",
-                                        style: TextStyle(
-                                            color:
-                                                Theme.of(context).primaryColor),
-                                      ),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      Icon(
-                                        Icons.arrow_forward_ios_outlined,
-                                        color: Theme.of(context).primaryColor,
-                                        size: 14,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            if (_currentStep == 3)
-                              Column(
-                                children: [
-                                  GestureDetector(
-                                    onTap: details.onStepContinue,
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 6),
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color:
-                                                Theme.of(context).primaryColor),
-                                        borderRadius: BorderRadius.circular(4),
-                                        color: Theme.of(context).primaryColor,
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          // _currentStep == 2
-                                          Text(
-                                            "COMPLETED",
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                        ],
-                                      ),
+        body: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          child: Container(
+            color: Colors.white,
+            height: size.height,
+            width: size.width,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Stepper(
+                    connectorColor: MaterialStateProperty.resolveWith((states) {
+                      if (states.contains(MaterialState.pressed)) {
+                        return ColorResources.COLOR_GREY;
+                      }
+                      return ColorResources.COLOR_PRIMARY;
+                    }),
+                    elevation: 0,
+                    type: StepperType.horizontal,
+                    physics: BouncingScrollPhysics(),
+                    currentStep: _currentStep,
+                    onStepTapped: (step) => tapped(step),
+                    onStepContinue: continued,
+                    onStepCancel: cancel,
+                    controlsBuilder: (context, details) {
+                      if (_currentStep <= 2) {
+                        return Container(
+                          margin: EdgeInsets.only(top: 16),
+                          child: Row(
+                            mainAxisAlignment: _currentStep != 0
+                                ? MainAxisAlignment.spaceBetween
+                                : MainAxisAlignment.end,
+                            children: [
+                              if (_currentStep != 0)
+                                GestureDetector(
+                                  onTap: details.onStepCancel,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 6),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.arrow_back_ios_new_outlined,
+                                          color: ColorResources.COLOR_BLACK
+                                              .withOpacity(0.6),
+                                          size: 14,
+                                        ),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text(
+                                          "PREV",
+                                          style: _subTitle,
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ],
-                              )
-                          ],
-                        ),
-                      );
-                    }
+                                ),
+                              if (_currentStep != 2)
+                                GestureDetector(
+                                  onTap: details.onStepContinue,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 6),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color:
+                                              Theme.of(context).primaryColor),
+                                      borderRadius: BorderRadius.circular(4),
+                                      color: Theme.of(context).cardColor,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        // _currentStep == 2
+                                        Text(
+                                          "NEXT",
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .primaryColor),
+                                        ),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Icon(
+                                          Icons.arrow_forward_ios_outlined,
+                                          color: Theme.of(context).primaryColor,
+                                          size: 14,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              if (_currentStep == 2)
+                                Column(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: details.onStepContinue,
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 6),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Theme.of(context)
+                                                  .primaryColor),
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            // _currentStep == 2
+                                            Text(
+                                              "CONTINUE",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                            ],
+                          ),
+                        );
+                      }
 
-                    return Container();
-                  },
-                  steps: [
-                    Step(
-                      title: SizedBox.shrink(),
-                      label: new Text("Plant"),
-                      content: _plantBuilder,
-                      isActive: _currentStep >= 0,
-                      state: _currentStep >= 0
-                          ? StepState.complete
-                          : StepState.indexed,
-                    ),
-                    Step(
-                      title: SizedBox.shrink(),
-                      label: new Text("Pot"),
-                      content: _productBuilder,
-                      isActive: _currentStep >= 0,
-                      state: _currentStep >= 1
-                          ? StepState.complete
-                          : StepState.indexed,
-                    ),
-                    Step(
-                      title: SizedBox.shrink(),
-                      label: new Text("Soil"),
-                      content: _soilBuilder,
-                      isActive: _currentStep >= 0,
-                      state: _currentStep >= 2
-                          ? StepState.complete
-                          : StepState.indexed,
-                    ),
-                    Step(
-                      title: SizedBox.shrink(),
-                      label: new Text("Checkout"),
-                      content: _viewer,
-                      isActive: _currentStep >= 0,
-                      state: _currentStep >= 3
-                          ? StepState.complete
-                          : StepState.indexed,
-                    ),
-                  ],
+                      return Container();
+                    },
+                    steps: [
+                      Step(
+                        title: SizedBox.shrink(),
+                        label: new Text("Plant"),
+                        content: _plantBuilder,
+                        isActive: _currentStep >= 0,
+                        state: _currentStep >= 0
+                            ? StepState.complete
+                            : StepState.indexed,
+                      ),
+                      Step(
+                        title: SizedBox.shrink(),
+                        label: new Text("Pot"),
+                        content: _productBuilder,
+                        isActive: _currentStep >= 0,
+                        state: _currentStep >= 1
+                            ? StepState.complete
+                            : StepState.indexed,
+                      ),
+                      Step(
+                        title: SizedBox.shrink(),
+                        label: new Text("Soil"),
+                        content: _soilBuilder,
+                        isActive: _currentStep >= 0,
+                        state: _currentStep >= 2
+                            ? StepState.complete
+                            : StepState.indexed,
+                      ),
+                      // Step(
+                      //   title: SizedBox.shrink(),
+                      //   label: new Text("Checkout"),
+                      //   content: _viewer,
+                      //   isActive: _currentStep >= 0,
+                      //   state: _currentStep >= 3
+                      //       ? StepState.complete
+                      //       : StepState.indexed,
+                      // ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ));
   }

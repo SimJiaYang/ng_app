@@ -139,6 +139,7 @@ class Plant {
   DateTime? updatedAt;
   String? categoryName;
   String? imageURL;
+  bool? isSelected;
 
   Plant({
     this.id,
@@ -157,6 +158,7 @@ class Plant {
     this.updatedAt,
     this.categoryName,
     this.imageURL,
+    this.isSelected = false,
   });
 
   factory Plant.fromJson(Map<String, dynamic> json) => Plant(

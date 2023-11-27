@@ -25,7 +25,6 @@ import 'package:nurserygardenapp/util/routes.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart'
     show LicenseEntryWithLineBreaks, LicenseRegistry, kIsWeb;
-import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'di_container.dart' as di;
 
 Future<void> main() async {

@@ -136,6 +136,7 @@ class Product {
   DateTime? updatedAt;
   String? categoryName;
   String? imageURL;
+  bool? isSelected;
 
   Product({
     this.id,
@@ -150,6 +151,7 @@ class Product {
     this.updatedAt,
     this.categoryName,
     this.imageURL,
+    this.isSelected = false,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
