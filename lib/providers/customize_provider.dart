@@ -1,4 +1,5 @@
-import 'package:flutter/foundation.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/data/model/plant_model.dart';
 import 'package:nurserygardenapp/data/model/product_model.dart';
@@ -7,6 +8,8 @@ import 'package:nurserygardenapp/data/repositories/customize_repo.dart';
 import 'package:nurserygardenapp/helper/response_helper.dart';
 import 'package:nurserygardenapp/util/app_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../data/model/cart_model.dart';
 
 class CustomizeProvider extends ChangeNotifier {
   final CustomizeRepo customizeRepo;
@@ -144,6 +147,46 @@ class CustomizeProvider extends ChangeNotifier {
     }
 
     _isLoading = false;
+    notifyListeners();
+
+    return result;
+  }
+
+  /// ================== SHOW CUSTOM ==================
+  List<Cart> _selectedItem = [];
+  List<Cart> get selectedItem => _selectedItem;
+
+  void addSelectedItem(List<Cart> cart) {
+    _selectedItem = cart;
+    notifyListeners();
+  }
+
+  void resetSelectedItem() {
+    _selectedItem = [];
+    notifyListeners();
+  }
+
+  bool _isFetching = false;
+  bool get isFetching => _isFetching;
+
+  String item_url = '';
+
+  Future<bool> getItemUrl(BuildContext context) async {
+    bool result = false;
+
+    _isFetching = true;
+    notifyListeners();
+
+    ApiResponse apiResponse = await customizeRepo.getItemURL(_selectedItem);
+
+    if (context.mounted) {
+      result = ResponseHelper.responseHelper(context, apiResponse);
+      if (result) {
+        item_url = apiResponse.response!.data['data']['URL'];
+      }
+    }
+
+    _isFetching = false;
     notifyListeners();
 
     return result;

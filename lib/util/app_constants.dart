@@ -26,6 +26,10 @@ class AppConstants {
   static const String SNACKBAR_WARNING = 'warning';
   static const String SNACKBAR_INFO = 'info';
 
+  // Params
+  static const String CUSTOM_STATUS = 'custom';
+  static const String ACTIVE_STATUS = '1';
+
   // Plant Type
   static const String LOTUS = "lotus";
   static const String DESERT_ROSE = "desert rose";
@@ -71,6 +75,9 @@ class AppConstants {
   static const String ADD_TO_CART_URI = '/cart/add';
   static const String DELETE_CART_URI = '/cart/delete';
   static const String UPDATE_CART_URI = '/cart/update';
+
+  // Customize
+  static const String CUSTOMIZE_ITEM_URI = '/custom';
 
   // Order
   static const String ORDER_URI = '/order';

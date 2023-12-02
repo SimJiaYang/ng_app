@@ -16,6 +16,7 @@ import 'package:nurserygardenapp/view/screen/auth/register_screen.dart';
 import 'package:nurserygardenapp/view/screen/bidding/bidding_screen.dart';
 import 'package:nurserygardenapp/view/screen/cart/cart_screen.dart';
 import 'package:nurserygardenapp/view/screen/customization/customization_screen.dart';
+import 'package:nurserygardenapp/view/screen/customization/show_custom_screen.dart';
 import 'package:nurserygardenapp/view/screen/dashboard/dashboard_screen.dart';
 import 'package:nurserygardenapp/view/screen/delivery/delivery_screen.dart';
 import 'package:nurserygardenapp/view/screen/delivery/sub_screen/delivery_detail_screen.dart';
@@ -127,6 +128,10 @@ class RouterHelper {
   static Handler _customizationHandler = Handler(
       handlerFunc: (context, Map<String, dynamic> parameters) =>
           CustomizationScreen());
+
+  static Handler _customizationShowHandler = Handler(
+      handlerFunc: (context, Map<String, dynamic> parameters) =>
+          ShowCustomScreen());
 
   // =================================Cart=========================================
   static Handler _cartHandler = Handler(
@@ -284,6 +289,9 @@ class RouterHelper {
         transitionType: TransitionType.fadeIn);
     router.define(Routes.CUSTOMIZATION_SCREEN,
         handler: _customizationHandler, transitionType: TransitionType.fadeIn);
+    router.define(Routes.CUSTOMIZATION_SHOW_SCREEN,
+        handler: _customizationShowHandler,
+        transitionType: TransitionType.fadeIn);
     router.define(Routes.CART_SCREEN,
         transitionType: TransitionType.fadeIn, handler: _cartHandler);
     router.define(Routes.ORDER_SCREEN,

@@ -1,12 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:nurserygardenapp/data/model/cart_model.dart';
 import 'package:nurserygardenapp/providers/customize_provider.dart';
 import 'package:nurserygardenapp/util/app_constants.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/util/routes.dart';
-import 'package:nurserygardenapp/view/base/page_loading.dart';
+import 'package:nurserygardenapp/view/screen/customization/widget/empty_item.dart';
 import 'package:provider/provider.dart';
 
 class CustomizationScreen extends StatefulWidget {
@@ -31,16 +31,19 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
   var plant_params = {
     'limit': '8',
     'category': AppConstants.DESERT_ROSE,
+    'status': AppConstants.CUSTOM_STATUS
   };
 
   var product_params = {
     'limit': '8',
     'category': AppConstants.POT,
+    'status': AppConstants.CUSTOM_STATUS
   };
 
   var soil_params = {
     'limit': '8',
     'category': AppConstants.SOIL,
+    'status': AppConstants.CUSTOM_STATUS
   };
 
   Future<void> _loadPlant({bool isLoadMore = false}) async {
@@ -135,6 +138,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
     _soilController.addListener(_soilScroll);
     WidgetsFlutterBinding.ensureInitialized();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      custom_prov.resetSelectedItem();
       _loadPlant();
       _loadProduct();
       _loadSoil();
@@ -172,9 +176,33 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
   }
 
   _handleSubmit() {
-    print(plantID);
-    print(productID);
-    print(soilID);
+    List<Cart> _selectedItem = [];
+    _selectedItem.add(Cart(
+      plantId: int.parse(plantID),
+      quantity: 1,
+      price: custom_prov.plantList
+          .firstWhere((element) => element.id == int.parse(plantID))
+          .price,
+    ));
+    _selectedItem.add(Cart(
+      productId: int.parse(productID),
+      quantity: 1,
+      price: custom_prov.productList
+          .firstWhere((element) => element.id == int.parse(productID))
+          .price,
+    ));
+    _selectedItem.add(Cart(
+      productId: int.parse(soilID),
+      quantity: 1,
+      price: custom_prov.soilList
+          .firstWhere((element) => element.id == int.parse(soilID))
+          .price,
+    ));
+    custom_prov.addSelectedItem(_selectedItem);
+    // for (var item in _selectedItem) {
+    //   print(item.toJson());
+    // }
+    Navigator.pushNamed(context, Routes.getCustomizationShowRoute());
   }
 
   @override
@@ -190,25 +218,33 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
       color: const Color.fromRGBO(45, 45, 45, 1).withOpacity(0.6),
     );
 
-    // Widget _viewer =
-    //     Consumer<CustomizeProvider>(builder: (context, customProvider, child) {
-    //   return Container(height: size.height * 0.4, child: Container()
-    //       // ModelViewer(
-    //       //   backgroundColor: Color.fromARGB(0xFF, 0xEE, 0xEE, 0xEE),
-    //       //   src: 'https://modelviewer.dev/shared-assets/models/Astronaut.glb',
-    //       //   alt: 'A 3D model of an astronaut',
-    //       //   ar: true,
-    //       //   autoRotate: true,
-    //       //   // iosSrc: 'https://modelviewer.dev/shared-assets/models/Astronaut.usdz',
-    //       //   disableZoom: true,
-    //       // ),
-    //       );
-    // });
+    Widget _loadingView = Container(
+      height: size.height,
+      width: size.width,
+      child: ListView.builder(
+        itemCount: 3,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, index) {
+          return EmptyItem();
+        },
+      ),
+    );
 
     Widget _plantBuilder =
         Consumer<CustomizeProvider>(builder: (context, customProvider, child) {
       return customProvider.isLoading && customProvider.plantList.isEmpty
-          ? Container(height: 150, child: LoadingThreeCircle())
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: size.width * 0.3,
+                  height: 15,
+                  color: Colors.grey[400],
+                ),
+                _loadingView,
+              ],
+            )
           : customProvider.plantList.isEmpty && !customProvider.isLoading
               ? Center(
                   child: Container(
@@ -251,7 +287,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                                   (customProvider.plantNoMoreData.isEmpty &&
                                       customProvider.plantList.length < 8))
                               ? EdgeInsets.fromLTRB(0, 0, 10, 0)
-                              : EdgeInsets.fromLTRB(0, 0, 50, 0),
+                              : EdgeInsets.fromLTRB(0, 0, 150, 0),
                           physics: const BouncingScrollPhysics(),
                           shrinkWrap: true,
                           controller: _plantController,
@@ -265,11 +301,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                           itemBuilder: (context, index) {
                             if (index >= customProvider.plantList.length &&
                                 customProvider.plantNoMoreData.isEmpty) {
-                              return Center(
-                                child: LoadingAnimationWidget.waveDots(
-                                    color: ColorResources.COLOR_PRIMARY,
-                                    size: 40),
-                              );
+                              return _loadingView;
                             } else if (index >=
                                     customProvider.plantList.length &&
                                 customProvider.plantNoMoreData.isNotEmpty) {
@@ -335,9 +367,9 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                                                   .toString() ==
                                               plantID
                                           ? Icon(
-                                              Icons
-                                                  .check_circle_outline_rounded,
-                                              size: 25,
+                                              Icons.check,
+                                              size: 25.0,
+                                              weight: 50.0,
                                               color:
                                                   ColorResources.COLOR_PRIMARY,
                                             )
@@ -358,7 +390,18 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
     Widget _productBuilder =
         Consumer<CustomizeProvider>(builder: (context, customProvider, child) {
       return customProvider.isLoading && customProvider.productList.isEmpty
-          ? Container(height: 150, child: LoadingThreeCircle())
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: size.width * 0.3,
+                  height: 15,
+                  color: Colors.grey[400],
+                ),
+                _loadingView,
+              ],
+            )
           : customProvider.productList.isEmpty && !customProvider.isLoading
               ? Center(
                   child: Container(
@@ -392,7 +435,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                     Container(
                       color: Colors.white,
                       width: double.infinity,
-                      height: 200,
+                      height: 220,
                       // height: size.height * 0.5,
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
@@ -402,7 +445,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                                   (customProvider.productNoMoreData.isEmpty &&
                                       customProvider.productList.length < 8))
                               ? EdgeInsets.fromLTRB(0, 0, 10, 0)
-                              : EdgeInsets.fromLTRB(0, 0, 50, 0),
+                              : EdgeInsets.fromLTRB(0, 0, 150, 0),
                           physics: const BouncingScrollPhysics(),
                           shrinkWrap: true,
                           controller: _productController,
@@ -416,11 +459,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                           itemBuilder: (context, index) {
                             if (index >= customProvider.productList.length &&
                                 customProvider.productNoMoreData.isEmpty) {
-                              return Center(
-                                child: LoadingAnimationWidget.waveDots(
-                                    color: ColorResources.COLOR_PRIMARY,
-                                    size: 40),
-                              );
+                              return _loadingView;
                             } else if (index >=
                                     customProvider.productList.length &&
                                 customProvider.productNoMoreData.isNotEmpty) {
@@ -457,7 +496,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                                                     BorderRadius.circular(10),
                                                 image: DecorationImage(
                                                   image: imageProvider,
-                                                  fit: BoxFit.fill,
+                                                  fit: BoxFit.fitWidth,
                                                 ),
                                               ),
                                             ),
@@ -484,8 +523,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                                                   .toString() ==
                                               productID
                                           ? Icon(
-                                              Icons
-                                                  .check_circle_outline_rounded,
+                                              Icons.check,
                                               size: 25,
                                               color:
                                                   ColorResources.COLOR_PRIMARY,
@@ -507,7 +545,18 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
     Widget _soilBuilder =
         Consumer<CustomizeProvider>(builder: (context, customProvider, child) {
       return customProvider.isLoading && customProvider.soilList.isEmpty
-          ? Container(height: 150, child: LoadingThreeCircle())
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: size.width * 0.3,
+                  height: 15,
+                  color: Colors.grey[400],
+                ),
+                _loadingView,
+              ],
+            )
           : customProvider.soilList.isEmpty && !customProvider.isLoading
               ? Center(
                   child: Container(
@@ -541,7 +590,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                     Container(
                       color: Colors.white,
                       width: double.infinity,
-                      height: 200,
+                      height: 220,
                       // height: size.height * 0.5,
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
@@ -550,7 +599,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                                   (customProvider.soilNoMoreData.isEmpty &&
                                       customProvider.soilList.length < 8))
                               ? EdgeInsets.fromLTRB(0, 0, 10, 0)
-                              : EdgeInsets.fromLTRB(0, 0, 50, 0),
+                              : EdgeInsets.fromLTRB(0, 0, 150, 0),
                           physics: const BouncingScrollPhysics(),
                           shrinkWrap: true,
                           controller: _soilController,
@@ -564,11 +613,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                           itemBuilder: (context, index) {
                             if (index >= customProvider.soilList.length &&
                                 customProvider.soilNoMoreData.isEmpty) {
-                              return Center(
-                                child: LoadingAnimationWidget.waveDots(
-                                    color: ColorResources.COLOR_PRIMARY,
-                                    size: 40),
-                              );
+                              return _loadingView;
                             } else if (index >=
                                     customProvider.soilList.length &&
                                 customProvider.soilNoMoreData.isNotEmpty) {
@@ -632,8 +677,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                                                   .toString() ==
                                               soilID
                                           ? Icon(
-                                              Icons
-                                                  .check_circle_outline_rounded,
+                                              Icons.check,
                                               size: 25,
                                               color:
                                                   ColorResources.COLOR_PRIMARY,
@@ -660,26 +704,14 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
 
     return Scaffold(
         appBar: AppBar(
-            backgroundColor: ColorResources.COLOR_PRIMARY,
-            title: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Text("Customization",
-                  style: _title.copyWith(
-                      color: ColorResources.COLOR_WHITE, fontSize: 16)),
-            ),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.only(right: 15),
-                child: IconButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, Routes.getCartRoute());
-                    },
-                    icon: Icon(
-                      Icons.shopping_cart_outlined,
-                      color: Colors.white,
-                    )),
-              )
-            ]),
+          backgroundColor: ColorResources.COLOR_PRIMARY,
+          title: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Text("Customization",
+                style: _title.copyWith(
+                    color: ColorResources.COLOR_WHITE, fontSize: 16)),
+          ),
+        ),
         body: SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),
           child: Container(
@@ -791,7 +823,6 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                                         ),
                                         child: Row(
                                           children: [
-                                            // _currentStep == 2
                                             Text(
                                               "CONTINUE",
                                               style: TextStyle(

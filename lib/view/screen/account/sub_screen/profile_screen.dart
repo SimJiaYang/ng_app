@@ -10,6 +10,7 @@ import 'package:nurserygardenapp/view/base/custom_button.dart';
 import 'package:nurserygardenapp/view/base/custom_space.dart';
 import 'package:nurserygardenapp/view/base/custom_textfield.dart';
 import 'package:nurserygardenapp/view/base/upload_image_widget.dart';
+import 'package:nurserygardenapp/view/screen/account/widget/empty_account_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
@@ -172,9 +173,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       body: Consumer<UserProvider>(
         builder: (context, userProvider, child) {
           return userProvider.isLoading
-              ? Center(
-                  child: CircularProgressIndicator.adaptive(),
-                )
+              ? EmptyAccountWidget()
               : WillPopScope(
                   onWillPop: () async {
                     return userProvider.isLoading ||
