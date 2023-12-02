@@ -1,10 +1,14 @@
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
-import 'package:model_viewer_plus/model_viewer_plus.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:nurserygardenapp/providers/customize_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/view/base/custom_appbar.dart';
+import 'package:nurserygardenapp/view/base/page_loading.dart';
+import 'package:nurserygardenapp/view/screen/customization/widget/video_items.dart';
 import 'package:provider/provider.dart';
+import 'package:video_player/video_player.dart';
 
 class ShowCustomScreen extends StatefulWidget {
   const ShowCustomScreen({super.key});
@@ -18,23 +22,23 @@ class _ShowCustomScreenState extends State<ShowCustomScreen> {
       Provider.of<CustomizeProvider>(context, listen: false);
 
   @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _loadData();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _loadData();
     });
   }
 
-  void _loadData() async {
+  _loadData() async {
     await custom_prov.getItemUrl(context);
   }
-
-  // @override
-  // void setState(VoidCallback fn) {
-  //   if (mounted) {
-  //     super.setState(fn);
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -60,31 +64,44 @@ class _ShowCustomScreenState extends State<ShowCustomScreen> {
         body: Container(
           height: size.height,
           width: size.width,
-          child: Consumer<CustomizeProvider>(
-            builder: (context, customProvider, child) {
-              return customProvider.isFetching &&
-                      customProvider.item_url.isEmpty
-                  ? Container()
-                  : customProvider.item_url.isEmpty &&
-                          !customProvider.isFetching
-                      ? Center(
-                          child: Text(
-                            'No Item Selected',
-                            style: _title,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Consumer<CustomizeProvider>(
+                    builder: (context, customProvider, child) {
+                  if (customProvider.isFetching) {
+                    return Container(
+                        height: size.height,
+                        width: size.width,
+                        child: Center(
+                          child: LoadingAnimationWidget.inkDrop(
+                              color: ColorResources.COLOR_PRIMARY, size: 43),
+                        ));
+                  } else {
+                    return Container(
+                      height: size.height * 0.7,
+                      width: size.width,
+                      child: VideoItems(
+                        // ignore: deprecated_member_use
+                        videoPlayerController:
+                            // ignore: deprecated_member_use
+                            VideoPlayerController.networkUrl(
+                          Uri.parse(
+                            customProvider.item_url.toString(),
                           ),
-                        )
-                      : SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              Container(
-                                width: double.infinity,
-                                height: 200,
-                                child: Container(),
-                              )
-                            ],
+                          videoPlayerOptions: VideoPlayerOptions(
+                            mixWithOthers: false,
+                            allowBackgroundPlayback: false,
                           ),
-                        );
-            },
+                        ),
+                        looping: true,
+                        autoplay: true,
+                      ),
+                    );
+                  }
+                }),
+              ],
+            ),
           ),
         ));
   }
