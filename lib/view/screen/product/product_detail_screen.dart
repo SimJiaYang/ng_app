@@ -80,7 +80,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     Cart cart = Cart();
     cart.productId = product.id;
     cart.quantity = cartQuantity;
-    cart.price = product.price! * cartQuantity;
+    cart.price = product.price;
     cart.dateAdded = DateTime.now();
     cart.isPurchase = "false";
     cart.isCart = false;

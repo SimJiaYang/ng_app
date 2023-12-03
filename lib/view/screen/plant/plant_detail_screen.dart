@@ -86,7 +86,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
     Cart cart = Cart();
     cart.plantId = plant.id;
     cart.quantity = cartQuantity;
-    cart.price = plant.price! * cartQuantity;
+    cart.price = plant.price;
     cart.dateAdded = DateTime.now();
     cart.isPurchase = "false";
     cart.isCart = false;
