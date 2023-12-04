@@ -133,6 +133,11 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setCartList(List<Cart> cart) {
+    _addedCartList = cart;
+    notifyListeners();
+  }
+
   void addCartList(Cart cart) {
     clearCartList();
     _addedCartList = [cart];

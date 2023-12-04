@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:nurserygardenapp/data/model/cart_model.dart';
 import 'package:nurserygardenapp/providers/customize_provider.dart';
 import 'package:nurserygardenapp/util/app_constants.dart';
@@ -175,7 +176,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
     _currentStep > 0 ? setState(() => _currentStep -= 1) : null;
   }
 
-  _handleSubmit() {
+  _handleSubmit() async {
     List<Cart> _selectedItem = [];
     _selectedItem.add(Cart(
       plantId: int.parse(plantID),
@@ -199,10 +200,11 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
           .price,
     ));
     custom_prov.addSelectedItem(_selectedItem);
-    // for (var item in _selectedItem) {
-    //   print(item.toJson());
-    // }
-    Navigator.pushNamed(context, Routes.getCustomizationShowRoute());
+    await custom_prov.getItemUrl(context).then((value) {
+      if (value) {
+        Navigator.pushNamed(context, Routes.getCustomizationShowRoute());
+      }
+    });
   }
 
   @override
@@ -808,30 +810,46 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                               if (_currentStep == 2)
                                 Column(
                                   children: [
-                                    GestureDetector(
-                                      onTap: details.onStepContinue,
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 10, vertical: 6),
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Theme.of(context)
-                                                  .primaryColor),
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                          color: Theme.of(context).primaryColor,
+                                    Consumer<CustomizeProvider>(builder:
+                                        (context, customProvider, child) {
+                                      return GestureDetector(
+                                        onTap: details.onStepContinue,
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 6),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Theme.of(context)
+                                                    .primaryColor),
+                                            borderRadius:
+                                                BorderRadius.circular(4),
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              if (!customProvider.isFetching)
+                                                Text(
+                                                  "CONTINUE",
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              if (customProvider.isFetching)
+                                                Container(
+                                                    width: 50,
+                                                    child: Center(
+                                                      child:
+                                                          LoadingAnimationWidget
+                                                              .waveDots(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  size: 20),
+                                                    )),
+                                            ],
+                                          ),
                                         ),
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              "CONTINUE",
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
+                                      );
+                                    }),
                                   ],
                                 )
                             ],

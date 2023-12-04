@@ -157,6 +157,7 @@ class Cart {
   String? isPurchase;
   int? productId;
   int? plantId;
+  int? soilId;
   dynamic biddingId;
   int? userId;
   bool? isChecked;
@@ -172,6 +173,7 @@ class Cart {
     this.isPurchase,
     this.productId,
     this.plantId,
+    this.soilId,
     this.biddingId,
     this.userId,
     this.isChecked = false,

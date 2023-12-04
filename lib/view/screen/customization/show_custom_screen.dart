@@ -4,11 +4,14 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:nurserygardenapp/providers/customize_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/dimensions.dart';
+import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/custom_appbar.dart';
-import 'package:nurserygardenapp/view/base/page_loading.dart';
+import 'package:nurserygardenapp/view/base/custom_button.dart';
 import 'package:nurserygardenapp/view/screen/customization/widget/video_items.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
+
+import '../../../providers/cart_provider.dart';
 
 class ShowCustomScreen extends StatefulWidget {
   const ShowCustomScreen({super.key});
@@ -31,13 +34,6 @@ class _ShowCustomScreenState extends State<ShowCustomScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _loadData();
-    });
-  }
-
-  _loadData() async {
-    await custom_prov.getItemUrl(context);
   }
 
   @override
@@ -62,10 +58,13 @@ class _ShowCustomScreenState extends State<ShowCustomScreen> {
           isCenter: false,
         ),
         body: Container(
+          padding: const EdgeInsets.all(10),
           height: size.height,
           width: size.width,
           child: SingleChildScrollView(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Consumer<CustomizeProvider>(
                     builder: (context, customProvider, child) {
@@ -82,10 +81,7 @@ class _ShowCustomScreenState extends State<ShowCustomScreen> {
                       height: size.height * 0.7,
                       width: size.width,
                       child: VideoItems(
-                        // ignore: deprecated_member_use
-                        videoPlayerController:
-                            // ignore: deprecated_member_use
-                            VideoPlayerController.networkUrl(
+                        videoPlayerController: VideoPlayerController.networkUrl(
                           Uri.parse(
                             customProvider.item_url.toString(),
                           ),
@@ -94,12 +90,30 @@ class _ShowCustomScreenState extends State<ShowCustomScreen> {
                             allowBackgroundPlayback: false,
                           ),
                         ),
-                        looping: true,
+                        looping: false,
                         autoplay: true,
                       ),
                     );
                   }
                 }),
+                SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: Container(
+                      width: 90,
+                      child: CustomButton(
+                        btnTxt: 'Checkout',
+                        onTap: () {
+                          // custom_prov.selectedItem.forEach((element) {
+                          //   print(element.toJson());
+                          // });
+                          Navigator.pushNamed(
+                              context, Routes.getCustomizeConfirmationRoute());
+                        },
+                      )),
+                )
               ],
             ),
           ),
