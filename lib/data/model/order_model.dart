@@ -130,6 +130,7 @@ class Order {
   int? userId;
   dynamic cartId;
   String? address;
+  String? note;
   DateTime? createdAt;
   DateTime? updatedAt;
 
@@ -138,6 +139,7 @@ class Order {
     this.status,
     this.date,
     this.totalAmount,
+    this.note,
     this.userId,
     this.cartId,
     this.address,
@@ -152,6 +154,7 @@ class Order {
         totalAmount: json["total_amount"]?.toDouble(),
         userId: json["user_id"],
         cartId: json["cart_id"],
+        note: json["note"],
         address: json["address"],
         createdAt: json["created_at"] == null
             ? null
@@ -167,6 +170,7 @@ class Order {
         "date":
             "${date!.year.toString().padLeft(4, '0')}-${date!.month.toString().padLeft(2, '0')}-${date!.day.toString().padLeft(2, '0')}",
         "total_amount": totalAmount,
+        "note": note,
         "user_id": userId,
         "cart_id": cartId,
         "created_at": createdAt?.toIso8601String(),

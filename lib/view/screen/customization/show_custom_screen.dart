@@ -11,8 +11,6 @@ import 'package:nurserygardenapp/view/screen/customization/widget/video_items.da
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
-import '../../../providers/cart_provider.dart';
-
 class ShowCustomScreen extends StatefulWidget {
   const ShowCustomScreen({super.key});
 
@@ -34,6 +32,11 @@ class _ShowCustomScreenState extends State<ShowCustomScreen> {
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -106,9 +109,6 @@ class _ShowCustomScreenState extends State<ShowCustomScreen> {
                       child: CustomButton(
                         btnTxt: 'Checkout',
                         onTap: () {
-                          // custom_prov.selectedItem.forEach((element) {
-                          //   print(element.toJson());
-                          // });
                           Navigator.pushNamed(
                               context, Routes.getCustomizeConfirmationRoute());
                         },

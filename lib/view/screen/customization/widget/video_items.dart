@@ -11,10 +11,11 @@ class VideoItems extends StatefulWidget {
   final bool autoplay;
 
   VideoItems({
+    Key? key,
     required this.videoPlayerController,
     required this.looping,
     required this.autoplay,
-  });
+  }) : super(key: key);
 
   @override
   State<VideoItems> createState() => _VideoItemsState();
@@ -49,6 +50,7 @@ class _VideoItemsState extends State<VideoItems> {
   void dispose() {
     super.dispose();
     _chewieController.dispose();
+    widget.videoPlayerController.dispose();
     widget.videoPlayerController.removeListener(_onVideoFirstLoad);
   }
 
@@ -68,6 +70,11 @@ class _VideoItemsState extends State<VideoItems> {
         isFirstLoad = false;
       });
     }
+  }
+
+  // Expose a function to pause the video
+  void pauseVideo() {
+    _chewieController.pause();
   }
 
   @override

@@ -191,4 +191,31 @@ class CustomizeProvider extends ChangeNotifier {
 
     return result;
   }
+
+  /// ================== MAKE ORDER ==================
+  String _orderIdCreated = '';
+  String get orderIdCreated => _orderIdCreated;
+  Future<bool> addOrder(BuildContext context, String address) async {
+    bool result = false;
+
+    _isLoading = true;
+    notifyListeners();
+
+    ApiResponse apiResponse =
+        await customizeRepo.addOrder(_selectedItem, address);
+
+    if (context.mounted) {
+      result = ResponseHelper.responseHelper(context, apiResponse);
+      if (result) {
+        _orderIdCreated =
+            apiResponse.response!.data['data']['order_id'].toString();
+        print(_orderIdCreated);
+      }
+    }
+
+    _isLoading = false;
+    notifyListeners();
+
+    return result;
+  }
 }

@@ -47,4 +47,21 @@ class CustomizeRepo {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
     }
   }
+
+  Future<ApiResponse> addOrder(List<Cart> cart, String address) async {
+    final List<Map<String, dynamic>> cartListJson =
+        cart.map((cart) => cart.toJson()).toList();
+    try {
+      Response response = await dioClient.post(
+        AppConstants.CUSTOMIZE_ITEM_ADD_ORDER,
+        data: {
+          "cart_list": cartListJson,
+          "address": address,
+        },
+      );
+      return ApiResponse.withSuccess(response);
+    } catch (e) {
+      return ApiResponse.withError(ApiErrorHandler.getMessage(e));
+    }
+  }
 }

@@ -10,6 +10,7 @@ import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/circular_indicator.dart';
 import 'package:nurserygardenapp/view/base/page_loading.dart';
+import 'package:nurserygardenapp/view/screen/payment/payment_helper/payment_type.dart';
 import 'package:provider/provider.dart';
 
 class CustomConfirmationScreen extends StatefulWidget {
@@ -145,8 +146,8 @@ class _CustomConfirmationScreenState extends State<CustomConfirmationScreen> {
                     ),
                     Expanded(
                       flex: 1,
-                      child: Consumer2<OrderProvider, CartProvider>(builder:
-                          (context, orderProvider, cartProvider, child) {
+                      child: Consumer<CustomizeProvider>(
+                          builder: (context, customProvider, child) {
                         return GestureDetector(
                           onTap: () async {
                             if (address == emptyAddress_msg) {
@@ -162,22 +163,20 @@ class _CustomConfirmationScreenState extends State<CustomConfirmationScreen> {
                                   duration: Duration(milliseconds: 500));
                               return;
                             }
-                            if (orderProvider.isLoading) return;
-                            // if (widget.comeFrom == cartMode) {
-                            //   if (orderProvider.isLoading) return;
-                            //   await orderProvider
-                            //       .addOrder(
-                            //           cart_prov.addedCartList, address, context)
-                            //       .then((value) {
-                            //     if (value == true) {
-                            //       Navigator.pushReplacementNamed(
-                            //           context,
-                            //           Routes.getPaymentRoute(
-                            //               (PaymentType.card).toString(),
-                            //               orderProvider.orderIdCreated));
-                            //     }
-                            //   });
-                            // }
+                            if (customProvider.isLoading) return;
+                            await customProvider
+                                .addOrder(context, address)
+                                .then((value) {
+                              if (value) {
+                                if (value == true) {
+                                  Navigator.pushReplacementNamed(
+                                      context,
+                                      Routes.getPaymentRoute(
+                                          (PaymentType.card).toString(),
+                                          customProvider.orderIdCreated));
+                                }
+                              }
+                            });
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -191,7 +190,7 @@ class _CustomConfirmationScreenState extends State<CustomConfirmationScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
-                                orderProvider.isLoading
+                                customProvider.isLoading
                                     ? CircularProgress()
                                     : Text(
                                         'Place Order',

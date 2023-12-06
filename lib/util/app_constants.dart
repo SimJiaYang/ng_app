@@ -78,6 +78,7 @@ class AppConstants {
 
   // Customize
   static const String CUSTOMIZE_ITEM_URI = '/custom';
+  static const String CUSTOMIZE_ITEM_ADD_ORDER = '/custom/order';
 
   // Order
   static const String ORDER_URI = '/order';
