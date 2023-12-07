@@ -1,12 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
 import 'package:nurserygardenapp/data/model/order_model.dart';
 import 'package:nurserygardenapp/providers/order_provider.dart';
+import 'package:nurserygardenapp/util/app_constants.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/custom_button.dart';
+import 'package:nurserygardenapp/view/base/custom_dialog.dart';
+import 'package:nurserygardenapp/view/base/custom_snackbar.dart';
 import 'package:nurserygardenapp/view/screen/order/widget/empty_order_detail.dart';
 import 'package:nurserygardenapp/view/screen/order/widget/shipping_status.dart';
 import 'package:nurserygardenapp/view/screen/payment/payment_helper/payment_type.dart';
@@ -549,6 +553,31 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                           )
                                         ],
                                       ),
+                                      if (order.note != null)
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Order Remark",
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: ColorResources
+                                                      .COLOR_GREY
+                                                      .withOpacity(0.9),
+                                                  fontWeight:
+                                                      FontWeight.normal),
+                                            ),
+                                            Text(
+                                              order.note ?? "",
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: ColorResources
+                                                      .COLOR_GREY
+                                                      .withOpacity(1.0)),
+                                            )
+                                          ],
+                                        ),
                                     ],
                                   ),
                                 ),
@@ -569,7 +598,57 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                       },
                                       btnTxt: "Pay Now",
                                     ),
-                                  )
+                                  ),
+                                if (order.status == "pay")
+                                  Consumer<OrderProvider>(builder:
+                                      (context, order_provider, child) {
+                                    return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 5),
+                                        child: CustomButton(
+                                          onTap: () {
+                                            showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return CustomDialog(
+                                                      dialogType: AppConstants
+                                                          .DIALOG_CONFIRMATION,
+                                                      btnText: "Yes",
+                                                      btnTextCancel: "No",
+                                                      title: "Cancel",
+                                                      content:
+                                                          "Are you sure you want to cancel this order?",
+                                                      onPressed: () async {
+                                                        if (order_provider
+                                                            .isLoading) {
+                                                          return;
+                                                        } else {
+                                                          await order_provider
+                                                              .cancelOrder(
+                                                                  context,
+                                                                  order)
+                                                              .then((value) {
+                                                            if (value == true) {
+                                                              Navigator.popUntil(
+                                                                  context,
+                                                                  ModalRoute
+                                                                      .withName(
+                                                                          Routes
+                                                                              .getOrderRoute()));
+                                                              // ModalRoute
+                                                              //     .withName(
+                                                              //         Routes
+                                                              //             .getOrderRoute()));
+                                                            }
+                                                          });
+                                                        }
+                                                      });
+                                                });
+                                          },
+                                          btnTxt: "Cancel Order",
+                                          backgroundColor: Colors.red,
+                                        ));
+                                  })
                               ],
                             ),
                           );

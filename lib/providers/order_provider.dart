@@ -12,6 +12,7 @@ import 'package:nurserygardenapp/data/model/user_model.dart';
 import 'package:nurserygardenapp/data/repositories/order_repo.dart';
 import 'package:nurserygardenapp/helper/response_helper.dart';
 import 'package:nurserygardenapp/util/app_constants.dart';
+import 'package:nurserygardenapp/view/base/custom_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OrderProvider extends ChangeNotifier {
@@ -188,6 +189,27 @@ class OrderProvider extends ChangeNotifier {
 
     _isLoadingReceipt = false;
     notifyListeners();
+
+    return result;
+  }
+
+  Future<bool> cancelOrder(BuildContext context, Order order) async {
+    bool result = false;
+    _isLoading = true;
+    notifyListeners();
+
+    ApiResponse apiResponse = await orderRepo.cancelOrder(order);
+
+    if (context.mounted) {
+      result = ResponseHelper.responseHelper(context, apiResponse);
+      if (result) {
+        showCustomSnackBar("Your order has been cancelled.", context);
+      }
+    }
+    _isLoading = false;
+    notifyListeners();
+
+    print(result);
 
     return result;
   }

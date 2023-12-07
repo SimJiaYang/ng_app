@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:nurserygardenapp/data/dio/dio_client.dart';
 import 'package:nurserygardenapp/data/exception/api_error_handler.dart';
 import 'package:nurserygardenapp/data/model/cart_model.dart';
+import 'package:nurserygardenapp/data/model/order_model.dart';
 import 'package:nurserygardenapp/data/model/response/api_response.dart';
 import 'package:nurserygardenapp/util/app_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -51,6 +52,16 @@ class OrderRepo {
     try {
       Response response =
           await dioClient.get('${AppConstants.ORDER_RECEIPT_URI}$param');
+      return ApiResponse.withSuccess(response);
+    } catch (e) {
+      return ApiResponse.withError(ApiErrorHandler.getMessage(e));
+    }
+  }
+
+  Future<ApiResponse> cancelOrder(Order order) async {
+    try {
+      Response response = await dioClient
+          .post('${AppConstants.ORDER_CANCEL_URI}', data: order.toJson());
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));

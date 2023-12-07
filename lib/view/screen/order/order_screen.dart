@@ -8,6 +8,7 @@ import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/util/font_styles.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/custom_button.dart';
+import 'package:nurserygardenapp/view/base/custom_snackbar.dart';
 import 'package:nurserygardenapp/view/screen/order/widget/empty_order.dart';
 import 'package:nurserygardenapp/view/screen/payment/payment_helper/payment_type.dart';
 import 'package:provider/provider.dart';
@@ -243,11 +244,19 @@ class _OrderScreenState extends State<OrderScreen> {
                                           child: GestureDetector(
                                             onTap: () {
                                               Navigator.pushNamed(
-                                                  context,
-                                                  Routes.getOrderDetailRoute(
-                                                      orderProvider
-                                                          .orderList[index].id
-                                                          .toString()));
+                                                      context,
+                                                      Routes
+                                                          .getOrderDetailRoute(
+                                                              orderProvider
+                                                                  .orderList[
+                                                                      index]
+                                                                  .id
+                                                                  .toString()))
+                                                  .then(
+                                                (value) {
+                                                  _loadData();
+                                                },
+                                              );
                                             },
                                             child: Container(
                                               padding:
