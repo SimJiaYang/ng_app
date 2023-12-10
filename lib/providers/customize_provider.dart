@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:nurserygardenapp/data/model/custom_style_model.dart';
 import 'package:nurserygardenapp/data/model/plant_model.dart';
 import 'package:nurserygardenapp/data/model/product_model.dart';
 import 'package:nurserygardenapp/data/model/response/api_response.dart';
@@ -192,6 +193,39 @@ class CustomizeProvider extends ChangeNotifier {
     return result;
   }
 
+  /// ================== GET STYLE LIST ==============
+  CustomStyleModel _customStyleModel = CustomStyleModel();
+  CustomStyleModel get customStyleModel => _customStyleModel;
+  List<Custom> _customList = [];
+  List<Custom> get customList => _customList;
+
+  Future<bool> getStyle(BuildContext context) async {
+    bool result = false;
+
+    _isFetching = true;
+    notifyListeners();
+
+    ApiResponse apiResponse = await customizeRepo.getCustomStyle();
+
+    if (context.mounted) {
+      result = ResponseHelper.responseHelper(context, apiResponse);
+      if (result) {
+        _customStyleModel =
+            CustomStyleModel.fromJson(apiResponse.response!.data);
+        _customList = _customStyleModel.data!.custom ?? [];
+      }
+    }
+
+    for (int i = 0; i < _customList.length; i++) {
+      print(customList[i].name);
+    }
+
+    _isFetching = false;
+    notifyListeners();
+
+    return result;
+  }
+
   /// ================== MAKE ORDER ==================
   String _orderIdCreated = '';
   String get orderIdCreated => _orderIdCreated;
@@ -209,7 +243,6 @@ class CustomizeProvider extends ChangeNotifier {
       if (result) {
         _orderIdCreated =
             apiResponse.response!.data['data']['order_id'].toString();
-        print(_orderIdCreated);
       }
     }
 

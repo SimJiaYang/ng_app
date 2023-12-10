@@ -122,7 +122,7 @@ class _VideoItemsState extends State<VideoItems> {
                       LoadingAnimationWidget.staggeredDotsWave(
                           color: ColorResources.COLOR_PRIMARY, size: 45),
                       Text(
-                        "Your Customization Video is Loading...",
+                        "Your Selected Style Video is Loading...",
                         style: _subTitle,
                       )
                     ],

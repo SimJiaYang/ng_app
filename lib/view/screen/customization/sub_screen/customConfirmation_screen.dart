@@ -455,17 +455,21 @@ class _CustomConfirmationScreenState extends State<CustomConfirmationScreen> {
                                                                       .plantId !=
                                                                   null)
                                                                 Flexible(
-                                                                  child: Text(
-                                                                    "${customProvider.plantList.where((element) {
-                                                                          return element.id ==
-                                                                              customProvider.selectedItem[index].plantId;
-                                                                        }).first.name}",
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            16),
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
+                                                                  child:
+                                                                      Container(
+                                                                    width: 100,
+                                                                    child: Text(
+                                                                      "${customProvider.plantList.where((element) {
+                                                                            return element.id ==
+                                                                                customProvider.selectedItem[index].plantId;
+                                                                          }).first.name}",
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              16),
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis,
+                                                                    ),
                                                                   ),
                                                                 ),
                                                               if (customProvider
@@ -474,18 +478,22 @@ class _CustomConfirmationScreenState extends State<CustomConfirmationScreen> {
                                                                       .productId !=
                                                                   null)
                                                                 Flexible(
-                                                                  child: Text(
-                                                                    "${customProvider.productList.firstWhere((element) => element.id == customProvider.selectedItem[index].productId, orElse: () => customProvider.soilList.firstWhere(
-                                                                          (element) =>
-                                                                              element.id ==
-                                                                              customProvider.selectedItem[index].productId,
-                                                                        )).name}",
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            16),
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
+                                                                  child:
+                                                                      Container(
+                                                                    width: 100,
+                                                                    child: Text(
+                                                                      "${customProvider.productList.firstWhere((element) => element.id == customProvider.selectedItem[index].productId, orElse: () => customProvider.soilList.firstWhere(
+                                                                            (element) =>
+                                                                                element.id ==
+                                                                                customProvider.selectedItem[index].productId,
+                                                                          )).name}",
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              16),
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis,
+                                                                    ),
                                                                   ),
                                                                 ),
                                                               SizedBox(

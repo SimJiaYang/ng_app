@@ -15,9 +15,10 @@ import 'package:nurserygardenapp/view/screen/auth/login_screen.dart';
 import 'package:nurserygardenapp/view/screen/auth/register_screen.dart';
 import 'package:nurserygardenapp/view/screen/bidding/bidding_screen.dart';
 import 'package:nurserygardenapp/view/screen/cart/cart_screen.dart';
-import 'package:nurserygardenapp/view/screen/customization/customConfirmation_screen.dart';
+import 'package:nurserygardenapp/view/screen/customization/sub_screen/customConfirmation_screen.dart';
 import 'package:nurserygardenapp/view/screen/customization/customization_screen.dart';
-import 'package:nurserygardenapp/view/screen/customization/show_custom_screen.dart';
+import 'package:nurserygardenapp/view/screen/customization/sub_screen/custom_style_screen.dart';
+import 'package:nurserygardenapp/view/screen/customization/sub_screen/show_custom_screen.dart';
 import 'package:nurserygardenapp/view/screen/dashboard/dashboard_screen.dart';
 import 'package:nurserygardenapp/view/screen/delivery/delivery_screen.dart';
 import 'package:nurserygardenapp/view/screen/delivery/sub_screen/delivery_detail_screen.dart';
@@ -137,6 +138,10 @@ class RouterHelper {
   static Handler _customizationConfirmHandler = Handler(
       handlerFunc: (context, Map<String, dynamic> parameters) =>
           CustomConfirmationScreen());
+
+  static Handler _customizationStyleHandler = Handler(
+      handlerFunc: (context, Map<String, dynamic> parameters) =>
+          CustomStyleScreen());
 
   // =================================Cart=========================================
   static Handler _cartHandler = Handler(
@@ -299,6 +304,9 @@ class RouterHelper {
         transitionType: TransitionType.fadeIn);
     router.define(Routes.CUSTOMIZATION_CONFIRM_SCREEN,
         handler: _customizationConfirmHandler,
+        transitionType: TransitionType.fadeIn);
+    router.define(Routes.CUSTOMIZATION_STYLE_SCREEN,
+        handler: _customizationStyleHandler,
         transitionType: TransitionType.fadeIn);
     router.define(Routes.CART_SCREEN,
         transitionType: TransitionType.fadeIn, handler: _cartHandler);

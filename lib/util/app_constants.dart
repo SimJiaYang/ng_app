@@ -79,6 +79,7 @@ class AppConstants {
   // Customize
   static const String CUSTOMIZE_ITEM_URI = '/custom';
   static const String CUSTOMIZE_ITEM_ADD_ORDER = '/custom/order';
+  static const String CUSTOMIZE_STYLE_URI = '/custom/show';
 
   // Order
   static const String ORDER_URI = '/order';
@@ -101,6 +102,9 @@ class AppConstants {
   static const String DELIVERY_URI = '/delivery';
   static const String DELIVERY_DETAIL_URI = '/delivery/detail';
   static const String DELIVERY_RECEIPT_URI = '/delivery/receipt';
+
+  // Bidding
+  static const String BIDDING_LIST_URI = '/bidding';
 
   // Shared Key
   static const String THEME = 'theme';

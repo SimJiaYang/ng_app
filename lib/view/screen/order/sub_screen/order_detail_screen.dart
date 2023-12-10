@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
 import 'package:nurserygardenapp/data/model/order_model.dart';
 import 'package:nurserygardenapp/providers/order_provider.dart';
@@ -10,7 +9,6 @@ import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/custom_button.dart';
 import 'package:nurserygardenapp/view/base/custom_dialog.dart';
-import 'package:nurserygardenapp/view/base/custom_snackbar.dart';
 import 'package:nurserygardenapp/view/screen/order/widget/empty_order_detail.dart';
 import 'package:nurserygardenapp/view/screen/order/widget/shipping_status.dart';
 import 'package:nurserygardenapp/view/screen/payment/payment_helper/payment_type.dart';
@@ -635,10 +633,6 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                                                       .withName(
                                                                           Routes
                                                                               .getOrderRoute()));
-                                                              // ModalRoute
-                                                              //     .withName(
-                                                              //         Routes
-                                                              //             .getOrderRoute()));
                                                             }
                                                           });
                                                         }

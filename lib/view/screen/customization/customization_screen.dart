@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:nurserygardenapp/data/model/cart_model.dart';
 import 'package:nurserygardenapp/providers/customize_provider.dart';
@@ -177,6 +178,10 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
   }
 
   _handleSubmit() async {
+    if (plantID == '0' || productID == '0' || soilID == '0') {
+      EasyLoading.showToast('Please select all options');
+      return;
+    }
     List<Cart> _selectedItem = [];
     _selectedItem.add(Cart(
       plantId: int.parse(plantID),
@@ -200,9 +205,9 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
           .price,
     ));
     custom_prov.addSelectedItem(_selectedItem);
-    await custom_prov.getItemUrl(context).then((value) {
-      if (value) {
-        Navigator.pushNamed(context, Routes.getCustomizationShowRoute());
+    await custom_prov.getStyle(context).then((value) {
+      if (value == true) {
+        Navigator.pushNamed(context, Routes.getCustomizeStyleRoute());
       }
     });
   }

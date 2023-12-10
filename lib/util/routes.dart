@@ -28,6 +28,7 @@ class Routes {
   static const String CUSTOMIZATION_SCREEN = '/customization';
   static const String CUSTOMIZATION_SHOW_SCREEN = '/customization-show';
   static const String CUSTOMIZATION_CONFIRM_SCREEN = '/customization/confirm';
+  static const String CUSTOMIZATION_STYLE_SCREEN = '/customization-style';
 
   // Cart
   static const String CART_SCREEN = '/cart';
@@ -102,6 +103,7 @@ class Routes {
   static String getCustomizationRoute() => CUSTOMIZATION_SCREEN;
   static String getCustomizationShowRoute() => CUSTOMIZATION_SHOW_SCREEN;
   static String getCustomizeConfirmationRoute() => CUSTOMIZATION_CONFIRM_SCREEN;
+  static String getCustomizeStyleRoute() => CUSTOMIZATION_STYLE_SCREEN;
 
   // Cart
   static String getCartRoute() => CART_SCREEN;

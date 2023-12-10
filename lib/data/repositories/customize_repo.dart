@@ -64,4 +64,13 @@ class CustomizeRepo {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
     }
   }
+
+  Future<ApiResponse> getCustomStyle() async {
+    try {
+      Response response = await dioClient.get(AppConstants.CUSTOMIZE_STYLE_URI);
+      return ApiResponse.withSuccess(response);
+    } catch (e) {
+      return ApiResponse.withError(ApiErrorHandler.getMessage(e));
+    }
+  }
 }

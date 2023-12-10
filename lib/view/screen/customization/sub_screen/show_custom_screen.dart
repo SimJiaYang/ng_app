@@ -55,7 +55,7 @@ class _ShowCustomScreenState extends State<ShowCustomScreen> {
     return Scaffold(
         appBar: CustomAppBar(
           isBgPrimaryColor: true,
-          title: 'Your Customization',
+          title: 'Your Style',
           isBackButtonExist: false,
           context: context,
           isCenter: false,
