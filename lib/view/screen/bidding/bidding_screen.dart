@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/custom_text_style.dart';
-import 'package:nurserygardenapp/util/dimensions.dart';
-import 'package:nurserygardenapp/view/base/custom_appbar.dart';
+import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/empty_grid_item.dart';
 import 'package:nurserygardenapp/view/screen/bidding/widget/bidding_grid_item.dart';
 import 'package:provider/provider.dart';
@@ -214,7 +213,16 @@ class _BiddingScreenState extends State<BiddingScreen> {
                                               child: BiddingGridItem(
                                                   bid: biddingProvider
                                                       .biddingList[index],
-                                                  onTap: () {}),
+                                                  onTap: () {
+                                                    Navigator.pushNamed(
+                                                        context,
+                                                        Routes.getBiddingDetailRoute(
+                                                            biddingProvider
+                                                                .biddingList[
+                                                                    index]
+                                                                .biddingId
+                                                                .toString()));
+                                                  }),
                                             );
                                           }
                                         },

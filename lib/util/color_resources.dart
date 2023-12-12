@@ -29,7 +29,7 @@ class ColorResources {
   static const Color CARD_SHADOW_COLOR = Color(0xFFA7A7A7);
   static const Color COLOR_DANGER = Color(0xFFF29491);
   static const Color COLOR_SUCCESS = Color(0xFF2CC6A4);
-  static const Color COLOR_BLUE = Color.fromARGB(255, 124, 168, 230);
+  static const Color COLOR_BLUE = Color.fromARGB(255, 79, 151, 253);
 
   // DEFINE COLOR
   static const Color COLOR_PRIMARY = Color.fromARGB(255, 30, 133, 104);

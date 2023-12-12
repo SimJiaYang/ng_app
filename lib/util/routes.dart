@@ -51,6 +51,7 @@ class Routes {
 
   // Bidding
   static const String BIDDING_SCREEN = '/bidding';
+  static const String BIDDING_DETAIL_SCREEN = '/bidding-detail';
 
   // Delivery
   static const String DELIVERY_SCREEN = '/delivery';
@@ -139,6 +140,8 @@ class Routes {
 
   // Bidding
   static String getBiddingRoute() => BIDDING_SCREEN;
+  static String getBiddingDetailRoute(String biddingID) =>
+      '$BIDDING_DETAIL_SCREEN?biddingID=$biddingID';
 
   // Image widget
   static String getImageEnlargeRoute(String tag, String url) =>

@@ -128,7 +128,6 @@ class _BiddingGridItemState extends State<BiddingGridItem> {
                         fontSize: 14,
                       ),
                 ),
-                VerticalSpacing(),
                 Container(
                   height: 40,
                   child: Row(
@@ -177,15 +176,21 @@ class _BiddingGridItemState extends State<BiddingGridItem> {
                     ],
                   ),
                 ),
-                VerticalSpacing(),
+                Text(
+                  "Highest Bid",
+                  style: CustomTextStyles(context).subTitleStyle.copyWith(
+                        color: ColorResources.COLOR_PRIMARY,
+                        fontSize: 10,
+                      ),
+                ),
                 Row(
                   children: [
-                    Icon(Icons.arrow_upward_rounded,
-                        color: ColorResources.COLOR_PRIMARY, size: 16),
+                    Icon(Icons.attach_money,
+                        color: ColorResources.COLOR_PRIMARY, size: 14),
                     Text(
                       "RM " + highestAmount.toStringAsFixed(2),
                       style: CustomTextStyles(context).subTitleStyle.copyWith(
-                            color: ColorResources.COLOR_BLUE,
+                            color: ColorResources.COLOR_PRIMARY,
                             fontSize: 16,
                           ),
                     ),
