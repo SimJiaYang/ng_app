@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nurserygardenapp/data/model/bidding_detail_model.dart';
 import 'package:nurserygardenapp/data/model/bidding_model.dart';
 import 'package:nurserygardenapp/data/model/response/api_response.dart';
 import 'package:nurserygardenapp/data/repositories/bidding_repo.dart';
@@ -54,6 +55,37 @@ class BiddingProvider extends ChangeNotifier {
     _isLoading = false;
     notifyListeners();
 
+    return result;
+  }
+
+  // Bidding Detail
+  BiddingDetailModel _biddingDetailModel = BiddingDetailModel();
+  BiddingDetailModel get biddingDetailModel => _biddingDetailModel;
+  Bid _bid = Bid();
+  Bid get bid => _bid;
+  bool _isLoadingDetail = false;
+  bool get isLoadingDetail => _isLoadingDetail;
+
+  Future<bool> getBidDetail(BuildContext context, String id) async {
+    bool result = false;
+    _isLoadingDetail = true;
+    notifyListeners();
+
+    var params = {'id': id};
+    String query = ResponseHelper.buildQuery(params);
+
+    ApiResponse apiResponse = await biddingRepo.getBidddingDetail(query);
+    if (context.mounted) {
+      result = ResponseHelper.responseHelper(context, apiResponse);
+      if (result) {
+        _biddingDetailModel =
+            BiddingDetailModel.fromJson(apiResponse.response!.data);
+        _bid = _biddingDetailModel.data!.bid ?? Bid();
+      }
+    }
+
+    _isLoadingDetail = false;
+    notifyListeners();
     return result;
   }
 }

@@ -20,4 +20,14 @@ class BiddingRepo {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
     }
   }
+
+  Future<ApiResponse> getBidddingDetail(param) async {
+    try {
+      Response response =
+          await dioClient.get('${AppConstants.BIDDING_DETAIL_URI}$param');
+      return ApiResponse.withSuccess(response);
+    } catch (e) {
+      return ApiResponse.withError(ApiErrorHandler.getMessage(e));
+    }
+  }
 }

@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/data/model/bidding_model.dart';
+import 'package:nurserygardenapp/providers/bidding_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/view/base/custom_space.dart';
+import 'package:provider/provider.dart';
 
 class BiddingGridItem extends StatefulWidget {
   const BiddingGridItem({
@@ -22,8 +24,12 @@ class BiddingGridItem extends StatefulWidget {
 }
 
 class _BiddingGridItemState extends State<BiddingGridItem> {
+  late BiddingProvider biddingProvider =
+      Provider.of<BiddingProvider>(context, listen: false);
   late StreamController<Duration> countdownController;
   late Stream<Duration> countdownStream;
+  late Timer fetchTimer; // Timer for fetching the latest data
+  double highestAmount = 0;
 
   @override
   void initState() {
@@ -34,12 +40,32 @@ class _BiddingGridItemState extends State<BiddingGridItem> {
     // Start the countdown timer
     Timer.periodic(const Duration(seconds: 1), (timer) {
       countdownController.add(widget.bid.endTime!.difference(DateTime.now()));
-      // // Check if the countdown has reached 0
+    });
+
+    highestAmount = widget.bid.highestAmt!.toDouble();
+
+    // Start the timer for fetching the latest highest amount every 5 seconds
+    fetchTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
+      updateHighestAmount();
+    });
+  }
+
+  void updateHighestAmount() async {
+    await biddingProvider
+        .getBidDetail(context, widget.bid.biddingId.toString())
+        .then((value) {
+      if (value == true) {
+        setState(() {
+          highestAmount = biddingProvider.bid.highestAmt!.toDouble();
+        });
+      }
     });
   }
 
   @override
   void dispose() {
+    countdownController.close();
+    fetchTimer.cancel();
     super.dispose();
   }
 
@@ -109,44 +135,46 @@ class _BiddingGridItemState extends State<BiddingGridItem> {
                       ),
                 ),
                 VerticalSpacing(),
-                Row(
-                  children: [
-                    Flexible(
-                      child: StreamBuilder<Duration>(
-                        stream: countdownStream,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            Duration remainingTime = snapshot.data!;
-                            if (remainingTime.inSeconds <= 0) {
-                              return Container(
-                                  child: Text(
-                                'Bidding Ended',
+                Container(
+                  height: 40,
+                  child: Row(
+                    children: [
+                      Flexible(
+                        child: StreamBuilder<Duration>(
+                          stream: countdownStream,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              Duration remainingTime = snapshot.data!;
+                              if (remainingTime.inSeconds <= 0) {
+                                return Text(
+                                  'Bidding Ended',
+                                  style: _subTitle.copyWith(
+                                    color: ColorResources.APPBAR_HEADER_COLOR,
+                                    fontSize: 12,
+                                  ),
+                                ); // Countdown is zero or less, return an empty container
+                              }
+                              return Text(
+                                formatRemainingTime(remainingTime),
                                 style: _subTitle.copyWith(
                                   color: ColorResources.APPBAR_HEADER_COLOR,
                                   fontSize: 12,
                                 ),
-                              )); // Countdown is zero or less, return an empty container
+                              );
+                            } else {
+                              return Text(
+                                'Loading...',
+                                style: _subTitle.copyWith(
+                                  color: ColorResources.APPBAR_HEADER_COLOR,
+                                  fontSize: 12,
+                                ),
+                              );
                             }
-                            return Text(
-                              formatRemainingTime(remainingTime),
-                              style: _subTitle.copyWith(
-                                color: ColorResources.APPBAR_HEADER_COLOR,
-                                fontSize: 12,
-                              ),
-                            );
-                          } else {
-                            return Text(
-                              'Loading...',
-                              style: _subTitle.copyWith(
-                                color: ColorResources.APPBAR_HEADER_COLOR,
-                                fontSize: 12,
-                              ),
-                            );
-                          }
-                        },
+                          },
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 VerticalSpacing(),
                 Row(
@@ -154,7 +182,7 @@ class _BiddingGridItemState extends State<BiddingGridItem> {
                     Icon(Icons.arrow_upward_rounded,
                         color: ColorResources.COLOR_PRIMARY, size: 16),
                     Text(
-                      "RM " + widget.bid.highestAmt!.toStringAsFixed(2),
+                      "RM " + highestAmount.toStringAsFixed(2),
                       style: _subTitle.copyWith(
                         color: ColorResources.COLOR_BLUE,
                         fontSize: 16,

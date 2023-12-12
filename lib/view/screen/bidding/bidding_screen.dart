@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
+import 'package:nurserygardenapp/util/custom_text_style.dart';
 import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/view/base/custom_appbar.dart';
 import 'package:nurserygardenapp/view/base/empty_grid_item.dart';
@@ -68,23 +69,15 @@ class _BiddingScreenState extends State<BiddingScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    var theme = Theme.of(context).textTheme;
-    TextStyle _title = theme.headlineMedium!.copyWith(
-      fontSize: Dimensions.FONT_SIZE_DEFAULT,
-      color: ColorResources.COLOR_BLACK.withOpacity(0.8),
-    );
-    TextStyle _subTitle = theme.headlineMedium!.copyWith(
-      fontSize: Dimensions.FONT_SIZE_DEFAULT,
-      color: const Color.fromRGBO(45, 45, 45, 1).withOpacity(0.6),
-    );
     return Scaffold(
         appBar: AppBar(
           backgroundColor: ColorResources.COLOR_PRIMARY,
           title: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Text("Bidding",
-                style: _title.copyWith(
-                    color: ColorResources.COLOR_WHITE, fontSize: 16)),
+                style: CustomTextStyles(context)
+                    .titleStyle
+                    .copyWith(color: ColorResources.COLOR_WHITE, fontSize: 16)),
           ),
         ),
         body: SizedBox(
