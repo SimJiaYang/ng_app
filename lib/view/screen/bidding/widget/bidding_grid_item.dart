@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/data/model/bidding_model.dart';
 import 'package:nurserygardenapp/providers/bidding_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
+import 'package:nurserygardenapp/util/custom_text_style.dart';
 import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/view/base/custom_space.dart';
 import 'package:provider/provider.dart';
@@ -39,7 +40,9 @@ class _BiddingGridItemState extends State<BiddingGridItem> {
 
     // Start the countdown timer
     Timer.periodic(const Duration(seconds: 1), (timer) {
-      countdownController.add(widget.bid.endTime!.difference(DateTime.now()));
+      if (!countdownController.isClosed) {
+        countdownController.add(widget.bid.endTime!.difference(DateTime.now()));
+      }
     });
 
     highestAmount = widget.bid.highestAmt!.toDouble();
@@ -72,15 +75,6 @@ class _BiddingGridItemState extends State<BiddingGridItem> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    var theme = Theme.of(context).textTheme;
-    TextStyle _title = theme.headlineMedium!.copyWith(
-      fontSize: Dimensions.FONT_SIZE_DEFAULT,
-      color: ColorResources.COLOR_BLACK.withOpacity(0.8),
-    );
-    TextStyle _subTitle = theme.headlineMedium!.copyWith(
-      fontSize: Dimensions.FONT_SIZE_DEFAULT,
-      color: const Color.fromRGBO(45, 45, 45, 1).withOpacity(0.6),
-    );
     return InkWell(
       onTap: widget.onTap,
       splashColor: Theme.of(context).primaryColor,
@@ -148,26 +142,33 @@ class _BiddingGridItemState extends State<BiddingGridItem> {
                               if (remainingTime.inSeconds <= 0) {
                                 return Text(
                                   'Bidding Ended',
-                                  style: _subTitle.copyWith(
-                                    color: ColorResources.APPBAR_HEADER_COLOR,
-                                    fontSize: 12,
-                                  ),
+                                  style: CustomTextStyles(context)
+                                      .subTitleStyle
+                                      .copyWith(
+                                        color:
+                                            ColorResources.APPBAR_HEADER_COLOR,
+                                        fontSize: 12,
+                                      ),
                                 ); // Countdown is zero or less, return an empty container
                               }
                               return Text(
                                 formatRemainingTime(remainingTime),
-                                style: _subTitle.copyWith(
-                                  color: ColorResources.APPBAR_HEADER_COLOR,
-                                  fontSize: 12,
-                                ),
+                                style: CustomTextStyles(context)
+                                    .subTitleStyle
+                                    .copyWith(
+                                      color: ColorResources.APPBAR_HEADER_COLOR,
+                                      fontSize: 12,
+                                    ),
                               );
                             } else {
                               return Text(
                                 'Loading...',
-                                style: _subTitle.copyWith(
-                                  color: ColorResources.APPBAR_HEADER_COLOR,
-                                  fontSize: 12,
-                                ),
+                                style: CustomTextStyles(context)
+                                    .subTitleStyle
+                                    .copyWith(
+                                      color: ColorResources.APPBAR_HEADER_COLOR,
+                                      fontSize: 12,
+                                    ),
                               );
                             }
                           },
@@ -183,10 +184,10 @@ class _BiddingGridItemState extends State<BiddingGridItem> {
                         color: ColorResources.COLOR_PRIMARY, size: 16),
                     Text(
                       "RM " + highestAmount.toStringAsFixed(2),
-                      style: _subTitle.copyWith(
-                        color: ColorResources.COLOR_BLUE,
-                        fontSize: 16,
-                      ),
+                      style: CustomTextStyles(context).subTitleStyle.copyWith(
+                            color: ColorResources.COLOR_BLUE,
+                            fontSize: 16,
+                          ),
                     ),
                   ],
                 ),

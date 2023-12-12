@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
-import 'package:nurserygardenapp/util/dimensions.dart';
+import 'package:nurserygardenapp/util/custom_text_style.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/screen/order/widget/shipping_icon.dart';
 
@@ -27,15 +27,6 @@ class _ShippingStatusState extends State<ShippingStatus> {
 
   @override
   Widget build(BuildContext context) {
-    var theme = Theme.of(context).textTheme;
-    TextStyle _title = theme.headlineMedium!.copyWith(
-      fontSize: Dimensions.FONT_SIZE_DEFAULT,
-      color: ColorResources.COLOR_BLACK.withOpacity(0.8),
-    );
-    TextStyle _subTitle = theme.headlineMedium!.copyWith(
-      fontSize: Dimensions.FONT_SIZE_DEFAULT,
-      color: ColorResources.COLOR_BLACK.withOpacity(0.6),
-    );
     Size size = MediaQuery.of(context).size;
 
     Widget payWidget = Container(
@@ -60,10 +51,15 @@ class _ShippingStatusState extends State<ShippingStatus> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text("Payment Pending....", style: _title.copyWith(fontSize: 16)),
+              Text("Payment Pending....",
+                  style: CustomTextStyles(context)
+                      .titleStyle
+                      .copyWith(fontSize: 16)),
               SizedBox(height: 3),
               Text("Please pay to confirm your order",
-                  style: _subTitle.copyWith(fontSize: 14))
+                  style: CustomTextStyles(context)
+                      .subTitleStyle
+                      .copyWith(fontSize: 14))
             ],
           )
         ],
@@ -92,10 +88,15 @@ class _ShippingStatusState extends State<ShippingStatus> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text("Order Cancelled", style: _title.copyWith(fontSize: 16)),
+              Text("Order Cancelled",
+                  style: CustomTextStyles(context)
+                      .titleStyle
+                      .copyWith(fontSize: 16)),
               SizedBox(height: 3),
               Text("Your order has been cancelled",
-                  style: _subTitle.copyWith(fontSize: 14))
+                  style: CustomTextStyles(context)
+                      .subTitleStyle
+                      .copyWith(fontSize: 14))
             ],
           )
         ],
@@ -131,10 +132,15 @@ class _ShippingStatusState extends State<ShippingStatus> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text("Order Placed", style: _title.copyWith(fontSize: 16)),
+                Text("Order Placed",
+                    style: CustomTextStyles(context)
+                        .titleStyle
+                        .copyWith(fontSize: 16)),
                 SizedBox(height: 3),
                 Text("Seller is preparing your order",
-                    style: _subTitle.copyWith(fontSize: 14))
+                    style: CustomTextStyles(context)
+                        .subTitleStyle
+                        .copyWith(fontSize: 14))
               ],
             ),
             SizedBox(
@@ -180,10 +186,15 @@ class _ShippingStatusState extends State<ShippingStatus> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text("Order Shipped", style: _title.copyWith(fontSize: 16)),
+                Text("Order Shipped",
+                    style: CustomTextStyles(context)
+                        .titleStyle
+                        .copyWith(fontSize: 16)),
                 SizedBox(height: 3),
                 Text("Your parcel is on the way",
-                    style: _subTitle.copyWith(fontSize: 14))
+                    style: CustomTextStyles(context)
+                        .subTitleStyle
+                        .copyWith(fontSize: 14))
               ],
             ),
             SizedBox(
@@ -234,10 +245,15 @@ class _ShippingStatusState extends State<ShippingStatus> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text("Order Delivered", style: _title.copyWith(fontSize: 16)),
+                Text("Order Delivered",
+                    style: CustomTextStyles(context)
+                        .titleStyle
+                        .copyWith(fontSize: 16)),
                 SizedBox(height: 3),
                 Text("Your parcel has been delivered",
-                    style: _subTitle.copyWith(fontSize: 14))
+                    style: CustomTextStyles(context)
+                        .subTitleStyle
+                        .copyWith(fontSize: 14))
               ],
             ),
             SizedBox(
@@ -284,12 +300,17 @@ class _ShippingStatusState extends State<ShippingStatus> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text("Order Separate", style: _title.copyWith(fontSize: 16)),
+                Text("Order Separate",
+                    style: CustomTextStyles(context)
+                        .titleStyle
+                        .copyWith(fontSize: 16)),
                 SizedBox(height: 3),
                 Text("Your order has been separate to ship",
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
-                    style: _subTitle.copyWith(fontSize: 14))
+                    style: CustomTextStyles(context)
+                        .subTitleStyle
+                        .copyWith(fontSize: 14))
               ],
             ),
             SizedBox(

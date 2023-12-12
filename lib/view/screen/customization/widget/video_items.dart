@@ -2,7 +2,7 @@ import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
-import 'package:nurserygardenapp/util/dimensions.dart';
+import 'package:nurserygardenapp/util/custom_text_style.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoItems extends StatefulWidget {
@@ -80,16 +80,6 @@ class _VideoItemsState extends State<VideoItems> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    var theme = Theme.of(context).textTheme;
-    TextStyle _title = theme.headlineMedium!.copyWith(
-      fontSize: Dimensions.FONT_SIZE_DEFAULT,
-      color: ColorResources.COLOR_BLACK.withOpacity(0.8),
-    );
-    TextStyle _subTitle = theme.headlineMedium!.copyWith(
-      fontSize: Dimensions.FONT_SIZE_DEFAULT,
-      color: const Color.fromRGBO(45, 45, 45, 1).withOpacity(0.6),
-    );
-
     return WillPopScope(
       onWillPop: () async {
         await _chewieController.pause();
@@ -123,7 +113,7 @@ class _VideoItemsState extends State<VideoItems> {
                           color: ColorResources.COLOR_PRIMARY, size: 45),
                       Text(
                         "Your Selected Style Video is Loading...",
-                        style: _subTitle,
+                        style: CustomTextStyles(context).subTitleStyle,
                       )
                     ],
                   ),

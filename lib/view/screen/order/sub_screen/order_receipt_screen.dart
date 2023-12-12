@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nurserygardenapp/providers/order_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
+import 'package:nurserygardenapp/util/custom_text_style.dart';
 import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/view/base/custom_appbar.dart';
 import 'package:nurserygardenapp/view/base/page_loading.dart';
@@ -43,16 +44,6 @@ class _OrderReceiptScreenState extends State<OrderReceiptScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    var theme = Theme.of(context).textTheme;
-    TextStyle _title = theme.headlineMedium!.copyWith(
-      fontSize: Dimensions.FONT_SIZE_DEFAULT,
-      color: ColorResources.COLOR_BLACK.withOpacity(0.85),
-    );
-    TextStyle _subTitle = theme.headlineMedium!.copyWith(
-      fontSize: Dimensions.FONT_SIZE_SMALL,
-      fontWeight: FontWeight.w300,
-      color: ColorResources.COLOR_BLACK.withOpacity(0.65),
-    );
 
     return Scaffold(
         appBar: CustomAppBar(
@@ -92,40 +83,53 @@ class _OrderReceiptScreenState extends State<OrderReceiptScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text("Order Information",
-                                  style: _title.copyWith(fontSize: 16)),
+                                  style: CustomTextStyles(context)
+                                      .titleStyle
+                                      .copyWith(fontSize: 16)),
                               SizedBox(height: 5),
                               Row(
                                 children: [
-                                  Text("Order ID: ", style: _title),
+                                  Text("Order ID: ",
+                                      style:
+                                          CustomTextStyles(context).titleStyle),
                                   Text(
                                       orderProvider.orderReceiptInfo.id == null
                                           ? ""
                                           : orderProvider.orderReceiptInfo.id
                                               .toString(),
-                                      style: _subTitle),
+                                      style: CustomTextStyles(context)
+                                          .subTitleStyle),
                                 ],
                               ),
                               SizedBox(height: 5),
                               Row(
                                 children: [
-                                  Text("Order Time: ", style: _title),
+                                  Text("Order Time: ",
+                                      style:
+                                          CustomTextStyles(context).titleStyle),
                                   Text(
                                       DateFormat('dd-MM-yyyy').format(
                                           orderProvider
                                                   .orderReceiptInfo.createdAt ??
                                               DateTime.now()),
-                                      style: _subTitle),
+                                      style: CustomTextStyles(context)
+                                          .subTitleStyle),
                                 ],
                               ),
                               Divider(),
                               Text("Sender Information",
-                                  style: _title.copyWith(fontSize: 16)),
+                                  style: CustomTextStyles(context)
+                                      .titleStyle
+                                      .copyWith(fontSize: 16)),
                               SizedBox(height: 5),
                               Row(
                                 children: [
-                                  Text("Sender: ", style: _title),
+                                  Text("Sender: ",
+                                      style:
+                                          CustomTextStyles(context).titleStyle),
                                   Text(orderProvider.receiptSender.sender ?? "",
-                                      style: _subTitle),
+                                      style: CustomTextStyles(context)
+                                          .subTitleStyle),
                                 ],
                               ),
                               SizedBox(height: 5),
@@ -133,26 +137,34 @@ class _OrderReceiptScreenState extends State<OrderReceiptScreen> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text("Address: ", style: _title),
+                                  Text("Address: ",
+                                      style:
+                                          CustomTextStyles(context).titleStyle),
                                   Flexible(
                                     child: Text(
                                         orderProvider.receiptSender.address ??
                                             "",
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 4,
-                                        style: _subTitle),
+                                        style: CustomTextStyles(context)
+                                            .subTitleStyle),
                                   ),
                                 ],
                               ),
                               Divider(),
                               Text("Receiver Information",
-                                  style: _title.copyWith(fontSize: 16)),
+                                  style: CustomTextStyles(context)
+                                      .titleStyle
+                                      .copyWith(fontSize: 16)),
                               SizedBox(height: 5),
                               Row(
                                 children: [
-                                  Text("Receiver: ", style: _title),
+                                  Text("Receiver: ",
+                                      style:
+                                          CustomTextStyles(context).titleStyle),
                                   Text(orderProvider.receiptUser.name ?? "",
-                                      style: _subTitle),
+                                      style: CustomTextStyles(context)
+                                          .subTitleStyle),
                                 ],
                               ),
                               SizedBox(height: 5),
@@ -160,7 +172,9 @@ class _OrderReceiptScreenState extends State<OrderReceiptScreen> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text("Address: ", style: _title),
+                                  Text("Address: ",
+                                      style:
+                                          CustomTextStyles(context).titleStyle),
                                   Flexible(
                                     child: Text(
                                         orderProvider
@@ -168,7 +182,8 @@ class _OrderReceiptScreenState extends State<OrderReceiptScreen> {
                                             "",
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 4,
-                                        style: _subTitle),
+                                        style: CustomTextStyles(context)
+                                            .subTitleStyle),
                                   ),
                                 ],
                               ),
@@ -178,7 +193,9 @@ class _OrderReceiptScreenState extends State<OrderReceiptScreen> {
                               ),
                               // Divider(),
                               Text("Order Summary",
-                                  style: _title.copyWith(fontSize: 16)),
+                                  style: CustomTextStyles(context)
+                                      .titleStyle
+                                      .copyWith(fontSize: 16)),
                               SizedBox(height: 5),
                               ListView.builder(
                                 shrinkWrap: true,
@@ -194,7 +211,8 @@ class _OrderReceiptScreenState extends State<OrderReceiptScreen> {
                                         children: [
                                           Text(
                                             "${(index + 1).toString()}. ",
-                                            style: _title,
+                                            style: CustomTextStyles(context)
+                                                .titleStyle,
                                           ),
                                           Text(
                                               orderProvider
@@ -204,14 +222,16 @@ class _OrderReceiptScreenState extends State<OrderReceiptScreen> {
                                                       .orderReceiptItem[index]
                                                       .productName ??
                                                   "",
-                                              style: _title),
+                                              style: CustomTextStyles(context)
+                                                  .titleStyle),
                                           Text(
                                               " x " +
                                                   orderProvider
                                                       .orderReceiptItem[index]
                                                       .quantity
                                                       .toString(),
-                                              style: _subTitle),
+                                              style: CustomTextStyles(context)
+                                                  .subTitleStyle),
                                           Spacer(),
                                           if (orderProvider
                                                   .orderReceiptItem[index]
@@ -223,9 +243,12 @@ class _OrderReceiptScreenState extends State<OrderReceiptScreen> {
                                                         .orderReceiptItem[index]
                                                         .amount!
                                                         .toStringAsFixed(2),
-                                                style: _subTitle.copyWith(
-                                                    fontWeight: FontWeight.w400,
-                                                    color: Colors.black)),
+                                                style: CustomTextStyles(context)
+                                                    .subTitleStyle
+                                                    .copyWith(
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        color: Colors.black)),
                                         ],
                                       ),
                                       SizedBox(height: 5),
@@ -242,24 +265,30 @@ class _OrderReceiptScreenState extends State<OrderReceiptScreen> {
                                   children: [
                                     Text(
                                       "Total amount: ",
-                                      style: _title,
+                                      style:
+                                          CustomTextStyles(context).titleStyle,
                                     ),
                                     Text(
                                         "RM " +
                                             orderProvider
                                                 .orderReceiptInfo.totalAmount!
                                                 .toStringAsFixed(2),
-                                        style: _subTitle.copyWith(
-                                            fontWeight: FontWeight.w400,
-                                            color: Colors.black))
+                                        style: CustomTextStyles(context)
+                                            .subTitleStyle
+                                            .copyWith(
+                                                fontWeight: FontWeight.w400,
+                                                color: Colors.black))
                                   ],
                                 ),
                               Divider(),
                               Row(
                                 children: [
                                   Text("Thank you for purchase at ",
-                                      style: _subTitle),
-                                  Text("Nursery Garden", style: _title),
+                                      style: CustomTextStyles(context)
+                                          .subTitleStyle),
+                                  Text("Nursery Garden",
+                                      style:
+                                          CustomTextStyles(context).titleStyle),
                                   Icon(
                                     Icons.favorite,
                                     color: ColorResources.COLOR_PRIMARY,

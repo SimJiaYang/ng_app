@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
-import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/screen/account/account_screen.dart';
 import 'package:nurserygardenapp/view/screen/bidding/bidding_screen.dart';
 import 'package:nurserygardenapp/view/screen/customization/customization_screen.dart';

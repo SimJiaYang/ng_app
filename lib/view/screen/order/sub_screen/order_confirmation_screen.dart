@@ -7,6 +7,7 @@ import 'package:nurserygardenapp/providers/order_provider.dart';
 import 'package:nurserygardenapp/providers/plant_provider.dart';
 import 'package:nurserygardenapp/providers/product_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
+import 'package:nurserygardenapp/util/custom_text_style.dart';
 import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/circular_indicator.dart';
@@ -80,16 +81,6 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var theme = Theme.of(context).textTheme;
-    TextStyle _title = theme.headlineMedium!.copyWith(
-      fontSize: Dimensions.FONT_SIZE_DEFAULT,
-      color: ColorResources.COLOR_BLACK.withOpacity(0.8),
-    );
-    TextStyle _subTitle = theme.headlineMedium!.copyWith(
-      fontSize: Dimensions.FONT_SIZE_DEFAULT,
-      color: ColorResources.COLOR_BLACK.withOpacity(0.6),
-    );
-
     return Scaffold(
         appBar: AppBar(
             backgroundColor: ColorResources.COLOR_PRIMARY,
@@ -101,7 +92,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
             ),
             title: Text(
               "Checkout",
-              style: _subTitle.copyWith(
+              style: CustomTextStyles(context).subTitleStyle.copyWith(
                   fontWeight: FontWeight.w400,
                   fontSize: 18,
                   color: Colors.white),
@@ -299,9 +290,11 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                               children: [
                                 Text(
                                   "Delivery Address",
-                                  style: _title.copyWith(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
+                                  style: CustomTextStyles(context)
+                                      .titleStyle
+                                      .copyWith(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
                                 ),
                                 Text(
                                   address,

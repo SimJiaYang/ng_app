@@ -5,6 +5,7 @@ import 'package:nurserygardenapp/data/model/order_model.dart';
 import 'package:nurserygardenapp/providers/order_provider.dart';
 import 'package:nurserygardenapp/util/app_constants.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
+import 'package:nurserygardenapp/util/custom_text_style.dart';
 import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/custom_button.dart';
@@ -52,15 +53,6 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var theme = Theme.of(context).textTheme;
-    TextStyle _title = theme.headlineMedium!.copyWith(
-      fontSize: Dimensions.FONT_SIZE_DEFAULT,
-      color: ColorResources.COLOR_BLACK.withOpacity(0.8),
-    );
-    TextStyle _subTitle = theme.headlineMedium!.copyWith(
-      fontSize: Dimensions.FONT_SIZE_DEFAULT,
-      color: ColorResources.COLOR_BLACK.withOpacity(0.6),
-    );
     Size size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
@@ -74,10 +66,10 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
           backgroundColor: ColorResources.COLOR_PRIMARY,
           title: Text(
             "Order Detail",
-            style: theme.bodyLarge!.copyWith(
-              color: Colors.white,
-              fontSize: 16,
-            ),
+            style: CustomTextStyles(context).titleStyle.copyWith(
+                  color: Colors.white,
+                  fontSize: 16,
+                ),
           ),
           actions: [
             if (order.status == "completed")
@@ -128,11 +120,14 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                     children: [
                                       Text(
                                         "Delivery address",
-                                        style: _title.copyWith(fontSize: 16),
+                                        style: CustomTextStyles(context)
+                                            .titleStyle
+                                            .copyWith(fontSize: 16),
                                       ),
                                       Text(
                                         order.address ?? "",
-                                        style: _subTitle,
+                                        style: CustomTextStyles(context)
+                                            .subTitleStyle,
                                       ),
                                       SizedBox(
                                         height: 25,
@@ -405,8 +400,9 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                                                               : "${orderProvider.getOrderPlantList.where((element) {
                                                                                     return element.id == orderProvider.orderDetailList[index].plantId;
                                                                                   }).first.name}",
-                                                                          style:
-                                                                              _title.copyWith(fontSize: 16),
+                                                                          style: CustomTextStyles(context)
+                                                                              .titleStyle
+                                                                              .copyWith(fontSize: 16),
                                                                         ),
                                                                       if (orderProvider
                                                                               .orderDetailList[index]
@@ -424,8 +420,9 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                                                               : "${orderProvider.getOrderProductList.where((element) {
                                                                                     return element.id == orderProvider.orderDetailList[index].productId;
                                                                                   }).first.name}",
-                                                                          style:
-                                                                              _title.copyWith(fontSize: 16),
+                                                                          style: CustomTextStyles(context)
+                                                                              .titleStyle
+                                                                              .copyWith(fontSize: 16),
                                                                         ),
                                                                       SizedBox(
                                                                         height:
@@ -484,8 +481,9 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                         children: [
                                           Text(
                                             "Order Total",
-                                            style:
-                                                _title.copyWith(fontSize: 16),
+                                            style: CustomTextStyles(context)
+                                                .titleStyle
+                                                .copyWith(fontSize: 16),
                                           ),
                                           Text(
                                             "RM" +
@@ -518,9 +516,11 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                         children: [
                                           Text(
                                             "Order ID",
-                                            style: _title.copyWith(
-                                              fontSize: 16,
-                                            ),
+                                            style: CustomTextStyles(context)
+                                                .titleStyle
+                                                .copyWith(
+                                                  fontSize: 16,
+                                                ),
                                           ),
                                           Text(
                                             "${order.id}",

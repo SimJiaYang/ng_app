@@ -1,14 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nurserygardenapp/providers/order_provider.dart';
 import 'package:nurserygardenapp/util/app_constants.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
-import 'package:nurserygardenapp/util/dimensions.dart';
+import 'package:nurserygardenapp/util/custom_text_style.dart';
 import 'package:nurserygardenapp/util/font_styles.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/custom_button.dart';
-import 'package:nurserygardenapp/view/base/custom_snackbar.dart';
 import 'package:nurserygardenapp/view/screen/order/widget/empty_order.dart';
 import 'package:nurserygardenapp/view/screen/payment/payment_helper/payment_type.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +23,6 @@ class _OrderScreenState extends State<OrderScreen> {
       Provider.of<OrderProvider>(context, listen: false);
   final _scrollController = ScrollController();
   String _selectedStatus = 'To Ship';
-  String _selectedAddressStatatus = AppConstants.ADDRESS_PACK;
 
   List<String> _statusList = [
     "To Pay",
@@ -99,15 +96,6 @@ class _OrderScreenState extends State<OrderScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var theme = Theme.of(context).textTheme;
-    TextStyle _title = theme.headlineMedium!.copyWith(
-      fontSize: Dimensions.FONT_SIZE_DEFAULT,
-      color: ColorResources.COLOR_BLACK.withOpacity(0.8),
-    );
-    TextStyle _subTitle = theme.headlineMedium!.copyWith(
-      fontSize: Dimensions.FONT_SIZE_DEFAULT,
-      color: ColorResources.COLOR_BLACK.withOpacity(0.6),
-    );
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -122,10 +110,10 @@ class _OrderScreenState extends State<OrderScreen> {
           backgroundColor: ColorResources.COLOR_PRIMARY,
           title: Text(
             "Orders",
-            style: theme.bodyLarge!.copyWith(
-              color: Colors.white,
-              fontSize: 16,
-            ),
+            style: CustomTextStyles(context).titleStyle.copyWith(
+                  color: Colors.white,
+                  fontSize: 16,
+                ),
           ),
         ),
         body: Container(
@@ -287,7 +275,10 @@ class _OrderScreenState extends State<OrderScreen> {
                                                         children: [
                                                           Text(
                                                             "Order ID: ",
-                                                            style: _title,
+                                                            style:
+                                                                CustomTextStyles(
+                                                                        context)
+                                                                    .titleStyle,
                                                           ),
                                                           Text(
                                                             orderProvider
@@ -295,7 +286,9 @@ class _OrderScreenState extends State<OrderScreen> {
                                                                     index]
                                                                 .id
                                                                 .toString(),
-                                                            style: _subTitle,
+                                                            style: CustomTextStyles(
+                                                                    context)
+                                                                .subTitleStyle,
                                                           ),
                                                           Spacer(),
                                                           Text(
@@ -325,7 +318,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                                                         index]
                                                                     .status!
                                                                     .capitalize(),
-                                                            style: _subTitle.copyWith(
+                                                            style: CustomTextStyles(context).subTitleStyle.copyWith(
                                                                 color: orderProvider
                                                                             .orderList[
                                                                                 index]
@@ -353,9 +346,13 @@ class _OrderScreenState extends State<OrderScreen> {
                                                         Text(
                                                           'Order created at: ',
                                                           style:
-                                                              _title.copyWith(
-                                                            fontSize: 15,
-                                                          ),
+                                                              CustomTextStyles(
+                                                                      context)
+                                                                  .titleStyle
+                                                                  .copyWith(
+                                                                    fontSize:
+                                                                        15,
+                                                                  ),
                                                         ),
                                                         Text(
                                                           DateFormat(
@@ -365,10 +362,14 @@ class _OrderScreenState extends State<OrderScreen> {
                                                                       .orderList[
                                                                           index]
                                                                       .date!),
-                                                          style: _subTitle
-                                                              .copyWith(
-                                                            fontSize: 15,
-                                                          ),
+                                                          style:
+                                                              CustomTextStyles(
+                                                                      context)
+                                                                  .subTitleStyle
+                                                                  .copyWith(
+                                                                    fontSize:
+                                                                        15,
+                                                                  ),
                                                         )
                                                       ],
                                                     ),
@@ -383,9 +384,13 @@ class _OrderScreenState extends State<OrderScreen> {
                                                         Text(
                                                           "Order Total: ",
                                                           style:
-                                                              _title.copyWith(
-                                                            fontSize: 15,
-                                                          ),
+                                                              CustomTextStyles(
+                                                                      context)
+                                                                  .titleStyle
+                                                                  .copyWith(
+                                                                    fontSize:
+                                                                        15,
+                                                                  ),
                                                         ),
                                                         Text(
                                                           "RM" +
@@ -395,13 +400,16 @@ class _OrderScreenState extends State<OrderScreen> {
                                                                   .totalAmount!
                                                                   .toStringAsFixed(
                                                                       2),
-                                                          style: _subTitle.copyWith(
-                                                              fontSize: 15,
-                                                              color: ColorResources
-                                                                  .COLOR_PRIMARY,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400),
+                                                          style: CustomTextStyles(
+                                                                  context)
+                                                              .subTitleStyle
+                                                              .copyWith(
+                                                                  fontSize: 15,
+                                                                  color: ColorResources
+                                                                      .COLOR_PRIMARY,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400),
                                                         ),
                                                       ],
                                                     ),

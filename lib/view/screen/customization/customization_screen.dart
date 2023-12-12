@@ -6,7 +6,7 @@ import 'package:nurserygardenapp/data/model/cart_model.dart';
 import 'package:nurserygardenapp/providers/customize_provider.dart';
 import 'package:nurserygardenapp/util/app_constants.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
-import 'package:nurserygardenapp/util/dimensions.dart';
+import 'package:nurserygardenapp/util/custom_text_style.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/screen/customization/widget/empty_item.dart';
 import 'package:provider/provider.dart';
@@ -215,15 +215,6 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    var theme = Theme.of(context).textTheme;
-    TextStyle _title = theme.headlineMedium!.copyWith(
-      fontSize: Dimensions.FONT_SIZE_DEFAULT,
-      color: ColorResources.COLOR_BLACK.withOpacity(0.8),
-    );
-    TextStyle _subTitle = theme.headlineMedium!.copyWith(
-      fontSize: Dimensions.FONT_SIZE_DEFAULT,
-      color: const Color.fromRGBO(45, 45, 45, 1).withOpacity(0.6),
-    );
 
     Widget _loadingView = Container(
       height: size.height,
@@ -280,7 +271,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                   children: [
                     Text(
                       'Select Plant',
-                      style: _title,
+                      style: CustomTextStyles(context).titleStyle,
                     ),
                     Container(
                       color: Colors.white,
@@ -437,7 +428,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                   children: [
                     Text(
                       'Select Pot',
-                      style: _title,
+                      style: CustomTextStyles(context).titleStyle,
                     ),
                     Container(
                       color: Colors.white,
@@ -592,7 +583,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                   children: [
                     Text(
                       'Select Soil',
-                      style: _title,
+                      style: CustomTextStyles(context).titleStyle,
                     ),
                     Container(
                       color: Colors.white,
@@ -715,8 +706,9 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
           title: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Text("Customization",
-                style: _title.copyWith(
-                    color: ColorResources.COLOR_WHITE, fontSize: 16)),
+                style: CustomTextStyles(context)
+                    .titleStyle
+                    .copyWith(color: ColorResources.COLOR_WHITE, fontSize: 16)),
           ),
         ),
         body: SingleChildScrollView(
@@ -772,7 +764,8 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                                         ),
                                         Text(
                                           "PREV",
-                                          style: _subTitle,
+                                          style: CustomTextStyles(context)
+                                              .subTitleStyle,
                                         ),
                                       ],
                                     ),

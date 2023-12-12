@@ -5,6 +5,7 @@ import 'package:nurserygardenapp/data/model/order_model.dart';
 import 'package:nurserygardenapp/providers/delivery_provider.dart';
 import 'package:nurserygardenapp/providers/order_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
+import 'package:nurserygardenapp/util/custom_text_style.dart';
 import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/custom_appbar.dart';
@@ -106,16 +107,6 @@ class _DeliveryDetailScreenState extends State<DeliveryDetailScreen> {
 
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    var theme = Theme.of(context).textTheme;
-    TextStyle _title = theme.headlineMedium!.copyWith(
-      fontSize: Dimensions.FONT_SIZE_DEFAULT,
-      color: ColorResources.COLOR_BLACK.withOpacity(0.85),
-    );
-    TextStyle _subTitle = theme.headlineMedium!.copyWith(
-      fontSize: Dimensions.FONT_SIZE_DEFAULT,
-      fontWeight: FontWeight.w300,
-      color: ColorResources.COLOR_BLACK.withOpacity(0.65),
-    );
 
     return Scaffold(
       appBar: CustomAppBar(
@@ -188,33 +179,41 @@ class _DeliveryDetailScreenState extends State<DeliveryDetailScreen> {
                                 children: [
                                   if (delivery.status == "")
                                     Text("Seller is preparing your order",
-                                        style: _title),
+                                        style: CustomTextStyles(context)
+                                            .titleStyle),
                                   if (delivery.status == "ship")
                                     Text("Your parcel is on the way",
-                                        style: _title),
+                                        style: CustomTextStyles(context)
+                                            .titleStyle),
                                   if (delivery.status == "delivered")
                                     Text("Your Parcel has been delivered",
-                                        style: _title),
+                                        style: CustomTextStyles(context)
+                                            .titleStyle),
                                   SizedBox(height: 10),
                                   if (delivery.status == "")
                                     Row(
                                       children: [
-                                        Text("Order Date: ", style: _subTitle),
+                                        Text("Order Date: ",
+                                            style: CustomTextStyles(context)
+                                                .subTitleStyle),
                                         Text(
                                             DateFormat('dd-MM-yyyy')
                                                 .format(delivery.orderDate!),
-                                            style: _subTitle),
+                                            style: CustomTextStyles(context)
+                                                .subTitleStyle),
                                       ],
                                     ),
                                   if (delivery.status == "ship")
                                     Row(
                                       children: [
                                         Text("Expected Date: ",
-                                            style: _subTitle),
+                                            style: CustomTextStyles(context)
+                                                .subTitleStyle),
                                         Text(
                                             DateFormat('dd-MM-yyyy')
                                                 .format(delivery.expectedDate!),
-                                            style: _subTitle),
+                                            style: CustomTextStyles(context)
+                                                .subTitleStyle),
                                       ],
                                     ),
                                   if (delivery.status == "delivered")
@@ -222,7 +221,8 @@ class _DeliveryDetailScreenState extends State<DeliveryDetailScreen> {
                                         DateFormat('dd-MM-yyyy').format(
                                             delivery.updatedAt ??
                                                 DateTime.now()),
-                                        style: _subTitle),
+                                        style: CustomTextStyles(context)
+                                            .subTitleStyle),
                                 ],
                               ),
                             ]),
@@ -243,10 +243,13 @@ class _DeliveryDetailScreenState extends State<DeliveryDetailScreen> {
                               children: [
                                 Row(
                                   children: [
-                                    Text("Order ID: ", style: _title),
+                                    Text("Order ID: ",
+                                        style: CustomTextStyles(context)
+                                            .titleStyle),
                                     SizedBox(height: 10),
                                     Text(delivery.orderId.toString(),
-                                        style: _subTitle),
+                                        style: CustomTextStyles(context)
+                                            .subTitleStyle),
                                   ],
                                 ),
                                 SizedBox(height: 10),
@@ -254,13 +257,16 @@ class _DeliveryDetailScreenState extends State<DeliveryDetailScreen> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("Order Address: ", style: _title),
+                                    Text("Order Address: ",
+                                        style: CustomTextStyles(context)
+                                            .titleStyle),
                                     SizedBox(height: 10),
                                     Flexible(
                                       child: Text(delivery.orderAddress ?? "",
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 4,
-                                          style: _subTitle),
+                                          style: CustomTextStyles(context)
+                                              .subTitleStyle),
                                     ),
                                   ],
                                 ),
@@ -290,7 +296,8 @@ class _DeliveryDetailScreenState extends State<DeliveryDetailScreen> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text("Click here to view delivery detail",
-                                      style: _title),
+                                      style:
+                                          CustomTextStyles(context).titleStyle),
                                   Icon(
                                     Icons.arrow_forward_ios,
                                     color: ColorResources.COLOR_PRIMARY,
@@ -316,7 +323,9 @@ class _DeliveryDetailScreenState extends State<DeliveryDetailScreen> {
                             children: [
                               Row(
                                 children: [
-                                  Text("Delivery Status", style: _title),
+                                  Text("Delivery Status",
+                                      style:
+                                          CustomTextStyles(context).titleStyle),
                                   Spacer(),
                                   if (delivery.status == "delivered" ||
                                       delivery.status == "ship")
@@ -330,16 +339,19 @@ class _DeliveryDetailScreenState extends State<DeliveryDetailScreen> {
                                         },
                                         child: Text(
                                           "COPY",
-                                          style: _title.copyWith(
-                                              color:
-                                                  ColorResources.COLOR_PRIMARY),
+                                          style: CustomTextStyles(context)
+                                              .titleStyle
+                                              .copyWith(
+                                                  color: ColorResources
+                                                      .COLOR_PRIMARY),
                                         ),
                                       ),
                                     ),
                                   if (delivery.status == "delivered" ||
                                       delivery.status == "ship")
                                     Text(delivery.trackingNumber ?? "",
-                                        style: _subTitle),
+                                        style: CustomTextStyles(context)
+                                            .subTitleStyle),
                                 ],
                               ),
                               Stepper(
@@ -374,9 +386,11 @@ class _DeliveryDetailScreenState extends State<DeliveryDetailScreen> {
                                                 5, 10, 5, 0),
                                             child: Text(
                                               "View Proof of Delivery",
-                                              style: _title.copyWith(
-                                                  color: ColorResources
-                                                      .COLOR_PRIMARY),
+                                              style: CustomTextStyles(context)
+                                                  .titleStyle
+                                                  .copyWith(
+                                                      color: ColorResources
+                                                          .COLOR_PRIMARY),
                                             ),
                                           ),
                                         ),
@@ -391,36 +405,43 @@ class _DeliveryDetailScreenState extends State<DeliveryDetailScreen> {
                                     state: StepState.indexed,
                                     title: Text(
                                       'Order Placed',
-                                      style: _title,
+                                      style:
+                                          CustomTextStyles(context).titleStyle,
                                     ),
                                     subtitle: Text(
                                       DateFormat('dd-MM-yyyy HH:mm').format(
                                           delivery.orderDate ?? DateTime.now()),
-                                      style: _subTitle.copyWith(fontSize: 12),
+                                      style: CustomTextStyles(context)
+                                          .subTitleStyle
+                                          .copyWith(fontSize: 12),
                                     ),
                                     content: Text(
                                         'Seller is preparing your parcel for shipment.',
-                                        style: _subTitle),
+                                        style: CustomTextStyles(context)
+                                            .subTitleStyle),
                                     isActive: true,
                                   ),
                                   Step(
                                     state: StepState.indexed,
                                     title: Text(
                                       'Order Shipped',
-                                      style: _title,
+                                      style:
+                                          CustomTextStyles(context).titleStyle,
                                     ),
                                     subtitle: delivery.status == "delivered" ||
                                             delivery.status == "ship"
                                         ? Text(
                                             DateFormat('dd-MM-yyyy HH:mm')
                                                 .format(delivery.createdAt!),
-                                            style: _subTitle.copyWith(
-                                                fontSize: 12),
+                                            style: CustomTextStyles(context)
+                                                .subTitleStyle
+                                                .copyWith(fontSize: 12),
                                           )
                                         : null,
                                     content: Text(
                                         'Your order has been shipped and is on the way.',
-                                        style: _subTitle),
+                                        style: CustomTextStyles(context)
+                                            .subTitleStyle),
                                     isActive: delivery.status == "delivered" ||
                                         delivery.status == "ship",
                                   ),
@@ -428,18 +449,21 @@ class _DeliveryDetailScreenState extends State<DeliveryDetailScreen> {
                                     state: StepState.complete,
                                     title: Text(
                                       'Order Delivered',
-                                      style: _title,
+                                      style:
+                                          CustomTextStyles(context).titleStyle,
                                     ),
                                     subtitle: delivery.status == "delivered"
                                         ? Text(
                                             DateFormat('dd-MM-yyyy HH:mm')
                                                 .format(delivery.updatedAt!),
-                                            style: _subTitle.copyWith(
-                                                fontSize: 12))
+                                            style: CustomTextStyles(context)
+                                                .subTitleStyle
+                                                .copyWith(fontSize: 12))
                                         : null,
                                     content: Text(
                                         'Your order has been delivered and received.',
-                                        style: _subTitle),
+                                        style: CustomTextStyles(context)
+                                            .subTitleStyle),
                                     isActive: delivery.status == "delivered",
                                   ),
                                 ],

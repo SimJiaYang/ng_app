@@ -59,13 +59,6 @@ class _ChangesEmailScreenState extends State<ChangesEmailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var theme = Theme.of(context).textTheme;
-    TextStyle _subTitle = theme.headlineMedium!.copyWith(
-      fontSize: Dimensions.FONT_SIZE_DEFAULT,
-      fontWeight: FontWeight.w300,
-      color: ColorResources.COLOR_BLACK.withOpacity(0.7),
-    );
-
     return Scaffold(
       appBar: CustomAppBar(
         isBgPrimaryColor: true,

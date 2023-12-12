@@ -23,6 +23,9 @@ class _BiddingScreenState extends State<BiddingScreen> {
 
   final _scrollController = ScrollController();
 
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
+
   // Params
   var params = {
     'limit': '8',
@@ -84,133 +87,142 @@ class _BiddingScreenState extends State<BiddingScreen> {
             height: size.height,
             width: size.width,
             child: SafeArea(
-              child: VsScrollbar(
-                controller: _scrollController,
-                showTrackOnHover: true, // default false
-                isAlwaysShown: true, // default false
-                scrollbarFadeDuration: Duration(
-                    milliseconds: 500), // default : Duration(milliseconds: 300)
-                scrollbarTimeToFade: Duration(
-                    milliseconds: 800), // default : Duration(milliseconds: 600)
-                style: VsScrollbarStyle(
-                  hoverThickness: 4.0, // default 12.0
-                  radius: Radius.circular(10), // default Radius.circular(8.0)
-                  thickness: 4.0, // [ default 8.0 ]
-                  color:
-                      ColorResources.COLOR_PRIMARY, // default ColorScheme Theme
-                ),
-                child: SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
+              child: RefreshIndicator(
+                color: Theme.of(context).primaryColor,
+                key: _refreshIndicatorKey,
+                onRefresh: () => _loadData(isLoadMore: false),
+                child: VsScrollbar(
                   controller: _scrollController,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Consumer<BiddingProvider>(
-                          builder: (context, biddingProvider, child) {
-                        return biddingProvider.biddingList.isEmpty &&
-                                biddingProvider.isLoading
-                            ? GridView.builder(
-                                primary: false,
-                                shrinkWrap: true,
-                                itemCount: 8,
-                                padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  childAspectRatio: 3 / 4,
-                                  crossAxisSpacing: 10,
-                                  mainAxisSpacing: 10,
-                                ),
-                                itemBuilder: (BuildContext context, int index) {
-                                  return EmptyGridItem();
-                                })
-                            : biddingProvider.biddingList.isEmpty &&
-                                    !biddingProvider.isLoading
-                                ? Center(
-                                    child: Text(
-                                      "No Bidding Avialable Yet",
-                                      style: TextStyle(
-                                          color: Colors.grey.withOpacity(0.7),
-                                          fontSize: 18),
-                                    ),
-                                  )
-                                : Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 5, vertical: 15),
-                                    child: GridView.builder(
-                                      primary: false,
-                                      shrinkWrap: true,
-                                      itemCount:
-                                          biddingProvider.biddingList.length +
-                                              ((biddingProvider.isLoading &&
-                                                      biddingProvider
-                                                              .biddingList
-                                                              .length >=
-                                                          8)
-                                                  ? 8
-                                                  : biddingProvider
-                                                          .biddingNoMoreData
-                                                          .isNotEmpty
-                                                      ? 1
-                                                      : 0),
-                                      padding: (biddingProvider
-                                                  .biddingNoMoreData
-                                                  .isNotEmpty &&
-                                              !biddingProvider.isLoading)
-                                          ? EdgeInsets.fromLTRB(10, 0, 10, 10)
-                                          : EdgeInsets.only(
-                                              bottom: 235,
-                                              left: 10,
-                                              right: 10,
-                                              top: 0),
-                                      gridDelegate:
-                                          SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 2,
-                                        childAspectRatio: 2 / 3,
-                                        crossAxisSpacing: 10,
-                                        mainAxisSpacing: 10,
+                  showTrackOnHover: true, // default false
+                  isAlwaysShown: true, // default false
+                  scrollbarFadeDuration: Duration(
+                      milliseconds:
+                          500), // default : Duration(milliseconds: 300)
+                  scrollbarTimeToFade: Duration(
+                      milliseconds:
+                          800), // default : Duration(milliseconds: 600)
+                  style: VsScrollbarStyle(
+                    hoverThickness: 4.0, // default 12.0
+                    radius: Radius.circular(10), // default Radius.circular(8.0)
+                    thickness: 4.0, // [ default 8.0 ]
+                    color: ColorResources
+                        .COLOR_PRIMARY, // default ColorScheme Theme
+                  ),
+                  child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    controller: _scrollController,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Consumer<BiddingProvider>(
+                            builder: (context, biddingProvider, child) {
+                          return biddingProvider.biddingList.isEmpty &&
+                                  biddingProvider.isLoading
+                              ? GridView.builder(
+                                  primary: false,
+                                  shrinkWrap: true,
+                                  itemCount: 8,
+                                  padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    childAspectRatio: 3 / 4,
+                                    crossAxisSpacing: 10,
+                                    mainAxisSpacing: 10,
+                                  ),
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return EmptyGridItem();
+                                  })
+                              : biddingProvider.biddingList.isEmpty &&
+                                      !biddingProvider.isLoading
+                                  ? Center(
+                                      child: Text(
+                                        "No Bidding Avialable Yet",
+                                        style: TextStyle(
+                                            color: Colors.grey.withOpacity(0.7),
+                                            fontSize: 18),
                                       ),
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        if (index >=
-                                                biddingProvider
-                                                    .biddingList.length &&
-                                            biddingProvider
-                                                .biddingNoMoreData.isEmpty) {
-                                          return EmptyGridItem();
-                                        } else if (index ==
-                                                biddingProvider
-                                                    .biddingList.length &&
-                                            biddingProvider
-                                                .biddingNoMoreData.isNotEmpty) {
-                                          return Container(
-                                            height: 150,
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 10),
-                                            child: Center(
-                                              child: Text(
+                                    )
+                                  : Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 5, vertical: 15),
+                                      child: GridView.builder(
+                                        primary: false,
+                                        shrinkWrap: true,
+                                        itemCount:
+                                            biddingProvider.biddingList.length +
+                                                ((biddingProvider.isLoading &&
+                                                        biddingProvider
+                                                                .biddingList
+                                                                .length >=
+                                                            8)
+                                                    ? 8
+                                                    : biddingProvider
+                                                            .biddingNoMoreData
+                                                            .isNotEmpty
+                                                        ? 1
+                                                        : 0),
+                                        padding: (biddingProvider
+                                                    .biddingNoMoreData
+                                                    .isNotEmpty &&
+                                                !biddingProvider.isLoading)
+                                            ? EdgeInsets.fromLTRB(10, 0, 10, 10)
+                                            : EdgeInsets.only(
+                                                bottom: 235,
+                                                left: 10,
+                                                right: 10,
+                                                top: 0),
+                                        gridDelegate:
+                                            SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 2,
+                                          childAspectRatio: 2 / 3,
+                                          crossAxisSpacing: 10,
+                                          mainAxisSpacing: 10,
+                                        ),
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          if (index >=
                                                   biddingProvider
-                                                      .biddingNoMoreData,
-                                                  style: TextStyle(
-                                                      color: Colors.grey
-                                                          .withOpacity(0.5))),
-                                            ),
-                                          );
-                                        } else {
-                                          return SizedBox(
-                                            height: 200,
-                                            child: BiddingGridItem(
-                                                bid: biddingProvider
-                                                    .biddingList[index],
-                                                onTap: () {}),
-                                          );
-                                        }
-                                      },
-                                    ),
-                                  );
-                      }),
-                    ],
+                                                      .biddingList.length &&
+                                              biddingProvider
+                                                  .biddingNoMoreData.isEmpty) {
+                                            return EmptyGridItem();
+                                          } else if (index ==
+                                                  biddingProvider
+                                                      .biddingList.length &&
+                                              biddingProvider.biddingNoMoreData
+                                                  .isNotEmpty) {
+                                            return Container(
+                                              height: 150,
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 10),
+                                              child: Center(
+                                                child: Text(
+                                                    biddingProvider
+                                                        .biddingNoMoreData,
+                                                    style: TextStyle(
+                                                        color: Colors.grey
+                                                            .withOpacity(0.5))),
+                                              ),
+                                            );
+                                          } else {
+                                            return SizedBox(
+                                              height: 200,
+                                              child: BiddingGridItem(
+                                                  bid: biddingProvider
+                                                      .biddingList[index],
+                                                  onTap: () {}),
+                                            );
+                                          }
+                                        },
+                                      ),
+                                    );
+                        }),
+                      ],
+                    ),
                   ),
                 ),
               ),

@@ -6,6 +6,7 @@ import 'package:input_quantity/input_quantity.dart';
 import 'package:nurserygardenapp/data/model/cart_model.dart';
 import 'package:nurserygardenapp/providers/cart_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
+import 'package:nurserygardenapp/util/custom_text_style.dart';
 import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/screen/cart/widget/empty_cart_item.dart';
@@ -111,22 +112,17 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context).textTheme;
-    TextStyle _subTitle = theme.headlineMedium!.copyWith(
-      fontSize: Dimensions.FONT_SIZE_DEFAULT,
-      fontWeight: FontWeight.w300,
-      color: ColorResources.COLOR_BLACK.withOpacity(0.7),
-    );
 
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Text(
           "My Cart",
-          style: _subTitle.copyWith(
-            color: Colors.white,
-            fontWeight: FontWeight.w400,
-            fontSize: 18,
-          ),
+          style: CustomTextStyles(context).subTitleStyle.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.w400,
+                fontSize: 18,
+              ),
         ),
         leading: BackButton(
           color: Colors.white,

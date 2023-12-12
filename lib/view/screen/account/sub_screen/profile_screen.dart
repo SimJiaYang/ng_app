@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/data/model/user_model.dart';
 import 'package:nurserygardenapp/providers/user_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
+import 'package:nurserygardenapp/util/custom_text_style.dart';
 import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/util/images.dart';
 import 'package:nurserygardenapp/view/base/custom_button.dart';
@@ -150,13 +151,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var theme = Theme.of(context).textTheme;
-    TextStyle _subTitle = theme.headlineMedium!.copyWith(
-      fontSize: Dimensions.FONT_SIZE_DEFAULT,
-      fontWeight: FontWeight.w300,
-      color: ColorResources.COLOR_BLACK.withOpacity(0.7),
-    );
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorResources.COLOR_PRIMARY,
@@ -166,7 +160,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         centerTitle: true,
         title: Text(
           profileHeader,
-          style: theme.bodyLarge!.copyWith(
+          style: CustomTextStyles(context).subTitleStyle.copyWith(
               fontWeight: FontWeight.w400, fontSize: 16, color: Colors.white),
         ),
       ),

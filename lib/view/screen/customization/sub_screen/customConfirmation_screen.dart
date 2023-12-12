@@ -1,11 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:nurserygardenapp/providers/cart_provider.dart';
 import 'package:nurserygardenapp/providers/address_provider.dart';
 import 'package:nurserygardenapp/providers/customize_provider.dart';
-import 'package:nurserygardenapp/providers/order_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
+import 'package:nurserygardenapp/util/custom_text_style.dart';
 import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/circular_indicator.dart';
@@ -71,16 +70,6 @@ class _CustomConfirmationScreenState extends State<CustomConfirmationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var theme = Theme.of(context).textTheme;
-    TextStyle _title = theme.headlineMedium!.copyWith(
-      fontSize: Dimensions.FONT_SIZE_DEFAULT,
-      color: ColorResources.COLOR_BLACK.withOpacity(0.8),
-    );
-    TextStyle _subTitle = theme.headlineMedium!.copyWith(
-      fontSize: Dimensions.FONT_SIZE_DEFAULT,
-      color: ColorResources.COLOR_BLACK.withOpacity(0.6),
-    );
-
     return Scaffold(
         appBar: AppBar(
             backgroundColor: ColorResources.COLOR_PRIMARY,
@@ -92,7 +81,7 @@ class _CustomConfirmationScreenState extends State<CustomConfirmationScreen> {
             ),
             title: Text(
               "Checkout",
-              style: _subTitle.copyWith(
+              style: CustomTextStyles(context).subTitleStyle.copyWith(
                   fontWeight: FontWeight.w400,
                   fontSize: 18,
                   color: Colors.white),
@@ -239,9 +228,11 @@ class _CustomConfirmationScreenState extends State<CustomConfirmationScreen> {
                               children: [
                                 Text(
                                   "Delivery Address",
-                                  style: _title.copyWith(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
+                                  style: CustomTextStyles(context)
+                                      .titleStyle
+                                      .copyWith(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
                                 ),
                                 Text(
                                   address,

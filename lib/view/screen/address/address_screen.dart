@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:nurserygardenapp/providers/address_provider.dart';
-import 'package:nurserygardenapp/providers/cart_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/custom_appbar.dart';
 import 'package:nurserygardenapp/view/base/custom_button.dart';
-import 'package:nurserygardenapp/view/base/page_loading.dart';
 import 'package:nurserygardenapp/view/screen/address/widget/empty_address.dart';
 import 'package:provider/provider.dart';
 
@@ -75,19 +73,6 @@ class _AddressScreenState extends State<AddressScreen> {
         isBgPrimaryColor: true,
         context: context,
         title: "My Address",
-        // IconButton(
-        //     icon: Icon(
-        //       Icons.add,
-        //       color: Colors.white,
-        //     ),
-        //     onPressed: () {
-        //       Navigator.pushNamed(context, Routes.getAddAddressRoute())
-        //           .then((value) {
-        //         if (value == true) {
-        //           _loadData();
-        //         }
-        //       });
-        //     })
       ),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),

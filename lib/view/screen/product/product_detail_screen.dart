@@ -7,6 +7,7 @@ import 'package:nurserygardenapp/data/model/product_model.dart';
 import 'package:nurserygardenapp/providers/cart_provider.dart';
 import 'package:nurserygardenapp/providers/product_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
+import 'package:nurserygardenapp/util/custom_text_style.dart';
 import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/custom_button.dart';
@@ -248,16 +249,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var theme = Theme.of(context).textTheme;
-    TextStyle _title = theme.headlineMedium!.copyWith(
-      fontSize: Dimensions.FONT_SIZE_DEFAULT,
-      color: ColorResources.COLOR_BLACK.withOpacity(0.8),
-    );
-    TextStyle _subTitle = theme.headlineMedium!.copyWith(
-      fontSize: Dimensions.FONT_SIZE_DEFAULT,
-      color: ColorResources.COLOR_BLACK.withOpacity(0.6),
-    );
-
     return Scaffold(
         appBar: AppBar(
           leading: const BackButton(
@@ -405,16 +396,22 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("${product.name}",
-                                    style: _title.copyWith(
-                                        fontSize: Dimensions.FONT_SIZE_LARGE)),
+                                    style: CustomTextStyles(context)
+                                        .titleStyle
+                                        .copyWith(
+                                            fontSize:
+                                                Dimensions.FONT_SIZE_LARGE)),
                                 VerticalSpacing(
                                   height: 10,
                                 ),
                                 Text("RM ${product.price}",
-                                    style: _title.copyWith(
-                                        fontSize:
-                                            Dimensions.FONT_SIZE_EXTRA_LARGE,
-                                        color: ColorResources.COLOR_PRIMARY)),
+                                    style: CustomTextStyles(context)
+                                        .titleStyle
+                                        .copyWith(
+                                            fontSize: Dimensions
+                                                .FONT_SIZE_EXTRA_LARGE,
+                                            color:
+                                                ColorResources.COLOR_PRIMARY)),
                               ],
                             ),
                           ),
@@ -428,18 +425,25 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Category:", style: _title),
+                                Text("Category:",
+                                    style:
+                                        CustomTextStyles(context).titleStyle),
                                 HorizontalSpacing(
                                   width: 3,
                                 ),
                                 Text("${product.categoryName}",
-                                    style: _subTitle),
+                                    style: CustomTextStyles(context)
+                                        .subTitleStyle),
                                 Expanded(child: Container()),
-                                Text("Inventory:", style: _title),
+                                Text("Inventory:",
+                                    style:
+                                        CustomTextStyles(context).titleStyle),
                                 HorizontalSpacing(
                                   width: 3,
                                 ),
-                                Text("${product.quantity}", style: _subTitle)
+                                Text("${product.quantity}",
+                                    style:
+                                        CustomTextStyles(context).subTitleStyle)
                               ],
                             ),
                           ),
@@ -453,12 +457,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Description", style: _title),
+                                Text("Description",
+                                    style:
+                                        CustomTextStyles(context).titleStyle),
                                 VerticalSpacing(
                                   height: 10,
                                 ),
                                 Text("${product.description}",
-                                    style: _subTitle),
+                                    style: CustomTextStyles(context)
+                                        .subTitleStyle),
                               ],
                             ),
                           ),

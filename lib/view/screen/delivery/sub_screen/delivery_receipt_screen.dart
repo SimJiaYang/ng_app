@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nurserygardenapp/providers/delivery_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
+import 'package:nurserygardenapp/util/custom_text_style.dart';
 import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/view/base/custom_appbar.dart';
 import 'package:nurserygardenapp/view/base/page_loading.dart';
@@ -43,16 +44,6 @@ class _DeliveryReceiptScreenState extends State<DeliveryReceiptScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    var theme = Theme.of(context).textTheme;
-    TextStyle _title = theme.headlineMedium!.copyWith(
-      fontSize: Dimensions.FONT_SIZE_DEFAULT,
-      color: ColorResources.COLOR_BLACK.withOpacity(0.85),
-    );
-    TextStyle _subTitle = theme.headlineMedium!.copyWith(
-      fontSize: Dimensions.FONT_SIZE_SMALL,
-      fontWeight: FontWeight.w300,
-      color: ColorResources.COLOR_BLACK.withOpacity(0.65),
-    );
 
     return Scaffold(
         appBar: CustomAppBar(
@@ -99,46 +90,62 @@ class _DeliveryReceiptScreenState extends State<DeliveryReceiptScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text("Delivery Information",
-                                style: _title.copyWith(fontSize: 16)),
+                                style: CustomTextStyles(context)
+                                    .titleStyle
+                                    .copyWith(fontSize: 16)),
                             SizedBox(height: 5),
                             Row(
                               children: [
-                                Text("Tracking Number: ", style: _title),
+                                Text("Tracking Number: ",
+                                    style:
+                                        CustomTextStyles(context).titleStyle),
                                 Text(
                                     deliveryProvider.delivery.trackingNumber ??
                                         "",
-                                    style: _subTitle),
+                                    style: CustomTextStyles(context)
+                                        .subTitleStyle),
                               ],
                             ),
                             SizedBox(height: 5),
                             Row(
                               children: [
-                                Text("Delivery Company: ", style: _title),
+                                Text("Delivery Company: ",
+                                    style:
+                                        CustomTextStyles(context).titleStyle),
                                 Text(
                                     deliveryProvider.delivery.method.toString(),
-                                    style: _subTitle),
+                                    style: CustomTextStyles(context)
+                                        .subTitleStyle),
                               ],
                             ),
                             SizedBox(height: 5),
                             Row(
                               children: [
-                                Text("Delivery Date: ", style: _title),
+                                Text("Delivery Date: ",
+                                    style:
+                                        CustomTextStyles(context).titleStyle),
                                 Text(
                                     DateFormat('dd-MM-yyyy').format(
                                         deliveryProvider.delivery.createdAt ??
                                             DateTime.now()),
-                                    style: _subTitle),
+                                    style: CustomTextStyles(context)
+                                        .subTitleStyle),
                               ],
                             ),
                             Divider(),
                             Text("Sender Information",
-                                style: _title.copyWith(fontSize: 16)),
+                                style: CustomTextStyles(context)
+                                    .titleStyle
+                                    .copyWith(fontSize: 16)),
                             SizedBox(height: 5),
                             Row(
                               children: [
-                                Text("Sender: ", style: _title),
+                                Text("Sender: ",
+                                    style:
+                                        CustomTextStyles(context).titleStyle),
                                 Text(deliveryProvider.sender.sender ?? "",
-                                    style: _subTitle),
+                                    style: CustomTextStyles(context)
+                                        .subTitleStyle),
                               ],
                             ),
                             SizedBox(height: 5),
@@ -146,25 +153,33 @@ class _DeliveryReceiptScreenState extends State<DeliveryReceiptScreen> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Address: ", style: _title),
+                                Text("Address: ",
+                                    style:
+                                        CustomTextStyles(context).titleStyle),
                                 Flexible(
                                   child: Text(
                                       deliveryProvider.sender.address ?? "",
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 4,
-                                      style: _subTitle),
+                                      style: CustomTextStyles(context)
+                                          .subTitleStyle),
                                 ),
                               ],
                             ),
                             Divider(),
                             Text("Receiver Information",
-                                style: _title.copyWith(fontSize: 16)),
+                                style: CustomTextStyles(context)
+                                    .titleStyle
+                                    .copyWith(fontSize: 16)),
                             SizedBox(height: 5),
                             Row(
                               children: [
-                                Text("Receiver: ", style: _title),
+                                Text("Receiver: ",
+                                    style:
+                                        CustomTextStyles(context).titleStyle),
                                 Text(deliveryProvider.user.name ?? "",
-                                    style: _subTitle),
+                                    style: CustomTextStyles(context)
+                                        .subTitleStyle),
                               ],
                             ),
                             SizedBox(height: 5),
@@ -172,36 +187,47 @@ class _DeliveryReceiptScreenState extends State<DeliveryReceiptScreen> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Address: ", style: _title),
+                                Text("Address: ",
+                                    style:
+                                        CustomTextStyles(context).titleStyle),
                                 Flexible(
                                   child: Text(
                                       deliveryProvider.order.address ?? "",
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 4,
-                                      style: _subTitle),
+                                      style: CustomTextStyles(context)
+                                          .subTitleStyle),
                                 ),
                               ],
                             ),
                             Divider(),
                             Text("Order Information",
-                                style: _title.copyWith(fontSize: 16)),
+                                style: CustomTextStyles(context)
+                                    .titleStyle
+                                    .copyWith(fontSize: 16)),
                             SizedBox(height: 5),
                             Row(
                               children: [
-                                Text("Order ID: ", style: _title),
+                                Text("Order ID: ",
+                                    style:
+                                        CustomTextStyles(context).titleStyle),
                                 Text(deliveryProvider.order.id.toString(),
-                                    style: _subTitle),
+                                    style: CustomTextStyles(context)
+                                        .subTitleStyle),
                               ],
                             ),
                             SizedBox(height: 5),
                             Row(
                               children: [
-                                Text("Order Date: ", style: _title),
+                                Text("Order Date: ",
+                                    style:
+                                        CustomTextStyles(context).titleStyle),
                                 Text(
                                     DateFormat('dd-MM-yyyy').format(
                                         deliveryProvider.order.createdAt ??
                                             DateTime.now()),
-                                    style: _subTitle),
+                                    style: CustomTextStyles(context)
+                                        .subTitleStyle),
                               ],
                             ),
                             // SizedBox(height: 5),
@@ -216,7 +242,9 @@ class _DeliveryReceiptScreenState extends State<DeliveryReceiptScreen> {
                             Divider(),
                             const SizedBox(height: 10),
                             Text("Delivery Items",
-                                style: _title.copyWith(fontSize: 16)),
+                                style: CustomTextStyles(context)
+                                    .titleStyle
+                                    .copyWith(fontSize: 16)),
                             SizedBox(height: 5),
                             ListView.builder(
                               shrinkWrap: true,
@@ -238,14 +266,16 @@ class _DeliveryReceiptScreenState extends State<DeliveryReceiptScreen> {
                                                     .deliveryOrderDetail[index]
                                                     .productName ??
                                                 "",
-                                            style: _title),
+                                            style: CustomTextStyles(context)
+                                                .titleStyle),
                                         Text(
                                             " x " +
                                                 deliveryProvider
                                                     .deliveryOrderDetail[index]
                                                     .quantity
                                                     .toString(),
-                                            style: _subTitle),
+                                            style: CustomTextStyles(context)
+                                                .subTitleStyle),
                                       ],
                                     ),
                                     SizedBox(height: 5),
@@ -259,8 +289,11 @@ class _DeliveryReceiptScreenState extends State<DeliveryReceiptScreen> {
                             Row(
                               children: [
                                 Text("Thank you for purchase at ",
-                                    style: _subTitle),
-                                Text("Nursery Garden", style: _title),
+                                    style: CustomTextStyles(context)
+                                        .subTitleStyle),
+                                Text("Nursery Garden",
+                                    style:
+                                        CustomTextStyles(context).titleStyle),
                                 Icon(
                                   Icons.favorite,
                                   color: ColorResources.COLOR_PRIMARY,

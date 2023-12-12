@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:nurserygardenapp/providers/delivery_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
-import 'package:nurserygardenapp/util/dimensions.dart';
+import 'package:nurserygardenapp/util/custom_text_style.dart';
 import 'package:nurserygardenapp/util/font_styles.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/custom_appbar.dart';
@@ -64,17 +64,6 @@ class _OrderDeliveryListScreenState extends State<OrderDeliveryListScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    var theme = Theme.of(context).textTheme;
-    TextStyle _title = theme.headlineMedium!.copyWith(
-      fontSize: Dimensions.FONT_SIZE_DEFAULT,
-      color: ColorResources.COLOR_BLACK.withOpacity(0.85),
-    );
-    TextStyle _subTitle = theme.headlineMedium!.copyWith(
-      fontSize: Dimensions.FONT_SIZE_DEFAULT,
-      fontWeight: FontWeight.w300,
-      color: ColorResources.COLOR_BLACK.withOpacity(0.65),
-    );
-
     return Scaffold(
       appBar: CustomAppBar(
         title: "Order Delivery List",
@@ -178,15 +167,16 @@ class _OrderDeliveryListScreenState extends State<OrderDeliveryListScreen> {
                                         children: [
                                           Text(
                                             "Order ID:",
-                                            style: _title,
+                                            style: CustomTextStyles(context)
+                                                .titleStyle,
                                           ),
                                           SizedBox(width: 5),
                                           Text(
-                                            deliveryProvider
-                                                .deliveryList[index].orderId
-                                                .toString(),
-                                            style: _subTitle,
-                                          ),
+                                              deliveryProvider
+                                                  .deliveryList[index].orderId
+                                                  .toString(),
+                                              style: CustomTextStyles(context)
+                                                  .subTitleStyle),
                                         ],
                                       ),
                                       SizedBox(height: 5),
@@ -194,14 +184,16 @@ class _OrderDeliveryListScreenState extends State<OrderDeliveryListScreen> {
                                         children: [
                                           Text(
                                             "Tracking Number:",
-                                            style: _title,
+                                            style: CustomTextStyles(context)
+                                                .titleStyle,
                                           ),
                                           SizedBox(width: 5),
                                           Text(
                                             deliveryProvider.deliveryList[index]
                                                 .trackingNumber
                                                 .toString(),
-                                            style: _subTitle,
+                                            style: CustomTextStyles(context)
+                                                .subTitleStyle,
                                           ),
                                         ],
                                       ),
@@ -210,7 +202,8 @@ class _OrderDeliveryListScreenState extends State<OrderDeliveryListScreen> {
                                         children: [
                                           Text(
                                             "Courier Company: ",
-                                            style: _title,
+                                            style: CustomTextStyles(context)
+                                                .titleStyle,
                                           ),
                                           SizedBox(width: 5),
                                           Text(
@@ -218,7 +211,8 @@ class _OrderDeliveryListScreenState extends State<OrderDeliveryListScreen> {
                                                 .deliveryList[index].method
                                                 .toString()
                                                 .capitalize(),
-                                            style: _subTitle,
+                                            style: CustomTextStyles(context)
+                                                .subTitleStyle,
                                           ),
                                         ],
                                       ),
@@ -228,7 +222,8 @@ class _OrderDeliveryListScreenState extends State<OrderDeliveryListScreen> {
                                         children: [
                                           Text(
                                             "Shipping Status: ",
-                                            style: _title,
+                                            style: CustomTextStyles(context)
+                                                .titleStyle,
                                           ),
                                           SizedBox(width: 5),
                                           Text(
@@ -236,16 +231,19 @@ class _OrderDeliveryListScreenState extends State<OrderDeliveryListScreen> {
                                                 .deliveryList[index].status
                                                 .toString()
                                                 .capitalize(),
-                                            style: _subTitle.copyWith(
-                                                color: deliveryProvider
-                                                            .deliveryList[index]
-                                                            .status
-                                                            .toString() ==
-                                                        'delivered'
-                                                    ? ColorResources
-                                                        .COLOR_PRIMARY
-                                                    : ColorResources
-                                                        .APPBAR_HEADER_COLOR),
+                                            style: CustomTextStyles(context)
+                                                .subTitleStyle
+                                                .copyWith(
+                                                    color: deliveryProvider
+                                                                .deliveryList[
+                                                                    index]
+                                                                .status
+                                                                .toString() ==
+                                                            'delivered'
+                                                        ? ColorResources
+                                                            .COLOR_PRIMARY
+                                                        : ColorResources
+                                                            .APPBAR_HEADER_COLOR),
                                           ),
                                         ],
                                       ),
