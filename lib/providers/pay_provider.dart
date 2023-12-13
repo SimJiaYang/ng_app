@@ -40,7 +40,7 @@ class PayProvider extends ChangeNotifier {
     return result;
   }
 
-  Future<bool> makePayment(String id, BuildContext context) async {
+  Future<bool> makePayment(String id, BuildContext context, bool isBid) async {
     bool result = false;
     _isPay = true;
     notifyListeners();
@@ -56,9 +56,12 @@ class PayProvider extends ChangeNotifier {
       );
       Map<String, dynamic> responseStatus = response.toJson();
       if (responseStatus['status'] == 'Succeeded') {
-        ApiResponse apiResponse = await payRepo.handleSuccessPayment(_intentID);
-        if (context.mounted) {
-          result = ResponseHelper.responseHelper(context, apiResponse);
+        if (!isBid) {
+          ApiResponse apiResponse =
+              await payRepo.handleSuccessPayment(_intentID);
+          if (context.mounted) {
+            result = ResponseHelper.responseHelper(context, apiResponse);
+          }
         }
       }
     } catch (e) {

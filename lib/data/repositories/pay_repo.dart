@@ -31,4 +31,27 @@ class PayRepo {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
     }
   }
+
+  Future<ApiResponse> getBiddingPaymentIntentID(
+      String biddingID, double amount) async {
+    try {
+      Response response = await dioClient.post(
+          AppConstants.BIDDING_PAYMENT_INTENT_URI,
+          data: {'bidding_id': biddingID, 'amount': amount});
+      return ApiResponse.withSuccess(response);
+    } catch (e) {
+      return ApiResponse.withError(ApiErrorHandler.getMessage(e));
+    }
+  }
+
+  Future<ApiResponse> handleBiddingPayment(
+      String clientSecret, String bidDetailID) async {
+    try {
+      Response response = await dioClient.post(AppConstants.BIDDING_PAYMENT_URI,
+          data: {'client_secret': clientSecret, 'bid_detail_id': bidDetailID});
+      return ApiResponse.withSuccess(response);
+    } catch (e) {
+      return ApiResponse.withError(ApiErrorHandler.getMessage(e));
+    }
+  }
 }

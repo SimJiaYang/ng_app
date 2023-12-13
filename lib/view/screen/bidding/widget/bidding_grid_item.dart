@@ -185,8 +185,6 @@ class _BiddingGridItemState extends State<BiddingGridItem> {
                 ),
                 Row(
                   children: [
-                    Icon(Icons.attach_money,
-                        color: ColorResources.COLOR_PRIMARY, size: 14),
                     Text(
                       "RM " + highestAmount.toStringAsFixed(2),
                       style: CustomTextStyles(context).subTitleStyle.copyWith(

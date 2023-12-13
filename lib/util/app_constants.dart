@@ -106,6 +106,8 @@ class AppConstants {
   // Bidding
   static const String BIDDING_LIST_URI = '/bidding';
   static const String BIDDING_DETAIL_URI = '/bidding/show';
+  static const String BIDDING_PAYMENT_INTENT_URI = '/bidding/payment/intent';
+  static const String BIDDING_PAYMENT_URI = '/bidding/payment';
 
   // Shared Key
   static const String THEME = 'theme';

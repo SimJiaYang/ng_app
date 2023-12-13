@@ -7,9 +7,13 @@ import 'package:nurserygardenapp/providers/bidding_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/custom_text_style.dart';
 import 'package:nurserygardenapp/util/dimensions.dart';
+import 'package:nurserygardenapp/util/routes.dart';
+import 'package:nurserygardenapp/view/base/custom_button.dart';
 import 'package:nurserygardenapp/view/base/custom_space.dart';
+import 'package:nurserygardenapp/view/base/custom_textfield.dart';
 import 'package:nurserygardenapp/view/base/image_enlarge_widget.dart';
 import 'package:nurserygardenapp/view/base/page_loading.dart';
+import 'package:nurserygardenapp/view/screen/payment/payment_helper/payment_type.dart';
 import 'package:provider/provider.dart';
 
 class BiddingDetailScreen extends StatefulWidget {
@@ -21,12 +25,18 @@ class BiddingDetailScreen extends StatefulWidget {
 }
 
 class _BiddingDetailScreenState extends State<BiddingDetailScreen> {
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late BiddingProvider biddingProvider =
       Provider.of<BiddingProvider>(context, listen: false);
   late Bidding bidding = Bidding();
+
+  TextEditingController bidController = TextEditingController();
+  FocusNode bidFocus = FocusNode();
   bool isLoading = true;
   late Timer fetchTimer;
   double highestAmount = 0;
+  double minAmount = 0;
+  String errorMessage = "";
 
   @override
   void initState() {
@@ -57,13 +67,141 @@ class _BiddingDetailScreenState extends State<BiddingDetailScreen> {
     setState(() {
       isLoading = false;
       highestAmount = (bidding.highestAmt).toDouble() ?? 0;
+      minAmount = (bidding.minAmt) == null ? 0 : (bidding.minAmt!).toDouble();
+      bidController.text = (highestAmount + minAmount).toStringAsFixed(0);
     });
   }
 
   @override
   void dispose() {
     fetchTimer.cancel();
+    bidController.dispose();
+    bidFocus.dispose();
     super.dispose();
+  }
+
+  void resetErrorMsg() {
+    setState(() {
+      errorMessage = "";
+    });
+  }
+
+  void showModalBottom(BuildContext context) {
+    bidController.text = (highestAmount + minAmount).toStringAsFixed(0);
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+          return Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                    color: Colors.grey.withOpacity(0.1),
+                    offset: const Offset(0, 2),
+                    blurRadius: 10.0),
+              ],
+            ),
+            height: MediaQuery.of(context).size.height * 0.5,
+            width: double.infinity,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  height: 150,
+                  padding: EdgeInsets.all(3),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Place a Bid",
+                        style: CustomTextStyles(context)
+                            .titleStyle
+                            .copyWith(color: ColorResources.COLOR_PRIMARY),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Form(
+                        key: _formKey,
+                        child: CustomTextField(
+                          inputType: TextInputType.number,
+                          hintText: "Enter Amount",
+                          isShowBorder: true,
+                          isShowSuffixIcon: false,
+                          isShowPrefixIcon: true,
+                          prefixIconUrl: Text(
+                            "RM" + " ",
+                            style: CustomTextStyles(context)
+                                .titleStyle
+                                .copyWith(
+                                    fontSize: Dimensions.FONT_SIZE_LARGE,
+                                    color: ColorResources.COLOR_PRIMARY),
+                          ),
+                          controller: bidController,
+                          focusNode: bidFocus,
+                        ),
+                      ),
+                      if (errorMessage.isNotEmpty)
+                        Flexible(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Text(errorMessage,
+                                style: CustomTextStyles(context)
+                                    .titleStyle
+                                    .copyWith(color: Colors.red)),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+                CustomButton(
+                  btnTxt: "Place Bid",
+                  onTap: () {
+                    if (!_formKey.currentState!.validate()) {
+                      return;
+                    }
+                    double amount = double.parse(bidController.text);
+                    print(minAmount);
+                    if (amount <= highestAmount) {
+                      setState(() {
+                        errorMessage =
+                            "Please enter amount higher than current bid";
+                      });
+                      return;
+                    } else if (amount < (minAmount + highestAmount)) {
+                      setState(() {
+                        errorMessage =
+                            "Please enter amount higher than minimum bid for everytime";
+                      });
+                      return;
+                    } else {
+                      setState(() {
+                        errorMessage = "";
+                      });
+                      Navigator.pushNamed(
+                          context,
+                          Routes.getPaymentRoute(
+                            PaymentType.card.toString(),
+                            "0",
+                          ),
+                          arguments: {
+                            "amount": amount,
+                            "bidding_id": bidding.biddingId.toString()
+                          });
+                    }
+                  },
+                )
+              ],
+            ),
+          );
+        });
+      },
+    );
   }
 
   @override
@@ -75,6 +213,53 @@ class _BiddingDetailScreenState extends State<BiddingDetailScreen> {
           ),
           backgroundColor: ColorResources.COLOR_PRIMARY,
         ),
+        bottomNavigationBar: BottomAppBar(
+            height: 60,
+            padding: EdgeInsets.all(0),
+            child: Container(
+              decoration: BoxDecoration(
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                      color: Colors.grey,
+                      offset: const Offset(0, 2),
+                      blurRadius: 10.0),
+                ],
+              ),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          resetErrorMsg();
+                          showModalBottom(context);
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: ColorResources.COLOR_PRIMARY,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                Icons.add,
+                                color: Colors.white,
+                              ),
+                              Text(
+                                'Place a Bid',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ]),
+            )),
         body: SafeArea(
           child: isLoading
               ? LoadingThreeCircle()
@@ -158,6 +343,17 @@ class _BiddingDetailScreenState extends State<BiddingDetailScreen> {
                                                 Dimensions.FONT_SIZE_LARGE,
                                             color:
                                                 ColorResources.COLOR_PRIMARY)),
+                              ),
+                              VerticalSpacing(
+                                height: 10,
+                              ),
+                              Container(
+                                child: Text(
+                                    "Min for New Bid + RM ${minAmount.toStringAsFixed(2)}",
+                                    style: CustomTextStyles(context)
+                                        .titleStyle
+                                        .copyWith(
+                                            color: ColorResources.COLOR_BLUE)),
                               ),
                             ],
                           ),

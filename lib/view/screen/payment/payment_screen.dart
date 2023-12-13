@@ -40,7 +40,19 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 
   void _getClientToken() async {
-    await pay_prov.getIntentPaymentID(widget.orderID, context);
+    if (widget.orderID == "0") {
+      var map = ModalRoute.of(context)?.settings.arguments as Map;
+      if (map.isNotEmpty) {
+        String biddingID = map['bidding_id'];
+        double amount = map['amount'];
+        // print(
+        //     "---------------------------------------------------------${biddingID}");
+        // print(
+        //     "---------------------------------------------------------${amount}");
+      }
+    } else {
+      await pay_prov.getIntentPaymentID(widget.orderID, context);
+    }
   }
 
   @override
@@ -123,16 +135,27 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       EasyLoading.show(
                                         status: 'Please wait...',
                                       );
-                                      await pay_prov
-                                          .makePayment(
-                                              pay_prov.intentID, context)
-                                          .then((value) {
-                                        EasyLoading.dismiss();
-                                        if (value == true) {
-                                          Navigator.pushReplacementNamed(
-                                              context, Routes.getOrderRoute());
-                                        }
-                                      });
+                                      if (widget.orderID == "0") {
+                                        await pay_prov
+                                            .makePayment(pay_prov.intentID,
+                                                context, true)
+                                            .then((value) {
+                                          EasyLoading.dismiss();
+                                          if (value == true) {}
+                                        });
+                                      } else {
+                                        await pay_prov
+                                            .makePayment(pay_prov.intentID,
+                                                context, false)
+                                            .then((value) {
+                                          EasyLoading.dismiss();
+                                          if (value == true) {
+                                            Navigator.pushReplacementNamed(
+                                                context,
+                                                Routes.getOrderRoute());
+                                          }
+                                        });
+                                      }
                                     }
                                   },
                                 )),
