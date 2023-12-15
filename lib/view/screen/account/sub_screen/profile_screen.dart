@@ -465,8 +465,25 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                     maxLines: 3,
                                     inputAction: TextInputAction.done,
                                   ),
-                                  VerticalSpacing(
-                                    height: 16,
+                                  Container(
+                                    height: 50,
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 5),
+                                    child: Row(
+                                      children: [
+                                        Flexible(
+                                            child: Text(
+                                          "* Please note that according to PDPA, we will only use your personal data for business purpose.",
+                                          style: CustomTextStyles(context)
+                                              .subTitleStyle
+                                              .copyWith(
+                                                  fontSize: Dimensions
+                                                      .FONT_SIZE_SMALL,
+                                                  color: ColorResources
+                                                      .COLOR_GRAY),
+                                        )),
+                                      ],
+                                    ),
                                   ),
                                   Consumer<UserProvider>(
                                       builder: (context, userProvider, child) {

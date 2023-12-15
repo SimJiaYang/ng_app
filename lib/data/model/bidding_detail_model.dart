@@ -37,16 +37,20 @@ class BiddingDetailModel {
 
 class Data {
   Bid? bid;
+  int? userBid;
 
   Data({
+    this.userBid,
     this.bid,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
+        userBid: json["user_bid"],
         bid: json["bid"] == null ? null : Bid.fromJson(json["bid"]),
       );
 
   Map<String, dynamic> toJson() => {
+        "user_bid": userBid,
         "bid": bid?.toJson(),
       };
 }

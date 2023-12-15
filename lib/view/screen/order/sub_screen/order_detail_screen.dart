@@ -582,6 +582,25 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                 SizedBox(
                                   height: 10,
                                 ),
+                                // if (order.status == "pay")
+                                //   Container(
+                                //     padding: const EdgeInsets.all(8),
+                                //     child: Row(
+                                //       children: [
+                                //         Flexible(
+                                //             child: Text(
+                                //           "*Please note that since you pay the order, we will not be able to refund your money.",
+                                //           style: CustomTextStyles(context)
+                                //               .subTitleStyle
+                                //               .copyWith(
+                                //                   fontSize: Dimensions
+                                //                       .FONT_SIZE_SMALL,
+                                //                   color: ColorResources
+                                //                       .COLOR_GRAY),
+                                //         )),
+                                //       ],
+                                //     ),
+                                //   ),
                                 if (order.status == "pay")
                                   Padding(
                                     padding: const EdgeInsets.symmetric(

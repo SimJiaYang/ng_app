@@ -44,11 +44,12 @@ class PayRepo {
     }
   }
 
-  Future<ApiResponse> handleBiddingPayment(
-      String clientSecret, String bidDetailID) async {
+  Future<ApiResponse> handleBiddingPayment(String clientSecret) async {
     try {
-      Response response = await dioClient.post(AppConstants.BIDDING_PAYMENT_URI,
-          data: {'client_secret': clientSecret, 'bid_detail_id': bidDetailID});
+      Response response =
+          await dioClient.post(AppConstants.BIDDING_PAYMENT_URI, data: {
+        'client_secret': clientSecret,
+      });
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));

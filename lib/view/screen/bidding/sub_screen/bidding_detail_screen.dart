@@ -13,6 +13,7 @@ import 'package:nurserygardenapp/view/base/custom_space.dart';
 import 'package:nurserygardenapp/view/base/custom_textfield.dart';
 import 'package:nurserygardenapp/view/base/image_enlarge_widget.dart';
 import 'package:nurserygardenapp/view/base/page_loading.dart';
+import 'package:nurserygardenapp/view/screen/bidding/widget/number_item.dart';
 import 'package:nurserygardenapp/view/screen/payment/payment_helper/payment_type.dart';
 import 'package:provider/provider.dart';
 
@@ -37,6 +38,7 @@ class _BiddingDetailScreenState extends State<BiddingDetailScreen> {
   double highestAmount = 0;
   double minAmount = 0;
   String errorMessage = "";
+  double userBidAmount = 0;
 
   @override
   void initState() {
@@ -55,6 +57,7 @@ class _BiddingDetailScreenState extends State<BiddingDetailScreen> {
       if (value == true) {
         setState(() {
           highestAmount = biddingProvider.bid.highestAmt!.toDouble();
+          userBidAmount = biddingProvider.userBid.toDouble();
         });
       }
     });
@@ -64,6 +67,10 @@ class _BiddingDetailScreenState extends State<BiddingDetailScreen> {
     bidding = biddingProvider.biddingList
         .where((element) => element.biddingId.toString() == widget.biddingID)
         .first;
+
+    // Update highest amount && user bid amount at first
+    updateHighestAmount();
+
     setState(() {
       isLoading = false;
       highestAmount = (bidding.highestAmt).toDouble() ?? 0;
@@ -107,11 +114,11 @@ class _BiddingDetailScreenState extends State<BiddingDetailScreen> {
             height: MediaQuery.of(context).size.height * 0.5,
             width: double.infinity,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                  height: 150,
+                  height: 120,
                   padding: EdgeInsets.all(3),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -158,6 +165,82 @@ class _BiddingDetailScreenState extends State<BiddingDetailScreen> {
                         ),
                     ],
                   ),
+                ),
+                Container(
+                    padding: const EdgeInsets.fromLTRB(3, 5, 3, 10),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            GestureDetector(
+                                onTap: () {
+                                  bidController.text =
+                                      (double.parse(bidController.text) + 20)
+                                          .toStringAsFixed(0);
+                                },
+                                child: NumberItem(amount: "20")),
+                            GestureDetector(
+                                onTap: () {
+                                  bidController.text =
+                                      (double.parse(bidController.text) + 50)
+                                          .toStringAsFixed(0);
+                                },
+                                child: NumberItem(amount: "50")),
+                            GestureDetector(
+                                onTap: () {
+                                  bidController.text =
+                                      (double.parse(bidController.text) + 100)
+                                          .toStringAsFixed(0);
+                                },
+                                child: NumberItem(amount: "100")),
+                          ],
+                        ),
+                        VerticalSpacing(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            GestureDetector(
+                                onTap: () {
+                                  bidController.text =
+                                      (double.parse(bidController.text) + 200)
+                                          .toStringAsFixed(0);
+                                },
+                                child: NumberItem(amount: "200")),
+                            GestureDetector(
+                                onTap: () {
+                                  bidController.text =
+                                      (double.parse(bidController.text) + 500)
+                                          .toStringAsFixed(0);
+                                },
+                                child: NumberItem(amount: "500")),
+                            GestureDetector(
+                                onTap: () {
+                                  bidController.text =
+                                      (double.parse(bidController.text) + 1000)
+                                          .toStringAsFixed(0);
+                                },
+                                child: NumberItem(amount: "1000")),
+                          ],
+                        ),
+                      ],
+                    )),
+                Spacer(),
+                Flexible(
+                    child: Text(
+                  "*Please note that if you are the winner of bidder, we will not be able to refund your money.",
+                  style: CustomTextStyles(context).subTitleStyle.copyWith(
+                      fontSize: Dimensions.FONT_SIZE_SMALL,
+                      color: ColorResources.COLOR_GRAY),
+                )),
+                VerticalSpacing(
+                  height: 3,
                 ),
                 CustomButton(
                   btnTxt: "Place Bid",
@@ -313,12 +396,26 @@ class _BiddingDetailScreenState extends State<BiddingDetailScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("${bidding.name}",
-                                  style: CustomTextStyles(context)
-                                      .titleStyle
-                                      .copyWith(
-                                          fontSize:
-                                              Dimensions.FONT_SIZE_LARGE)),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text("${bidding.name}",
+                                      style: CustomTextStyles(context)
+                                          .titleStyle
+                                          .copyWith(
+                                              fontSize:
+                                                  Dimensions.FONT_SIZE_LARGE)),
+                                  Text(
+                                      "Your Paid: RM ${userBidAmount.toStringAsFixed(2)}",
+                                      style: CustomTextStyles(context)
+                                          .titleStyle
+                                          .copyWith(
+                                              color: ColorResources
+                                                  .APPBAR_HEADER_COLOR)),
+                                ],
+                              ),
                               VerticalSpacing(
                                 height: 10,
                               ),
@@ -353,7 +450,8 @@ class _BiddingDetailScreenState extends State<BiddingDetailScreen> {
                                     style: CustomTextStyles(context)
                                         .titleStyle
                                         .copyWith(
-                                            color: ColorResources.COLOR_BLUE)),
+                                            color:
+                                                ColorResources.COLOR_PRIMARY)),
                               ),
                             ],
                           ),

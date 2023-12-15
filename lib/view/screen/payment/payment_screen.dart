@@ -3,6 +3,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:nurserygardenapp/providers/pay_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
+import 'package:nurserygardenapp/util/custom_text_style.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/custom_button.dart';
 import 'package:nurserygardenapp/view/base/custom_snackbar.dart';
@@ -25,6 +26,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   // Cannot delete
   CardFieldInputDetails? _card = CardFieldInputDetails(complete: false);
   final cardFormontroller = CardFormEditController();
+  double payment_amount = 0.0;
 
   @override
   void dispose() {
@@ -45,10 +47,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
       if (map.isNotEmpty) {
         String biddingID = map['bidding_id'];
         double amount = map['amount'];
-        // print(
-        //     "---------------------------------------------------------${biddingID}");
-        // print(
-        //     "---------------------------------------------------------${amount}");
+        await pay_prov.getBiddingIntentID(biddingID, amount, context);
+        payment_amount =
+            pay_prov.paymentBiddingModel.data!.payment!.amount!.toDouble();
       }
     } else {
       await pay_prov.getIntentPaymentID(widget.orderID, context);
@@ -89,7 +90,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
-                            Text("Debit/Credit Card Payment"),
+                            Text("Debit/Credit Card Payment",
+                                style: CustomTextStyles(context).titleStyle),
+                            SizedBox(height: 10),
+                            if (widget.orderID == "0")
+                              Text(
+                                "Amount Paid: RM ${payment_amount.toStringAsFixed(2)}",
+                                style: CustomTextStyles(context).subTitleStyle,
+                              ),
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 8),
                               child: Container(
@@ -137,11 +145,19 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       );
                                       if (widget.orderID == "0") {
                                         await pay_prov
-                                            .makePayment(pay_prov.intentID,
-                                                context, true)
+                                            .makePayment(
+                                                pay_prov.payment.clientSecret!,
+                                                context,
+                                                true)
                                             .then((value) {
                                           EasyLoading.dismiss();
-                                          if (value == true) {}
+                                          if (value == true) {
+                                            Navigator.pushNamedAndRemoveUntil(
+                                                context,
+                                                Routes.getDashboardRoute(
+                                                    "Bidding"),
+                                                (route) => false);
+                                          }
                                         });
                                       } else {
                                         await pay_prov

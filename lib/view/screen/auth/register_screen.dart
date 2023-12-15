@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/data/model/auth_model.dart';
 import 'package:nurserygardenapp/providers/auth_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
+import 'package:nurserygardenapp/util/custom_text_style.dart';
 import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/custom_button.dart';
@@ -183,7 +184,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       inputAction: TextInputAction.done,
                                     ),
                                     VerticalSpacing(
-                                      height: 20,
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Flexible(
+                                            child: Text(
+                                          "* Please note that according to PDPA, we will only use your personal data for business purpose.",
+                                          style: CustomTextStyles(context)
+                                              .subTitleStyle
+                                              .copyWith(
+                                                  fontSize: Dimensions
+                                                      .FONT_SIZE_SMALL,
+                                                  color: ColorResources
+                                                      .COLOR_GRAY),
+                                        )),
+                                      ],
+                                    ),
+                                    VerticalSpacing(
+                                      height: 3,
                                     ),
                                     !authProvider.isLoading
                                         ? CustomButton(

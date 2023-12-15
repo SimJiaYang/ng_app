@@ -63,6 +63,8 @@ class BiddingProvider extends ChangeNotifier {
   BiddingDetailModel get biddingDetailModel => _biddingDetailModel;
   Bid _bid = Bid();
   Bid get bid => _bid;
+  int _userBid = 0;
+  int get userBid => _userBid;
   bool _isLoadingDetail = false;
   bool get isLoadingDetail => _isLoadingDetail;
 
@@ -81,6 +83,7 @@ class BiddingProvider extends ChangeNotifier {
         _biddingDetailModel =
             BiddingDetailModel.fromJson(apiResponse.response!.data);
         _bid = _biddingDetailModel.data!.bid ?? Bid();
+        _userBid = _biddingDetailModel.data!.userBid ?? 0;
       }
     }
 
