@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/providers/user_provider.dart';
-import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/view/base/circular_indicator.dart';
 import 'package:nurserygardenapp/view/base/custom_appbar.dart';

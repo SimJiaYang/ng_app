@@ -6,7 +6,6 @@ import 'package:nurserygardenapp/data/model/bidding_model.dart';
 import 'package:nurserygardenapp/providers/bidding_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/custom_text_style.dart';
-import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/view/base/custom_space.dart';
 import 'package:provider/provider.dart';
 

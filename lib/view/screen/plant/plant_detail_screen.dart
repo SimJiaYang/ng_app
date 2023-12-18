@@ -262,13 +262,13 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
           ),
           backgroundColor: ColorResources.COLOR_PRIMARY,
           actions: [
-            IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.favorite_border_outlined,
-                color: Colors.white,
-              ),
-            )
+            // IconButton(
+            //   onPressed: () {},
+            //   icon: Icon(
+            //     Icons.favorite_border_outlined,
+            //     color: Colors.white,
+            //   ),
+            // )
           ],
         ),
         bottomNavigationBar: BottomAppBar(

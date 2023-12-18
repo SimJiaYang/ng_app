@@ -4,7 +4,6 @@
 
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/util/app_constants.dart';
 
 BiddingModel biddingModelFromJson(String str) =>
