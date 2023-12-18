@@ -8,7 +8,6 @@ import 'package:nurserygardenapp/providers/plant_provider.dart';
 import 'package:nurserygardenapp/providers/product_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/custom_text_style.dart';
-import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/circular_indicator.dart';
 import 'package:nurserygardenapp/view/base/page_loading.dart';
@@ -272,7 +271,8 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                         GestureDetector(
                           onTap: () {
                             Navigator.pushNamed(
-                                    context, Routes.getOrderAddressRoute())
+                                    context, Routes.getOrderAddressRoute(),
+                                    arguments: {'orderID': "0", "address": ""})
                                 .then((value) {
                               if (value == null) return;
                               setState(() {
@@ -519,14 +519,19 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                                                         cartMode
                                                                     ? Flexible(
                                                                         child:
-                                                                            Text(
-                                                                          "${cartProvider.getCartPlantList.where((element) {
-                                                                                return element.id == cartProvider.addedCartList[index].plantId;
-                                                                              }).first.name}",
-                                                                          style:
-                                                                              TextStyle(fontSize: 16),
-                                                                          overflow:
-                                                                              TextOverflow.ellipsis,
+                                                                            Container(
+                                                                          width:
+                                                                              100,
+                                                                          child:
+                                                                              Text(
+                                                                            "${cartProvider.getCartPlantList.where((element) {
+                                                                                  return element.id == cartProvider.addedCartList[index].plantId;
+                                                                                }).first.name}",
+                                                                            style:
+                                                                                TextStyle(fontSize: 16),
+                                                                            overflow:
+                                                                                TextOverflow.ellipsis,
+                                                                          ),
                                                                         ),
                                                                       )
                                                                     : Flexible(

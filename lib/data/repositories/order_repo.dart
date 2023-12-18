@@ -67,4 +67,17 @@ class OrderRepo {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
     }
   }
+
+  Future<ApiResponse> changeOrderAddress(int orderID, String address) async {
+    try {
+      Response response =
+          await dioClient.post(AppConstants.ORDER_CHANGE_ADDRESS_URI, data: {
+        "id": orderID,
+        "address": address,
+      });
+      return ApiResponse.withSuccess(response);
+    } catch (e) {
+      return ApiResponse.withError(ApiErrorHandler.getMessage(e));
+    }
+  }
 }

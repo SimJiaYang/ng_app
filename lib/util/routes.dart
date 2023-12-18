@@ -52,6 +52,7 @@ class Routes {
   // Bidding
   static const String BIDDING_SCREEN = '/bidding';
   static const String BIDDING_DETAIL_SCREEN = '/bidding-detail';
+  static const String BIDDING_REFUND_SCREEN = '/bidding-refund';
 
   // Delivery
   static const String DELIVERY_SCREEN = '/delivery';
@@ -142,6 +143,7 @@ class Routes {
   static String getBiddingRoute() => BIDDING_SCREEN;
   static String getBiddingDetailRoute(String biddingID) =>
       '$BIDDING_DETAIL_SCREEN?biddingID=$biddingID';
+  static String getBiddingRefundRoute() => BIDDING_REFUND_SCREEN;
 
   // Image widget
   static String getImageEnlargeRoute(String tag, String url) =>

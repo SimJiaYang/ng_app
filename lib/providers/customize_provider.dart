@@ -193,6 +193,20 @@ class CustomizeProvider extends ChangeNotifier {
     return result;
   }
 
+  String _selectedCustomStyle = '';
+  String get selectedCustomStyle => _selectedCustomStyle;
+
+  void setSelectedCustomStyle(String style) {
+    resetSelectedCustomStyle();
+    _selectedCustomStyle = style;
+    notifyListeners();
+  }
+
+  void resetSelectedCustomStyle() {
+    _selectedCustomStyle = '';
+    notifyListeners();
+  }
+
   /// ================== GET STYLE LIST ==============
   CustomStyleModel _customStyleModel = CustomStyleModel();
   CustomStyleModel get customStyleModel => _customStyleModel;
@@ -216,10 +230,6 @@ class CustomizeProvider extends ChangeNotifier {
       }
     }
 
-    for (int i = 0; i < _customList.length; i++) {
-      print(customList[i].name);
-    }
-
     _isFetching = false;
     notifyListeners();
 
@@ -229,14 +239,15 @@ class CustomizeProvider extends ChangeNotifier {
   /// ================== MAKE ORDER ==================
   String _orderIdCreated = '';
   String get orderIdCreated => _orderIdCreated;
-  Future<bool> addOrder(BuildContext context, String address) async {
+  Future<bool> addOrder(
+      BuildContext context, String address, String note) async {
     bool result = false;
 
     _isLoading = true;
     notifyListeners();
 
     ApiResponse apiResponse =
-        await customizeRepo.addOrder(_selectedItem, address);
+        await customizeRepo.addOrder(_selectedItem, address, note);
 
     if (context.mounted) {
       result = ResponseHelper.responseHelper(context, apiResponse);

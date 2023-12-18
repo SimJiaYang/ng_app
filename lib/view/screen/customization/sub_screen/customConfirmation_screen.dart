@@ -5,7 +5,6 @@ import 'package:nurserygardenapp/providers/address_provider.dart';
 import 'package:nurserygardenapp/providers/customize_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/custom_text_style.dart';
-import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/circular_indicator.dart';
 import 'package:nurserygardenapp/view/base/page_loading.dart';
@@ -38,6 +37,8 @@ class _CustomConfirmationScreenState extends State<CustomConfirmationScreen> {
 
   var params = {};
 
+  String note = "Custom order with ";
+
   @override
   void initState() {
     super.initState();
@@ -53,6 +54,8 @@ class _CustomConfirmationScreenState extends State<CustomConfirmationScreen> {
       total += element.quantity! * element.price!;
     });
     bool result = await address_prov.getAddressList(context, params);
+
+    note += custom_prov.selectedCustomStyle;
 
     setState(() {
       totalAmount = total;
@@ -154,7 +157,7 @@ class _CustomConfirmationScreenState extends State<CustomConfirmationScreen> {
                             }
                             if (customProvider.isLoading) return;
                             await customProvider
-                                .addOrder(context, address)
+                                .addOrder(context, address, note)
                                 .then((value) {
                               if (value) {
                                 if (value == true) {

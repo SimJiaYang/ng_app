@@ -6,7 +6,6 @@ import 'package:nurserygardenapp/providers/order_provider.dart';
 import 'package:nurserygardenapp/util/app_constants.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/custom_text_style.dart';
-import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/custom_button.dart';
 import 'package:nurserygardenapp/view/base/custom_dialog.dart';
@@ -28,6 +27,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
   late OrderProvider order_prov =
       Provider.of<OrderProvider>(context, listen: false);
   Order order = Order();
+  String address = "";
 
   // Param
   var params = {};
@@ -47,6 +47,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
               .where((element) => element.id.toString() == widget.orderID)
               .firstOrNull ??
           Order();
+      address = order.address ?? "";
     });
     await order_prov.getOrderDetail(context, params);
   }
@@ -109,30 +110,55 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                         .withOpacity(0.1),
                                   ),
                                 ),
-                                Container(
-                                  width: double.infinity,
-                                  color: Colors.white,
-                                  padding: EdgeInsets.all(10),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Delivery address",
-                                        style: CustomTextStyles(context)
-                                            .titleStyle
-                                            .copyWith(fontSize: 16),
-                                      ),
-                                      Text(
-                                        order.address ?? "",
-                                        style: CustomTextStyles(context)
-                                            .subTitleStyle,
-                                      ),
-                                      SizedBox(
-                                        height: 25,
-                                      )
-                                    ],
+                                GestureDetector(
+                                  onTap: () {
+                                    if (order.status == "ship") {
+                                      Navigator.pushNamed(context,
+                                          Routes.getOrderAddressRoute(),
+                                          arguments: {
+                                            "orderID": widget.orderID,
+                                            "address": address,
+                                          }).then((value) {});
+                                    } else {
+                                      return;
+                                    }
+                                  },
+                                  child: Container(
+                                    width: double.infinity,
+                                    color: Colors.white,
+                                    padding: EdgeInsets.all(10),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Delivery address",
+                                          style: CustomTextStyles(context)
+                                              .titleStyle
+                                              .copyWith(fontSize: 16),
+                                        ),
+                                        Text(
+                                          address,
+                                          style: CustomTextStyles(context)
+                                              .subTitleStyle,
+                                        ),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        if (order.status == "ship")
+                                          Text(
+                                            "Tap to change address",
+                                            style: CustomTextStyles(context)
+                                                .subTitleStyle
+                                                .copyWith(
+                                                    fontSize: 12,
+                                                    color: ColorResources
+                                                        .COLOR_PRIMARY),
+                                          ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                                 SizedBox(
@@ -388,41 +414,39 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                                                               .orderDetailList[index]
                                                                               .plantId !=
                                                                           null)
-                                                                        Text(
-                                                                          "${orderProvider.getOrderPlantList.where((element) {
-                                                                                            return element.id == orderProvider.orderDetailList[index].plantId;
-                                                                                          }).first.name}"
-                                                                                      .length >
-                                                                                  10
-                                                                              ? "${orderProvider.getOrderPlantList.where((element) {
-                                                                                    return element.id == orderProvider.orderDetailList[index].plantId;
-                                                                                  }).first.name!.substring(0, 10)}"
-                                                                              : "${orderProvider.getOrderPlantList.where((element) {
+                                                                        Flexible(
+                                                                          child:
+                                                                              Container(
+                                                                            width:
+                                                                                100,
+                                                                            child:
+                                                                                Text(
+                                                                              "${orderProvider.getOrderPlantList.where((element) {
                                                                                     return element.id == orderProvider.orderDetailList[index].plantId;
                                                                                   }).first.name}",
-                                                                          style: CustomTextStyles(context)
-                                                                              .titleStyle
-                                                                              .copyWith(fontSize: 16),
+                                                                              style: CustomTextStyles(context).titleStyle.copyWith(fontSize: 16),
+                                                                              softWrap: true,
+                                                                              overflow: TextOverflow.ellipsis,
+                                                                            ),
+                                                                          ),
                                                                         ),
                                                                       if (orderProvider
                                                                               .orderDetailList[index]
                                                                               .productId !=
                                                                           null)
-                                                                        Text(
-                                                                          "${orderProvider.getOrderProductList.where((element) {
-                                                                                            return element.id == orderProvider.orderDetailList[index].productId;
-                                                                                          }).first.name}"
-                                                                                      .length >
-                                                                                  10
-                                                                              ? "${orderProvider.getOrderProductList.where((element) {
-                                                                                    return element.id == orderProvider.orderDetailList[index].productId;
-                                                                                  }).first.name!.substring(0, 10)}"
-                                                                              : "${orderProvider.getOrderProductList.where((element) {
+                                                                        Flexible(
+                                                                          child:
+                                                                              Container(
+                                                                            width:
+                                                                                100,
+                                                                            child:
+                                                                                Text(
+                                                                              "${orderProvider.getOrderProductList.where((element) {
                                                                                     return element.id == orderProvider.orderDetailList[index].productId;
                                                                                   }).first.name}",
-                                                                          style: CustomTextStyles(context)
-                                                                              .titleStyle
-                                                                              .copyWith(fontSize: 16),
+                                                                              style: CustomTextStyles(context).titleStyle.copyWith(fontSize: 16),
+                                                                            ),
+                                                                          ),
                                                                         ),
                                                                       SizedBox(
                                                                         height:

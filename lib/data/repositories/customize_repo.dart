@@ -48,7 +48,8 @@ class CustomizeRepo {
     }
   }
 
-  Future<ApiResponse> addOrder(List<Cart> cart, String address) async {
+  Future<ApiResponse> addOrder(
+      List<Cart> cart, String address, String note) async {
     final List<Map<String, dynamic>> cartListJson =
         cart.map((cart) => cart.toJson()).toList();
     try {
@@ -57,6 +58,7 @@ class CustomizeRepo {
         data: {
           "cart_list": cartListJson,
           "address": address,
+          "note": note,
         },
       );
       return ApiResponse.withSuccess(response);

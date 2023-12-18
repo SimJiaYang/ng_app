@@ -1,26 +1,28 @@
 // To parse this JSON data, do
 //
-//     final orderModel = orderModelFromJson(jsonString);
+//     final biddingRefundModel = biddingRefundModelFromJson(jsonString);
 
 import 'dart:convert';
 
-OrderModel orderModelFromJson(String str) =>
-    OrderModel.fromJson(json.decode(str));
+BiddingRefundModel biddingRefundModelFromJson(String str) =>
+    BiddingRefundModel.fromJson(json.decode(str));
 
-String orderModelToJson(OrderModel data) => json.encode(data.toJson());
+String biddingRefundModelToJson(BiddingRefundModel data) =>
+    json.encode(data.toJson());
 
-class OrderModel {
+class BiddingRefundModel {
   bool? success;
   Data? data;
   String? error;
 
-  OrderModel({
+  BiddingRefundModel({
     this.success,
     this.data,
     this.error,
   });
 
-  factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
+  factory BiddingRefundModel.fromJson(Map<String, dynamic> json) =>
+      BiddingRefundModel(
         success: json["success"],
         data: json["data"] == null ? null : Data.fromJson(json["data"]),
         error: json["error"],
@@ -34,40 +36,41 @@ class OrderModel {
 }
 
 class Data {
-  Orders? orderList;
+  RefundList? refundList;
 
   Data({
-    this.orderList,
+    this.refundList,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-        orderList:
-            json["orders"] == null ? null : Orders.fromJson(json["orders"]),
+        refundList: json["refund_list"] == null
+            ? null
+            : RefundList.fromJson(json["refund_list"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "orders": orderList?.toJson(),
+        "refund_list": refundList?.toJson(),
       };
 }
 
-class Orders {
+class RefundList {
   int? currentPage;
-  List<Order>? order;
+  List<Refund>? refund;
   String? firstPageUrl;
   int? from;
   int? lastPage;
   String? lastPageUrl;
   List<Link>? links;
-  String? nextPageUrl;
+  dynamic nextPageUrl;
   String? path;
   int? perPage;
   dynamic prevPageUrl;
   int? to;
   int? total;
 
-  Orders({
+  RefundList({
     this.currentPage,
-    this.order,
+    this.refund,
     this.firstPageUrl,
     this.from,
     this.lastPage,
@@ -81,11 +84,11 @@ class Orders {
     this.total,
   });
 
-  factory Orders.fromJson(Map<String, dynamic> json) => Orders(
+  factory RefundList.fromJson(Map<String, dynamic> json) => RefundList(
         currentPage: json["current_page"],
-        order: json["data"] == null
+        refund: json["data"] == null
             ? []
-            : List<Order>.from(json["data"]!.map((x) => Order.fromJson(x))),
+            : List<Refund>.from(json["data"]!.map((x) => Refund.fromJson(x))),
         firstPageUrl: json["first_page_url"],
         from: json["from"],
         lastPage: json["last_page"],
@@ -95,7 +98,7 @@ class Orders {
             : List<Link>.from(json["links"]!.map((x) => Link.fromJson(x))),
         nextPageUrl: json["next_page_url"],
         path: json["path"],
-        perPage: json["per_page"] == null ? null : json["per_page"],
+        perPage: json["per_page"],
         prevPageUrl: json["prev_page_url"],
         to: json["to"],
         total: json["total"],
@@ -103,9 +106,9 @@ class Orders {
 
   Map<String, dynamic> toJson() => {
         "current_page": currentPage,
-        "data": order == null
+        "data": refund == null
             ? []
-            : List<dynamic>.from(order!.map((x) => x.toJson())),
+            : List<dynamic>.from(refund!.map((x) => x.toJson())),
         "first_page_url": firstPageUrl,
         "from": from,
         "last_page": lastPage,
@@ -122,40 +125,34 @@ class Orders {
       };
 }
 
-class Order {
+class Refund {
   int? id;
-  String? status;
-  DateTime? date;
-  double? totalAmount;
+  int? biddingId;
   int? userId;
-  dynamic cartId;
-  String? address;
-  String? note;
+  int? amount;
+  String? refundStatus;
+  String? paymentWay;
   DateTime? createdAt;
   DateTime? updatedAt;
 
-  Order({
+  Refund({
     this.id,
-    this.status,
-    this.date,
-    this.totalAmount,
-    this.note,
+    this.biddingId,
     this.userId,
-    this.cartId,
-    this.address,
+    this.amount,
+    this.refundStatus,
+    this.paymentWay,
     this.createdAt,
     this.updatedAt,
   });
 
-  factory Order.fromJson(Map<String, dynamic> json) => Order(
+  factory Refund.fromJson(Map<String, dynamic> json) => Refund(
         id: json["id"],
-        status: json["status"],
-        date: json["date"] == null ? null : DateTime.parse(json["date"]),
-        totalAmount: json["total_amount"]?.toDouble(),
+        biddingId: json["bidding_id"],
         userId: json["user_id"],
-        cartId: json["cart_id"],
-        note: json["note"],
-        address: json["address"],
+        amount: json["amount"],
+        refundStatus: json["refund_status"],
+        paymentWay: json["payment_way"],
         createdAt: json["created_at"] == null
             ? null
             : DateTime.parse(json["created_at"]),
@@ -166,14 +163,11 @@ class Order {
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "status": status,
-        "address": address,
-        "date":
-            "${date!.year.toString().padLeft(4, '0')}-${date!.month.toString().padLeft(2, '0')}-${date!.day.toString().padLeft(2, '0')}",
-        "total_amount": totalAmount,
-        "note": note,
+        "bidding_id": biddingId,
         "user_id": userId,
-        "cart_id": cartId,
+        "amount": amount,
+        "refund_status": refundStatus,
+        "payment_way": paymentWay,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
       };

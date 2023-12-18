@@ -15,6 +15,7 @@ import 'package:nurserygardenapp/view/screen/auth/login_screen.dart';
 import 'package:nurserygardenapp/view/screen/auth/register_screen.dart';
 import 'package:nurserygardenapp/view/screen/bidding/bidding_screen.dart';
 import 'package:nurserygardenapp/view/screen/bidding/sub_screen/bidding_detail_screen.dart';
+import 'package:nurserygardenapp/view/screen/bidding/sub_screen/bidding_refund_screen.dart';
 import 'package:nurserygardenapp/view/screen/cart/cart_screen.dart';
 import 'package:nurserygardenapp/view/screen/customization/sub_screen/customConfirmation_screen.dart';
 import 'package:nurserygardenapp/view/screen/customization/customization_screen.dart';
@@ -226,6 +227,10 @@ class RouterHelper {
     ),
   );
 
+  static Handler _biddingRefundHandler = Handler(
+      handlerFunc: (context, Map<String, dynamic> parameters) =>
+          BiddingRefundScreen());
+
   // =================================Account=========================================
   static Handler _accountHandler = Handler(
     handlerFunc: (context, Map<String, dynamic> parameters) => AccountScreen(),
@@ -350,6 +355,8 @@ class RouterHelper {
         handler: _biddingHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.BIDDING_DETAIL_SCREEN,
         handler: _biddingDetailHandler, transitionType: TransitionType.fadeIn);
+    router.define(Routes.BIDDING_REFUND_SCREEN,
+        handler: _biddingRefundHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.ACCOUNT_SCREEN,
         handler: _accountHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.PROFILE_SCREEN,

@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:nurserygardenapp/data/model/order_model.dart';
 import 'package:nurserygardenapp/providers/address_provider.dart';
+import 'package:nurserygardenapp/providers/order_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/custom_appbar.dart';
 import 'package:nurserygardenapp/view/base/custom_button.dart';
+import 'package:nurserygardenapp/view/base/custom_dialog.dart';
 import 'package:nurserygardenapp/view/screen/address/widget/empty_address.dart';
 import 'package:provider/provider.dart';
+import 'package:nurserygardenapp/util/app_constants.dart';
 
 class OrderAddressScreen extends StatefulWidget {
   const OrderAddressScreen({super.key});
@@ -20,6 +25,9 @@ class _OrderAddressScreenState extends State<OrderAddressScreen> {
       Provider.of<AddressProvider>(context, listen: false);
 
   final _scrollController = ScrollController();
+
+  String orderID = '0';
+  String address = '';
 
   @override
   void initState() {
@@ -47,6 +55,12 @@ class _OrderAddressScreenState extends State<OrderAddressScreen> {
   };
 
   Future<void> _loadData({bool isLoadMore = false}) async {
+    // Get Route Param arguments
+    var map = ModalRoute.of(context)?.settings.arguments as Map;
+    if (map.isNotEmpty) {
+      orderID = map['orderID'];
+      address = map['address'];
+    }
     await address_prov.getAddressList(context, params,
         isLoadMore: isLoadMore, isLoadingOrderAddress: true);
   }
@@ -77,8 +91,8 @@ class _OrderAddressScreenState extends State<OrderAddressScreen> {
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
         width: double.infinity,
-        child: Consumer<AddressProvider>(
-            builder: (context, addressProvider, child) {
+        child: Consumer2<AddressProvider, OrderProvider>(
+            builder: (context, addressProvider, orderProvider, child) {
           return addressProvider.isLoadingOrderAddress &&
                   addressProvider.addressList.isEmpty
               ? ListView.builder(
@@ -161,10 +175,53 @@ class _OrderAddressScreenState extends State<OrderAddressScreen> {
                                     const EdgeInsets.symmetric(vertical: 10),
                                 child: GestureDetector(
                                   onTap: () {
-                                    Navigator.pop(
-                                        context,
-                                        addressProvider
-                                            .addressList[index].address);
+                                    if (orderID == "0") {
+                                      Navigator.pop(
+                                          context,
+                                          addressProvider
+                                              .addressList[index].address);
+                                    } else {
+                                      setState(() {
+                                        address = addressProvider
+                                            .addressList[index].address!;
+                                      });
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return CustomDialog(
+                                                dialogType: AppConstants
+                                                    .DIALOG_CONFIRMATION,
+                                                title: "Warning",
+                                                content:
+                                                    "Are you confirm to change address?",
+                                                btnText: "Yes",
+                                                onPressed: () async {
+                                                  Order order = Order(
+                                                    id: int.parse(orderID),
+                                                    address: address,
+                                                  );
+                                                  EasyLoading.show(
+                                                      status: 'loading...');
+                                                  await orderProvider
+                                                      .changeOrderAddress(
+                                                        context,
+                                                        order,
+                                                      )
+                                                      .then((value) => {
+                                                            EasyLoading
+                                                                .dismiss(),
+                                                            if (value)
+                                                              {
+                                                                Navigator.popUntil(
+                                                                    context,
+                                                                    ModalRoute
+                                                                        .withName(
+                                                                            Routes.getOrderRoute()))
+                                                              }
+                                                          });
+                                                });
+                                          });
+                                    }
                                   },
                                   child: Row(
                                     children: [

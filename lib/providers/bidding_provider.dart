@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/data/model/bidding_detail_model.dart';
 import 'package:nurserygardenapp/data/model/bidding_model.dart';
+import 'package:nurserygardenapp/data/model/bidding_refund_model.dart';
 import 'package:nurserygardenapp/data/model/response/api_response.dart';
 import 'package:nurserygardenapp/data/repositories/bidding_repo.dart';
 import 'package:nurserygardenapp/helper/response_helper.dart';
@@ -89,6 +90,50 @@ class BiddingProvider extends ChangeNotifier {
 
     _isLoadingDetail = false;
     notifyListeners();
+    return result;
+  }
+
+  // Bidding Refund
+  BiddingRefundModel _biddingRefundModel = BiddingRefundModel();
+  BiddingRefundModel get biddingRefundModel => _biddingRefundModel;
+  List<Refund> _biddingRefundList = [];
+  List<Refund> get biddingRefundList => _biddingRefundList;
+  String _biddingRefundNoMoreData = '';
+  String get biddingRefundNoMoreData => _biddingRefundNoMoreData;
+  bool _isLoadingRefund = false;
+  bool get isLoadingRefund => _isLoadingRefund;
+
+  Future<bool> getBiddingRefundList(BuildContext context, params,
+      {bool isLoadMore = false, bool isLoad = true}) async {
+    if (!isLoadMore) {
+      _biddingRefundList = [];
+      _biddingRefundNoMoreData = '';
+    }
+
+    bool result = false;
+    String query = ResponseHelper.buildQuery(params);
+    int limit = params['limit'] != null ? int.parse(params['limit']) : 8;
+
+    _isLoadingRefund = isLoad;
+    notifyListeners();
+
+    ApiResponse apiResponse = await biddingRepo.getBidddingRefundList(query);
+
+    if (context.mounted) {
+      result = ResponseHelper.responseHelper(context, apiResponse);
+      if (result) {
+        _biddingRefundModel =
+            BiddingRefundModel.fromJson(apiResponse.response!.data);
+        _biddingRefundList = _biddingRefundModel.data!.refundList!.refund ?? [];
+        if (_biddingRefundList.length < limit && limit > 8) {
+          _biddingRefundNoMoreData = AppConstants.NO_MORE_DATA;
+        }
+      }
+    }
+
+    _isLoadingRefund = false;
+    notifyListeners();
+
     return result;
   }
 }

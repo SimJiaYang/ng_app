@@ -213,4 +213,24 @@ class OrderProvider extends ChangeNotifier {
 
     return result;
   }
+
+  Future<bool> changeOrderAddress(BuildContext context, Order order) async {
+    bool result = false;
+    _isLoading = true;
+    notifyListeners();
+
+    ApiResponse apiResponse =
+        await orderRepo.changeOrderAddress(order.id!, order.address!);
+
+    if (context.mounted) {
+      result = ResponseHelper.responseHelper(context, apiResponse);
+      if (result) {
+        showCustomSnackBar("Your order address has been changed.", context,
+            type: AppConstants.SNACKBAR_SUCCESS);
+      }
+    }
+    _isLoading = false;
+    notifyListeners();
+    return result;
+  }
 }

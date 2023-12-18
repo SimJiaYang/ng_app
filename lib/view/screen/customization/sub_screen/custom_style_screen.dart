@@ -1,9 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/providers/customize_provider.dart';
-import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/custom_text_style.dart';
-import 'package:nurserygardenapp/util/dimensions.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/custom_appbar.dart';
 import 'package:nurserygardenapp/view/base/page_loading.dart';
@@ -118,6 +116,13 @@ class _CustomStyleScreenState extends State<CustomStyleScreen> {
                                                               .videoUrl ??
                                                           '';
                                                 });
+                                                customProvider
+                                                    .setSelectedCustomStyle(
+                                                        customProvider
+                                                                .customList[
+                                                                    index]
+                                                                .name ??
+                                                            '');
                                                 Navigator.pushNamed(
                                                     context,
                                                     Routes

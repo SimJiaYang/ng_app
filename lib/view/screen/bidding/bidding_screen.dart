@@ -31,7 +31,7 @@ class _BiddingScreenState extends State<BiddingScreen> {
   };
 
   Future<void> _loadData({bool isLoadMore = false}) async {
-    await bid_prov.getBiddingList(context, params);
+    await bid_prov.getBiddingList(context, params).then((value) {});
   }
 
   void _onScroll() {
@@ -136,12 +136,19 @@ class _BiddingScreenState extends State<BiddingScreen> {
                                   })
                               : biddingProvider.biddingList.isEmpty &&
                                       !biddingProvider.isLoading
-                                  ? Center(
-                                      child: Text(
-                                        "No Bidding Avialable Yet",
-                                        style: TextStyle(
-                                            color: Colors.grey.withOpacity(0.7),
-                                            fontSize: 18),
+                                  ? Container(
+                                      height: size.height,
+                                      width: size.width,
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10),
+                                      child: Center(
+                                        child: Text(
+                                          "No Bidding Avialable Yet",
+                                          style: TextStyle(
+                                              color:
+                                                  Colors.grey.withOpacity(0.7),
+                                              fontSize: 18),
+                                        ),
                                       ),
                                     )
                                   : Container(

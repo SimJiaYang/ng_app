@@ -87,6 +87,7 @@ class AppConstants {
   static const String ORDER_DETAIL_URI = '/order/detail';
   static const String ORDER_RECEIPT_URI = '/order/receipt';
   static const String ORDER_CANCEL_URI = '/order/cancel';
+  static const String ORDER_CHANGE_ADDRESS_URI = '/order/address/change';
 
   // Payment
   static const String PAYMENT_URI = '/order/payment/intent';
@@ -108,6 +109,7 @@ class AppConstants {
   static const String BIDDING_DETAIL_URI = '/bidding/show';
   static const String BIDDING_PAYMENT_INTENT_URI = '/bidding/payment/intent';
   static const String BIDDING_PAYMENT_URI = '/bidding/payment';
+  static const String BIDDING_REFUND_URI = '/bidding/refund/list';
 
   // Shared Key
   static const String THEME = 'theme';
