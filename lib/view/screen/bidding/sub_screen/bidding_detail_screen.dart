@@ -156,11 +156,14 @@ class _BiddingDetailScreenState extends State<BiddingDetailScreen> {
                       if (errorMessage.isNotEmpty)
                         Flexible(
                           child: Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: Text(errorMessage,
-                                style: CustomTextStyles(context)
-                                    .titleStyle
-                                    .copyWith(color: Colors.red)),
+                            padding: const EdgeInsets.only(top: 2.0),
+                            child: Container(
+                              height: 100,
+                              child: Text(errorMessage,
+                                  style: CustomTextStyles(context)
+                                      .titleStyle
+                                      .copyWith(color: Colors.red)),
+                            ),
                           ),
                         ),
                     ],
