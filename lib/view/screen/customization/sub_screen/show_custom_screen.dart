@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:nurserygardenapp/providers/customize_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
+import 'package:nurserygardenapp/util/custom_text_style.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/custom_appbar.dart';
 import 'package:nurserygardenapp/view/base/custom_button.dart';
@@ -43,7 +44,7 @@ class _ShowCustomScreenState extends State<ShowCustomScreen> {
     return Scaffold(
         appBar: CustomAppBar(
           isBgPrimaryColor: true,
-          title: 'Your Style',
+          title: 'Your Selected Style',
           isBackButtonExist: false,
           context: context,
           isCenter: false,
@@ -57,6 +58,18 @@ class _ShowCustomScreenState extends State<ShowCustomScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    child: Text(
+                      '5: Play the video to see the style you have selected.',
+                      style: CustomTextStyles(context).titleStyle,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
                 Consumer<CustomizeProvider>(
                     builder: (context, customProvider, child) {
                   if (customProvider.isFetching) {
@@ -69,7 +82,7 @@ class _ShowCustomScreenState extends State<ShowCustomScreen> {
                         ));
                   } else {
                     return Container(
-                      height: size.height * 0.7,
+                      height: size.height * 0.6,
                       width: size.width,
                       child: VideoItems(
                         videoPlayerController: VideoPlayerController.networkUrl(

@@ -133,26 +133,56 @@ class _BiddingDetailScreenState extends State<BiddingDetailScreen> {
                       const SizedBox(
                         height: 10,
                       ),
-                      Form(
-                        key: _formKey,
-                        child: CustomTextField(
-                          inputType: TextInputType.number,
-                          hintText: "Enter Amount",
-                          isShowBorder: true,
-                          isShowSuffixIcon: false,
-                          isShowPrefixIcon: true,
-                          prefixIconUrl: Text(
-                            "RM" + " ",
-                            style: CustomTextStyles(context)
-                                .titleStyle
-                                .copyWith(
-                                    fontSize: Dimensions.FONT_SIZE_LARGE,
-                                    color: ColorResources.COLOR_PRIMARY),
-                          ),
-                          controller: bidController,
-                          focusNode: bidFocus,
-                        ),
-                      ),
+                      StatefulBuilder(builder:
+                          (BuildContext context, StateSetter setState) {
+                        return Form(
+                          key: _formKey,
+                          child: CustomTextField(
+                              inputType: TextInputType.number,
+                              hintText: "Enter Amount",
+                              isShowBorder: true,
+                              isShowSuffixIcon: false,
+                              isShowPrefixIcon: true,
+                              prefixIconUrl: Text(
+                                "RM" + " ",
+                                style: CustomTextStyles(context)
+                                    .titleStyle
+                                    .copyWith(
+                                        fontSize: Dimensions.FONT_SIZE_LARGE,
+                                        color: ColorResources.COLOR_PRIMARY),
+                              ),
+                              controller: bidController,
+                              focusNode: bidFocus,
+                              onChanged: (value) {
+                                if (value.isEmpty) {
+                                  setState(() {
+                                    errorMessage = "Cannot left empty field";
+                                  });
+                                } else if (double.tryParse(value)! <
+                                    highestAmount) {
+                                  setState(() {
+                                    errorMessage =
+                                        "Please enter amount higher than current bid";
+                                  });
+                                } else if (double.tryParse(value)! <
+                                    highestAmount + minAmount) {
+                                  setState(() {
+                                    errorMessage =
+                                        "Please enter amount higher than minimum bid for everytime";
+                                  });
+                                } else if (double.tryParse(value)! >= 100000) {
+                                  setState(() {
+                                    errorMessage =
+                                        "Please enter amount lower than RM 100000.00";
+                                  });
+                                } else {
+                                  setState(() {
+                                    errorMessage = "";
+                                  });
+                                }
+                              }),
+                        );
+                      }),
                       if (errorMessage.isNotEmpty)
                         Flexible(
                           child: Padding(
@@ -252,7 +282,6 @@ class _BiddingDetailScreenState extends State<BiddingDetailScreen> {
                       return;
                     }
                     double amount = double.parse(bidController.text);
-                    print(minAmount);
                     if (amount <= highestAmount) {
                       setState(() {
                         errorMessage =

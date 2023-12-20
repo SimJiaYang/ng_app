@@ -72,9 +72,11 @@ class _CustomStyleScreenState extends State<CustomStyleScreen> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Choose the style you prefer',
-                              style: CustomTextStyles(context).titleStyle,
+                            Flexible(
+                              child: Text(
+                                '4: Please select the style that you are prefer.',
+                                style: CustomTextStyles(context).titleStyle,
+                              ),
                             ),
                             const SizedBox(
                               height: 10,

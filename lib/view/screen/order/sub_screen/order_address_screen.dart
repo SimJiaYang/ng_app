@@ -5,6 +5,7 @@ import 'package:nurserygardenapp/data/model/order_model.dart';
 import 'package:nurserygardenapp/providers/address_provider.dart';
 import 'package:nurserygardenapp/providers/order_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
+import 'package:nurserygardenapp/util/custom_text_style.dart';
 import 'package:nurserygardenapp/util/routes.dart';
 import 'package:nurserygardenapp/view/base/custom_appbar.dart';
 import 'package:nurserygardenapp/view/base/custom_button.dart';
@@ -145,162 +146,192 @@ class _OrderAddressScreenState extends State<OrderAddressScreen> {
                       ),
                     )
                   : Stack(children: [
-                      ListView.builder(
-                          padding: (addressProvider
-                                          .noMoreDataMessage.isNotEmpty &&
-                                      !addressProvider.isLoadingOrderAddress ||
-                                  (addressProvider.noMoreDataMessage.isEmpty &&
-                                      addressProvider.addressList.length < 8))
-                              ? EdgeInsets.fromLTRB(10, 0, 10, 10)
-                              : EdgeInsets.only(
-                                  bottom: 20, left: 10, right: 10, top: 0),
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          controller: _scrollController,
-                          itemCount: addressProvider.addressList.length +
-                              ((addressProvider.isLoadingOrderAddress &&
-                                      addressProvider.addressList.length >= 8)
-                                  ? 1
-                                  : addressProvider.noMoreDataMessage.isNotEmpty
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: Flexible(
+                                child: Text(
+                              'Press the rectangle to select the address',
+                              style:
+                                  CustomTextStyles(context).titleStyle.copyWith(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                            )),
+                          ),
+                          ListView.builder(
+                              padding: (addressProvider
+                                              .noMoreDataMessage.isNotEmpty &&
+                                          !addressProvider
+                                              .isLoadingOrderAddress ||
+                                      (addressProvider
+                                              .noMoreDataMessage.isEmpty &&
+                                          addressProvider.addressList.length <
+                                              8))
+                                  ? EdgeInsets.fromLTRB(10, 0, 10, 10)
+                                  : EdgeInsets.only(
+                                      bottom: 20, left: 10, right: 10, top: 0),
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              controller: _scrollController,
+                              itemCount: addressProvider.addressList.length +
+                                  ((addressProvider.isLoadingOrderAddress &&
+                                          addressProvider.addressList.length >=
+                                              8)
                                       ? 1
-                                      : 0),
-                          itemBuilder: (context, index) {
-                            if (index >= addressProvider.addressList.length &&
-                                addressProvider.noMoreDataMessage.isEmpty) {
-                              return Center(
-                                  child: LoadingAnimationWidget.waveDots(
-                                      color: ColorResources.COLOR_PRIMARY,
-                                      size: 40));
-                            } else if (index >=
-                                    addressProvider.addressList.length &&
-                                addressProvider.noMoreDataMessage.isNotEmpty) {
-                              return Container(
-                                height: 50,
-                              );
-                            } else {
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    if (orderID == "0") {
-                                      Navigator.pop(
-                                          context,
-                                          addressProvider
-                                              .addressList[index].address);
-                                    } else {
-                                      setState(() {
-                                        address = addressProvider
-                                            .addressList[index].address!;
-                                      });
-                                      showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return CustomDialog(
-                                                dialogType: AppConstants
-                                                    .DIALOG_CONFIRMATION,
-                                                title: "Warning",
-                                                content:
-                                                    "Are you confirm to change address?",
-                                                btnText: "Yes",
-                                                onPressed: () async {
-                                                  Order order = Order(
-                                                    id: int.parse(orderID),
-                                                    address: address,
-                                                  );
-                                                  EasyLoading.show(
-                                                      status: 'loading...');
-                                                  await orderProvider
-                                                      .changeOrderAddress(
-                                                        context,
-                                                        order,
-                                                      )
-                                                      .then((value) => {
-                                                            EasyLoading
-                                                                .dismiss(),
-                                                            if (value)
-                                                              {
-                                                                Navigator.popUntil(
-                                                                    context,
-                                                                    ModalRoute
-                                                                        .withName(
-                                                                            Routes.getOrderRoute()))
-                                                              }
-                                                          });
-                                                });
+                                      : addressProvider
+                                              .noMoreDataMessage.isNotEmpty
+                                          ? 1
+                                          : 0),
+                              itemBuilder: (context, index) {
+                                if (index >=
+                                        addressProvider.addressList.length &&
+                                    addressProvider.noMoreDataMessage.isEmpty) {
+                                  return Center(
+                                      child: LoadingAnimationWidget.waveDots(
+                                          color: ColorResources.COLOR_PRIMARY,
+                                          size: 40));
+                                } else if (index >=
+                                        addressProvider.addressList.length &&
+                                    addressProvider
+                                        .noMoreDataMessage.isNotEmpty) {
+                                  return Container(
+                                    height: 50,
+                                  );
+                                } else {
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        if (orderID == "0") {
+                                          Navigator.pop(
+                                              context,
+                                              addressProvider
+                                                  .addressList[index].address);
+                                        } else {
+                                          setState(() {
+                                            address = addressProvider
+                                                .addressList[index].address!;
                                           });
-                                    }
-                                  },
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 1,
-                                        child: IconButton(
-                                          padding: EdgeInsets.only(right: 15),
-                                          icon: Icon(Icons.edit),
-                                          onPressed: () {
-                                            Navigator.pushNamed(
-                                                context,
-                                                Routes.getAddressDetailRoute(
-                                                  addressProvider
-                                                      .addressList[index].id!
-                                                      .toString(),
-                                                )).then((value) => {
-                                                  if (value == true)
-                                                    {_loadAddress()}
-                                                });
-                                          },
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 10,
-                                        child: Container(
-                                          width: double.infinity,
-                                          padding: EdgeInsets.all(10),
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(10),
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return CustomDialog(
+                                                    dialogType: AppConstants
+                                                        .DIALOG_CONFIRMATION,
+                                                    title: "Warning",
+                                                    content:
+                                                        "Are you confirm to change address?",
+                                                    btnText: "Yes",
+                                                    onPressed: () async {
+                                                      Order order = Order(
+                                                        id: int.parse(orderID),
+                                                        address: address,
+                                                      );
+                                                      EasyLoading.show(
+                                                          status: 'loading...');
+                                                      await orderProvider
+                                                          .changeOrderAddress(
+                                                            context,
+                                                            order,
+                                                          )
+                                                          .then((value) => {
+                                                                EasyLoading
+                                                                    .dismiss(),
+                                                                if (value)
+                                                                  {
+                                                                    Navigator.popUntil(
+                                                                        context,
+                                                                        ModalRoute.withName(
+                                                                            Routes.getOrderRoute()))
+                                                                  }
+                                                              });
+                                                    });
+                                              });
+                                        }
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 1,
+                                            child: IconButton(
+                                              padding:
+                                                  EdgeInsets.only(right: 15),
+                                              icon: Icon(Icons.edit),
+                                              onPressed: () {
+                                                Navigator.pushNamed(
+                                                    context,
+                                                    Routes
+                                                        .getAddressDetailRoute(
+                                                      addressProvider
+                                                          .addressList[index]
+                                                          .id!
+                                                          .toString(),
+                                                    )).then((value) => {
+                                                      if (value == true)
+                                                        {_loadAddress()}
+                                                    });
+                                              },
                                             ),
-                                            boxShadow: <BoxShadow>[
-                                              BoxShadow(
-                                                  color: Colors.grey
-                                                      .withOpacity(0.3),
-                                                  offset: const Offset(0, 2),
-                                                  blurRadius: 10.0),
-                                            ],
                                           ),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(4.0),
-                                                child: Text(
-                                                  addressProvider
-                                                      .addressList[index]
-                                                      .address!,
-                                                  softWrap: true,
-                                                  maxLines: 3,
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w400,
-                                                    fontSize: 14,
-                                                  ),
+                                          Expanded(
+                                            flex: 10,
+                                            child: Container(
+                                              width: double.infinity,
+                                              padding: EdgeInsets.all(10),
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(10),
                                                 ),
+                                                boxShadow: <BoxShadow>[
+                                                  BoxShadow(
+                                                      color: Colors.grey
+                                                          .withOpacity(0.3),
+                                                      offset:
+                                                          const Offset(0, 2),
+                                                      blurRadius: 10.0),
+                                                ],
                                               ),
-                                            ],
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            4.0),
+                                                    child: Text(
+                                                      addressProvider
+                                                          .addressList[index]
+                                                          .address!,
+                                                      softWrap: true,
+                                                      maxLines: 3,
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        fontSize: 14,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
                                           ),
-                                        ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            }
-                          }),
+                                    ),
+                                  );
+                                }
+                              }),
+                        ],
+                      ),
                       if (!addressProvider.isLoadingOrderAddress)
                         Align(
                           alignment: Alignment.bottomCenter,

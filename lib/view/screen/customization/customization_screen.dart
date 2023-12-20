@@ -269,8 +269,27 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Row(
+                      children: [
+                        Tooltip(
+                          showDuration: Duration(seconds: 7),
+                          message:
+                              "Customization is the selection of the plant, product, and soil. Througout the customization selection, the customer will receive the whole plant with pot and soil.",
+                          child: Text('What is Customization',
+                              style: CustomTextStyles(context).titleStyle),
+                        ),
+                        Icon(
+                          Icons.help_outline_rounded,
+                          size: 15,
+                          color: Colors.grey[800],
+                        )
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     Text(
-                      'Select Plant',
+                      '1. Select the plant you prefer first.',
                       style: CustomTextStyles(context).titleStyle,
                     ),
                     Container(
@@ -359,7 +378,26 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                                         ),
                                       ),
                                       const SizedBox(
-                                        height: 10,
+                                        height: 3,
+                                      ),
+                                      Flexible(
+                                        child: Container(
+                                          width: 130,
+                                          child: Text(
+                                            "${customProvider.plantList[index].name}",
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.center,
+                                            style: CustomTextStyles(context)
+                                                .titleStyle
+                                                .copyWith(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 3,
                                       ),
                                       customProvider.plantList[index].id
                                                   .toString() ==
@@ -427,7 +465,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Select Pot',
+                      '2. Select the pot you prefer next.',
                       style: CustomTextStyles(context).titleStyle,
                     ),
                     Container(
@@ -515,7 +553,26 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                                         ),
                                       ),
                                       const SizedBox(
-                                        height: 10,
+                                        height: 3,
+                                      ),
+                                      Flexible(
+                                        child: Container(
+                                          width: 130,
+                                          child: Text(
+                                            "${customProvider.productList[index].name}",
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.center,
+                                            style: CustomTextStyles(context)
+                                                .titleStyle
+                                                .copyWith(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 3,
                                       ),
                                       customProvider.productList[index].id
                                                   .toString() ==
@@ -581,9 +638,32 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            '3. Select the soil you prefer last.',
+                            style: CustomTextStyles(context).titleStyle,
+                          ),
+                        ),
+                        // Icon(
+                        //   Icons.help_outline_rounded,
+                        //   size: 15,
+                        //   color: Colors.grey[800],
+                        // ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 3,
+                    ),
                     Text(
-                      'Select Soil',
-                      style: CustomTextStyles(context).titleStyle,
+                      '*Long click the picture for more soil detail.',
+                      style: CustomTextStyles(context).titleStyle.copyWith(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                          ),
                     ),
                     Container(
                       color: Colors.white,
@@ -636,40 +716,68 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                                         child: Container(
                                           height: 150,
                                           width: 150,
-                                          child: CachedNetworkImage(
-                                            filterQuality: FilterQuality.high,
-                                            imageUrl:
-                                                "${customProvider.soilList[index].imageURL}",
-                                            imageBuilder:
-                                                (context, imageProvider) =>
-                                                    Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                image: DecorationImage(
-                                                  image: imageProvider,
-                                                  fit: BoxFit.fill,
+                                          child: Tooltip(
+                                            triggerMode:
+                                                TooltipTriggerMode.longPress,
+                                            padding: EdgeInsets.all(10.0),
+                                            verticalOffset: 48,
+                                            excludeFromSemantics: true,
+                                            message: customProvider
+                                                .soilList[index].description,
+                                            child: CachedNetworkImage(
+                                              filterQuality: FilterQuality.high,
+                                              imageUrl:
+                                                  "${customProvider.soilList[index].imageURL}",
+                                              imageBuilder:
+                                                  (context, imageProvider) =>
+                                                      Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  image: DecorationImage(
+                                                    image: imageProvider,
+                                                    fit: BoxFit.fill,
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            placeholder: (context, url) =>
-                                                Padding(
-                                              padding:
-                                                  const EdgeInsets.all(1.0),
-                                              child: Container(
-                                                width: double.infinity,
-                                                height: 20,
-                                                color: Colors.grey[400],
+                                              placeholder: (context, url) =>
+                                                  Padding(
+                                                padding:
+                                                    const EdgeInsets.all(1.0),
+                                                child: Container(
+                                                  width: double.infinity,
+                                                  height: 20,
+                                                  color: Colors.grey[400],
+                                                ),
                                               ),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      Icon(Icons.error),
                                             ),
-                                            errorWidget:
-                                                (context, url, error) =>
-                                                    Icon(Icons.error),
                                           ),
                                         ),
                                       ),
                                       const SizedBox(
-                                        height: 10,
+                                        height: 3,
+                                      ),
+                                      Flexible(
+                                        child: Container(
+                                          width: 130,
+                                          child: Text(
+                                            "${customProvider.soilList[index].name}",
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.center,
+                                            style: CustomTextStyles(context)
+                                                .titleStyle
+                                                .copyWith(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 3,
                                       ),
                                       customProvider.soilList[index].id
                                                   .toString() ==
@@ -719,9 +827,10 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
             width: size.width,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
+                  flex: 2,
                   child: Stepper(
                     connectorColor: MaterialStateProperty.resolveWith((states) {
                       if (states.contains(MaterialState.pressed)) {
@@ -897,6 +1006,17 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                     ],
                   ),
                 ),
+                // Expanded(
+                //     flex: 1,
+                //     child: Container(
+                //         padding: EdgeInsets.symmetric(horizontal: 20),
+                //         child: Text(
+                //             'So. what is customization? \nCustomization is the process of creating a product to meet the needs of a particular customer."',
+                //             style: CustomTextStyles(context)
+                //                 .titleStyle
+                //                 .copyWith(
+                //                     color: ColorResources.COLOR_GREY,
+                //                     fontSize: 14)))),
               ],
             ),
           ),

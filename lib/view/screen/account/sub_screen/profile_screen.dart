@@ -33,11 +33,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   TextEditingController _nameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
-  TextEditingController _addressController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
   FocusNode _nameFocus = FocusNode();
   FocusNode _emailFocus = FocusNode();
-  FocusNode _addressFocus = FocusNode();
   FocusNode _phoneFocus = FocusNode();
 
   String _selectedDate = "";
@@ -92,7 +90,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           _selectedGender = user_prov.userModel.data!.gender ?? "Male";
           _emailController.text = user_prov.userModel.data!.email ?? "";
           _phoneController.text = user_prov.userModel.data!.contactNumber ?? "";
-          _addressController.text = user_prov.userModel.data!.address ?? "";
           _profileImage =
               user_prov.userModel.data!.image_url ?? Images.profile_header;
           _selectedDate = user_prov.userModel.data!.birthDate == null
@@ -111,7 +108,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       uInfo.name = _nameController.text;
       uInfo.email = _emailController.text;
       uInfo.contactNumber = _phoneController.text;
-      uInfo.address = _addressController.text;
       uInfo.gender = _selectedGender;
       uInfo.contactNumber = _phoneController.text;
       uInfo.image_url = _profileImage;
@@ -141,11 +137,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     super.dispose();
     _nameController.dispose();
     _emailController.dispose();
-    _addressController.dispose();
     _phoneController.dispose();
     _nameFocus.dispose();
     _emailFocus.dispose();
-    _addressFocus.dispose();
     _phoneFocus.dispose();
   }
 
@@ -372,7 +366,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                       controller: _phoneController,
                                       focusNode: _phoneFocus,
                                       inputType: TextInputType.phone,
-                                      nextFocus: _addressFocus,
                                     )),
                                   ]),
                                   VerticalSpacing(
@@ -440,31 +433,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                           ],
                                         ),
                                       )),
-                                  VerticalSpacing(
-                                    height: 16,
-                                  ),
-                                  Text(
-                                    "Address",
-                                    style: TextStyle(
-                                        color:
-                                            ColorResources.COLOR_GREY_CHATEAU),
-                                  ),
                                   VerticalSpacing(),
-                                  CustomTextField(
-                                    isApplyValidator: false,
-                                    hintText: "Please enter your address",
-                                    isShowBorder: true,
-                                    isShowPrefixIcon: true,
-                                    prefixIconUrl: Icon(
-                                      Icons.location_on_outlined,
-                                      color: Colors.grey,
-                                    ),
-                                    focusNode: _addressFocus,
-                                    controller: _addressController,
-                                    inputType: TextInputType.streetAddress,
-                                    maxLines: 3,
-                                    inputAction: TextInputAction.done,
-                                  ),
                                   Container(
                                     height: 50,
                                     padding:
