@@ -265,6 +265,12 @@ class _BiddingDetailScreenState extends State<BiddingDetailScreen> {
                             "Please enter amount higher than minimum bid for everytime";
                       });
                       return;
+                    } else if (amount >= 100000) {
+                      setState(() {
+                        errorMessage =
+                            "Please enter amount lower than RM 100000.00";
+                      });
+                      return;
                     } else {
                       setState(() {
                         errorMessage = "";
@@ -410,15 +416,18 @@ class _BiddingDetailScreenState extends State<BiddingDetailScreen> {
                                           .copyWith(
                                               fontSize:
                                                   Dimensions.FONT_SIZE_LARGE)),
-                                  Text(
-                                      "Your Paid: RM ${userBidAmount.toStringAsFixed(2)}",
-                                      style: CustomTextStyles(context)
-                                          .titleStyle
-                                          .copyWith(
-                                              color: ColorResources
-                                                  .APPBAR_HEADER_COLOR)),
                                 ],
                               ),
+                              VerticalSpacing(
+                                height: 10,
+                              ),
+                              Text(
+                                  "Your Paid: RM ${userBidAmount.toStringAsFixed(2)}",
+                                  style: CustomTextStyles(context)
+                                      .titleStyle
+                                      .copyWith(
+                                          color: ColorResources
+                                              .APPBAR_HEADER_COLOR)),
                               VerticalSpacing(
                                 height: 10,
                               ),

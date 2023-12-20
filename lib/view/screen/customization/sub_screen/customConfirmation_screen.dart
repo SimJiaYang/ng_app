@@ -239,7 +239,14 @@ class _CustomConfirmationScreenState extends State<CustomConfirmationScreen> {
                                 ),
                                 Text(
                                   address,
-                                  style: TextStyle(fontSize: 14),
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: address == emptyAddress_msg ||
+                                            address == error_msg
+                                        ? ColorResources.APPBAR_HEADER_COLOR
+                                            .withOpacity(0.9)
+                                        : ColorResources.COLOR_BLACK,
+                                  ),
                                 ),
                               ],
                             ),

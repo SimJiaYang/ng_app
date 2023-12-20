@@ -56,13 +56,21 @@ class _OrderAddressScreenState extends State<OrderAddressScreen> {
 
   Future<void> _loadData({bool isLoadMore = false}) async {
     // Get Route Param arguments
-    var map = ModalRoute.of(context)?.settings.arguments as Map;
-    if (map.isNotEmpty) {
+    var map = ModalRoute.of(context) == null
+        ? null
+        : ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    ;
+    if (map != null) {
       orderID = map['orderID'];
       address = map['address'];
     }
     await address_prov.getAddressList(context, params,
         isLoadMore: isLoadMore, isLoadingOrderAddress: true);
+  }
+
+  Future<void> _loadAddress() async {
+    await address_prov.getAddressList(context, params,
+        isLoadMore: false, isLoadingOrderAddress: true);
   }
 
   @override
@@ -239,7 +247,7 @@ class _OrderAddressScreenState extends State<OrderAddressScreen> {
                                                       .toString(),
                                                 )).then((value) => {
                                                   if (value == true)
-                                                    {_loadData()}
+                                                    {_loadAddress()}
                                                 });
                                           },
                                         ),
@@ -306,7 +314,7 @@ class _OrderAddressScreenState extends State<OrderAddressScreen> {
                                         context, Routes.getAddAddressRoute())
                                     .then((value) {
                                   if (value == true) {
-                                    _loadData();
+                                    _loadAddress();
                                   }
                                 });
                               },

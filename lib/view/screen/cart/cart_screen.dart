@@ -712,12 +712,20 @@ class _CartScreenState extends State<CartScreen> {
                                                               await cartProvider
                                                                   .updateCart(
                                                                       context,
-                                                                      cart);
-                                                              setState(() {
-                                                                cartProvider
-                                                                    .cartItem[
-                                                                        index]
-                                                                    .quantity = val;
+                                                                      cart)
+                                                                  .then(
+                                                                      (value) {
+                                                                if (value ==
+                                                                    true) {
+                                                                  setState(() {
+                                                                    cartProvider
+                                                                        .cartItem[
+                                                                            index]
+                                                                        .quantity = val;
+                                                                  });
+                                                                } else {
+                                                                  _loadData();
+                                                                }
                                                               });
                                                             },
                                                           ),

@@ -201,7 +201,9 @@ class _BiddingGridItemState extends State<BiddingGridItem> {
 }
 
 String formatRemainingTime(Duration remainingTime) {
-  if (remainingTime.inHours > 0) {
+  if (remainingTime.inDays > 0) {
+    return "${remainingTime.inDays} days ${remainingTime.inHours.remainder(24)} hours ${remainingTime.inMinutes.remainder(60)} minutes ${remainingTime.inSeconds.remainder(60)} seconds left";
+  } else if (remainingTime.inHours > 0) {
     return "${remainingTime.inHours} hours ${remainingTime.inMinutes.remainder(60)} minutes ${remainingTime.inSeconds.remainder(60)} seconds left";
   } else if (remainingTime.inMinutes > 0) {
     return "${remainingTime.inMinutes} minutes ${remainingTime.inSeconds.remainder(60)} seconds left";
