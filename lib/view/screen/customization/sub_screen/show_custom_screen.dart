@@ -61,9 +61,15 @@ class _ShowCustomScreenState extends State<ShowCustomScreen> {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Container(
-                    child: Text(
-                      '5: Play the video to see the style you have selected.',
-                      style: CustomTextStyles(context).titleStyle,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '5: Play the video to see the style you have selected.',
+                          style: CustomTextStyles(context).titleStyle,
+                        ),
+                      ],
                     ),
                   ),
                 ),

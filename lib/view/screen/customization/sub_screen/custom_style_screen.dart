@@ -68,113 +68,144 @@ class _CustomStyleScreenState extends State<CustomStyleScreen> {
                             ),
                           ),
                         )
-                      : Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Flexible(
-                              child: Text(
-                                '4: Please select the style that you are prefer.',
-                                style: CustomTextStyles(context).titleStyle,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Container(
-                              // color: Colors.white,
-                              width: double.infinity,
-                              height: size.height * 0.8,
-                              // height: size.height * 0.5,
-                              child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                  physics: const BouncingScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: customProvider.customList.length,
-                                  itemBuilder: (context, index) {
-                                    if (index >=
-                                        customProvider.customList.length) {
-                                      return LoadingThreeCircle();
-                                    } else if (index >=
-                                        customProvider.customList.length) {
-                                      // return Container(
-                                      //   height: 50,
-                                      // );
-                                    } else {
-                                      return Container(
-                                        padding: EdgeInsets.all(5),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  customProvider.item_url =
-                                                      customProvider
-                                                              .customList[index]
-                                                              .videoUrl ??
-                                                          '';
-                                                });
-                                                customProvider
-                                                    .setSelectedCustomStyle(
-                                                        customProvider
-                                                                .customList[
-                                                                    index]
-                                                                .name ??
-                                                            '');
-                                                Navigator.pushNamed(
-                                                    context,
-                                                    Routes
-                                                        .getCustomizationShowRoute());
-                                              },
-                                              child: Container(
-                                                height: size.height * 0.7,
-                                                width: size.width * 0.9,
-                                                child: CachedNetworkImage(
-                                                  filterQuality:
-                                                      FilterQuality.high,
-                                                  imageUrl:
-                                                      "${customProvider.customList[index].imageUrl}",
-                                                  imageBuilder: (context,
-                                                          imageProvider) =>
-                                                      Container(
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      image: DecorationImage(
-                                                        image: imageProvider,
-                                                        fit: BoxFit.fitWidth,
+                      : Container(
+                          width: size.width,
+                          height: size.height,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '4: Please select the style that you are prefer.',
+                                  style: CustomTextStyles(context).titleStyle,
+                                ),
+                                const SizedBox(height: 5),
+                                Text(
+                                  'In this section, you are required to select the style of customization from the practical example.',
+                                  style: CustomTextStyles(context)
+                                      .titleStyle
+                                      .copyWith(
+                                        fontSize: 12,
+                                      ),
+                                ),
+                                const SizedBox(height: 5),
+                                Text(
+                                  '*You can select the style by clicking on the image.',
+                                  style: CustomTextStyles(context)
+                                      .subTitleStyle
+                                      .copyWith(
+                                        fontSize: 12,
+                                      ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Container(
+                                  // color: Colors.white,
+                                  width: double.infinity,
+                                  height: size.height * 0.8,
+                                  // height: size.height * 0.5,
+                                  child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                      physics: const BouncingScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount:
+                                          customProvider.customList.length,
+                                      itemBuilder: (context, index) {
+                                        if (index >=
+                                            customProvider.customList.length) {
+                                          return LoadingThreeCircle();
+                                        } else if (index >=
+                                            customProvider.customList.length) {
+                                          // return Container(
+                                          //   height: 50,
+                                          // );
+                                        } else {
+                                          return Container(
+                                            padding: EdgeInsets.all(5),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      customProvider.item_url =
+                                                          customProvider
+                                                                  .customList[
+                                                                      index]
+                                                                  .videoUrl ??
+                                                              '';
+                                                    });
+                                                    customProvider
+                                                        .setSelectedCustomStyle(
+                                                            customProvider
+                                                                    .customList[
+                                                                        index]
+                                                                    .name ??
+                                                                '');
+                                                    Navigator.pushNamed(
+                                                        context,
+                                                        Routes
+                                                            .getCustomizationShowRoute());
+                                                  },
+                                                  child: Container(
+                                                    height: size.height * 0.6,
+                                                    width: size.width * 0.9,
+                                                    child: CachedNetworkImage(
+                                                      filterQuality:
+                                                          FilterQuality.high,
+                                                      imageUrl:
+                                                          "${customProvider.customList[index].imageUrl}",
+                                                      imageBuilder: (context,
+                                                              imageProvider) =>
+                                                          Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                          image:
+                                                              DecorationImage(
+                                                            image:
+                                                                imageProvider,
+                                                            fit:
+                                                                BoxFit.fitWidth,
+                                                          ),
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ),
-                                                  placeholder: (context, url) =>
-                                                      Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            1.0),
-                                                    child: Container(
-                                                      width: double.infinity,
-                                                      height: 20,
-                                                      color: Colors.grey[400],
-                                                    ),
-                                                  ),
-                                                  errorWidget:
-                                                      (context, url, error) =>
+                                                      placeholder:
+                                                          (context, url) =>
+                                                              Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(1.0),
+                                                        child: Container(
+                                                          width:
+                                                              double.infinity,
+                                                          height: 20,
+                                                          color:
+                                                              Colors.grey[400],
+                                                        ),
+                                                      ),
+                                                      errorWidget: (context,
+                                                              url, error) =>
                                                           Icon(Icons.error),
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
+                                              ],
                                             ),
-                                          ],
-                                        ),
-                                      );
-                                    }
-                                  }),
+                                          );
+                                        }
+                                      }),
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         );
             },
           )),

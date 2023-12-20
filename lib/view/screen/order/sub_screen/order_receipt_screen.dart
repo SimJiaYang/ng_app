@@ -50,8 +50,18 @@ class _OrderReceiptScreenState extends State<OrderReceiptScreen> {
           isBgPrimaryColor: true,
           isCenter: false,
           isBackButtonExist: false,
+          isActionButtonExist: false,
           title: "Order Receipt",
           context: context,
+          actionWidget: [
+            IconButton(
+              icon: Icon(
+                Icons.print,
+                color: ColorResources.COLOR_WHITE,
+              ),
+              onPressed: () {},
+            ),
+          ],
         ),
         body: Container(
             color: ColorResources.COLOR_WHITE,

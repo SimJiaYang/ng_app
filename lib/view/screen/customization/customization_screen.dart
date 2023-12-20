@@ -269,21 +269,22 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        Tooltip(
-                          showDuration: Duration(seconds: 7),
-                          message:
-                              "Customization is the selection of the plant, product, and soil. Througout the customization selection, the customer will receive the whole plant with pot and soil.",
-                          child: Text('What is Customization',
+                    Tooltip(
+                      triggerMode: TooltipTriggerMode.tap,
+                      showDuration: Duration(seconds: 5),
+                      message:
+                          "Customization is the selection of the plant, product, and soil. Througout the customization selection, the customer will receive the whole plant with pot and soil.",
+                      child: Row(
+                        children: [
+                          Text('What is Customization',
                               style: CustomTextStyles(context).titleStyle),
-                        ),
-                        Icon(
-                          Icons.help_outline_rounded,
-                          size: 15,
-                          color: Colors.grey[800],
-                        )
-                      ],
+                          Icon(
+                            Icons.help_outline_rounded,
+                            size: 15,
+                            color: Colors.grey[800],
+                          )
+                        ],
+                      ),
                     ),
                     const SizedBox(
                       height: 10,
