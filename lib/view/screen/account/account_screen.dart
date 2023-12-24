@@ -275,6 +275,64 @@ class _AccountScreenState extends State<AccountScreen> {
                 ),
               ),
             ),
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, Routes.getHelpRoute());
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(
+                  color: ColorResources.COLOR_GREY.withOpacity(0.3),
+                  width: 0.5,
+                ))),
+                child: ListTile(
+                  leading: Icon(
+                    Icons.help_outline_outlined,
+                    color: ColorResources.COLOR_BLACK,
+                  ),
+                  title: Text(
+                    "Help & Support",
+                    style: CustomTextStyles(context).titleStyle.copyWith(
+                          fontWeight: FontWeight.w300,
+                          fontSize: 16,
+                        ),
+                  ),
+                  trailing: Icon(
+                    Icons.chevron_right_outlined,
+                  ),
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, Routes.getFAQsRoute());
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(
+                  color: ColorResources.COLOR_GREY.withOpacity(0.3),
+                  width: 0.5,
+                ))),
+                child: ListTile(
+                  leading: Icon(
+                    Icons.headphones_outlined,
+                    color: ColorResources.COLOR_BLACK,
+                  ),
+                  title: Text(
+                    "FAQs",
+                    style: CustomTextStyles(context).titleStyle.copyWith(
+                          fontWeight: FontWeight.w300,
+                          fontSize: 16,
+                        ),
+                  ),
+                  trailing: Icon(
+                    Icons.chevron_right_outlined,
+                  ),
+                ),
+              ),
+            ),
             Consumer<AuthProvider>(
               builder: (context, authProvider, child) {
                 return GestureDetector(

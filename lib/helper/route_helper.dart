@@ -6,6 +6,8 @@ import 'package:nurserygardenapp/view/base/image_enlarge_widget.dart';
 import 'package:nurserygardenapp/view/screen/account/account_screen.dart';
 import 'package:nurserygardenapp/view/screen/account/sub_screen/changes_email_screen.dart';
 import 'package:nurserygardenapp/view/screen/account/sub_screen/changes_password_screen.dart';
+import 'package:nurserygardenapp/view/screen/account/sub_screen/faq_screen.dart';
+import 'package:nurserygardenapp/view/screen/account/sub_screen/help_screen.dart';
 import 'package:nurserygardenapp/view/screen/account/sub_screen/profile_screen.dart';
 import 'package:nurserygardenapp/view/screen/account/sub_screen/settings_screen.dart';
 import 'package:nurserygardenapp/view/screen/address/address_screen.dart';
@@ -271,6 +273,14 @@ class RouterHelper {
         ChangesEmailScreen(),
   );
 
+  static Handler _helpHandler = Handler(
+    handlerFunc: (context, Map<String, dynamic> parameters) => HelpScreen(),
+  );
+
+  static Handler _faqHandler = Handler(
+    handlerFunc: (context, Map<String, dynamic> parameters) => FAQsScreen(),
+  );
+
 // =================================image=========================================
   static Handler _imageEnlargeHandler = Handler(
     handlerFunc: (context, Map<String, dynamic> parameters) =>
@@ -367,6 +377,10 @@ class RouterHelper {
         handler: _changePasswordHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.CHANGE_EMAIL,
         handler: _changeEmailHandler, transitionType: TransitionType.fadeIn);
+    router.define(Routes.HELP_SCREEN,
+        handler: _helpHandler, transitionType: TransitionType.fadeIn);
+    router.define(Routes.FAQS_SCREEN,
+        handler: _faqHandler, transitionType: TransitionType.fadeIn);
     // Selected Dashboard Screen
     router.define(Routes.DASHBOARD_SCREEN,
         handler: _dashScreenBoardHandler,

@@ -65,6 +65,8 @@ class Routes {
   static const String SETTINGS_SCREEN = '/settings';
   static const String CHANGE_PASSWORD_SCREEN = '/change-password';
   static const String CHANGE_EMAIL = '/change-email';
+  static const String HELP_SCREEN = '/help';
+  static const String FAQS_SCREEN = '/faqs';
 
   // Image Widget
   static const String IMAGE_ENLARGE_SCREEN = '/image-enlarge';
@@ -155,4 +157,6 @@ class Routes {
   static String getSettingsRoute() => SETTINGS_SCREEN;
   static String getChangePasswordRoute() => CHANGE_PASSWORD_SCREEN;
   static String getChangeEmailRoute() => CHANGE_EMAIL;
+  static String getHelpRoute() => HELP_SCREEN;
+  static String getFAQsRoute() => FAQS_SCREEN;
 }
