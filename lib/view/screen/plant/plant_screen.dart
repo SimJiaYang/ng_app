@@ -4,6 +4,7 @@ import 'package:nurserygardenapp/providers/plant_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/images.dart';
 import 'package:nurserygardenapp/util/routes.dart';
+import 'package:nurserygardenapp/view/base/custom_item.dart';
 import 'package:nurserygardenapp/view/base/empty_grid_item.dart';
 import 'package:nurserygardenapp/view/screen/plant/widget/plant_grid_item.dart';
 import 'package:provider/provider.dart';
@@ -227,6 +228,42 @@ class _PlantScreenState extends State<PlantScreen> {
                               ),
                             );
                           }).toList(),
+                        ),
+                        Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(4),
+                              border: Border.all(color: Colors.white)),
+                          margin: EdgeInsets.all(10),
+                          padding: EdgeInsets.all(10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              CustomItem(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      Routes.getPlantCategoryRoute(),
+                                    );
+                                  },
+                                  title: "Category",
+                                  icon: Icons.category_outlined),
+                              CustomItem(
+                                  onTap: () {},
+                                  title: "Origin",
+                                  icon: Icons.flag_outlined),
+                              CustomItem(
+                                  onTap: () {},
+                                  title: "Top Sales",
+                                  icon: Icons.thumb_up_alt_outlined),
+                              CustomItem(
+                                  onTap: () {},
+                                  title: "New Arrival",
+                                  icon: Icons.new_releases_outlined),
+                            ],
+                          ),
                         ),
                         SizedBox(
                           height: 10,

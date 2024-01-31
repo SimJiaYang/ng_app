@@ -27,7 +27,7 @@ class _ShippingStatusState extends State<ShippingStatus> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    // Size size = MediaQuery.of(context).size;
 
     Widget payWidget = Container(
       padding: EdgeInsets.symmetric(horizontal: 3, vertical: 5),

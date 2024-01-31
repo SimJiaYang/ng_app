@@ -253,7 +253,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                     ),
                   ]),
             )),
-        body: Consumer4<CartProvider, AddressProvider, PlantProvider,
+        body: Consumer4<CartProvider, PlantProvider, PlantProvider,
                 ProductProvider>(
             builder: (context, cartProvider, addressProvider, plantProvider,
                 productProvider, child) {

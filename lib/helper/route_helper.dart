@@ -35,6 +35,7 @@ import 'package:nurserygardenapp/view/screen/order/sub_screen/order_delivery_lis
 import 'package:nurserygardenapp/view/screen/order/sub_screen/order_detail_screen.dart';
 import 'package:nurserygardenapp/view/screen/order/sub_screen/order_receipt_screen.dart';
 import 'package:nurserygardenapp/view/screen/payment/payment_screen.dart';
+import 'package:nurserygardenapp/view/screen/plant/plant_category_screen.dart';
 import 'package:nurserygardenapp/view/screen/plant/plant_detail_screen.dart';
 import 'package:nurserygardenapp/view/screen/plant/plant_screen.dart';
 import 'package:nurserygardenapp/view/screen/plant/plant_search_result_screen.dart';
@@ -104,6 +105,11 @@ class RouterHelper {
   static Handler _plantSearchResultHandler = Handler(
     handlerFunc: (context, Map<String, dynamic> parameters) =>
         PlantSearchResultScreen(searchKeyword: parameters['searchKeyword'][0]),
+  );
+
+  static Handler _plantCategoryHandler = Handler(
+    handlerFunc: (context, Map<String, dynamic> parameters) =>
+        PlantCategoryScreen(),
   );
 
   // =================================Product=========================================
@@ -311,6 +317,8 @@ class RouterHelper {
     router.define(Routes.PLANT_SEARCH_RESULT_SCREEN,
         transitionType: TransitionType.fadeIn,
         handler: _plantSearchResultHandler);
+    router.define(Routes.PLANT_CATEGORY_SCREEN,
+        transitionType: TransitionType.fadeIn, handler: _plantCategoryHandler);
     router.define(Routes.PRODUCT_SCREEN,
         handler: _productHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.PRODUCT_DETAIL_SCREEN,

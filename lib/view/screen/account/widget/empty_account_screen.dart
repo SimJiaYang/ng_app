@@ -71,11 +71,11 @@ class EmptyAccountWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildLoadingContainer(double width, double height) {
-    return Container(
-      width: width,
-      height: height,
-      color: Colors.grey[300],
-    );
-  }
+  // Widget _buildLoadingContainer(double width, double height) {
+  //   return Container(
+  //     width: width,
+  //     height: height,
+  //     color: Colors.grey[300],
+  //   );
+  // }
 }

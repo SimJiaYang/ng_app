@@ -24,6 +24,7 @@ class PaymentScreen extends StatefulWidget {
 class _PaymentScreenState extends State<PaymentScreen> {
   late PayProvider pay_prov = Provider.of<PayProvider>(context, listen: false);
   // Cannot delete
+  // ignore: unused_field
   CardFieldInputDetails? _card = CardFieldInputDetails(complete: false);
   final cardFormontroller = CardFormEditController();
   double payment_amount = 0.0;

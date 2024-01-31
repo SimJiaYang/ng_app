@@ -1,6 +1,6 @@
 import 'dart:convert';
-
 import 'package:flutter/widgets.dart';
+import 'package:nurserygardenapp/data/model/category_model.dart';
 import 'package:nurserygardenapp/data/model/plant_model.dart';
 import 'package:nurserygardenapp/data/model/response/api_response.dart';
 import 'package:nurserygardenapp/data/repositories/plant_repo.dart';
@@ -122,6 +122,53 @@ class PlantProvider extends ChangeNotifier {
           .toList();
     }
     notifyListeners();
+  }
+
+  /// ================== PLANT CATEGORY ==================
+  bool _isLoadingCategory = false;
+  bool get isLoadingCategory => _isLoadingCategory;
+
+  String _endCategoryResult = "";
+  String get endCategoryResult => _endCategoryResult;
+
+  CategoryModel _categoryPlantModel = CategoryModel();
+  CategoryModel get categoryPlantModel => _categoryPlantModel;
+
+  List<CategoryType> _categoryList = [];
+  List<CategoryType> get categoryList => _categoryList;
+
+  Future<bool> getPlantCategory(BuildContext context, params,
+      {bool isLoadMore = false, bool isLoad = true}) async {
+    if (!isLoadMore) {
+      _categoryList = [];
+      _endCategoryResult = "";
+    }
+
+    bool result = false;
+    String query = ResponseHelper.buildQuery(params);
+    int limit = params['limit'] != null ? int.parse(params['limit']) : 8;
+
+    _isLoadingCategory = isLoad;
+    notifyListeners();
+
+    ApiResponse apiResponse = await plantRepo.getPlantCategoty(query);
+
+    if (context.mounted) {
+      result = ResponseHelper.responseHelper(context, apiResponse);
+      if (result) {
+        _categoryPlantModel =
+            CategoryModel.fromJson(apiResponse.response!.data);
+        _categoryList = _categoryPlantModel.data!.category!.data ?? [];
+        if (_categoryList.length < limit && limit >= 8) {
+          _endCategoryResult = AppConstants.NO_MORE_DATA;
+          print(_endCategoryResult);
+        }
+      }
+    }
+    _isLoadingCategory = false;
+    notifyListeners();
+
+    return result;
   }
 
   /// ================== PLANT SAVE IN LOCAL ==================
