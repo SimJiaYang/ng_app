@@ -358,6 +358,8 @@ class _PlantSearchResultScreenState extends State<PlantSearchResultScreen> {
                                       );
                                     } else {
                                       return PlantGridItem(
+                                        isSales: _selectedFilterList ==
+                                            _filtertList[1],
                                         key: ValueKey(plantProvider
                                             .plantListSearch
                                             .elementAt(index)

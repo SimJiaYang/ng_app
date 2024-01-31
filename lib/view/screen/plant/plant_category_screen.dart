@@ -3,6 +3,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:nurserygardenapp/providers/plant_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/util/custom_text_style.dart';
+import 'package:nurserygardenapp/util/routes.dart';
 
 import 'package:nurserygardenapp/view/base/circular_indicator.dart';
 import 'package:nurserygardenapp/view/base/custom_appbar.dart';
@@ -132,7 +133,13 @@ class _PlantCategoryScreenState extends State<PlantCategoryScreen> {
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 10),
                                 child: GestureDetector(
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context,
+                                        Routes.getPlantCategoryResultRoute(
+                                            plantProvider
+                                                .categoryList[index].name!));
+                                  },
                                   child: Container(
                                     width: double.infinity,
                                     padding: EdgeInsets.all(10),

@@ -133,12 +133,14 @@ class Plant {
   String? matureHeight;
   String? origin;
   String? status;
+  int? salesAmount;
   String? image;
   int? catId;
   DateTime? createdAt;
   DateTime? updatedAt;
   String? categoryName;
   String? imageURL;
+
   bool? isSelected;
 
   Plant({
@@ -152,6 +154,7 @@ class Plant {
     this.matureHeight,
     this.origin,
     this.status,
+    this.salesAmount,
     this.image,
     this.catId,
     this.createdAt,
@@ -167,6 +170,7 @@ class Plant {
         price: json["price"]?.toDouble(),
         description: json["description"],
         quantity: json["quantity"],
+        salesAmount: json["sales_amount"] == null ? 0 : json["sales_amount"],
         sunlightNeed: json["sunlight_need"],
         waterNeed: json["water_need"],
         matureHeight: json["mature_height"],
@@ -188,6 +192,7 @@ class Plant {
         "id": id,
         "name": name,
         "price": price,
+        "sales_amount": salesAmount,
         "description": description,
         "quantity": quantity,
         "sunlight_need": sunlightNeed,

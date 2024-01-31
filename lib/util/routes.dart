@@ -18,6 +18,7 @@ class Routes {
   static const String PLANT_SEARCH_SCREEN = '/plant-search';
   static const String PLANT_SEARCH_RESULT_SCREEN = '/plant-search/result';
   static const String PLANT_CATEGORY_SCREEN = '/plant-category';
+  static const String PLANT_CATEGORY_RESULT_SCREEN = '/plant-category/result';
 
   // Product
   static const String PRODUCT_SCREEN = '/product';
@@ -95,6 +96,8 @@ class Routes {
   static String getPlantSearchResultRoute(String searchKeyword) =>
       '$PLANT_SEARCH_RESULT_SCREEN?searchKeyword=$searchKeyword';
   static String getPlantCategoryRoute() => PLANT_CATEGORY_SCREEN;
+  static String getPlantCategoryResultRoute(String category) =>
+      '$PLANT_CATEGORY_RESULT_SCREEN?category=$category';
 
   // Product
   static String getProductRoute() => PRODUCT_SCREEN;

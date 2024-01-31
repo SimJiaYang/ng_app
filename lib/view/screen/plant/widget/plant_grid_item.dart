@@ -9,8 +9,10 @@ class PlantGridItem extends StatefulWidget {
     super.key,
     required this.plant,
     required this.onTap,
+    this.isSales = false,
   });
 
+  final bool isSales;
   final Plant plant;
   final void Function() onTap;
 
@@ -81,13 +83,22 @@ class _PlantGridItemState extends State<PlantGridItem> {
                       ),
                 ),
                 VerticalSpacing(),
-                Text(
-                  "RM " + widget.plant.price!.toStringAsFixed(2),
-                  style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                        color: ColorResources.COLOR_PRIMARY,
-                        fontSize: 16,
-                      ),
-                ),
+                if (!widget.isSales)
+                  Text(
+                    "RM " + widget.plant.price!.toStringAsFixed(2),
+                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                          color: ColorResources.COLOR_PRIMARY,
+                          fontSize: 16,
+                        ),
+                  ),
+                if (widget.isSales)
+                  Text(
+                    "SALES " + widget.plant.salesAmount!.toStringAsFixed(0),
+                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                          color: ColorResources.COLOR_PRIMARY,
+                          fontSize: 16,
+                        ),
+                  ),
               ],
             ),
           )),
