@@ -205,11 +205,12 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
           .price,
     ));
     custom_prov.addSelectedItem(_selectedItem);
-    await custom_prov.getStyle(context).then((value) {
-      if (value == true) {
-        Navigator.pushNamed(context, Routes.getCustomizeStyleRoute());
-      }
-    });
+    Navigator.pushNamed(context, Routes.getCustomizeConfirmationRoute());
+    // await custom_prov.getStyle(context).then((value) {
+    //   if (value == true) {
+    //     Navigator.pushNamed(context, Routes.getCustomizeStyleRoute());
+    //   }
+    // });
   }
 
   @override
@@ -938,7 +939,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                                             children: [
                                               if (!customProvider.isFetching)
                                                 Text(
-                                                  "CONTINUE",
+                                                  "CHECKOUT",
                                                   style: TextStyle(
                                                       color: Colors.white),
                                                 ),

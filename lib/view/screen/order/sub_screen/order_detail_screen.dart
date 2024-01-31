@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nurserygardenapp/data/model/order_model.dart';
+import 'package:nurserygardenapp/providers/delivery_provider.dart';
 import 'package:nurserygardenapp/providers/order_provider.dart';
 import 'package:nurserygardenapp/util/app_constants.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
@@ -26,6 +27,7 @@ class OrderDetailScreen extends StatefulWidget {
 class _OrderDetailScreenState extends State<OrderDetailScreen> {
   late OrderProvider order_prov =
       Provider.of<OrderProvider>(context, listen: false);
+
   Order order = Order();
   String address = "";
 
@@ -95,7 +97,6 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                         ? EmptyOrderDetail()
                         : Container(
                             width: double.infinity,
-                            height: size.height,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -606,25 +607,6 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                 SizedBox(
                                   height: 10,
                                 ),
-                                // if (order.status == "pay")
-                                //   Container(
-                                //     padding: const EdgeInsets.all(8),
-                                //     child: Row(
-                                //       children: [
-                                //         Flexible(
-                                //             child: Text(
-                                //           "*Please note that since you pay the order, we will not be able to refund your money.",
-                                //           style: CustomTextStyles(context)
-                                //               .subTitleStyle
-                                //               .copyWith(
-                                //                   fontSize: Dimensions
-                                //                       .FONT_SIZE_SMALL,
-                                //                   color: ColorResources
-                                //                       .COLOR_GRAY),
-                                //         )),
-                                //       ],
-                                //     ),
-                                //   ),
                                 if (order.status == "pay")
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
@@ -685,7 +667,56 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                           btnTxt: "Cancel Order",
                                           backgroundColor: Colors.red,
                                         ));
-                                  })
+                                  }),
+                                if (order.status == "receive" ||
+                                    order.status == "partial")
+                                  Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10),
+                                      child: CustomButton(
+                                        onTap: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return CustomDialog(
+                                                    dialogType: AppConstants
+                                                        .DIALOG_CONFIRMATION,
+                                                    btnText: "Yes",
+                                                    btnTextCancel: "No",
+                                                    title: "Receive",
+                                                    content:
+                                                        "Are you sure you have received this order?",
+                                                    onPressed: () async {
+                                                      if (orderProvider
+                                                          .isLoading) {
+                                                        return;
+                                                      } else {
+                                                        await orderProvider
+                                                            .receiveOrder(
+                                                          context,
+                                                          order.id.toString(),
+                                                        )
+                                                            .then((value) {
+                                                          if (value == true) {
+                                                            Navigator.popUntil(
+                                                                context,
+                                                                ModalRoute.withName(
+                                                                    Routes
+                                                                        .getOrderRoute()));
+                                                          }
+                                                        });
+                                                      }
+                                                    });
+                                              });
+                                        },
+                                        backgroundColor:
+                                            ColorResources.COLOR_PRIMARY,
+                                        btnTxt: "Order Received",
+                                      ),
+                                    ),
+                                  )
                               ],
                             ),
                           );

@@ -233,4 +233,20 @@ class OrderProvider extends ChangeNotifier {
     notifyListeners();
     return result;
   }
+
+  Future<bool> receiveOrder(BuildContext context, String orderID) async {
+    bool result = false;
+    _isLoading = true;
+    notifyListeners();
+
+    ApiResponse apiResponse = await orderRepo.receiveOrder(orderID);
+
+    if (context.mounted) {
+      result = ResponseHelper.responseHelper(context, apiResponse);
+      if (result) {}
+    }
+    _isLoading = false;
+    notifyListeners();
+    return result;
+  }
 }

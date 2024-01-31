@@ -58,7 +58,7 @@ class CustomizeRepo {
         data: {
           "cart_list": cartListJson,
           "address": address,
-          "note": note,
+          // "note": note,
         },
       );
       return ApiResponse.withSuccess(response);

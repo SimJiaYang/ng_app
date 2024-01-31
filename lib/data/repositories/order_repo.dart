@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:nurserygardenapp/data/dio/dio_client.dart';
 import 'package:nurserygardenapp/data/exception/api_error_handler.dart';
 import 'package:nurserygardenapp/data/model/cart_model.dart';
+import 'package:nurserygardenapp/data/model/delivery_model.dart';
 import 'package:nurserygardenapp/data/model/order_model.dart';
 import 'package:nurserygardenapp/data/model/response/api_response.dart';
 import 'package:nurserygardenapp/util/app_constants.dart';
@@ -74,6 +75,18 @@ class OrderRepo {
           await dioClient.post(AppConstants.ORDER_CHANGE_ADDRESS_URI, data: {
         "id": orderID,
         "address": address,
+      });
+      return ApiResponse.withSuccess(response);
+    } catch (e) {
+      return ApiResponse.withError(ApiErrorHandler.getMessage(e));
+    }
+  }
+
+  Future<ApiResponse> receiveOrder(String orderID) async {
+    try {
+      Response response =
+          await dioClient.post('${AppConstants.ORDER_RECEIVE_URI}', data: {
+        "id": orderID,
       });
       return ApiResponse.withSuccess(response);
     } catch (e) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nurserygardenapp/data/model/delivery_model.dart';
 import 'package:nurserygardenapp/data/model/order_model.dart';
+import 'package:nurserygardenapp/helper/courier_helper.dart';
 import 'package:nurserygardenapp/providers/delivery_provider.dart';
 import 'package:nurserygardenapp/providers/order_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
@@ -13,6 +14,7 @@ import 'package:nurserygardenapp/view/base/image_enlarge_widget.dart';
 import 'package:nurserygardenapp/view/base/page_loading.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DeliveryDetailScreen extends StatefulWidget {
   final String deliveryId;
@@ -56,6 +58,26 @@ class _DeliveryDetailScreenState extends State<DeliveryDetailScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadData();
     });
+  }
+
+  _launchURL() async {
+    String courierCompany = delivery.method ?? "J&T";
+
+    // Retrieve courier information based on the provided name
+    Map<String, dynamic>? courier =
+        CourierHelper.getCourierInfo(courierCompany);
+
+    if (courier != null) {
+      String url = courier['website'] ?? "";
+
+      if (await canLaunchUrl(Uri.parse(url))) {
+        await launchUrl(Uri.parse(url));
+      } else {
+        throw 'Could not launch $url';
+      }
+    } else {
+      throw 'Courier not found';
+    }
   }
 
   void _loadData() async {
@@ -303,6 +325,53 @@ class _DeliveryDetailScreenState extends State<DeliveryDetailScreen> {
                                     color: ColorResources.COLOR_PRIMARY,
                                     size: 16,
                                   )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+
+                      // Click to view delivery order item
+                      if (delivery.status == "delivered" ||
+                          delivery.status == "ship")
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: GestureDetector(
+                            onTap: () {
+                              _launchURL();
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 15),
+                              decoration: BoxDecoration(
+                                color: ColorResources.COLOR_WHITE,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              width: double.infinity,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                      "Your Courier Company : ${delivery.method ?? ""}",
+                                      style:
+                                          CustomTextStyles(context).titleStyle),
+                                  SizedBox(height: 10),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                          "Click here to go your courier website ",
+                                          style: CustomTextStyles(context)
+                                              .titleStyle),
+                                      Icon(
+                                        Icons.touch_app,
+                                        color: ColorResources.COLOR_PRIMARY,
+                                        size: 16,
+                                      )
+                                    ],
+                                  ),
                                 ],
                               ),
                             ),
