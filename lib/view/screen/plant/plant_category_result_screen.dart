@@ -1,4 +1,3 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/providers/plant_provider.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';

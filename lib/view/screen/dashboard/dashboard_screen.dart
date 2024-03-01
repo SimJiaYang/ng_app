@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nurserygardenapp/util/color_resources.dart';
 import 'package:nurserygardenapp/view/screen/account/account_screen.dart';
-import 'package:nurserygardenapp/view/screen/bidding/bidding_screen.dart';
 import 'package:nurserygardenapp/view/screen/customization/customization_screen.dart';
 import 'package:nurserygardenapp/view/screen/plant/plant_screen.dart';
 import 'package:nurserygardenapp/view/screen/product/product_screen.dart';
@@ -31,7 +30,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
       PlantScreen(),
       ProductScreen(),
       CustomizationScreen(),
-      BiddingScreen(),
       AccountScreen(),
     ];
   }
@@ -76,16 +74,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 2),
             _barItem(
                 this._pageIndex == 3
-                    ? Icons.local_atm
-                    : Icons.local_atm_outlined,
-                'Bidding',
-                3),
-            _barItem(
-                this._pageIndex == 4
                     ? Icons.manage_accounts
                     : Icons.manage_accounts_outlined,
                 'Account',
-                4),
+                3),
           ],
           onTap: (int index) {
             if (!mounted) return;

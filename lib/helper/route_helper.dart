@@ -15,9 +15,6 @@ import 'package:nurserygardenapp/view/screen/address/sub_screen/add_address_scre
 import 'package:nurserygardenapp/view/screen/address/sub_screen/address_detail_screen.dart';
 import 'package:nurserygardenapp/view/screen/auth/login_screen.dart';
 import 'package:nurserygardenapp/view/screen/auth/register_screen.dart';
-import 'package:nurserygardenapp/view/screen/bidding/bidding_screen.dart';
-import 'package:nurserygardenapp/view/screen/bidding/sub_screen/bidding_detail_screen.dart';
-import 'package:nurserygardenapp/view/screen/bidding/sub_screen/bidding_refund_screen.dart';
 import 'package:nurserygardenapp/view/screen/cart/cart_screen.dart';
 import 'package:nurserygardenapp/view/screen/customization/sub_screen/customConfirmation_screen.dart';
 import 'package:nurserygardenapp/view/screen/customization/customization_screen.dart';
@@ -74,11 +71,9 @@ class RouterHelper {
                 ? 1
                 : params['page'][0] == 'Customization'
                     ? 2
-                    : params['page'][0] == 'Bidding'
+                    : params['page'][0] == 'Account'
                         ? 3
-                        : params['page'][0] == 'Account'
-                            ? 4
-                            : 0);
+                        : 0);
   });
 
   static Handler _homeHandler = Handler(
@@ -228,23 +223,6 @@ class RouterHelper {
       deliveryID: parameters['deliveryID'][0],
     ),
   );
-
-  // =================================Bidding=========================================
-  static Handler _biddingHandler = Handler(
-    handlerFunc: (context, Map<String, dynamic> parameters) => BiddingScreen(),
-  );
-
-  static Handler _biddingDetailHandler = Handler(
-    handlerFunc: (context, Map<String, dynamic> parameters) =>
-        BiddingDetailScreen(
-      biddingID: parameters['biddingID'][0],
-    ),
-  );
-
-  static Handler _biddingRefundHandler = Handler(
-      handlerFunc: (context, Map<String, dynamic> parameters) =>
-          BiddingRefundScreen());
-
   // =================================Account=========================================
   static Handler _accountHandler = Handler(
     handlerFunc: (context, Map<String, dynamic> parameters) => AccountScreen(),
@@ -378,12 +356,6 @@ class RouterHelper {
     router.define(Routes.DELIVERY_RECEIPT_SCREEN,
         handler: _deliveryReceiptHandler,
         transitionType: TransitionType.fadeIn);
-    router.define(Routes.BIDDING_SCREEN,
-        handler: _biddingHandler, transitionType: TransitionType.fadeIn);
-    router.define(Routes.BIDDING_DETAIL_SCREEN,
-        handler: _biddingDetailHandler, transitionType: TransitionType.fadeIn);
-    router.define(Routes.BIDDING_REFUND_SCREEN,
-        handler: _biddingRefundHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.ACCOUNT_SCREEN,
         handler: _accountHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.PROFILE_SCREEN,

@@ -9,7 +9,6 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nurserygardenapp/helper/route_helper.dart';
 import 'package:nurserygardenapp/providers/auth_provider.dart';
-import 'package:nurserygardenapp/providers/bidding_provider.dart';
 import 'package:nurserygardenapp/providers/cart_provider.dart';
 import 'package:nurserygardenapp/providers/address_provider.dart';
 import 'package:nurserygardenapp/providers/customize_provider.dart';
@@ -53,7 +52,6 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (context) => di.sl<PayProvider>()),
         ChangeNotifierProvider(create: (context) => di.sl<AddressProvider>()),
         ChangeNotifierProvider(create: (context) => di.sl<DeliveryProvider>()),
-        ChangeNotifierProvider(create: (context) => di.sl<BiddingProvider>()),
       ],
       child: MyApp(
         isWeb: !kIsWeb,
